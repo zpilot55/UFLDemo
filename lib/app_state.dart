@@ -40,9 +40,9 @@ class FFAppState {
 
   DocumentReference rightFencerRef;
 
-  String leftFencerName = '';
+  String leftFencerName = 'Left Fencer';
 
-  String rightFencerName = '';
+  String rightFencerName = 'Right Fencer';
 
   String leftFencerPic;
 
