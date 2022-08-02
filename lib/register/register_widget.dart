@@ -501,6 +501,8 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                               email: emailController.text,
                               displayName:
                                   '${firstNameController.text} ${lastNameController.text}',
+                              photoUrl:
+                                  'https://firebasestorage.googleapis.com/v0/b/universalfencingleague.appspot.com/o/Fencer_silhouette.png?alt=media&token=7ae87fd2-6264-446f-abbf-c4a7d8d5b642',
                             );
                             await UsersRecord.collection
                                 .doc(user.uid)
