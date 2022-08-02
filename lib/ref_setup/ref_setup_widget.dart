@@ -5,6 +5,7 @@ import '../flutter_flow/flutter_flow_widgets.dart';
 import '../ref_view/ref_view_widget.dart';
 import '../select_fencer/select_fencer_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -20,6 +21,15 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
   int periodCountValue;
   int timeCountValue;
   int touchesCountValue;
+
+  @override
+  void initState() {
+    super.initState();
+    // On page load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      setState(() => FFAppState().leftFencerName = FFAppState().leftFencerName);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -97,10 +107,7 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                             );
                           },
                           child: Text(
-                            valueOrDefault<String>(
-                              FFAppState().leftFencerName,
-                              'Left Fencer',
-                            ),
+                            FFAppState().leftFencerName,
                             style: FlutterFlowTheme.of(context).title3,
                           ),
                         ),
