@@ -1,36 +1,46 @@
-import '../auth/auth_util.dart';
-import '../backend/backend.dart';
 import '../flutter_flow/flutter_flow_count_controller.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import '../ref_view/ref_view_widget.dart';
 import '../select_fencer/select_fencer_widget.dart';
-import '../flutter_flow/custom_functions.dart' as functions;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class RefSetupWidget extends StatefulWidget {
-  const RefSetupWidget({Key? key}) : super(key: key);
+  const RefSetupWidget({
+    Key key,
+    this.leftFencer,
+    this.rightFencer,
+    this.leftFencerName,
+    this.rightFencerName,
+    this.leftFencerPhoto,
+    this.rightFencerPhoto,
+  }) : super(key: key);
+
+  final DocumentReference leftFencer;
+  final DocumentReference rightFencer;
+  final String leftFencerName;
+  final String rightFencerName;
+  final String leftFencerPhoto;
+  final String rightFencerPhoto;
 
   @override
   _RefSetupWidgetState createState() => _RefSetupWidgetState();
 }
 
 class _RefSetupWidgetState extends State<RefSetupWidget> {
-  MatchesRecord? currentMatchInProgress;
-  int? periodCountValue;
-  int? timeCountValue;
-  int? touchesCountValue;
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  int periodCountValue;
+  int timeCountValue;
+  int touchesCountValue;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
-      backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
       appBar: AppBar(
         backgroundColor: FlutterFlowTheme.of(context).primaryColor,
         automaticallyImplyLeading: true,
@@ -38,6 +48,7 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
         centerTitle: true,
         elevation: 4,
       ),
+      backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
       body: SafeArea(
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
@@ -76,7 +87,7 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                         borderRadius: BorderRadius.circular(0),
                         child: Image.network(
                           valueOrDefault<String>(
-                            FFAppState().refLeftPhoto,
+                            widget.leftFencerPhoto,
                             'https://firebasestorage.googleapis.com/v0/b/universalfencingleague.appspot.com/o/Fencer_silhouette.png?alt=media&token=7ae87fd2-6264-446f-abbf-c4a7d8d5b642',
                           ),
                           width: 80,
@@ -103,7 +114,7 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                           },
                           child: Text(
                             valueOrDefault<String>(
-                              FFAppState().refLeftName,
+                              widget.leftFencerName,
                               'Left Fencer',
                             ),
                             style: FlutterFlowTheme.of(context).title3,
@@ -148,7 +159,7 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                           },
                           child: Text(
                             valueOrDefault<String>(
-                              FFAppState().refRightName,
+                              widget.rightFencerName,
                               'Right Fencer',
                             ),
                             style: FlutterFlowTheme.of(context).title3,
@@ -164,7 +175,7 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                         borderRadius: BorderRadius.circular(0),
                         child: Image.network(
                           valueOrDefault<String>(
-                            FFAppState().refRightPhoto,
+                            widget.rightFencerPhoto,
                             'https://firebasestorage.googleapis.com/v0/b/universalfencingleague.appspot.com/o/Fencer_silhouette.png?alt=media&token=7ae87fd2-6264-446f-abbf-c4a7d8d5b642',
                           ),
                           width: 80,
@@ -395,7 +406,6 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                               setState(() => periodCountValue = count),
                           stepSize: 1,
                           minimum: 1,
-                          maximum: 1,
                         ),
                       ),
                     ),
@@ -545,83 +555,17 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                   FFButtonWidget(
                     onPressed: () async {
                       setState(
-                          () => FFAppState().startPeriods = periodCountValue!);
+                          () => FFAppState().startPeriods = periodCountValue);
                       setState(
-                          () => FFAppState().startTimePeriod = timeCountValue!);
+                          () => FFAppState().startTimePeriod = timeCountValue);
                       setState(() =>
-                          FFAppState().startTotalTouches = touchesCountValue!);
-                      setState(() => FFAppState()
-                          .refFencers
-                          .add(FFAppState().leftFencerRef!));
-                      setState(() => FFAppState()
-                          .refFencers
-                          .add(FFAppState().rightFencerRef!));
-
-                      final matchesCreateData = {
-                        ...createMatchesRecordData(
-                          user1: FFAppState().leftFencerRef,
-                          user2: FFAppState().rightFencerRef,
-                          scheduledTime: getCurrentTimestamp,
-                          weapon: FFAppState().refereeweaponselect,
-                          noOfPeriods: FFAppState().startPeriods,
-                          scoreLeft: 0,
-                          scoreRight: 0,
-                        ),
-                        'fencers': FFAppState().refFencers,
-                        'MatchEvents': [
-                          getMatchEventFirestoreData(
-                            createMatchEventStruct(
-                              actionableFencer: FFAppState().refereeReference,
-                              scoreLeft: 0,
-                              scoreRight: 0,
-                              timeOfAction: functions
-                                  .minutesToMS(FFAppState().startTimePeriod),
-                              periodOfAction: 1,
-                              actionID: -1,
-                              clearUnsetFields: false,
-                              create: true,
-                            ),
-                            true,
-                          )
-                        ],
-                      };
-                      var matchesRecordReference =
-                          MatchesRecord.collection.doc();
-                      await matchesRecordReference.set(matchesCreateData);
-                      currentMatchInProgress =
-                          MatchesRecord.getDocumentFromData(
-                              matchesCreateData, matchesRecordReference);
-
-                      final matchesUpdateData = {
-                        'MatchEvents': FieldValue.arrayUnion([
-                          getMatchEventFirestoreData(
-                            createMatchEventStruct(
-                              actionableFencer: FFAppState().refereeReference,
-                              scoreLeft: 0,
-                              scoreRight: 0,
-                              timeOfAction: functions
-                                  .minutesToMS(FFAppState().startTimePeriod),
-                              periodOfAction: 1,
-                              actionID: -11,
-                              clearUnsetFields: false,
-                            ),
-                            true,
-                          )
-                        ]),
-                      };
-                      await currentMatchInProgress!.reference
-                          .update(matchesUpdateData);
+                          FFAppState().startTotalTouches = touchesCountValue);
                       await Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => RefViewWidget(
-                            initStartTime: FFAppState().startTimePeriod,
-                            currentMatchInProgress: currentMatchInProgress,
-                          ),
+                          builder: (context) => RefViewWidget(),
                         ),
                       );
-
-                      setState(() {});
                     },
                     text: 'Start Match',
                     options: FFButtonOptions(

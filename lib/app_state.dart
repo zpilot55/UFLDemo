@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'flutter_flow/flutter_flow_util.dart';
 import 'flutter_flow/lat_lng.dart';
-import 'dart:convert';
 
 class FFAppState {
   static final FFAppState _instance = FFAppState._internal();
@@ -19,85 +18,30 @@ class FFAppState {
     prefs = await SharedPreferences.getInstance();
   }
 
-  late SharedPreferences prefs;
+  SharedPreferences prefs;
 
   String refereeweaponselect = '';
 
+  DocumentReference refereefencer1;
+
+  DocumentReference refereefencer2;
+
   bool isRightFencer = false;
 
-  DocumentReference? scannedFencerRef =
-      FirebaseFirestore.instance.doc('/users/2');
+  DocumentReference scannedFencerRef;
 
   String currentFencerName = '';
 
-  String currentFencerPicURL = '';
+  String currentFencerPicURL;
 
   int startPeriods = 1;
 
   int startTotalTouches = 5;
 
-  int startTimePeriod = 1;
-
-  DocumentReference? leftFencerRef = FirebaseFirestore.instance.doc('/users/2');
-
-  DocumentReference? rightFencerRef =
-      FirebaseFirestore.instance.doc('/users/2');
-
-  String refLeftName = 'Left Fencer';
-
-  String refRightName = 'Right Fencer';
-
-  String refLeftPhoto = '';
-
-  String refRightPhoto = '';
-
-  bool isTimerRunning = false;
-
-  int refLeftScore = 0;
-
-  int refRightScore = 0;
-
-  bool isLeftFencerAction = true;
-
-  bool showActions = false;
-
-  String startStopText = 'START';
-
-  int currentPeriod = 1;
-
-  bool endOfBout = false;
-
-  bool onBreak = false;
-
-  int timerStartTime = 60000;
-
-  int breakDuration = 10000;
-
-  bool beginNextPer = false;
-
-  bool beginBreak = false;
-
-  List<DocumentReference> refFencers = [];
-
-  bool endOfBoutPopup = false;
-
-  DocumentReference? refereeReference =
-      FirebaseFirestore.instance.doc('/users/0');
-
-  List<dynamic> currentMatchEvents = [];
-
-  String nonAttackLabel = '';
-
-  String refSecondTextAction = '';
-
-  bool isSimultaneous = false;
-
-  bool refIsHit = false;
-
-  String curentActionVideoURL = '';
+  int startTimePeriod = 3;
 }
 
-LatLng? _latLngFromString(String? val) {
+LatLng _latLngFromString(String val) {
   if (val == null) {
     return null;
   }
