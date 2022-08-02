@@ -102,27 +102,28 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   ),
                 ],
               ),
-              Row(
+              Column(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Align(
-                    alignment: AlignmentDirectional(0, 0),
-                    child: Container(
-                      width: 300,
-                      height: 300,
-                      child: custom_widgets.QRCode(
-                        width: 300,
-                        height: 300,
-                        qrSize: 300.0,
-                        qrData: currentUserUid,
-                        qrVersion: 2,
-                        qrPadding: 16.0,
-                        qrBorderRadius: 16.0,
-                        semanticsLabel: 'myID',
-                        qrBackgroundColor: Colors.white,
-                        qrForegroundColor: Colors.black,
-                      ),
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        custom_widgets.QRCode(
+                          width: 200,
+                          height: 200,
+                          qrSize: 200.0,
+                          qrData: currentUserUid,
+                          gapLess: true,
+                          qrVersion: 2,
+                          qrPadding: 0.0,
+                          qrBackgroundColor: Colors.white,
+                          qrForegroundColor: Colors.black,
+                        ),
+                      ],
                     ),
                   ),
                 ],
