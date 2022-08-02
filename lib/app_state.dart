@@ -22,10 +22,6 @@ class FFAppState {
 
   String refereeweaponselect = '';
 
-  DocumentReference refereefencer1;
-
-  DocumentReference refereefencer2;
-
   bool isRightFencer = false;
 
   DocumentReference scannedFencerRef;
@@ -39,6 +35,18 @@ class FFAppState {
   int startTotalTouches = 5;
 
   int startTimePeriod = 3;
+
+  DocumentReference leftFencerRef;
+
+  DocumentReference rightFencerRef;
+
+  String leftFencerName = '';
+
+  String rightFencerName = '';
+
+  String leftFencerPic;
+
+  String rightFencerPic;
 }
 
 LatLng _latLngFromString(String val) {

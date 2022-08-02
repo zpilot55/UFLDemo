@@ -2,7 +2,6 @@ import '../backend/backend.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
-import '../ref_setup/ref_setup_widget.dart';
 import '../custom_code/actions/index.dart' as actions;
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -182,29 +181,20 @@ class _SelectFencerWidgetState extends State<SelectFencerWidget> {
                             FFButtonWidget(
                               onPressed: () async {
                                 if (FFAppState().isRightFencer) {
-                                  await Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => RefSetupWidget(
-                                        rightFencer:
-                                            FFAppState().scannedFencerRef,
-                                        rightFencerName:
-                                            FFAppState().currentFencerName,
-                                        rightFencerPhoto:
-                                            FFAppState().currentFencerPicURL,
-                                      ),
-                                    ),
-                                  );
+                                  setState(() => FFAppState().rightFencerRef =
+                                      FFAppState().scannedFencerRef);
+                                  setState(() => FFAppState().rightFencerName =
+                                      FFAppState().currentFencerName);
+                                  setState(() =>
+                                      FFAppState().currentFencerPicURL =
+                                          FFAppState().currentFencerPicURL);
                                 } else {
-                                  await Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => RefSetupWidget(
-                                        leftFencer:
-                                            FFAppState().scannedFencerRef,
-                                      ),
-                                    ),
-                                  );
+                                  setState(() => FFAppState().leftFencerRef =
+                                      FFAppState().scannedFencerRef);
+                                  setState(() => FFAppState().leftFencerName =
+                                      FFAppState().leftFencerName);
+                                  setState(() => FFAppState().leftFencerPic =
+                                      FFAppState().currentFencerPicURL);
                                 }
 
                                 setState(
@@ -213,6 +203,7 @@ class _SelectFencerWidgetState extends State<SelectFencerWidget> {
                                     () => FFAppState().currentFencerName = '');
                                 setState(() =>
                                     FFAppState().currentFencerPicURL = null);
+                                Navigator.pop(context);
                               },
                               text: 'Confirm',
                               options: FFButtonOptions(
