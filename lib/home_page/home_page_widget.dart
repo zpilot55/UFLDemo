@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class HomePageWidget extends StatefulWidget {
-  const HomePageWidget({Key? key}) : super(key: key);
+  const HomePageWidget({Key key}) : super(key: key);
 
   @override
   _HomePageWidgetState createState() => _HomePageWidgetState();
@@ -22,17 +22,17 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
-      backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-      drawer: Drawer(
-        elevation: 16,
-        child: ColMainDrawerWidget(),
-      ),
       appBar: AppBar(
         backgroundColor: FlutterFlowTheme.of(context).primaryColor,
         automaticallyImplyLeading: true,
         actions: [],
         centerTitle: true,
         elevation: 4,
+      ),
+      backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+      drawer: Drawer(
+        elevation: 16,
+        child: ColMainDrawerWidget(),
       ),
       body: SafeArea(
         child: GestureDetector(
@@ -112,26 +112,16 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Container(
+                        custom_widgets.QRCode(
                           width: 200,
                           height: 200,
-                          decoration: BoxDecoration(
-                            color: FlutterFlowTheme.of(context)
-                                .secondaryBackground,
-                          ),
-                          child: custom_widgets.QRCode(
-                            width: 200,
-                            height: 200,
-                            qrSize: 200.0,
-                            qrData: currentUserUid,
-                            gapLess: true,
-                            qrVersion: 2,
-                            qrPadding: 0.0,
-                            qrBorderRadius: 0.0,
-                            semanticsLabel: 'Your QR Code',
-                            qrBackgroundColor: Colors.white,
-                            qrForegroundColor: Colors.black,
-                          ),
+                          qrSize: 200.0,
+                          qrData: currentUserUid,
+                          gapLess: true,
+                          qrVersion: 2,
+                          qrPadding: 0.0,
+                          qrBackgroundColor: Colors.white,
+                          qrForegroundColor: Colors.black,
                         ),
                       ],
                     ),
