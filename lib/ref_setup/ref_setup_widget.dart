@@ -4,12 +4,28 @@ import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import '../ref_view/ref_view_widget.dart';
 import '../select_fencer/select_fencer_widget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class RefSetupWidget extends StatefulWidget {
-  const RefSetupWidget({Key key}) : super(key: key);
+  const RefSetupWidget({
+    Key key,
+    this.leftFencer,
+    this.rightFencer,
+    this.leftFencerName,
+    this.rightFencerName,
+    this.leftFencerPhoto,
+    this.rightFencerPhoto,
+  }) : super(key: key);
+
+  final DocumentReference leftFencer;
+  final DocumentReference rightFencer;
+  final String leftFencerName;
+  final String rightFencerName;
+  final String leftFencerPhoto;
+  final String rightFencerPhoto;
 
   @override
   _RefSetupWidgetState createState() => _RefSetupWidgetState();
@@ -70,7 +86,10 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(0),
                         child: Image.network(
-                          'https://picsum.photos/seed/467/600',
+                          valueOrDefault<String>(
+                            widget.leftFencerPhoto,
+                            'https://firebasestorage.googleapis.com/v0/b/universalfencingleague.appspot.com/o/Fencer_silhouette.png?alt=media&token=7ae87fd2-6264-446f-abbf-c4a7d8d5b642',
+                          ),
                           width: 80,
                           height: 80,
                           fit: BoxFit.cover,
@@ -95,7 +114,7 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                           },
                           child: Text(
                             valueOrDefault<String>(
-                              FFAppState().refereef1name,
+                              widget.leftFencerName,
                               'Left Fencer',
                             ),
                             style: FlutterFlowTheme.of(context).title3,
@@ -140,7 +159,7 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                           },
                           child: Text(
                             valueOrDefault<String>(
-                              FFAppState().refereef2name,
+                              widget.rightFencerName,
                               'Right Fencer',
                             ),
                             style: FlutterFlowTheme.of(context).title3,
@@ -155,7 +174,10 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(0),
                         child: Image.network(
-                          'https://picsum.photos/seed/467/600',
+                          valueOrDefault<String>(
+                            widget.rightFencerPhoto,
+                            'https://firebasestorage.googleapis.com/v0/b/universalfencingleague.appspot.com/o/Fencer_silhouette.png?alt=media&token=7ae87fd2-6264-446f-abbf-c4a7d8d5b642',
+                          ),
                           width: 80,
                           height: 80,
                           fit: BoxFit.cover,
