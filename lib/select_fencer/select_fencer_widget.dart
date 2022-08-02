@@ -145,7 +145,10 @@ class _SelectFencerWidgetState extends State<SelectFencerWidget> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Image.network(
-                    FFAppState().currentFencerPicURL,
+                    valueOrDefault<String>(
+                      FFAppState().currentFencerPicURL,
+                      'https://firebasestorage.googleapis.com/v0/b/universalfencingleague.appspot.com/o/Fencer_silhouette.png?alt=media&token=7ae87fd2-6264-446f-abbf-c4a7d8d5b642',
+                    ),
                     width: 200,
                     height: 200,
                     fit: BoxFit.cover,
