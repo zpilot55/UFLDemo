@@ -26,10 +26,6 @@ class FFAppState {
 
   DocumentReference refereefencer2;
 
-  String refereef1name = 'Left Fencer';
-
-  String refereef2name = 'Right Fencer';
-
   bool isRightFencer = false;
 
   DocumentReference scannedFencerRef;
@@ -37,10 +33,6 @@ class FFAppState {
   String currentFencerName = '';
 
   String currentFencerPicURL;
-
-  String refereef1photo;
-
-  String refereef2photo;
 
   int startPeriods = 1;
 
