@@ -9,15 +9,17 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class EditProfileWidget extends StatefulWidget {
-  const EditProfileWidget({Key? key}) : super(key: key);
+  const EditProfileWidget({Key key}) : super(key: key);
 
   @override
   _EditProfileWidgetState createState() => _EditProfileWidgetState();
 }
 
 class _EditProfileWidgetState extends State<EditProfileWidget> {
-  TextEditingController? textController1;
-  TextEditingController? textController2;
+  TextEditingController textController1;
+
+  TextEditingController textController2;
+
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -28,17 +30,9 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
   }
 
   @override
-  void dispose() {
-    textController1?.dispose();
-    textController2?.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
-      backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
       appBar: AppBar(
         backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
         automaticallyImplyLeading: false,
@@ -68,6 +62,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
         centerTitle: false,
         elevation: 0,
       ),
+      backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
       body: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.max,
@@ -304,10 +299,10 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                         child: FFButtonWidget(
                           onPressed: () async {
                             final usersUpdateData = createUsersRecordData(
-                              email: textController1!.text,
+                              email: textController1.text,
                               displayName: currentUserDisplayName,
                             );
-                            await currentUserReference!.update(usersUpdateData);
+                            await currentUserReference.update(usersUpdateData);
                             Navigator.pop(context);
                           },
                           text: 'Save Changes',
