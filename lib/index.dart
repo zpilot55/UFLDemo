@@ -14,3 +14,4 @@ export 'select_fencer/select_fencer_widget.dart' show SelectFencerWidget;
 export 'notification_settings/notification_settings_widget.dart'
     show NotificationSettingsWidget;
 export 'ref_view/ref_view_widget.dart' show RefViewWidget;
+export 'camera_test/camera_test_widget.dart' show CameraTestWidget;

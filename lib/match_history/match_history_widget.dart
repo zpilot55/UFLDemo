@@ -122,7 +122,7 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                                       mainAxisSize: MainAxisSize.max,
                                       children: [
                                         Text(
-                                          '${listViewMatchesRecord.fencers.toList().length.toString()} vs ${listViewMatchesRecord.fencers.toList().length.toString()}',
+                                          '${listViewMatchesRecord.fencers.toList().contains(listViewMatchesRecord.user1).toString()} vs ${listViewMatchesRecord.fencers.toList().contains(listViewMatchesRecord.user2).toString()}',
                                           style: FlutterFlowTheme.of(context)
                                               .subtitle1,
                                         ),

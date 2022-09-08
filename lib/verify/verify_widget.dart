@@ -15,6 +15,7 @@ class VerifyWidget extends StatefulWidget {
 
 class _VerifyWidgetState extends State<VerifyWidget> {
   TextEditingController phoneNumberController;
+
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -92,6 +93,20 @@ class _VerifyWidgetState extends State<VerifyWidget> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Color(0x00000000),
+                      width: 1,
+                    ),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Color(0x00000000),
+                      width: 1,
+                    ),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
                     borderSide: BorderSide(
                       color: Color(0x00000000),
                       width: 1,
