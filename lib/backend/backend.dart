@@ -143,6 +143,21 @@ Future<List<T>> queryCollectionOnce<T>(
       .toList());
 }
 
+extension QueryExtension on Query {
+  Query whereIn(String field, List list) => (list?.isEmpty ?? true)
+      ? where(field, whereIn: null)
+      : where(field, whereIn: list);
+
+  Query whereNotIn(String field, List list) => (list?.isEmpty ?? true)
+      ? where(field, whereNotIn: null)
+      : where(field, whereNotIn: list);
+
+  Query whereArrayContainsAny(String field, List list) =>
+      (list?.isEmpty ?? true)
+          ? where(field, arrayContainsAny: null)
+          : where(field, arrayContainsAny: list);
+}
+
 class FFFirestorePage<T> {
   final List<T> data;
   final Stream<List<T>> dataStream;

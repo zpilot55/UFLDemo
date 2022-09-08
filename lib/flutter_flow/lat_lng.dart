@@ -4,7 +4,7 @@ class LatLng {
   final double longitude;
 
   @override
-  String toString() => 'LatLng(lat: $latitude, lng: $longitude)';
+  String toString() => '$latitude,$longitude';
 
   String serialize() => '$latitude,$longitude';
 
