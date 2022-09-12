@@ -40,13 +40,25 @@ class FFAppState {
 
   DocumentReference rightFencerRef;
 
-  String leftFencerName = 'Left Fencer';
+  String refLeftName = '';
 
-  String rightFencerName = 'Right Fencer';
+  String refRightName = '';
 
-  String leftFencerPic;
+  String refLeftPhoto;
 
-  String rightFencerPic;
+  String refRightPhoto;
+
+  bool isTimerRunning = false;
+
+  int refLeftScore = 0;
+
+  int refRightScore = 0;
+
+  bool isLeftFencerAction = true;
+
+  bool showActions = false;
+
+  bool isActionArrives = false;
 }
 
 LatLng _latLngFromString(String val) {
