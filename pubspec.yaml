@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -55,12 +55,13 @@ dependencies:
   json_serializable: 6.3.1
   page_transition: 2.0.9
   plugin_platform_interface: 2.1.2
-  qr_flutter: ^4.0.0
+  qr_flutter:
   rxdart: 0.27.4
   shared_preferences: 2.0.15
   sign_in_with_apple: 4.1.0
   sign_in_with_apple_platform_interface: 1.0.0
   sign_in_with_apple_web: 1.0.1
+  stop_watch_timer: 1.5.0
   text_search: 0.0.2
   timeago: 3.2.2
   url_launcher: 6.1.5

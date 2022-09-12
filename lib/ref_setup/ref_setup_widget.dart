@@ -9,7 +9,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class RefSetupWidget extends StatefulWidget {
-  const RefSetupWidget({Key key}) : super(key: key);
+  const RefSetupWidget({Key? key}) : super(key: key);
 
   @override
   _RefSetupWidgetState createState() => _RefSetupWidgetState();
@@ -17,9 +17,9 @@ class RefSetupWidget extends StatefulWidget {
 
 class _RefSetupWidgetState extends State<RefSetupWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  int periodCountValue;
-  int timeCountValue;
-  int touchesCountValue;
+  int? periodCountValue;
+  int? timeCountValue;
+  int? touchesCountValue;
 
   @override
   Widget build(BuildContext context) {
@@ -539,11 +539,11 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                   FFButtonWidget(
                     onPressed: () async {
                       setState(
-                          () => FFAppState().startPeriods = periodCountValue);
+                          () => FFAppState().startPeriods = periodCountValue!);
                       setState(
-                          () => FFAppState().startTimePeriod = timeCountValue);
+                          () => FFAppState().startTimePeriod = timeCountValue!);
                       setState(() =>
-                          FFAppState().startTotalTouches = touchesCountValue);
+                          FFAppState().startTotalTouches = touchesCountValue!);
                       await Navigator.push(
                         context,
                         MaterialPageRoute(

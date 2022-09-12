@@ -20,20 +20,15 @@ abstract class MatchesRecord
   @BuiltValueField(wireName: 'no_of_periods')
   int? get noOfPeriods;
 
+  int? get score1;
+
+  int? get score2;
+
   String? get weapon;
 
   LatLng? get location;
 
   BuiltList<DocumentReference>? get fencers;
-
-  @BuiltValueField(wireName: 'ScoreLeft')
-  int? get scoreLeft;
-
-  @BuiltValueField(wireName: 'ScoreRight')
-  int? get scoreRight;
-
-  @BuiltValueField(wireName: 'MatchEvents')
-  BuiltList<MatchEventStruct>? get matchEvents;
 
   @BuiltValueField(wireName: kDocumentReferenceField)
   DocumentReference? get ffRef;
@@ -41,11 +36,10 @@ abstract class MatchesRecord
 
   static void _initializeBuilder(MatchesRecordBuilder builder) => builder
     ..noOfPeriods = 0
+    ..score1 = 0
+    ..score2 = 0
     ..weapon = ''
-    ..fencers = ListBuilder()
-    ..scoreLeft = 0
-    ..scoreRight = 0
-    ..matchEvents = ListBuilder();
+    ..fencers = ListBuilder();
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('matches');
@@ -73,10 +67,10 @@ Map<String, dynamic> createMatchesRecordData({
   DocumentReference? user2,
   DateTime? scheduledTime,
   int? noOfPeriods,
+  int? score1,
+  int? score2,
   String? weapon,
   LatLng? location,
-  int? scoreLeft,
-  int? scoreRight,
 }) {
   final firestoreData = serializers.toFirestore(
     MatchesRecord.serializer,
@@ -86,12 +80,11 @@ Map<String, dynamic> createMatchesRecordData({
         ..user2 = user2
         ..scheduledTime = scheduledTime
         ..noOfPeriods = noOfPeriods
+        ..score1 = score1
+        ..score2 = score2
         ..weapon = weapon
         ..location = location
-        ..fencers = null
-        ..scoreLeft = scoreLeft
-        ..scoreRight = scoreRight
-        ..matchEvents = null,
+        ..fencers = null,
     ),
   );
 

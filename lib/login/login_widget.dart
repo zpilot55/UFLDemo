@@ -10,18 +10,18 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class LoginWidget extends StatefulWidget {
-  const LoginWidget({Key key}) : super(key: key);
+  const LoginWidget({Key? key}) : super(key: key);
 
   @override
   _LoginWidgetState createState() => _LoginWidgetState();
 }
 
 class _LoginWidgetState extends State<LoginWidget> {
-  TextEditingController emailAddressController;
+  TextEditingController? emailAddressController;
 
-  TextEditingController passwordController;
+  TextEditingController? passwordController;
 
-  bool passwordVisibility;
+  late bool passwordVisibility;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -247,8 +247,8 @@ class _LoginWidgetState extends State<LoginWidget> {
                           onPressed: () async {
                             final user = await signInWithEmail(
                               context,
-                              emailAddressController.text,
-                              passwordController.text,
+                              emailAddressController!.text,
+                              passwordController!.text,
                             );
                             if (user == null) {
                               return;
