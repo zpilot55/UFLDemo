@@ -62,5 +62,5 @@ Future<UserCredential> appleSignIn() async {
   return await FirebaseAuth.instance.signInWithCredential(oauthCredential);
 }
 
-Future<User> signInWithApple(BuildContext context) =>
+Future<User?> signInWithApple(BuildContext context) =>
     signInOrCreateAccount(context, appleSignIn);

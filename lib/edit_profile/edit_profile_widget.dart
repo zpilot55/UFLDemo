@@ -9,16 +9,16 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class EditProfileWidget extends StatefulWidget {
-  const EditProfileWidget({Key key}) : super(key: key);
+  const EditProfileWidget({Key? key}) : super(key: key);
 
   @override
   _EditProfileWidgetState createState() => _EditProfileWidgetState();
 }
 
 class _EditProfileWidgetState extends State<EditProfileWidget> {
-  TextEditingController textController1;
+  TextEditingController? textController1;
 
-  TextEditingController textController2;
+  TextEditingController? textController2;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -299,10 +299,10 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                         child: FFButtonWidget(
                           onPressed: () async {
                             final usersUpdateData = createUsersRecordData(
-                              email: textController1.text,
+                              email: textController1!.text,
                               displayName: currentUserDisplayName,
                             );
-                            await currentUserReference.update(usersUpdateData);
+                            await currentUserReference!.update(usersUpdateData);
                             Navigator.pop(context);
                           },
                           text: 'Save Changes',

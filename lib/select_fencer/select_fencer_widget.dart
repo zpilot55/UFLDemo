@@ -9,7 +9,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:text_search/text_search.dart';
 
 class SelectFencerWidget extends StatefulWidget {
-  const SelectFencerWidget({Key key}) : super(key: key);
+  const SelectFencerWidget({Key? key}) : super(key: key);
 
   @override
   _SelectFencerWidgetState createState() => _SelectFencerWidgetState();
@@ -18,7 +18,7 @@ class SelectFencerWidget extends StatefulWidget {
 class _SelectFencerWidgetState extends State<SelectFencerWidget> {
   List<UsersRecord> simpleSearchResults = [];
   var currentFencerID = '';
-  UsersRecord currentUserRecord;
+  UsersRecord? currentUserRecord;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -38,7 +38,7 @@ class _SelectFencerWidgetState extends State<SelectFencerWidget> {
             ),
           );
         }
-        List<UsersRecord> selectFencerUsersRecordList = snapshot.data;
+        List<UsersRecord> selectFencerUsersRecordList = snapshot.data!;
         return Scaffold(
           key: scaffoldKey,
           appBar: AppBar(
@@ -83,11 +83,11 @@ class _SelectFencerWidgetState extends State<SelectFencerWidget> {
                               selectFencerUsersRecordList
                                   .map(
                                     (record) =>
-                                        TextSearchItem(record, [record.uid]),
+                                        TextSearchItem(record, [record.uid!]),
                                   )
                                   .toList(),
                             )
-                                .search(currentFencerID)
+                                .search(currentFencerID!)
                                 .map((r) => r.object)
                                 .take(1)
                                 .toList();
@@ -97,11 +97,11 @@ class _SelectFencerWidgetState extends State<SelectFencerWidget> {
                             simpleSearchResults.toList(),
                           );
                           setState(() => FFAppState().scannedFencerRef =
-                              currentUserRecord.reference);
+                              currentUserRecord!.reference);
                           setState(() => FFAppState().currentFencerName =
-                              currentUserRecord.displayName);
+                              currentUserRecord!.displayName!);
                           setState(() => FFAppState().currentFencerPicURL =
-                              currentUserRecord.photoUrl);
+                              currentUserRecord!.photoUrl!);
 
                           setState(() {});
                         },
@@ -201,7 +201,7 @@ class _SelectFencerWidgetState extends State<SelectFencerWidget> {
                                 setState(
                                     () => FFAppState().currentFencerName = '');
                                 setState(() =>
-                                    FFAppState().currentFencerPicURL = null);
+                                    FFAppState().currentFencerPicURL = '');
                                 Navigator.pop(context);
                               },
                               text: 'Confirm',
