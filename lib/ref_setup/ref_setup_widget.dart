@@ -71,7 +71,7 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                         borderRadius: BorderRadius.circular(0),
                         child: Image.network(
                           valueOrDefault<String>(
-                            FFAppState().leftFencerPic,
+                            FFAppState().refLeftPhoto,
                             'https://firebasestorage.googleapis.com/v0/b/universalfencingleague.appspot.com/o/Fencer_silhouette.png?alt=media&token=7ae87fd2-6264-446f-abbf-c4a7d8d5b642',
                           ),
                           width: 80,
@@ -97,7 +97,10 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                             );
                           },
                           child: Text(
-                            FFAppState().leftFencerName,
+                            valueOrDefault<String>(
+                              FFAppState().refLeftName,
+                              'Left Fencer',
+                            ),
                             style: FlutterFlowTheme.of(context).title3,
                           ),
                         ),
@@ -140,7 +143,7 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                           },
                           child: Text(
                             valueOrDefault<String>(
-                              FFAppState().rightFencerName,
+                              FFAppState().refRightName,
                               'Right Fencer',
                             ),
                             style: FlutterFlowTheme.of(context).title3,
@@ -156,7 +159,7 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                         borderRadius: BorderRadius.circular(0),
                         child: Image.network(
                           valueOrDefault<String>(
-                            FFAppState().rightFencerPic,
+                            FFAppState().refRightPhoto,
                             'https://firebasestorage.googleapis.com/v0/b/universalfencingleague.appspot.com/o/Fencer_silhouette.png?alt=media&token=7ae87fd2-6264-446f-abbf-c4a7d8d5b642',
                           ),
                           width: 80,
