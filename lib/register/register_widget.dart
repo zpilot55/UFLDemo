@@ -8,28 +8,28 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class RegisterWidget extends StatefulWidget {
-  const RegisterWidget({Key key}) : super(key: key);
+  const RegisterWidget({Key? key}) : super(key: key);
 
   @override
   _RegisterWidgetState createState() => _RegisterWidgetState();
 }
 
 class _RegisterWidgetState extends State<RegisterWidget> {
-  TextEditingController dobController;
+  TextEditingController? dobController;
 
-  TextEditingController firstNameController;
+  TextEditingController? firstNameController;
 
-  TextEditingController lastNameController;
+  TextEditingController? lastNameController;
 
-  TextEditingController emailController;
+  TextEditingController? emailController;
 
-  TextEditingController passwordController;
+  TextEditingController? passwordController;
 
-  bool passwordVisibility;
+  late bool passwordVisibility;
 
-  TextEditingController retypedController;
+  TextEditingController? retypedController;
 
-  bool retypedVisibility;
+  late bool retypedVisibility;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -582,17 +582,17 @@ class _RegisterWidgetState extends State<RegisterWidget> {
 
                             final user = await createAccountWithEmail(
                               context,
-                              emailController.text,
-                              passwordController.text,
+                              emailController!.text,
+                              passwordController!.text,
                             );
                             if (user == null) {
                               return;
                             }
 
                             final usersCreateData = createUsersRecordData(
-                              email: emailController.text,
+                              email: emailController!.text,
                               displayName:
-                                  '${firstNameController.text} ${lastNameController.text}',
+                                  '${firstNameController!.text} ${lastNameController!.text}',
                               photoUrl:
                                   'https://firebasestorage.googleapis.com/v0/b/universalfencingleague.appspot.com/o/Fencer_silhouette.png?alt=media&token=7ae87fd2-6264-446f-abbf-c4a7d8d5b642',
                             );

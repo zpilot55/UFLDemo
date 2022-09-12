@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AthletesWidget extends StatefulWidget {
-  const AthletesWidget({Key key}) : super(key: key);
+  const AthletesWidget({Key? key}) : super(key: key);
 
   @override
   _AthletesWidgetState createState() => _AthletesWidgetState();

@@ -8,16 +8,16 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class MatchHistoryWidget extends StatefulWidget {
-  const MatchHistoryWidget({Key key}) : super(key: key);
+  const MatchHistoryWidget({Key? key}) : super(key: key);
 
   @override
   _MatchHistoryWidgetState createState() => _MatchHistoryWidgetState();
 }
 
 class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
-  PagingController<DocumentSnapshot, MatchesRecord> _pagingController;
-  Query _pagingQuery;
-  List<StreamSubscription> _streamSubscriptions = [];
+  PagingController<DocumentSnapshot?, MatchesRecord>? _pagingController;
+  Query? _pagingQuery;
+  List<StreamSubscription?> _streamSubscriptions = [];
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -71,10 +71,10 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                     decoration: BoxDecoration(
                       color: FlutterFlowTheme.of(context).secondaryBackground,
                     ),
-                    child:
-                        PagedListView<DocumentSnapshot<Object>, MatchesRecord>(
+                    child: PagedListView<DocumentSnapshot<Object?>?,
+                        MatchesRecord>(
                       pagingController: () {
-                        final Query<Object> Function(Query<Object>)
+                        final Query<Object?> Function(Query<Object?>)
                             queryBuilder = (matchesRecord) =>
                                 matchesRecord.where('fencers',
                                     arrayContains: currentUserReference);
@@ -85,15 +85,15 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                             _pagingQuery = query;
                             _streamSubscriptions.forEach((s) => s?.cancel());
                             _streamSubscriptions.clear();
-                            _pagingController.refresh();
+                            _pagingController!.refresh();
                           }
-                          return _pagingController;
+                          return _pagingController!;
                         }
 
                         _pagingController =
                             PagingController(firstPageKey: null);
                         _pagingQuery = queryBuilder(MatchesRecord.collection);
-                        _pagingController
+                        _pagingController!
                             .addPageRequestListener((nextPageMarker) {
                           queryMatchesRecordPage(
                             queryBuilder: (matchesRecord) =>
@@ -103,21 +103,21 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                             pageSize: 25,
                             isStream: true,
                           ).then((page) {
-                            _pagingController.appendPage(
+                            _pagingController!.appendPage(
                               page.data,
                               page.nextPageMarker,
                             );
                             final streamSubscription =
                                 page.dataStream?.listen((data) {
-                              final itemIndexes = _pagingController.itemList
+                              final itemIndexes = _pagingController!.itemList!
                                   .asMap()
                                   .map((k, v) => MapEntry(v.reference.id, k));
                               data.forEach((item) {
                                 final index = itemIndexes[item.reference.id];
-                                final items = _pagingController.itemList;
+                                final items = _pagingController!.itemList!;
                                 if (index != null) {
                                   items.replaceRange(index, index + 1, [item]);
-                                  _pagingController.itemList = {
+                                  _pagingController!.itemList = {
                                     for (var item in items) item.reference: item
                                   }.values.toList();
                                 }
@@ -127,7 +127,7 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                             _streamSubscriptions.add(streamSubscription);
                           });
                         });
-                        return _pagingController;
+                        return _pagingController!;
                       }(),
                       padding: EdgeInsets.zero,
                       scrollDirection: Axis.vertical,
@@ -145,7 +145,7 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
 
                         itemBuilder: (context, _, listViewIndex) {
                           final listViewMatchesRecord =
-                              _pagingController.itemList[listViewIndex];
+                              _pagingController!.itemList![listViewIndex];
                           return Card(
                             clipBehavior: Clip.antiAliasWithSaveLayer,
                             color: Color(0xFFF5F5F5),
@@ -165,7 +165,7 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                                     children: [
                                       StreamBuilder<UsersRecord>(
                                         stream: UsersRecord.getDocument(
-                                            listViewMatchesRecord.user1),
+                                            listViewMatchesRecord.user1!),
                                         builder: (context, snapshot) {
                                           // Customize what your widget looks like when it's loading.
                                           if (!snapshot.hasData) {
@@ -183,7 +183,7 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                                             );
                                           }
                                           final imageUsersRecord =
-                                              snapshot.data;
+                                              snapshot.data!;
                                           return Image.network(
                                             valueOrDefault<String>(
                                               imageUsersRecord.photoUrl,
@@ -202,7 +202,7 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                                       ),
                                       StreamBuilder<UsersRecord>(
                                         stream: UsersRecord.getDocument(
-                                            listViewMatchesRecord.user2),
+                                            listViewMatchesRecord.user2!),
                                         builder: (context, snapshot) {
                                           // Customize what your widget looks like when it's loading.
                                           if (!snapshot.hasData) {
@@ -220,7 +220,7 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                                             );
                                           }
                                           final imageUsersRecord =
-                                              snapshot.data;
+                                              snapshot.data!;
                                           return Image.network(
                                             valueOrDefault<String>(
                                               imageUsersRecord.photoUrl,
@@ -241,7 +241,7 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                                     children: [
                                       StreamBuilder<UsersRecord>(
                                         stream: UsersRecord.getDocument(
-                                            listViewMatchesRecord.user1),
+                                            listViewMatchesRecord.user1!),
                                         builder: (context, snapshot) {
                                           // Customize what your widget looks like when it's loading.
                                           if (!snapshot.hasData) {
@@ -258,7 +258,8 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                                               ),
                                             );
                                           }
-                                          final textUsersRecord = snapshot.data;
+                                          final textUsersRecord =
+                                              snapshot.data!;
                                           return Text(
                                             valueOrDefault<String>(
                                               textUsersRecord.displayName,
@@ -276,7 +277,7 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                                       ),
                                       StreamBuilder<UsersRecord>(
                                         stream: UsersRecord.getDocument(
-                                            listViewMatchesRecord.user2),
+                                            listViewMatchesRecord.user2!),
                                         builder: (context, snapshot) {
                                           // Customize what your widget looks like when it's loading.
                                           if (!snapshot.hasData) {
@@ -293,7 +294,8 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                                               ),
                                             );
                                           }
-                                          final textUsersRecord = snapshot.data;
+                                          final textUsersRecord =
+                                              snapshot.data!;
                                           return Text(
                                             valueOrDefault<String>(
                                               textUsersRecord.displayName,
@@ -328,7 +330,7 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                                         dateTimeFormat(
                                             'MMMEd',
                                             listViewMatchesRecord
-                                                .scheduledTime),
+                                                .scheduledTime!),
                                         style: FlutterFlowTheme.of(context)
                                             .bodyText2,
                                       ),

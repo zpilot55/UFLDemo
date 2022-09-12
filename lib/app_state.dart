@@ -18,17 +18,17 @@ class FFAppState {
     prefs = await SharedPreferences.getInstance();
   }
 
-  SharedPreferences prefs;
+  late SharedPreferences prefs;
 
   String refereeweaponselect = '';
 
   bool isRightFencer = false;
 
-  DocumentReference scannedFencerRef;
+  DocumentReference? scannedFencerRef;
 
   String currentFencerName = '';
 
-  String currentFencerPicURL;
+  String currentFencerPicURL = '';
 
   int startPeriods = 1;
 
@@ -36,17 +36,17 @@ class FFAppState {
 
   int startTimePeriod = 3;
 
-  DocumentReference leftFencerRef;
+  DocumentReference? leftFencerRef;
 
-  DocumentReference rightFencerRef;
+  DocumentReference? rightFencerRef;
 
   String refLeftName = '';
 
   String refRightName = '';
 
-  String refLeftPhoto;
+  String refLeftPhoto = '';
 
-  String refRightPhoto;
+  String refRightPhoto = '';
 
   bool isTimerRunning = false;
 
@@ -61,7 +61,7 @@ class FFAppState {
   bool isActionArrives = false;
 }
 
-LatLng _latLngFromString(String val) {
+LatLng? _latLngFromString(String? val) {
   if (val == null) {
     return null;
   }

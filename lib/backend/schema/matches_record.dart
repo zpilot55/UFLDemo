@@ -10,38 +10,29 @@ abstract class MatchesRecord
     implements Built<MatchesRecord, MatchesRecordBuilder> {
   static Serializer<MatchesRecord> get serializer => _$matchesRecordSerializer;
 
-  @nullable
-  DocumentReference get user1;
+  DocumentReference? get user1;
 
-  @nullable
-  DocumentReference get user2;
+  DocumentReference? get user2;
 
-  @nullable
   @BuiltValueField(wireName: 'scheduled_time')
-  DateTime get scheduledTime;
+  DateTime? get scheduledTime;
 
-  @nullable
   @BuiltValueField(wireName: 'no_of_periods')
-  int get noOfPeriods;
+  int? get noOfPeriods;
 
-  @nullable
-  int get score1;
+  int? get score1;
 
-  @nullable
-  int get score2;
+  int? get score2;
 
-  @nullable
-  String get weapon;
+  String? get weapon;
 
-  @nullable
-  LatLng get location;
+  LatLng? get location;
 
-  @nullable
-  BuiltList<DocumentReference> get fencers;
+  BuiltList<DocumentReference>? get fencers;
 
-  @nullable
   @BuiltValueField(wireName: kDocumentReferenceField)
-  DocumentReference get reference;
+  DocumentReference? get ffRef;
+  DocumentReference get reference => ffRef!;
 
   static void _initializeBuilder(MatchesRecordBuilder builder) => builder
     ..noOfPeriods = 0
@@ -55,11 +46,11 @@ abstract class MatchesRecord
 
   static Stream<MatchesRecord> getDocument(DocumentReference ref) => ref
       .snapshots()
-      .map((s) => serializers.deserializeWith(serializer, serializedData(s)));
+      .map((s) => serializers.deserializeWith(serializer, serializedData(s))!);
 
   static Future<MatchesRecord> getDocumentOnce(DocumentReference ref) => ref
       .get()
-      .then((s) => serializers.deserializeWith(serializer, serializedData(s)));
+      .then((s) => serializers.deserializeWith(serializer, serializedData(s))!);
 
   MatchesRecord._();
   factory MatchesRecord([void Function(MatchesRecordBuilder) updates]) =
@@ -68,28 +59,34 @@ abstract class MatchesRecord
   static MatchesRecord getDocumentFromData(
           Map<String, dynamic> data, DocumentReference reference) =>
       serializers.deserializeWith(serializer,
-          {...mapFromFirestore(data), kDocumentReferenceField: reference});
+          {...mapFromFirestore(data), kDocumentReferenceField: reference})!;
 }
 
 Map<String, dynamic> createMatchesRecordData({
-  DocumentReference user1,
-  DocumentReference user2,
-  DateTime scheduledTime,
-  int noOfPeriods,
-  int score1,
-  int score2,
-  String weapon,
-  LatLng location,
-}) =>
-    serializers.toFirestore(
-        MatchesRecord.serializer,
-        MatchesRecord((m) => m
-          ..user1 = user1
-          ..user2 = user2
-          ..scheduledTime = scheduledTime
-          ..noOfPeriods = noOfPeriods
-          ..score1 = score1
-          ..score2 = score2
-          ..weapon = weapon
-          ..location = location
-          ..fencers = null));
+  DocumentReference? user1,
+  DocumentReference? user2,
+  DateTime? scheduledTime,
+  int? noOfPeriods,
+  int? score1,
+  int? score2,
+  String? weapon,
+  LatLng? location,
+}) {
+  final firestoreData = serializers.toFirestore(
+    MatchesRecord.serializer,
+    MatchesRecord(
+      (m) => m
+        ..user1 = user1
+        ..user2 = user2
+        ..scheduledTime = scheduledTime
+        ..noOfPeriods = noOfPeriods
+        ..score1 = score1
+        ..score2 = score2
+        ..weapon = weapon
+        ..location = location
+        ..fencers = null,
+    ),
+  );
+
+  return firestoreData;
+}

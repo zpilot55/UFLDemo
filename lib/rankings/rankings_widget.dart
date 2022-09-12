@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class RankingsWidget extends StatefulWidget {
-  const RankingsWidget({Key key}) : super(key: key);
+  const RankingsWidget({Key? key}) : super(key: key);
 
   @override
   _RankingsWidgetState createState() => _RankingsWidgetState();

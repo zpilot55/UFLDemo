@@ -1,18 +1,68 @@
+import '../flutter_flow/flutter_flow_radio_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
+import '../flutter_flow/flutter_flow_timer.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
+import '../flutter_flow/custom_functions.dart' as functions;
+import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class RefViewWidget extends StatefulWidget {
-  const RefViewWidget({Key key}) : super(key: key);
+  const RefViewWidget({Key? key}) : super(key: key);
 
   @override
   _RefViewWidgetState createState() => _RefViewWidgetState();
 }
 
 class _RefViewWidgetState extends State<RefViewWidget> {
+  late final StopWatchTimer timerController;
+  late String timerValue;
+  late int timerMilliseconds;
+  String? radioButtonValue1;
+  String? radioButtonValue2;
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() {
+    super.initState();
+    timerMilliseconds = valueOrDefault<int>(
+      functions.minutesToMS(FFAppState().startTimePeriod),
+      0,
+    );
+    timerValue = StopWatchTimer.getDisplayTime(
+      0,
+      hours: false,
+      minute: true,
+      second: true,
+      milliSecond: true,
+    );
+    timerController = StopWatchTimer(
+      mode: StopWatchMode.countDown,
+      presetMillisecond: valueOrDefault<int>(
+        functions.minutesToMS(FFAppState().startTimePeriod),
+        0,
+      ),
+      onChange: (value) {
+        setState(() {
+          timerMilliseconds = value;
+          timerValue = StopWatchTimer.getDisplayTime(
+            value,
+            hours: false,
+            minute: true,
+            second: true,
+            milliSecond: true,
+          );
+        });
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    timerController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,12 +90,19 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Time: 3:00',
+                          'Time: ',
                           style:
                               FlutterFlowTheme.of(context).bodyText1.override(
                                     fontFamily: 'Poppins',
                                     fontSize: 18,
                                   ),
+                        ),
+                        FlutterFlowTimer(
+                          timerValue: timerValue,
+                          timer: timerController,
+                          textAlign: TextAlign.start,
+                          style: FlutterFlowTheme.of(context).title3,
+                          onEnded: () {},
                         ),
                       ],
                     ),
@@ -144,332 +201,175 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                   ],
                 ),
               ),
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 400,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    shape: BoxShape.rectangle,
-                    border: Border.all(
-                      color: Colors.black,
+              if (FFAppState().showActions)
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 250,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.rectangle,
+                      border: Border.all(
+                        color: Colors.black,
+                      ),
                     ),
-                  ),
-                  child: Visibility(
-                    visible: FFAppState().showActions == true,
-                    child: Row(
+                    child: Column(
                       mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Column(
+                        Row(
                           mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(0, 4, 0, 10),
-                              child: FFButtonWidget(
-                                onPressed: () {
-                                  print('Button pressed ...');
-                                },
-                                text: 'Simple Atk',
-                                options: FFButtonOptions(
-                                  width: 130,
-                                  height: 40,
-                                  color: Color(0xFFFF0000),
-                                  textStyle: FlutterFlowTheme.of(context)
-                                      .subtitle2
-                                      .override(
-                                        fontFamily: 'Poppins',
-                                        color: Colors.white,
-                                      ),
-                                  borderSide: BorderSide(
-                                    color: Colors.black,
-                                    width: 1,
-                                  ),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
-                              child: FFButtonWidget(
-                                onPressed: () {
-                                  print('Button pressed ...');
-                                },
-                                text: 'Compound',
-                                options: FFButtonOptions(
-                                  width: 130,
-                                  height: 40,
-                                  color: Color(0xFFFF0000),
-                                  textStyle: FlutterFlowTheme.of(context)
-                                      .subtitle2
-                                      .override(
-                                        fontFamily: 'Poppins',
-                                        color: Colors.white,
-                                      ),
-                                  borderSide: BorderSide(
-                                    color: Colors.black,
-                                    width: 1,
-                                  ),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
-                              child: FFButtonWidget(
-                                onPressed: () {
-                                  print('Button pressed ...');
-                                },
-                                text: 'Parry/Rip',
-                                options: FFButtonOptions(
-                                  width: 130,
-                                  height: 40,
-                                  color: Color(0xFFFF0000),
-                                  textStyle: FlutterFlowTheme.of(context)
-                                      .subtitle2
-                                      .override(
-                                        fontFamily: 'Poppins',
-                                        color: Colors.white,
-                                      ),
-                                  borderSide: BorderSide(
-                                    color: Colors.black,
-                                    width: 1,
-                                  ),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
-                              child: FFButtonWidget(
-                                onPressed: () {
-                                  print('Button pressed ...');
-                                },
-                                text: 'Remise',
-                                options: FFButtonOptions(
-                                  width: 130,
-                                  height: 40,
-                                  color: Color(0xFFFF0000),
-                                  textStyle: FlutterFlowTheme.of(context)
-                                      .subtitle2
-                                      .override(
-                                        fontFamily: 'Poppins',
-                                        color: Colors.white,
-                                      ),
-                                  borderSide: BorderSide(
-                                    color: Colors.black,
-                                    width: 1,
-                                  ),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
-                              child: FFButtonWidget(
-                                onPressed: () {
-                                  print('Button pressed ...');
-                                },
-                                text: 'Counteratk',
-                                options: FFButtonOptions(
-                                  width: 130,
-                                  height: 40,
-                                  color: Color(0xFFFF0000),
-                                  textStyle: FlutterFlowTheme.of(context)
-                                      .subtitle2
-                                      .override(
-                                        fontFamily: 'Poppins',
-                                        color: Colors.white,
-                                      ),
-                                  borderSide: BorderSide(
-                                    color: Colors.black,
-                                    width: 1,
-                                  ),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
-                              child: FFButtonWidget(
-                                onPressed: () {
-                                  print('Button pressed ...');
-                                },
-                                text: 'Point in Line',
-                                options: FFButtonOptions(
-                                  width: 130,
-                                  height: 40,
-                                  color: Color(0xFFFF0000),
-                                  textStyle: FlutterFlowTheme.of(context)
-                                      .subtitle2
-                                      .override(
-                                        fontFamily: 'Poppins',
-                                        color: Colors.white,
-                                      ),
-                                  borderSide: BorderSide(
-                                    color: Colors.black,
-                                    width: 1,
-                                  ),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(0, 0, 0, 10),
-                              child: FFButtonWidget(
-                                onPressed: () {
-                                  print('Button pressed ...');
-                                },
-                                text: 'Not ROW',
-                                options: FFButtonOptions(
-                                  width: 130,
-                                  height: 40,
-                                  color: Color(0xFFFF0000),
-                                  textStyle: FlutterFlowTheme.of(context)
-                                      .subtitle2
-                                      .override(
-                                        fontFamily: 'Poppins',
-                                        color: Colors.white,
-                                      ),
-                                  borderSide: BorderSide(
-                                    color: Colors.black,
-                                    width: 1,
-                                  ),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                            ),
-                            FFButtonWidget(
-                              onPressed: () {
-                                print('Button pressed ...');
-                              },
-                              text: 'Simultan.',
-                              options: FFButtonOptions(
-                                width: 130,
-                                height: 40,
-                                color: Color(0xFFECD803),
-                                textStyle: FlutterFlowTheme.of(context)
-                                    .subtitle2
-                                    .override(
-                                      fontFamily: 'Poppins',
-                                      color: Colors.white,
-                                    ),
-                                borderSide: BorderSide(
-                                  color: Colors.black,
-                                  width: 1,
-                                ),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
+                            Text(
+                              'Action - ${FFAppState().currentFencerName}',
+                              style: FlutterFlowTheme.of(context).bodyText1,
                             ),
                           ],
                         ),
-                        Column(
+                        Row(
                           mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            FFButtonWidget(
-                              onPressed: () {
-                                print('Button pressed ...');
-                              },
-                              text: 'HIT',
-                              options: FFButtonOptions(
-                                width: 130,
-                                height: 40,
-                                color: Color(0xFFFF0000),
-                                textStyle: FlutterFlowTheme.of(context)
-                                    .subtitle2
-                                    .override(
-                                      fontFamily: 'Poppins',
-                                      color: Colors.white,
-                                    ),
-                                borderSide: BorderSide(
-                                  color: Colors.black,
-                                  width: 1,
+                            Column(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                FlutterFlowRadioButton(
+                                  options: [
+                                    'Simple Attack',
+                                    'Compound',
+                                    'Parry/Riposte',
+                                    'Remise',
+                                    'Counter',
+                                    'Point in Line',
+                                    'Not ROW',
+                                    'Simultaneous'
+                                  ].toList(),
+                                  onChanged: (value) {
+                                    setState(() => radioButtonValue1 = value);
+                                  },
+                                  optionHeight: 25,
+                                  textStyle: FlutterFlowTheme.of(context)
+                                      .bodyText1
+                                      .override(
+                                        fontFamily: 'Poppins',
+                                        color: Colors.black,
+                                      ),
+                                  buttonPosition: RadioButtonPosition.left,
+                                  direction: Axis.vertical,
+                                  radioButtonColor: Colors.blue,
+                                  inactiveRadioButtonColor: Color(0x8A000000),
+                                  toggleable: false,
+                                  horizontalAlignment: WrapAlignment.start,
+                                  verticalAlignment: WrapCrossAlignment.start,
                                 ),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
+                              ],
                             ),
-                            FFButtonWidget(
-                              onPressed: () {
-                                print('Button pressed ...');
-                              },
-                              text: 'Off Target',
-                              options: FFButtonOptions(
-                                width: 130,
-                                height: 40,
-                                color: Color(0xFFECD803),
-                                textStyle: FlutterFlowTheme.of(context)
-                                    .subtitle2
-                                    .override(
-                                      fontFamily: 'Poppins',
-                                      color: Colors.white,
-                                    ),
-                                borderSide: BorderSide(
-                                  color: Colors.black,
-                                  width: 1,
+                            Column(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                FlutterFlowRadioButton(
+                                  options: ['HIT', 'Off Target'].toList(),
+                                  onChanged: (value) {
+                                    setState(() => radioButtonValue2 = value);
+                                  },
+                                  optionHeight: 25,
+                                  textStyle: FlutterFlowTheme.of(context)
+                                      .bodyText1
+                                      .override(
+                                        fontFamily: 'Poppins',
+                                        color: Colors.black,
+                                      ),
+                                  buttonPosition: RadioButtonPosition.left,
+                                  direction: Axis.vertical,
+                                  radioButtonColor: Colors.blue,
+                                  inactiveRadioButtonColor: Color(0x8A000000),
+                                  toggleable: false,
+                                  horizontalAlignment: WrapAlignment.start,
+                                  verticalAlignment: WrapCrossAlignment.start,
                                 ),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
+                              ],
                             ),
-                          ],
-                        ),
-                        Column(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            FFButtonWidget(
-                              onPressed: () async {
-                                setState(
-                                    () => FFAppState().showActions = false);
-                              },
-                              text: 'OK',
-                              options: FFButtonOptions(
-                                width: 130,
-                                height: 40,
-                                color: Color(0xFF00FF00),
-                                textStyle: FlutterFlowTheme.of(context)
-                                    .subtitle2
-                                    .override(
-                                      fontFamily: 'Poppins',
-                                      color: Colors.white,
+                            Column(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0, 0, 5, 20),
+                                  child: FFButtonWidget(
+                                    onPressed: () async {
+                                      if (FFAppState().isLeftFencerAction) {
+                                        if (radioButtonValue2 == 'HIT') {
+                                          setState(() => FFAppState()
+                                                  .refLeftScore =
+                                              FFAppState().refLeftScore + 1);
+                                        }
+                                      } else {
+                                        if (radioButtonValue2 == 'HIT') {
+                                          setState(() => FFAppState()
+                                                  .refRightScore =
+                                              FFAppState().refRightScore + 1);
+                                        }
+                                      }
+
+                                      setState(() =>
+                                          FFAppState().showActions = false);
+                                      setState(() =>
+                                          FFAppState().currentFencerName = '');
+                                    },
+                                    text: 'OK',
+                                    options: FFButtonOptions(
+                                      width: 100,
+                                      height: 40,
+                                      color: Color(0xFF00FF00),
+                                      textStyle: FlutterFlowTheme.of(context)
+                                          .subtitle2
+                                          .override(
+                                            fontFamily: 'Poppins',
+                                            color: Colors.white,
+                                          ),
+                                      borderSide: BorderSide(
+                                        color: Colors.black,
+                                        width: 1,
+                                      ),
+                                      borderRadius: BorderRadius.circular(8),
                                     ),
-                                borderSide: BorderSide(
-                                  color: Colors.black,
-                                  width: 1,
+                                  ),
                                 ),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                            FFButtonWidget(
-                              onPressed: () async {
-                                setState(
-                                    () => FFAppState().showActions = false);
-                              },
-                              text: 'CANCEL',
-                              options: FFButtonOptions(
-                                width: 130,
-                                height: 40,
-                                color: Color(0xFFFF0000),
-                                textStyle: FlutterFlowTheme.of(context)
-                                    .subtitle2
-                                    .override(
-                                      fontFamily: 'Poppins',
-                                      color: Colors.white,
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0, 0, 5, 0),
+                                  child: FFButtonWidget(
+                                    onPressed: () async {
+                                      setState(() =>
+                                          FFAppState().showActions = false);
+                                      setState(() =>
+                                          FFAppState().currentFencerName = '');
+                                    },
+                                    text: 'CANCEL',
+                                    options: FFButtonOptions(
+                                      width: 100,
+                                      height: 40,
+                                      color: Color(0xFFFF0000),
+                                      textStyle: FlutterFlowTheme.of(context)
+                                          .subtitle2
+                                          .override(
+                                            fontFamily: 'Poppins',
+                                            color: Colors.white,
+                                          ),
+                                      borderSide: BorderSide(
+                                        color: Colors.black,
+                                        width: 1,
+                                      ),
+                                      borderRadius: BorderRadius.circular(8),
                                     ),
-                                borderSide: BorderSide(
-                                  color: Colors.black,
-                                  width: 1,
+                                  ),
                                 ),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
+                              ],
                             ),
                           ],
                         ),
@@ -477,7 +377,6 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                     ),
                   ),
                 ),
-              ),
               Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
@@ -493,6 +392,8 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                               setState(
                                   () => FFAppState().isLeftFencerAction = true);
                               setState(() => FFAppState().showActions = true);
+                              setState(() => FFAppState().currentFencerName =
+                                  FFAppState().refLeftName);
                             },
                             text: 'L',
                             options: FFButtonOptions(
@@ -521,6 +422,8 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                               setState(() =>
                                   FFAppState().isLeftFencerAction = false);
                               setState(() => FFAppState().showActions = true);
+                              setState(() => FFAppState().currentFencerName =
+                                  FFAppState().refRightName);
                             },
                             text: 'R',
                             options: FFButtonOptions(

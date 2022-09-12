@@ -16,17 +16,17 @@ class _$MatchesRecordSerializer implements StructuredSerializer<MatchesRecord> {
   final String wireName = 'MatchesRecord';
 
   @override
-  Iterable<Object> serialize(Serializers serializers, MatchesRecord object,
+  Iterable<Object?> serialize(Serializers serializers, MatchesRecord object,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object>[];
-    Object value;
+    final result = <Object?>[];
+    Object? value;
     value = object.user1;
     if (value != null) {
       result
         ..add('user1')
         ..add(serializers.serialize(value,
             specifiedType: const FullType(
-                DocumentReference, const [const FullType(Object)])));
+                DocumentReference, const [const FullType.nullable(Object)])));
     }
     value = object.user2;
     if (value != null) {
@@ -34,7 +34,7 @@ class _$MatchesRecordSerializer implements StructuredSerializer<MatchesRecord> {
         ..add('user2')
         ..add(serializers.serialize(value,
             specifiedType: const FullType(
-                DocumentReference, const [const FullType(Object)])));
+                DocumentReference, const [const FullType.nullable(Object)])));
     }
     value = object.scheduledTime;
     if (value != null) {
@@ -81,80 +81,81 @@ class _$MatchesRecordSerializer implements StructuredSerializer<MatchesRecord> {
         ..add('fencers')
         ..add(serializers.serialize(value,
             specifiedType: const FullType(BuiltList, const [
-              const FullType(DocumentReference, const [const FullType(Object)])
+              const FullType(
+                  DocumentReference, const [const FullType.nullable(Object)])
             ])));
     }
-    value = object.reference;
+    value = object.ffRef;
     if (value != null) {
       result
         ..add('Document__Reference__Field')
         ..add(serializers.serialize(value,
             specifiedType: const FullType(
-                DocumentReference, const [const FullType(Object)])));
+                DocumentReference, const [const FullType.nullable(Object)])));
     }
     return result;
   }
 
   @override
   MatchesRecord deserialize(
-      Serializers serializers, Iterable<Object> serialized,
+      Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
     final result = new MatchesRecordBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
-      final key = iterator.current as String;
+      final key = iterator.current! as String;
       iterator.moveNext();
-      final Object value = iterator.current;
+      final Object? value = iterator.current;
       switch (key) {
         case 'user1':
           result.user1 = serializers.deserialize(value,
-                  specifiedType: const FullType(
-                      DocumentReference, const [const FullType(Object)]))
-              as DocumentReference<Object>;
+              specifiedType: const FullType(DocumentReference, const [
+                const FullType.nullable(Object)
+              ])) as DocumentReference<Object?>?;
           break;
         case 'user2':
           result.user2 = serializers.deserialize(value,
-                  specifiedType: const FullType(
-                      DocumentReference, const [const FullType(Object)]))
-              as DocumentReference<Object>;
+              specifiedType: const FullType(DocumentReference, const [
+                const FullType.nullable(Object)
+              ])) as DocumentReference<Object?>?;
           break;
         case 'scheduled_time':
           result.scheduledTime = serializers.deserialize(value,
-              specifiedType: const FullType(DateTime)) as DateTime;
+              specifiedType: const FullType(DateTime)) as DateTime?;
           break;
         case 'no_of_periods':
           result.noOfPeriods = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int;
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'score1':
           result.score1 = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int;
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'score2':
           result.score2 = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int;
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'weapon':
           result.weapon = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
+              specifiedType: const FullType(String)) as String?;
           break;
         case 'location':
           result.location = serializers.deserialize(value,
-              specifiedType: const FullType(LatLng)) as LatLng;
+              specifiedType: const FullType(LatLng)) as LatLng?;
           break;
         case 'fencers':
           result.fencers.replace(serializers.deserialize(value,
               specifiedType: const FullType(BuiltList, const [
                 const FullType(
-                    DocumentReference, const [const FullType(Object)])
-              ])) as BuiltList<Object>);
+                    DocumentReference, const [const FullType.nullable(Object)])
+              ]))! as BuiltList<Object?>);
           break;
         case 'Document__Reference__Field':
-          result.reference = serializers.deserialize(value,
-                  specifiedType: const FullType(
-                      DocumentReference, const [const FullType(Object)]))
-              as DocumentReference<Object>;
+          result.ffRef = serializers.deserialize(value,
+              specifiedType: const FullType(DocumentReference, const [
+                const FullType.nullable(Object)
+              ])) as DocumentReference<Object?>?;
           break;
       }
     }
@@ -165,27 +166,27 @@ class _$MatchesRecordSerializer implements StructuredSerializer<MatchesRecord> {
 
 class _$MatchesRecord extends MatchesRecord {
   @override
-  final DocumentReference<Object> user1;
+  final DocumentReference<Object?>? user1;
   @override
-  final DocumentReference<Object> user2;
+  final DocumentReference<Object?>? user2;
   @override
-  final DateTime scheduledTime;
+  final DateTime? scheduledTime;
   @override
-  final int noOfPeriods;
+  final int? noOfPeriods;
   @override
-  final int score1;
+  final int? score1;
   @override
-  final int score2;
+  final int? score2;
   @override
-  final String weapon;
+  final String? weapon;
   @override
-  final LatLng location;
+  final LatLng? location;
   @override
-  final BuiltList<DocumentReference<Object>> fencers;
+  final BuiltList<DocumentReference<Object?>>? fencers;
   @override
-  final DocumentReference<Object> reference;
+  final DocumentReference<Object?>? ffRef;
 
-  factory _$MatchesRecord([void Function(MatchesRecordBuilder) updates]) =>
+  factory _$MatchesRecord([void Function(MatchesRecordBuilder)? updates]) =>
       (new MatchesRecordBuilder()..update(updates))._build();
 
   _$MatchesRecord._(
@@ -198,7 +199,7 @@ class _$MatchesRecord extends MatchesRecord {
       this.weapon,
       this.location,
       this.fencers,
-      this.reference})
+      this.ffRef})
       : super._();
 
   @override
@@ -221,7 +222,7 @@ class _$MatchesRecord extends MatchesRecord {
         weapon == other.weapon &&
         location == other.location &&
         fencers == other.fencers &&
-        reference == other.reference;
+        ffRef == other.ffRef;
   }
 
   @override
@@ -241,7 +242,7 @@ class _$MatchesRecord extends MatchesRecord {
                     weapon.hashCode),
                 location.hashCode),
             fencers.hashCode),
-        reference.hashCode));
+        ffRef.hashCode));
   }
 
   @override
@@ -256,58 +257,57 @@ class _$MatchesRecord extends MatchesRecord {
           ..add('weapon', weapon)
           ..add('location', location)
           ..add('fencers', fencers)
-          ..add('reference', reference))
+          ..add('ffRef', ffRef))
         .toString();
   }
 }
 
 class MatchesRecordBuilder
     implements Builder<MatchesRecord, MatchesRecordBuilder> {
-  _$MatchesRecord _$v;
+  _$MatchesRecord? _$v;
 
-  DocumentReference<Object> _user1;
-  DocumentReference<Object> get user1 => _$this._user1;
-  set user1(DocumentReference<Object> user1) => _$this._user1 = user1;
+  DocumentReference<Object?>? _user1;
+  DocumentReference<Object?>? get user1 => _$this._user1;
+  set user1(DocumentReference<Object?>? user1) => _$this._user1 = user1;
 
-  DocumentReference<Object> _user2;
-  DocumentReference<Object> get user2 => _$this._user2;
-  set user2(DocumentReference<Object> user2) => _$this._user2 = user2;
+  DocumentReference<Object?>? _user2;
+  DocumentReference<Object?>? get user2 => _$this._user2;
+  set user2(DocumentReference<Object?>? user2) => _$this._user2 = user2;
 
-  DateTime _scheduledTime;
-  DateTime get scheduledTime => _$this._scheduledTime;
-  set scheduledTime(DateTime scheduledTime) =>
+  DateTime? _scheduledTime;
+  DateTime? get scheduledTime => _$this._scheduledTime;
+  set scheduledTime(DateTime? scheduledTime) =>
       _$this._scheduledTime = scheduledTime;
 
-  int _noOfPeriods;
-  int get noOfPeriods => _$this._noOfPeriods;
-  set noOfPeriods(int noOfPeriods) => _$this._noOfPeriods = noOfPeriods;
+  int? _noOfPeriods;
+  int? get noOfPeriods => _$this._noOfPeriods;
+  set noOfPeriods(int? noOfPeriods) => _$this._noOfPeriods = noOfPeriods;
 
-  int _score1;
-  int get score1 => _$this._score1;
-  set score1(int score1) => _$this._score1 = score1;
+  int? _score1;
+  int? get score1 => _$this._score1;
+  set score1(int? score1) => _$this._score1 = score1;
 
-  int _score2;
-  int get score2 => _$this._score2;
-  set score2(int score2) => _$this._score2 = score2;
+  int? _score2;
+  int? get score2 => _$this._score2;
+  set score2(int? score2) => _$this._score2 = score2;
 
-  String _weapon;
-  String get weapon => _$this._weapon;
-  set weapon(String weapon) => _$this._weapon = weapon;
+  String? _weapon;
+  String? get weapon => _$this._weapon;
+  set weapon(String? weapon) => _$this._weapon = weapon;
 
-  LatLng _location;
-  LatLng get location => _$this._location;
-  set location(LatLng location) => _$this._location = location;
+  LatLng? _location;
+  LatLng? get location => _$this._location;
+  set location(LatLng? location) => _$this._location = location;
 
-  ListBuilder<DocumentReference<Object>> _fencers;
-  ListBuilder<DocumentReference<Object>> get fencers =>
-      _$this._fencers ??= new ListBuilder<DocumentReference<Object>>();
-  set fencers(ListBuilder<DocumentReference<Object>> fencers) =>
+  ListBuilder<DocumentReference<Object?>>? _fencers;
+  ListBuilder<DocumentReference<Object?>> get fencers =>
+      _$this._fencers ??= new ListBuilder<DocumentReference<Object?>>();
+  set fencers(ListBuilder<DocumentReference<Object?>>? fencers) =>
       _$this._fencers = fencers;
 
-  DocumentReference<Object> _reference;
-  DocumentReference<Object> get reference => _$this._reference;
-  set reference(DocumentReference<Object> reference) =>
-      _$this._reference = reference;
+  DocumentReference<Object?>? _ffRef;
+  DocumentReference<Object?>? get ffRef => _$this._ffRef;
+  set ffRef(DocumentReference<Object?>? ffRef) => _$this._ffRef = ffRef;
 
   MatchesRecordBuilder() {
     MatchesRecord._initializeBuilder(this);
@@ -325,7 +325,7 @@ class MatchesRecordBuilder
       _weapon = $v.weapon;
       _location = $v.location;
       _fencers = $v.fencers?.toBuilder();
-      _reference = $v.reference;
+      _ffRef = $v.ffRef;
       _$v = null;
     }
     return this;
@@ -338,7 +338,7 @@ class MatchesRecordBuilder
   }
 
   @override
-  void update(void Function(MatchesRecordBuilder) updates) {
+  void update(void Function(MatchesRecordBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
@@ -359,9 +359,9 @@ class MatchesRecordBuilder
               weapon: weapon,
               location: location,
               fencers: _fencers?.build(),
-              reference: reference);
+              ffRef: ffRef);
     } catch (_) {
-      String _$failedField;
+      late String _$failedField;
       try {
         _$failedField = 'fencers';
         _fencers?.build();
