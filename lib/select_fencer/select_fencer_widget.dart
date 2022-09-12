@@ -183,16 +183,16 @@ class _SelectFencerWidgetState extends State<SelectFencerWidget> {
                                 if (FFAppState().isRightFencer) {
                                   setState(() => FFAppState().rightFencerRef =
                                       FFAppState().scannedFencerRef);
-                                  setState(() => FFAppState().rightFencerName =
+                                  setState(() => FFAppState().refRightName =
                                       FFAppState().currentFencerName);
-                                  setState(() => FFAppState().rightFencerPic =
+                                  setState(() => FFAppState().refRightPhoto =
                                       FFAppState().currentFencerPicURL);
                                 } else {
                                   setState(() => FFAppState().leftFencerRef =
                                       FFAppState().scannedFencerRef);
-                                  setState(() => FFAppState().leftFencerName =
+                                  setState(() => FFAppState().refLeftName =
                                       FFAppState().currentFencerName);
-                                  setState(() => FFAppState().leftFencerPic =
+                                  setState(() => FFAppState().refLeftPhoto =
                                       FFAppState().currentFencerPicURL);
                                 }
 
