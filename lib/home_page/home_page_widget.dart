@@ -112,16 +112,24 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        custom_widgets.QRCode(
+                        Container(
                           width: 200,
                           height: 200,
-                          qrSize: 200.0,
-                          qrData: currentUserUid,
-                          gapLess: true,
-                          qrVersion: 2,
-                          qrPadding: 0.0,
-                          qrBackgroundColor: Colors.white,
-                          qrForegroundColor: Colors.black,
+                          decoration: BoxDecoration(
+                            color: FlutterFlowTheme.of(context)
+                                .secondaryBackground,
+                          ),
+                          child: custom_widgets.QRCode(
+                            width: 200,
+                            height: 200,
+                            qrSize: 200.0,
+                            qrData: currentUserUid,
+                            gapLess: true,
+                            qrVersion: 2,
+                            qrPadding: 0.0,
+                            qrBackgroundColor: Colors.white,
+                            qrForegroundColor: Colors.black,
+                          ),
                         ),
                       ],
                     ),
