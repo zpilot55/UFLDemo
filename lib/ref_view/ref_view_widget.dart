@@ -9,7 +9,12 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class RefViewWidget extends StatefulWidget {
-  const RefViewWidget({Key? key}) : super(key: key);
+  const RefViewWidget({
+    Key? key,
+    this.initStartTime,
+  }) : super(key: key);
+
+  final int? initStartTime;
 
   @override
   _RefViewWidgetState createState() => _RefViewWidgetState();
@@ -26,10 +31,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
   @override
   void initState() {
     super.initState();
-    timerMilliseconds = valueOrDefault<int>(
-      functions.minutesToMS(FFAppState().startTimePeriod),
-      0,
-    );
+    timerMilliseconds = FFAppState().timerStartTime;
     timerValue = StopWatchTimer.getDisplayTime(
       0,
       hours: false,
@@ -39,10 +41,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
     );
     timerController = StopWatchTimer(
       mode: StopWatchMode.countDown,
-      presetMillisecond: valueOrDefault<int>(
-        functions.minutesToMS(FFAppState().startTimePeriod),
-        0,
-      ),
+      presetMillisecond: FFAppState().timerStartTime,
       onChange: (value) {
         setState(() {
           timerMilliseconds = value;
@@ -102,7 +101,29 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                           timer: timerController,
                           textAlign: TextAlign.start,
                           style: FlutterFlowTheme.of(context).title3,
-                          onEnded: () {},
+                          onEnded: () async {
+                            setState(() => FFAppState().isTimerRunning = false);
+                            if (FFAppState().currentPeriod ==
+                                FFAppState().startPeriods) {
+                              setState(() => FFAppState().endOfBout = true);
+                              setState(() =>
+                                  FFAppState().startStopText = 'END OF BOUT');
+                            } else {
+                              if (FFAppState().onBreak) {
+                                setState(() => FFAppState().onBreak = false);
+                                await Future.delayed(
+                                    const Duration(milliseconds: 100));
+                                setState(
+                                    () => FFAppState().beginNextPer = true);
+                                setState(() =>
+                                    FFAppState().startStopText = 'NEXT PER');
+                              } else {
+                                setState(() => FFAppState().beginBreak = true);
+                                setState(() =>
+                                    FFAppState().startStopText = 'BEGIN BREAK');
+                              }
+                            }
+                          },
                         ),
                       ],
                     ),
@@ -137,14 +158,27 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                           Column(
                             mainAxisSize: MainAxisSize.max,
                             children: [
-                              Text(
-                                'Period: 1',
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyText1
-                                    .override(
-                                      fontFamily: 'Poppins',
-                                      fontSize: 14,
+                              Row(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Text(
+                                    'Period: ',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyText1
+                                        .override(
+                                          fontFamily: 'Poppins',
+                                          fontSize: 14,
+                                        ),
+                                  ),
+                                  Text(
+                                    valueOrDefault<String>(
+                                      FFAppState().currentPeriod.toString(),
+                                      '1',
                                     ),
+                                    style:
+                                        FlutterFlowTheme.of(context).bodyText1,
+                                  ),
+                                ],
                               ),
                               Row(
                                 mainAxisSize: MainAxisSize.max,
@@ -454,13 +488,78 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                         padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 5),
                         child: FFButtonWidget(
                           onPressed: () async {
-                            setState(() => FFAppState().isTimerRunning = true);
+                            if (FFAppState().endOfBout) {
+                              Navigator.pop(context);
+                            } else {
+                              if (FFAppState().beginBreak) {
+                                setState(() => FFAppState().beginBreak = false);
+                                setState(() => FFAppState().onBreak = true);
+                                setState(() => FFAppState().timerStartTime =
+                                    functions.minutesToMS(
+                                        FFAppState().breakDuration));
+                                await Future.delayed(
+                                    const Duration(milliseconds: 100));
+                                timerController.onExecute.add(
+                                  StopWatchExecute.reset,
+                                );
+
+                                timerController.onExecute.add(
+                                  StopWatchExecute.start,
+                                );
+
+                                setState(
+                                    () => FFAppState().showActions = false);
+                                setState(() =>
+                                    FFAppState().startStopText = 'ON BREAK');
+                              } else {
+                                if (!FFAppState().onBreak) {
+                                  if (FFAppState().beginNextPer) {
+                                    setState(() => FFAppState().timerStartTime =
+                                        functions.minutesToMS(
+                                            FFAppState().startTimePeriod));
+                                    await Future.delayed(
+                                        const Duration(milliseconds: 100));
+                                    timerController.onExecute.add(
+                                      StopWatchExecute.reset,
+                                    );
+
+                                    setState(() =>
+                                        FFAppState().startStopText = 'START');
+                                    setState(() => FFAppState().currentPeriod =
+                                        FFAppState().currentPeriod + 1);
+                                  } else {
+                                    if (FFAppState().isTimerRunning) {
+                                      timerController.onExecute.add(
+                                        StopWatchExecute.stop,
+                                      );
+
+                                      setState(() =>
+                                          FFAppState().isTimerRunning = false);
+                                      setState(() =>
+                                          FFAppState().startStopText = 'START');
+                                    } else {
+                                      timerController.onExecute.add(
+                                        StopWatchExecute.start,
+                                      );
+
+                                      setState(() =>
+                                          FFAppState().isTimerRunning = true);
+                                      setState(() =>
+                                          FFAppState().startStopText = 'STOP');
+                                    }
+                                  }
+                                }
+                              }
+                            }
                           },
-                          text: 'START',
+                          text: valueOrDefault<String>(
+                            FFAppState().startStopText,
+                            'START',
+                          ),
                           options: FFButtonOptions(
                             width: 200,
                             height: 60,
-                            color: Color(0xFF00FF00),
+                            color: Colors.black,
                             textStyle:
                                 FlutterFlowTheme.of(context).subtitle2.override(
                                       fontFamily: 'Poppins',

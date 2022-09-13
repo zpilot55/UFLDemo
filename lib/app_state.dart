@@ -34,15 +34,15 @@ class FFAppState {
 
   int startTotalTouches = 5;
 
-  int startTimePeriod = 3;
+  int startTimePeriod = 1;
 
   DocumentReference? leftFencerRef;
 
   DocumentReference? rightFencerRef;
 
-  String refLeftName = '';
+  String refLeftName = 'Left Fencer';
 
-  String refRightName = '';
+  String refRightName = 'Right Fencer';
 
   String refLeftPhoto = '';
 
@@ -59,6 +59,22 @@ class FFAppState {
   bool showActions = false;
 
   bool isActionArrives = false;
+
+  String startStopText = 'START';
+
+  int currentPeriod = 1;
+
+  bool endOfBout = false;
+
+  bool onBreak = false;
+
+  int timerStartTime = 60000;
+
+  int breakDuration = 10000;
+
+  bool beginNextPer = false;
+
+  bool beginBreak = false;
 }
 
 LatLng? _latLngFromString(String? val) {
