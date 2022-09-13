@@ -547,7 +547,9 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                       await Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => RefViewWidget(),
+                          builder: (context) => RefViewWidget(
+                            initStartTime: timeCountValue,
+                          ),
                         ),
                       );
                     },
