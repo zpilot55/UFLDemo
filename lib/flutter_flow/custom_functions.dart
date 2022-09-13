@@ -14,3 +14,7 @@ String getfirstname(String username) {
   List<String> fullnameList = username.split(" ");
   return fullnameList.first;
 }
+
+int minutesToMS(int inputMinutes) {
+  return inputMinutes * 60000;
+}

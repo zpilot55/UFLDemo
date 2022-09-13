@@ -7,14 +7,15 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class VerifyWidget extends StatefulWidget {
-  const VerifyWidget({Key key}) : super(key: key);
+  const VerifyWidget({Key? key}) : super(key: key);
 
   @override
   _VerifyWidgetState createState() => _VerifyWidgetState();
 }
 
 class _VerifyWidgetState extends State<VerifyWidget> {
-  TextEditingController phoneNumberController;
+  TextEditingController? phoneNumberController;
+
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -98,6 +99,20 @@ class _VerifyWidgetState extends State<VerifyWidget> {
                     ),
                     borderRadius: BorderRadius.circular(8),
                   ),
+                  errorBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Color(0x00000000),
+                      width: 1,
+                    ),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Color(0x00000000),
+                      width: 1,
+                    ),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
                   filled: true,
                   fillColor: Color(0xFF3124A1),
                   contentPadding:
@@ -115,7 +130,7 @@ class _VerifyWidgetState extends State<VerifyWidget> {
               padding: EdgeInsetsDirectional.fromSTEB(0, 24, 0, 0),
               child: FFButtonWidget(
                 onPressed: () async {
-                  final smsCodeVal = phoneNumberController.text;
+                  final smsCodeVal = phoneNumberController!.text;
                   if (smsCodeVal == null || smsCodeVal.isEmpty) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(

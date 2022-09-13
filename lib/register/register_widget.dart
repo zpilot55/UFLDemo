@@ -8,21 +8,29 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class RegisterWidget extends StatefulWidget {
-  const RegisterWidget({Key key}) : super(key: key);
+  const RegisterWidget({Key? key}) : super(key: key);
 
   @override
   _RegisterWidgetState createState() => _RegisterWidgetState();
 }
 
 class _RegisterWidgetState extends State<RegisterWidget> {
-  TextEditingController dobController;
-  TextEditingController firstNameController;
-  TextEditingController lastNameController;
-  TextEditingController emailController;
-  TextEditingController passwordController;
-  bool passwordVisibility;
-  TextEditingController retypedController;
-  bool retypedVisibility;
+  TextEditingController? dobController;
+
+  TextEditingController? firstNameController;
+
+  TextEditingController? lastNameController;
+
+  TextEditingController? emailController;
+
+  TextEditingController? passwordController;
+
+  late bool passwordVisibility;
+
+  TextEditingController? retypedController;
+
+  late bool retypedVisibility;
+
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -123,6 +131,20 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                 ),
                                 borderRadius: BorderRadius.circular(8),
                               ),
+                              errorBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color(0x00000000),
+                                  width: 2,
+                                ),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              focusedErrorBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color(0x00000000),
+                                  width: 2,
+                                ),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
                               filled: true,
                               fillColor: Colors.white,
                               contentPadding:
@@ -183,6 +205,20 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                 ),
                                 borderRadius: BorderRadius.circular(8),
                               ),
+                              errorBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color(0x00000000),
+                                  width: 2,
+                                ),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              focusedErrorBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color(0x00000000),
+                                  width: 2,
+                                ),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
                               filled: true,
                               fillColor: Colors.white,
                               contentPadding:
@@ -239,6 +275,20 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                               focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                   color: Color(0xFFDBE2E7),
+                                  width: 2,
+                                ),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              errorBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color(0x00000000),
+                                  width: 2,
+                                ),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              focusedErrorBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color(0x00000000),
                                   width: 2,
                                 ),
                                 borderRadius: BorderRadius.circular(8),
@@ -304,6 +354,20 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                 ),
                                 borderRadius: BorderRadius.circular(8),
                               ),
+                              errorBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color(0x00000000),
+                                  width: 2,
+                                ),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              focusedErrorBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color(0x00000000),
+                                  width: 2,
+                                ),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
                               filled: true,
                               fillColor: Colors.white,
                               contentPadding:
@@ -360,6 +424,20 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                               focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                   color: Color(0xFFDBE2E7),
+                                  width: 2,
+                                ),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              errorBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color(0x00000000),
+                                  width: 2,
+                                ),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              focusedErrorBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color(0x00000000),
                                   width: 2,
                                 ),
                                 borderRadius: BorderRadius.circular(8),
@@ -438,6 +516,20 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                 ),
                                 borderRadius: BorderRadius.circular(8),
                               ),
+                              errorBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color(0x00000000),
+                                  width: 2,
+                                ),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              focusedErrorBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color(0x00000000),
+                                  width: 2,
+                                ),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
                               filled: true,
                               fillColor: Colors.white,
                               contentPadding: EdgeInsetsDirectional.fromSTEB(
@@ -490,17 +582,17 @@ class _RegisterWidgetState extends State<RegisterWidget> {
 
                             final user = await createAccountWithEmail(
                               context,
-                              emailController.text,
-                              passwordController.text,
+                              emailController!.text,
+                              passwordController!.text,
                             );
                             if (user == null) {
                               return;
                             }
 
                             final usersCreateData = createUsersRecordData(
-                              email: emailController.text,
+                              email: emailController!.text,
                               displayName:
-                                  '${firstNameController.text} ${lastNameController.text}',
+                                  '${firstNameController!.text} ${lastNameController!.text}',
                               photoUrl:
                                   'https://firebasestorage.googleapis.com/v0/b/universalfencingleague.appspot.com/o/Fencer_silhouette.png?alt=media&token=7ae87fd2-6264-446f-abbf-c4a7d8d5b642',
                             );

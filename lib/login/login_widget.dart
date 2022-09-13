@@ -10,16 +10,19 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class LoginWidget extends StatefulWidget {
-  const LoginWidget({Key key}) : super(key: key);
+  const LoginWidget({Key? key}) : super(key: key);
 
   @override
   _LoginWidgetState createState() => _LoginWidgetState();
 }
 
 class _LoginWidgetState extends State<LoginWidget> {
-  TextEditingController emailAddressController;
-  TextEditingController passwordController;
-  bool passwordVisibility;
+  TextEditingController? emailAddressController;
+
+  TextEditingController? passwordController;
+
+  late bool passwordVisibility;
+
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -115,6 +118,20 @@ class _LoginWidgetState extends State<LoginWidget> {
                                 ),
                                 borderRadius: BorderRadius.circular(8),
                               ),
+                              errorBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color(0x00000000),
+                                  width: 2,
+                                ),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              focusedErrorBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color(0x00000000),
+                                  width: 2,
+                                ),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
                               filled: true,
                               fillColor: Colors.white,
                               contentPadding:
@@ -175,6 +192,20 @@ class _LoginWidgetState extends State<LoginWidget> {
                                 ),
                                 borderRadius: BorderRadius.circular(8),
                               ),
+                              errorBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color(0x00000000),
+                                  width: 2,
+                                ),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              focusedErrorBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color(0x00000000),
+                                  width: 2,
+                                ),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
                               filled: true,
                               fillColor: Colors.white,
                               contentPadding: EdgeInsetsDirectional.fromSTEB(
@@ -216,8 +247,8 @@ class _LoginWidgetState extends State<LoginWidget> {
                           onPressed: () async {
                             final user = await signInWithEmail(
                               context,
-                              emailAddressController.text,
-                              passwordController.text,
+                              emailAddressController!.text,
+                              passwordController!.text,
                             );
                             if (user == null) {
                               return;

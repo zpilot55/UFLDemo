@@ -5,12 +5,11 @@ import '../flutter_flow/flutter_flow_widgets.dart';
 import '../ref_view/ref_view_widget.dart';
 import '../select_fencer/select_fencer_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class RefSetupWidget extends StatefulWidget {
-  const RefSetupWidget({Key key}) : super(key: key);
+  const RefSetupWidget({Key? key}) : super(key: key);
 
   @override
   _RefSetupWidgetState createState() => _RefSetupWidgetState();
@@ -18,18 +17,9 @@ class RefSetupWidget extends StatefulWidget {
 
 class _RefSetupWidgetState extends State<RefSetupWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  int periodCountValue;
-  int timeCountValue;
-  int touchesCountValue;
-
-  @override
-  void initState() {
-    super.initState();
-    // On page load action.
-    SchedulerBinding.instance.addPostFrameCallback((_) async {
-      setState(() => FFAppState().leftFencerName = FFAppState().leftFencerName);
-    });
-  }
+  int? periodCountValue;
+  int? timeCountValue;
+  int? touchesCountValue;
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +71,7 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                         borderRadius: BorderRadius.circular(0),
                         child: Image.network(
                           valueOrDefault<String>(
-                            FFAppState().leftFencerPic,
+                            FFAppState().refLeftPhoto,
                             'https://firebasestorage.googleapis.com/v0/b/universalfencingleague.appspot.com/o/Fencer_silhouette.png?alt=media&token=7ae87fd2-6264-446f-abbf-c4a7d8d5b642',
                           ),
                           width: 80,
@@ -107,7 +97,10 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                             );
                           },
                           child: Text(
-                            FFAppState().leftFencerName,
+                            valueOrDefault<String>(
+                              FFAppState().refLeftName,
+                              'Left Fencer',
+                            ),
                             style: FlutterFlowTheme.of(context).title3,
                           ),
                         ),
@@ -150,7 +143,7 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                           },
                           child: Text(
                             valueOrDefault<String>(
-                              FFAppState().rightFencerName,
+                              FFAppState().refRightName,
                               'Right Fencer',
                             ),
                             style: FlutterFlowTheme.of(context).title3,
@@ -166,7 +159,7 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                         borderRadius: BorderRadius.circular(0),
                         child: Image.network(
                           valueOrDefault<String>(
-                            FFAppState().rightFencerPic,
+                            FFAppState().refRightPhoto,
                             'https://firebasestorage.googleapis.com/v0/b/universalfencingleague.appspot.com/o/Fencer_silhouette.png?alt=media&token=7ae87fd2-6264-446f-abbf-c4a7d8d5b642',
                           ),
                           width: 80,
@@ -546,15 +539,17 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                   FFButtonWidget(
                     onPressed: () async {
                       setState(
-                          () => FFAppState().startPeriods = periodCountValue);
+                          () => FFAppState().startPeriods = periodCountValue!);
                       setState(
-                          () => FFAppState().startTimePeriod = timeCountValue);
+                          () => FFAppState().startTimePeriod = timeCountValue!);
                       setState(() =>
-                          FFAppState().startTotalTouches = touchesCountValue);
+                          FFAppState().startTotalTouches = touchesCountValue!);
                       await Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => RefViewWidget(),
+                          builder: (context) => RefViewWidget(
+                            initStartTime: timeCountValue,
+                          ),
                         ),
                       );
                     },

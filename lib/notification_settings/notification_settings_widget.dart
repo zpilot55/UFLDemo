@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class NotificationSettingsWidget extends StatefulWidget {
-  const NotificationSettingsWidget({Key key}) : super(key: key);
+  const NotificationSettingsWidget({Key? key}) : super(key: key);
 
   @override
   _NotificationSettingsWidgetState createState() =>
@@ -15,8 +15,8 @@ class NotificationSettingsWidget extends StatefulWidget {
 
 class _NotificationSettingsWidgetState
     extends State<NotificationSettingsWidget> {
-  bool switchListTileValue1;
-  bool switchListTileValue2;
+  bool? switchListTileValue1;
+  bool? switchListTileValue2;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override

@@ -7,7 +7,7 @@ import 'auth_util.dart';
 
 final _googleSignIn = GoogleSignIn();
 
-Future<User> signInWithGoogle(BuildContext context) async {
+Future<User?> signInWithGoogle(BuildContext context) async {
   final signInFunc = () async {
     if (kIsWeb) {
       // Once signed in, return the UserCredential

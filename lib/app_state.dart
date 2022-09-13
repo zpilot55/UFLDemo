@@ -18,38 +18,66 @@ class FFAppState {
     prefs = await SharedPreferences.getInstance();
   }
 
-  SharedPreferences prefs;
+  late SharedPreferences prefs;
 
   String refereeweaponselect = '';
 
   bool isRightFencer = false;
 
-  DocumentReference scannedFencerRef;
+  DocumentReference? scannedFencerRef;
 
   String currentFencerName = '';
 
-  String currentFencerPicURL;
+  String currentFencerPicURL = '';
 
   int startPeriods = 1;
 
   int startTotalTouches = 5;
 
-  int startTimePeriod = 3;
+  int startTimePeriod = 1;
 
-  DocumentReference leftFencerRef;
+  DocumentReference? leftFencerRef;
 
-  DocumentReference rightFencerRef;
+  DocumentReference? rightFencerRef;
 
-  String leftFencerName = 'Left Fencer';
+  String refLeftName = 'Left Fencer';
 
-  String rightFencerName = 'Right Fencer';
+  String refRightName = 'Right Fencer';
 
-  String leftFencerPic;
+  String refLeftPhoto = '';
 
-  String rightFencerPic;
+  String refRightPhoto = '';
+
+  bool isTimerRunning = false;
+
+  int refLeftScore = 0;
+
+  int refRightScore = 0;
+
+  bool isLeftFencerAction = true;
+
+  bool showActions = false;
+
+  bool isActionArrives = false;
+
+  String startStopText = 'START';
+
+  int currentPeriod = 1;
+
+  bool endOfBout = false;
+
+  bool onBreak = false;
+
+  int timerStartTime = 60000;
+
+  int breakDuration = 10000;
+
+  bool beginNextPer = false;
+
+  bool beginBreak = false;
 }
 
-LatLng _latLngFromString(String val) {
+LatLng? _latLngFromString(String? val) {
   if (val == null) {
     return null;
   }
