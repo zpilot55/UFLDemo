@@ -127,6 +127,8 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                             gapLess: true,
                             qrVersion: 2,
                             qrPadding: 0.0,
+                            qrBorderRadius: 0.0,
+                            semanticsLabel: 'Your QR Code',
                             qrBackgroundColor: Colors.white,
                             qrForegroundColor: Colors.black,
                           ),
