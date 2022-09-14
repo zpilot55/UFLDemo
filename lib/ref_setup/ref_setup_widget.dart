@@ -1,9 +1,12 @@
+import '../auth/auth_util.dart';
+import '../backend/backend.dart';
 import '../flutter_flow/flutter_flow_count_controller.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import '../ref_view/ref_view_widget.dart';
 import '../select_fencer/select_fencer_widget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -16,10 +19,11 @@ class RefSetupWidget extends StatefulWidget {
 }
 
 class _RefSetupWidgetState extends State<RefSetupWidget> {
-  final scaffoldKey = GlobalKey<ScaffoldState>();
+  MatchesRecord? currentMatchInProgress;
   int? periodCountValue;
   int? timeCountValue;
   int? touchesCountValue;
+  final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -545,14 +549,33 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                           () => FFAppState().startTimePeriod = timeCountValue!);
                       setState(() =>
                           FFAppState().startTotalTouches = touchesCountValue!);
+
+                      final matchesCreateData = createMatchesRecordData(
+                        user1: FFAppState().leftFencerRef,
+                        user2: FFAppState().rightFencerRef,
+                        scheduledTime: getCurrentTimestamp,
+                        weapon: FFAppState().refereeweaponselect,
+                        noOfPeriods: FFAppState().startPeriods,
+                        scoreLeft: 0,
+                        scoreRight: 0,
+                      );
+                      var matchesRecordReference =
+                          MatchesRecord.collection.doc();
+                      await matchesRecordReference.set(matchesCreateData);
+                      currentMatchInProgress =
+                          MatchesRecord.getDocumentFromData(
+                              matchesCreateData, matchesRecordReference);
                       await Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => RefViewWidget(
-                            initStartTime: timeCountValue,
+                            initStartTime: FFAppState().startTimePeriod,
+                            currentMatchInProgress: currentMatchInProgress,
                           ),
                         ),
                       );
+
+                      setState(() {});
                     },
                     text: 'Start Match',
                     options: FFButtonOptions(
