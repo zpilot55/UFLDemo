@@ -549,16 +549,25 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                           () => FFAppState().startTimePeriod = timeCountValue!);
                       setState(() =>
                           FFAppState().startTotalTouches = touchesCountValue!);
+                      setState(() => FFAppState()
+                          .refFencers
+                          .add(FFAppState().leftFencerRef!));
+                      setState(() => FFAppState()
+                          .refFencers
+                          .add(FFAppState().rightFencerRef!));
 
-                      final matchesCreateData = createMatchesRecordData(
-                        user1: FFAppState().leftFencerRef,
-                        user2: FFAppState().rightFencerRef,
-                        scheduledTime: getCurrentTimestamp,
-                        weapon: FFAppState().refereeweaponselect,
-                        noOfPeriods: FFAppState().startPeriods,
-                        scoreLeft: 0,
-                        scoreRight: 0,
-                      );
+                      final matchesCreateData = {
+                        ...createMatchesRecordData(
+                          user1: FFAppState().leftFencerRef,
+                          user2: FFAppState().rightFencerRef,
+                          scheduledTime: getCurrentTimestamp,
+                          weapon: FFAppState().refereeweaponselect,
+                          noOfPeriods: FFAppState().startPeriods,
+                          scoreLeft: 0,
+                          scoreRight: 0,
+                        ),
+                        'fencers': FFAppState().refFencers,
+                      };
                       var matchesRecordReference =
                           MatchesRecord.collection.doc();
                       await matchesRecordReference.set(matchesCreateData);
