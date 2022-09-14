@@ -1,3 +1,5 @@
+import '../auth/auth_util.dart';
+import '../backend/backend.dart';
 import '../flutter_flow/flutter_flow_radio_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_timer.dart';
@@ -5,6 +7,7 @@ import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import '../flutter_flow/custom_functions.dart' as functions;
 import 'package:stop_watch_timer/stop_watch_timer.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -12,9 +15,11 @@ class RefViewWidget extends StatefulWidget {
   const RefViewWidget({
     Key? key,
     this.initStartTime,
+    this.currentMatchInProgress,
   }) : super(key: key);
 
   final int? initStartTime;
+  final MatchesRecord? currentMatchInProgress;
 
   @override
   _RefViewWidgetState createState() => _RefViewWidgetState();
@@ -489,6 +494,12 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                         child: FFButtonWidget(
                           onPressed: () async {
                             if (FFAppState().endOfBout) {
+                              final matchesUpdateData = createMatchesRecordData(
+                                scoreLeft: FFAppState().refLeftScore,
+                                scoreRight: FFAppState().refRightScore,
+                              );
+                              await widget.currentMatchInProgress!.reference
+                                  .update(matchesUpdateData);
                               Navigator.pop(context);
                             } else {
                               if (FFAppState().beginBreak) {

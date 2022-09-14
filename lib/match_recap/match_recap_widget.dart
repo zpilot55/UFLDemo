@@ -2,8 +2,6 @@ import '../backend/backend.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
-import '../flutter_flow/flutter_flow_widgets.dart';
-import '../match_recap_events/match_recap_events_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -26,7 +24,6 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
-      backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
       appBar: AppBar(
         backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
         automaticallyImplyLeading: false,
@@ -56,6 +53,7 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
         centerTitle: false,
         elevation: 0,
       ),
+      backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
       body: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.max,
@@ -269,11 +267,7 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Text(
-                            'Start Time: ${dateTimeFormat(
-                              'MMMEd',
-                              widget.currentMatch!.scheduledTime,
-                              locale: FFLocalizations.of(context).languageCode,
-                            )}',
+                            'Start Time: ${dateTimeFormat('MMMEd', widget.currentMatch!.scheduledTime)}',
                             style: FlutterFlowTheme.of(context).bodyText1,
                           ),
                         ],
@@ -298,45 +292,8 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  FFButtonWidget(
-                    onPressed: () async {
-                      await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => MatchRecapEventsWidget(
-                            currentMatch: widget.currentMatch,
-                          ),
-                        ),
-                      );
-                    },
-                    text: 'Detailed Match Events',
-                    options: FFButtonOptions(
-                      width: 250,
-                      height: 40,
-                      color: FlutterFlowTheme.of(context).primaryColor,
-                      textStyle:
-                          FlutterFlowTheme.of(context).subtitle2.override(
-                                fontFamily: 'Poppins',
-                                color: Colors.white,
-                              ),
-                      borderSide: BorderSide(
-                        color: Colors.transparent,
-                        width: 1,
-                      ),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
                   Text(
-                    'Match Statistics:',
+                    'Match Events:',
                     style: FlutterFlowTheme.of(context).title3,
                   ),
                 ],
