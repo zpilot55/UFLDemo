@@ -390,6 +390,7 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                               setState(() => periodCountValue = count),
                           stepSize: 1,
                           minimum: 1,
+                          maximum: 1,
                         ),
                       ),
                     ),

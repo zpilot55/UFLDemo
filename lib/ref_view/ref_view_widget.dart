@@ -31,7 +31,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
   @override
   void initState() {
     super.initState();
-    timerMilliseconds = FFAppState().timerStartTime;
+    timerMilliseconds = widget.initStartTime!;
     timerValue = StopWatchTimer.getDisplayTime(
       0,
       hours: false,
@@ -41,7 +41,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
     );
     timerController = StopWatchTimer(
       mode: StopWatchMode.countDown,
-      presetMillisecond: FFAppState().timerStartTime,
+      presetMillisecond: widget.initStartTime!,
       onChange: (value) {
         setState(() {
           timerMilliseconds = value;
