@@ -76,9 +76,10 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                         MatchesRecord>(
                       pagingController: () {
                         final Query<Object?> Function(Query<Object?>)
-                            queryBuilder = (matchesRecord) =>
-                                matchesRecord.where('fencers',
-                                    arrayContains: currentUserReference);
+                            queryBuilder = (matchesRecord) => matchesRecord
+                                .where('fencers',
+                                    arrayContains: currentUserReference)
+                                .orderBy('scheduled_time', descending: true);
                         if (_pagingController != null) {
                           final query = queryBuilder(MatchesRecord.collection);
                           if (query != _pagingQuery) {
@@ -97,9 +98,10 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                         _pagingController!
                             .addPageRequestListener((nextPageMarker) {
                           queryMatchesRecordPage(
-                            queryBuilder: (matchesRecord) =>
-                                matchesRecord.where('fencers',
-                                    arrayContains: currentUserReference),
+                            queryBuilder: (matchesRecord) => matchesRecord
+                                .where('fencers',
+                                    arrayContains: currentUserReference)
+                                .orderBy('scheduled_time', descending: true),
                             nextPageMarker: nextPageMarker,
                             pageSize: 25,
                             isStream: true,
