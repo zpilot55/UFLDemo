@@ -49,18 +49,6 @@ class _$MatchesRecordSerializer implements StructuredSerializer<MatchesRecord> {
         ..add('no_of_periods')
         ..add(serializers.serialize(value, specifiedType: const FullType(int)));
     }
-    value = object.score1;
-    if (value != null) {
-      result
-        ..add('score1')
-        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
-    }
-    value = object.score2;
-    if (value != null) {
-      result
-        ..add('score2')
-        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
-    }
     value = object.weapon;
     if (value != null) {
       result
@@ -84,6 +72,18 @@ class _$MatchesRecordSerializer implements StructuredSerializer<MatchesRecord> {
               const FullType(
                   DocumentReference, const [const FullType.nullable(Object)])
             ])));
+    }
+    value = object.scoreLeft;
+    if (value != null) {
+      result
+        ..add('ScoreLeft')
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
+    }
+    value = object.scoreRight;
+    if (value != null) {
+      result
+        ..add('ScoreRight')
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
     }
     value = object.ffRef;
     if (value != null) {
@@ -128,14 +128,6 @@ class _$MatchesRecordSerializer implements StructuredSerializer<MatchesRecord> {
           result.noOfPeriods = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int?;
           break;
-        case 'score1':
-          result.score1 = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int?;
-          break;
-        case 'score2':
-          result.score2 = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int?;
-          break;
         case 'weapon':
           result.weapon = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
@@ -150,6 +142,14 @@ class _$MatchesRecordSerializer implements StructuredSerializer<MatchesRecord> {
                 const FullType(
                     DocumentReference, const [const FullType.nullable(Object)])
               ]))! as BuiltList<Object?>);
+          break;
+        case 'ScoreLeft':
+          result.scoreLeft = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
+          break;
+        case 'ScoreRight':
+          result.scoreRight = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
           break;
         case 'Document__Reference__Field':
           result.ffRef = serializers.deserialize(value,
@@ -174,15 +174,15 @@ class _$MatchesRecord extends MatchesRecord {
   @override
   final int? noOfPeriods;
   @override
-  final int? score1;
-  @override
-  final int? score2;
-  @override
   final String? weapon;
   @override
   final LatLng? location;
   @override
   final BuiltList<DocumentReference<Object?>>? fencers;
+  @override
+  final int? scoreLeft;
+  @override
+  final int? scoreRight;
   @override
   final DocumentReference<Object?>? ffRef;
 
@@ -194,11 +194,11 @@ class _$MatchesRecord extends MatchesRecord {
       this.user2,
       this.scheduledTime,
       this.noOfPeriods,
-      this.score1,
-      this.score2,
       this.weapon,
       this.location,
       this.fencers,
+      this.scoreLeft,
+      this.scoreRight,
       this.ffRef})
       : super._();
 
@@ -217,11 +217,11 @@ class _$MatchesRecord extends MatchesRecord {
         user2 == other.user2 &&
         scheduledTime == other.scheduledTime &&
         noOfPeriods == other.noOfPeriods &&
-        score1 == other.score1 &&
-        score2 == other.score2 &&
         weapon == other.weapon &&
         location == other.location &&
         fencers == other.fencers &&
+        scoreLeft == other.scoreLeft &&
+        scoreRight == other.scoreRight &&
         ffRef == other.ffRef;
   }
 
@@ -237,11 +237,11 @@ class _$MatchesRecord extends MatchesRecord {
                                 $jc($jc($jc(0, user1.hashCode), user2.hashCode),
                                     scheduledTime.hashCode),
                                 noOfPeriods.hashCode),
-                            score1.hashCode),
-                        score2.hashCode),
-                    weapon.hashCode),
-                location.hashCode),
-            fencers.hashCode),
+                            weapon.hashCode),
+                        location.hashCode),
+                    fencers.hashCode),
+                scoreLeft.hashCode),
+            scoreRight.hashCode),
         ffRef.hashCode));
   }
 
@@ -252,11 +252,11 @@ class _$MatchesRecord extends MatchesRecord {
           ..add('user2', user2)
           ..add('scheduledTime', scheduledTime)
           ..add('noOfPeriods', noOfPeriods)
-          ..add('score1', score1)
-          ..add('score2', score2)
           ..add('weapon', weapon)
           ..add('location', location)
           ..add('fencers', fencers)
+          ..add('scoreLeft', scoreLeft)
+          ..add('scoreRight', scoreRight)
           ..add('ffRef', ffRef))
         .toString();
   }
@@ -283,14 +283,6 @@ class MatchesRecordBuilder
   int? get noOfPeriods => _$this._noOfPeriods;
   set noOfPeriods(int? noOfPeriods) => _$this._noOfPeriods = noOfPeriods;
 
-  int? _score1;
-  int? get score1 => _$this._score1;
-  set score1(int? score1) => _$this._score1 = score1;
-
-  int? _score2;
-  int? get score2 => _$this._score2;
-  set score2(int? score2) => _$this._score2 = score2;
-
   String? _weapon;
   String? get weapon => _$this._weapon;
   set weapon(String? weapon) => _$this._weapon = weapon;
@@ -304,6 +296,14 @@ class MatchesRecordBuilder
       _$this._fencers ??= new ListBuilder<DocumentReference<Object?>>();
   set fencers(ListBuilder<DocumentReference<Object?>>? fencers) =>
       _$this._fencers = fencers;
+
+  int? _scoreLeft;
+  int? get scoreLeft => _$this._scoreLeft;
+  set scoreLeft(int? scoreLeft) => _$this._scoreLeft = scoreLeft;
+
+  int? _scoreRight;
+  int? get scoreRight => _$this._scoreRight;
+  set scoreRight(int? scoreRight) => _$this._scoreRight = scoreRight;
 
   DocumentReference<Object?>? _ffRef;
   DocumentReference<Object?>? get ffRef => _$this._ffRef;
@@ -320,11 +320,11 @@ class MatchesRecordBuilder
       _user2 = $v.user2;
       _scheduledTime = $v.scheduledTime;
       _noOfPeriods = $v.noOfPeriods;
-      _score1 = $v.score1;
-      _score2 = $v.score2;
       _weapon = $v.weapon;
       _location = $v.location;
       _fencers = $v.fencers?.toBuilder();
+      _scoreLeft = $v.scoreLeft;
+      _scoreRight = $v.scoreRight;
       _ffRef = $v.ffRef;
       _$v = null;
     }
@@ -354,11 +354,11 @@ class MatchesRecordBuilder
               user2: user2,
               scheduledTime: scheduledTime,
               noOfPeriods: noOfPeriods,
-              score1: score1,
-              score2: score2,
               weapon: weapon,
               location: location,
               fencers: _fencers?.build(),
+              scoreLeft: scoreLeft,
+              scoreRight: scoreRight,
               ffRef: ffRef);
     } catch (_) {
       late String _$failedField;
