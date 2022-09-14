@@ -75,6 +75,8 @@ class FFAppState {
   bool beginNextPer = false;
 
   bool beginBreak = false;
+
+  List<DocumentReference> refFencers = [];
 }
 
 LatLng? _latLngFromString(String? val) {
