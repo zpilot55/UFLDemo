@@ -4,6 +4,7 @@ export 'register/register_widget.dart' show RegisterWidget;
 export 'verify/verify_widget.dart' show VerifyWidget;
 export 'home_page/home_page_widget.dart' show HomePageWidget;
 export 'match_history/match_history_widget.dart' show MatchHistoryWidget;
+export 'match_recap/match_recap_widget.dart' show MatchRecapWidget;
 export 'athletes/athletes_widget.dart' show AthletesWidget;
 export 'rankings/rankings_widget.dart' show RankingsWidget;
 export 'profile/profile_widget.dart' show ProfileWidget;

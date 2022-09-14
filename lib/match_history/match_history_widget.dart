@@ -3,6 +3,7 @@ import '../backend/backend.dart';
 import '../components/col_main_drawer_widget.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
+import '../match_recap/match_recap_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -146,208 +147,237 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                         itemBuilder: (context, _, listViewIndex) {
                           final listViewMatchesRecord =
                               _pagingController!.itemList![listViewIndex];
-                          return Card(
-                            clipBehavior: Clip.antiAliasWithSaveLayer,
-                            color: Color(0xFFF5F5F5),
-                            child: Container(
-                              width: MediaQuery.of(context).size.width,
-                              height: 200,
-                              decoration: BoxDecoration(
-                                color: Color(0xFFEEEEEE),
-                              ),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      StreamBuilder<UsersRecord>(
-                                        stream: UsersRecord.getDocument(
-                                            listViewMatchesRecord.user1!),
-                                        builder: (context, snapshot) {
-                                          // Customize what your widget looks like when it's loading.
-                                          if (!snapshot.hasData) {
-                                            return Center(
-                                              child: SizedBox(
-                                                width: 50,
-                                                height: 50,
-                                                child:
-                                                    CircularProgressIndicator(
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .primaryColor,
-                                                ),
-                                              ),
-                                            );
-                                          }
-                                          final imageUsersRecord =
-                                              snapshot.data!;
-                                          return Image.network(
-                                            valueOrDefault<String>(
-                                              imageUsersRecord.photoUrl,
-                                              'https://firebasestorage.googleapis.com/v0/b/universalfencingleague.appspot.com/o/Fencer_silhouette.png?alt=media&token=7ae87fd2-6264-446f-abbf-c4a7d8d5b642',
-                                            ),
-                                            width: 100,
-                                            height: 100,
-                                            fit: BoxFit.cover,
-                                          );
-                                        },
-                                      ),
-                                      Text(
-                                        'vs',
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyText1,
-                                      ),
-                                      StreamBuilder<UsersRecord>(
-                                        stream: UsersRecord.getDocument(
-                                            listViewMatchesRecord.user2!),
-                                        builder: (context, snapshot) {
-                                          // Customize what your widget looks like when it's loading.
-                                          if (!snapshot.hasData) {
-                                            return Center(
-                                              child: SizedBox(
-                                                width: 50,
-                                                height: 50,
-                                                child:
-                                                    CircularProgressIndicator(
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .primaryColor,
-                                                ),
-                                              ),
-                                            );
-                                          }
-                                          final imageUsersRecord =
-                                              snapshot.data!;
-                                          return Image.network(
-                                            valueOrDefault<String>(
-                                              imageUsersRecord.photoUrl,
-                                              'https://firebasestorage.googleapis.com/v0/b/universalfencingleague.appspot.com/o/Fencer_silhouette.png?alt=media&token=7ae87fd2-6264-446f-abbf-c4a7d8d5b642',
-                                            ),
-                                            width: 100,
-                                            height: 100,
-                                            fit: BoxFit.cover,
-                                          );
-                                        },
-                                      ),
-                                    ],
+                          return Padding(
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
+                            child: InkWell(
+                              onTap: () async {
+                                await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => MatchRecapWidget(
+                                      currentMatch: listViewMatchesRecord,
+                                    ),
                                   ),
-                                  Row(
+                                );
+                              },
+                              child: Card(
+                                clipBehavior: Clip.antiAliasWithSaveLayer,
+                                color: Color(0xFFF5F5F5),
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  height: 200,
+                                  decoration: BoxDecoration(
+                                    color: Color(0xFFEEEEEE),
+                                  ),
+                                  child: Column(
                                     mainAxisSize: MainAxisSize.max,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      StreamBuilder<UsersRecord>(
-                                        stream: UsersRecord.getDocument(
-                                            listViewMatchesRecord.user1!),
-                                        builder: (context, snapshot) {
-                                          // Customize what your widget looks like when it's loading.
-                                          if (!snapshot.hasData) {
-                                            return Center(
-                                              child: SizedBox(
-                                                width: 50,
-                                                height: 50,
-                                                child:
-                                                    CircularProgressIndicator(
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .primaryColor,
-                                                ),
+                                      Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Column(
+                                            mainAxisSize: MainAxisSize.max,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              StreamBuilder<UsersRecord>(
+                                                stream: UsersRecord.getDocument(
+                                                    listViewMatchesRecord
+                                                        .user1!),
+                                                builder: (context, snapshot) {
+                                                  // Customize what your widget looks like when it's loading.
+                                                  if (!snapshot.hasData) {
+                                                    return Center(
+                                                      child: SizedBox(
+                                                        width: 50,
+                                                        height: 50,
+                                                        child:
+                                                            CircularProgressIndicator(
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .primaryColor,
+                                                        ),
+                                                      ),
+                                                    );
+                                                  }
+                                                  final imageUsersRecord =
+                                                      snapshot.data!;
+                                                  return Image.network(
+                                                    valueOrDefault<String>(
+                                                      imageUsersRecord.photoUrl,
+                                                      'https://firebasestorage.googleapis.com/v0/b/universalfencingleague.appspot.com/o/Fencer_silhouette.png?alt=media&token=7ae87fd2-6264-446f-abbf-c4a7d8d5b642',
+                                                    ),
+                                                    width: 100,
+                                                    height: 100,
+                                                    fit: BoxFit.cover,
+                                                  );
+                                                },
                                               ),
-                                            );
-                                          }
-                                          final textUsersRecord =
-                                              snapshot.data!;
-                                          return Text(
-                                            valueOrDefault<String>(
-                                              textUsersRecord.displayName,
-                                              'Fencer 1',
-                                            ),
+                                              StreamBuilder<UsersRecord>(
+                                                stream: UsersRecord.getDocument(
+                                                    listViewMatchesRecord
+                                                        .user1!),
+                                                builder: (context, snapshot) {
+                                                  // Customize what your widget looks like when it's loading.
+                                                  if (!snapshot.hasData) {
+                                                    return Center(
+                                                      child: SizedBox(
+                                                        width: 50,
+                                                        height: 50,
+                                                        child:
+                                                            CircularProgressIndicator(
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .primaryColor,
+                                                        ),
+                                                      ),
+                                                    );
+                                                  }
+                                                  final textUsersRecord =
+                                                      snapshot.data!;
+                                                  return Text(
+                                                    valueOrDefault<String>(
+                                                      textUsersRecord
+                                                          .displayName,
+                                                      'Fencer 1',
+                                                    ),
+                                                    style: FlutterFlowTheme.of(
+                                                            context)
+                                                        .subtitle1,
+                                                  );
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                          Text(
+                                            'vs',
                                             style: FlutterFlowTheme.of(context)
                                                 .subtitle1,
-                                          );
-                                        },
-                                      ),
-                                      Text(
-                                        'vs',
-                                        style: FlutterFlowTheme.of(context)
-                                            .subtitle1,
-                                      ),
-                                      StreamBuilder<UsersRecord>(
-                                        stream: UsersRecord.getDocument(
-                                            listViewMatchesRecord.user2!),
-                                        builder: (context, snapshot) {
-                                          // Customize what your widget looks like when it's loading.
-                                          if (!snapshot.hasData) {
-                                            return Center(
-                                              child: SizedBox(
-                                                width: 50,
-                                                height: 50,
-                                                child:
-                                                    CircularProgressIndicator(
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .primaryColor,
-                                                ),
+                                          ),
+                                          Column(
+                                            mainAxisSize: MainAxisSize.max,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              StreamBuilder<UsersRecord>(
+                                                stream: UsersRecord.getDocument(
+                                                    listViewMatchesRecord
+                                                        .user2!),
+                                                builder: (context, snapshot) {
+                                                  // Customize what your widget looks like when it's loading.
+                                                  if (!snapshot.hasData) {
+                                                    return Center(
+                                                      child: SizedBox(
+                                                        width: 50,
+                                                        height: 50,
+                                                        child:
+                                                            CircularProgressIndicator(
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .primaryColor,
+                                                        ),
+                                                      ),
+                                                    );
+                                                  }
+                                                  final imageUsersRecord =
+                                                      snapshot.data!;
+                                                  return Image.network(
+                                                    valueOrDefault<String>(
+                                                      imageUsersRecord.photoUrl,
+                                                      'https://firebasestorage.googleapis.com/v0/b/universalfencingleague.appspot.com/o/Fencer_silhouette.png?alt=media&token=7ae87fd2-6264-446f-abbf-c4a7d8d5b642',
+                                                    ),
+                                                    width: 100,
+                                                    height: 100,
+                                                    fit: BoxFit.cover,
+                                                  );
+                                                },
                                               ),
-                                            );
-                                          }
-                                          final textUsersRecord =
-                                              snapshot.data!;
-                                          return Text(
+                                              StreamBuilder<UsersRecord>(
+                                                stream: UsersRecord.getDocument(
+                                                    listViewMatchesRecord
+                                                        .user2!),
+                                                builder: (context, snapshot) {
+                                                  // Customize what your widget looks like when it's loading.
+                                                  if (!snapshot.hasData) {
+                                                    return Center(
+                                                      child: SizedBox(
+                                                        width: 50,
+                                                        height: 50,
+                                                        child:
+                                                            CircularProgressIndicator(
+                                                          color: FlutterFlowTheme
+                                                                  .of(context)
+                                                              .primaryColor,
+                                                        ),
+                                                      ),
+                                                    );
+                                                  }
+                                                  final textUsersRecord =
+                                                      snapshot.data!;
+                                                  return Text(
+                                                    valueOrDefault<String>(
+                                                      textUsersRecord
+                                                          .displayName,
+                                                      'Fencer 2',
+                                                    ),
+                                                    style: FlutterFlowTheme.of(
+                                                            context)
+                                                        .subtitle1,
+                                                  );
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
                                             valueOrDefault<String>(
-                                              textUsersRecord.displayName,
-                                              'Fencer 2',
+                                              listViewMatchesRecord.weapon,
+                                              'Weapon',
                                             ),
                                             style: FlutterFlowTheme.of(context)
-                                                .subtitle1,
-                                          );
-                                        },
+                                                .bodyText2,
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            dateTimeFormat(
+                                                'MMMEd',
+                                                listViewMatchesRecord
+                                                    .scheduledTime!),
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyText2,
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            'Hello World',
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyText2,
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),
-                                  Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        valueOrDefault<String>(
-                                          listViewMatchesRecord.weapon,
-                                          'Weapon',
-                                        ),
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyText2,
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        dateTimeFormat(
-                                            'MMMEd',
-                                            listViewMatchesRecord
-                                                .scheduledTime!),
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyText2,
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        'Hello World',
-                                        style: FlutterFlowTheme.of(context)
-                                            .bodyText2,
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                                ),
                               ),
                             ),
                           );
