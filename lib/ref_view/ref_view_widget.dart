@@ -31,7 +31,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
   @override
   void initState() {
     super.initState();
-    timerMilliseconds = widget.initStartTime!;
+    timerMilliseconds = functions.minutesToMS(widget.initStartTime!);
     timerValue = StopWatchTimer.getDisplayTime(
       0,
       hours: false,
@@ -41,7 +41,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
     );
     timerController = StopWatchTimer(
       mode: StopWatchMode.countDown,
-      presetMillisecond: widget.initStartTime!,
+      presetMillisecond: functions.minutesToMS(widget.initStartTime!),
       onChange: (value) {
         setState(() {
           timerMilliseconds = value;

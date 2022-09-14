@@ -549,7 +549,7 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => RefViewWidget(
-                            initStartTime: timeCountValue,
+                            initStartTime: FFAppState().startTimePeriod,
                           ),
                         ),
                       );
