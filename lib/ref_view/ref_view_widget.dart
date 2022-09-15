@@ -475,9 +475,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                     'Parry/Riposte',
                                     'Remise',
                                     'Counter',
-                                    'Point in Line',
-                                    'Not ROW',
-                                    'Simultaneous'
+                                    'Point in Line'
                                   ].toList(),
                                   onChanged: (value) {
                                     setState(() => radioButtonValue1 = value);
@@ -504,7 +502,13 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 FlutterFlowRadioButton(
-                                  options: ['HIT', 'Off Target'].toList(),
+                                  options: [
+                                    'HIT',
+                                    'Off Target',
+                                    'Simultaneous',
+                                    'Pause',
+                                    'Card'
+                                  ].toList(),
                                   onChanged: (value) {
                                     setState(() => radioButtonValue2 = value);
                                   },
@@ -539,12 +543,26 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                           setState(() => FFAppState()
                                                   .refLeftScore =
                                               FFAppState().refLeftScore + 1);
+                                          if (FFAppState().refLeftScore ==
+                                              FFAppState().startTotalTouches) {
+                                            setState(() => FFAppState()
+                                                .startStopText = 'END BOUT');
+                                            setState(() =>
+                                                FFAppState().endOfBout = true);
+                                          }
                                         }
                                       } else {
                                         if (radioButtonValue2 == 'HIT') {
                                           setState(() => FFAppState()
                                                   .refRightScore =
                                               FFAppState().refRightScore + 1);
+                                          if (FFAppState().refRightScore ==
+                                              FFAppState().startTotalTouches) {
+                                            setState(() => FFAppState()
+                                                .startStopText = 'END BOUT');
+                                            setState(() =>
+                                                FFAppState().endOfBout = true);
+                                          }
                                         }
                                       }
 
