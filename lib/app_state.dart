@@ -77,6 +77,8 @@ class FFAppState {
   bool beginBreak = false;
 
   List<DocumentReference> refFencers = [];
+
+  bool endOfBoutPopup = false;
 }
 
 LatLng? _latLngFromString(String? val) {
