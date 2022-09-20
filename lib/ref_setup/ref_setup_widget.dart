@@ -567,6 +567,20 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                           scoreRight: 0,
                         ),
                         'fencers': FFAppState().refFencers,
+                        'MatchEvents': [
+                          getMatchEventFirestoreData(
+                            createMatchEventStruct(
+                              scoreLeft: 0,
+                              scoreRight: 0,
+                              timeOfAction: FFAppState().startTimePeriod,
+                              periodOfAction: 1,
+                              actionID: 0,
+                              clearUnsetFields: false,
+                              create: true,
+                            ),
+                            true,
+                          )
+                        ],
                       };
                       var matchesRecordReference =
                           MatchesRecord.collection.doc();
