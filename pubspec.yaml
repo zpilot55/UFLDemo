@@ -41,7 +41,6 @@ dependencies:
   flutter_barcode_scanner:
     git:
       url: https://github.com/FlutterFlow/flutter_barcode_scanner
-  flutter_cache_manager: ^3.3.0
   flutter_svg: 0.22.0
   font_awesome_flutter: 10.1.0
   google_fonts: 3.0.1
