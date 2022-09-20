@@ -32,6 +32,9 @@ abstract class MatchesRecord
   @BuiltValueField(wireName: 'ScoreRight')
   int? get scoreRight;
 
+  @BuiltValueField(wireName: 'MatchEvents')
+  BuiltList<MatchEventStruct>? get matchEvents;
+
   @BuiltValueField(wireName: kDocumentReferenceField)
   DocumentReference? get ffRef;
   DocumentReference get reference => ffRef!;
@@ -41,7 +44,8 @@ abstract class MatchesRecord
     ..weapon = ''
     ..fencers = ListBuilder()
     ..scoreLeft = 0
-    ..scoreRight = 0;
+    ..scoreRight = 0
+    ..matchEvents = ListBuilder();
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('matches');
@@ -86,7 +90,8 @@ Map<String, dynamic> createMatchesRecordData({
         ..location = location
         ..fencers = null
         ..scoreLeft = scoreLeft
-        ..scoreRight = scoreRight,
+        ..scoreRight = scoreRight
+        ..matchEvents = null,
     ),
   );
 
