@@ -250,7 +250,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            if (FFAppState().isTimerRunning)
+                            if (!FFAppState().isTimerRunning)
                               FFButtonWidget(
                                 onPressed: () async {
                                   setState(() => FFAppState().endOfBout = true);
@@ -656,7 +656,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
               if (FFAppState().endOfBoutPopup)
                 Container(
                   width: MediaQuery.of(context).size.width,
-                  height: 220,
+                  height: 230,
                   decoration: BoxDecoration(
                     color: FlutterFlowTheme.of(context).secondaryBackground,
                   ),
@@ -717,7 +717,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                           children: [
                             FFButtonWidget(
                               onPressed: () async {
-                                await actions.flushLocalCache();
+                                await actions.flushLocalState();
                                 await widget.currentMatchInProgress!.reference
                                     .delete();
                                 Navigator.pop(context);
@@ -758,7 +758,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                 );
                                 await widget.currentMatchInProgress!.reference
                                     .update(matchesUpdateData);
-                                await actions.flushLocalCache();
+                                await actions.flushLocalState();
                                 Navigator.pop(context);
                               },
                               text: 'Save and Continue',
