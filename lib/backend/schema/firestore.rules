@@ -14,5 +14,17 @@ service cloud.firestore {
       allow write: if true;
       allow delete: if false;
     }
+
+    match /matches/{parent}/MatchEvents/{document} {
+      allow create: if true;
+      allow read: if true;
+      allow write: if true;
+      allow delete: if false;
+    }
+
+    match /{path=**}/MatchEvents/{document} {
+      allow read: if true;
+    }
+
   }
 }
