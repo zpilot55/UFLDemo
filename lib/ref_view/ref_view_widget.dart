@@ -459,200 +459,6 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                   ),
                 ],
               ),
-              if (FFAppState().showActions)
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 250,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.rectangle,
-                      border: Border.all(
-                        color: Colors.black,
-                      ),
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Action - ${FFAppState().currentFencerName}',
-                              style: FlutterFlowTheme.of(context).bodyText1,
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Column(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                FlutterFlowRadioButton(
-                                  options: [
-                                    'Simple Attack',
-                                    'Compound',
-                                    'Parry/Riposte',
-                                    'Remise',
-                                    'Counter',
-                                    'Point in Line'
-                                  ].toList(),
-                                  onChanged: (value) {
-                                    setState(() => radioButtonValue1 = value);
-                                  },
-                                  optionHeight: 25,
-                                  textStyle: FlutterFlowTheme.of(context)
-                                      .bodyText1
-                                      .override(
-                                        fontFamily: 'Poppins',
-                                        color: Colors.black,
-                                      ),
-                                  buttonPosition: RadioButtonPosition.left,
-                                  direction: Axis.vertical,
-                                  radioButtonColor: Colors.blue,
-                                  inactiveRadioButtonColor: Color(0x8A000000),
-                                  toggleable: false,
-                                  horizontalAlignment: WrapAlignment.start,
-                                  verticalAlignment: WrapCrossAlignment.start,
-                                ),
-                              ],
-                            ),
-                            Column(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                FlutterFlowRadioButton(
-                                  options: [
-                                    'HIT',
-                                    'Off Target',
-                                    'Simultaneous',
-                                    'Pause',
-                                    'Card'
-                                  ].toList(),
-                                  onChanged: (value) {
-                                    setState(() => radioButtonValue2 = value);
-                                  },
-                                  optionHeight: 25,
-                                  textStyle: FlutterFlowTheme.of(context)
-                                      .bodyText1
-                                      .override(
-                                        fontFamily: 'Poppins',
-                                        color: Colors.black,
-                                      ),
-                                  buttonPosition: RadioButtonPosition.left,
-                                  direction: Axis.vertical,
-                                  radioButtonColor: Colors.blue,
-                                  inactiveRadioButtonColor: Color(0x8A000000),
-                                  toggleable: false,
-                                  horizontalAlignment: WrapAlignment.start,
-                                  verticalAlignment: WrapCrossAlignment.start,
-                                ),
-                              ],
-                            ),
-                            Column(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0, 0, 5, 20),
-                                  child: FFButtonWidget(
-                                    onPressed: () async {
-                                      if (FFAppState().isLeftFencerAction) {
-                                        if (radioButtonValue2 == 'HIT') {
-                                          setState(() => FFAppState()
-                                                  .refLeftScore =
-                                              FFAppState().refLeftScore + 1);
-                                          if (FFAppState().refLeftScore ==
-                                              FFAppState().startTotalTouches) {
-                                            setState(() => FFAppState()
-                                                .startStopText = 'END BOUT');
-                                            setState(() =>
-                                                FFAppState().endOfBout = true);
-                                          }
-                                        }
-                                      } else {
-                                        if (radioButtonValue2 == 'HIT') {
-                                          setState(() => FFAppState()
-                                                  .refRightScore =
-                                              FFAppState().refRightScore + 1);
-                                          if (FFAppState().refRightScore ==
-                                              FFAppState().startTotalTouches) {
-                                            setState(() => FFAppState()
-                                                .startStopText = 'END BOUT');
-                                            setState(() =>
-                                                FFAppState().endOfBout = true);
-                                          }
-                                        }
-                                      }
-
-                                      setState(() =>
-                                          FFAppState().showActions = false);
-                                      setState(() =>
-                                          FFAppState().currentFencerName = '');
-                                    },
-                                    text: 'OK',
-                                    options: FFButtonOptions(
-                                      width: 100,
-                                      height: 40,
-                                      color: Color(0xFF00FF00),
-                                      textStyle: FlutterFlowTheme.of(context)
-                                          .subtitle2
-                                          .override(
-                                            fontFamily: 'Poppins',
-                                            color: Colors.white,
-                                          ),
-                                      borderSide: BorderSide(
-                                        color: Colors.black,
-                                        width: 1,
-                                      ),
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0, 0, 5, 0),
-                                  child: FFButtonWidget(
-                                    onPressed: () async {
-                                      setState(() =>
-                                          FFAppState().showActions = false);
-                                      setState(() =>
-                                          FFAppState().currentFencerName = '');
-                                    },
-                                    text: 'CANCEL',
-                                    options: FFButtonOptions(
-                                      width: 100,
-                                      height: 40,
-                                      color: Color(0xFFFF0000),
-                                      textStyle: FlutterFlowTheme.of(context)
-                                          .subtitle2
-                                          .override(
-                                            fontFamily: 'Poppins',
-                                            color: Colors.white,
-                                          ),
-                                      borderSide: BorderSide(
-                                        color: Colors.black,
-                                        width: 1,
-                                      ),
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
               if (FFAppState().endOfBoutPopup)
                 Container(
                   width: MediaQuery.of(context).size.width,
@@ -783,6 +589,201 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                         ),
                       ),
                     ],
+                  ),
+                ),
+              if (FFAppState().showActions)
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 250,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.rectangle,
+                      border: Border.all(
+                        color: Colors.black,
+                      ),
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Action - ${FFAppState().currentFencerName}',
+                              style: FlutterFlowTheme.of(context).bodyText1,
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Column(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                FlutterFlowRadioButton(
+                                  options: [
+                                    'Simple Attack',
+                                    'Compound',
+                                    'Parry/Riposte',
+                                    'Remise',
+                                    'Counter',
+                                    'Point in Line'
+                                  ].toList(),
+                                  onChanged: (value) {
+                                    setState(() => radioButtonValue1 = value);
+                                  },
+                                  optionHeight: 25,
+                                  textStyle: FlutterFlowTheme.of(context)
+                                      .bodyText1
+                                      .override(
+                                        fontFamily: 'Poppins',
+                                        color: Colors.black,
+                                      ),
+                                  buttonPosition: RadioButtonPosition.left,
+                                  direction: Axis.vertical,
+                                  radioButtonColor: Colors.blue,
+                                  inactiveRadioButtonColor: Color(0x8A000000),
+                                  toggleable: false,
+                                  horizontalAlignment: WrapAlignment.start,
+                                  verticalAlignment: WrapCrossAlignment.start,
+                                ),
+                              ],
+                            ),
+                            Column(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                FlutterFlowRadioButton(
+                                  options: [
+                                    'HIT',
+                                    'Off Target',
+                                    'Simultaneous',
+                                    'Pause',
+                                    'Yellow Card',
+                                    'Red Card'
+                                  ].toList(),
+                                  onChanged: (value) {
+                                    setState(() => radioButtonValue2 = value);
+                                  },
+                                  optionHeight: 25,
+                                  textStyle: FlutterFlowTheme.of(context)
+                                      .bodyText1
+                                      .override(
+                                        fontFamily: 'Poppins',
+                                        color: Colors.black,
+                                      ),
+                                  buttonPosition: RadioButtonPosition.left,
+                                  direction: Axis.vertical,
+                                  radioButtonColor: Colors.blue,
+                                  inactiveRadioButtonColor: Color(0x8A000000),
+                                  toggleable: false,
+                                  horizontalAlignment: WrapAlignment.start,
+                                  verticalAlignment: WrapCrossAlignment.start,
+                                ),
+                              ],
+                            ),
+                            Column(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0, 0, 5, 20),
+                                  child: FFButtonWidget(
+                                    onPressed: () async {
+                                      if (FFAppState().isLeftFencerAction) {
+                                        if (radioButtonValue2 == 'HIT') {
+                                          setState(() => FFAppState()
+                                                  .refLeftScore =
+                                              FFAppState().refLeftScore + 1);
+                                          if (FFAppState().refLeftScore ==
+                                              FFAppState().startTotalTouches) {
+                                            setState(() => FFAppState()
+                                                .startStopText = 'END BOUT');
+                                            setState(() =>
+                                                FFAppState().endOfBout = true);
+                                          }
+                                        }
+                                      } else {
+                                        if (radioButtonValue2 == 'HIT') {
+                                          setState(() => FFAppState()
+                                                  .refRightScore =
+                                              FFAppState().refRightScore + 1);
+                                          if (FFAppState().refRightScore ==
+                                              FFAppState().startTotalTouches) {
+                                            setState(() => FFAppState()
+                                                .startStopText = 'END BOUT');
+                                            setState(() =>
+                                                FFAppState().endOfBout = true);
+                                          }
+                                        }
+                                      }
+
+                                      setState(() =>
+                                          FFAppState().showActions = false);
+                                      setState(() =>
+                                          FFAppState().currentFencerName = '');
+                                    },
+                                    text: 'OK',
+                                    options: FFButtonOptions(
+                                      width: 100,
+                                      height: 40,
+                                      color: Color(0xFF00FF00),
+                                      textStyle: FlutterFlowTheme.of(context)
+                                          .subtitle2
+                                          .override(
+                                            fontFamily: 'Poppins',
+                                            color: Colors.white,
+                                          ),
+                                      borderSide: BorderSide(
+                                        color: Colors.black,
+                                        width: 1,
+                                      ),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0, 0, 5, 0),
+                                  child: FFButtonWidget(
+                                    onPressed: () async {
+                                      setState(() =>
+                                          FFAppState().showActions = false);
+                                      setState(() =>
+                                          FFAppState().currentFencerName = '');
+                                    },
+                                    text: 'CANCEL',
+                                    options: FFButtonOptions(
+                                      width: 100,
+                                      height: 40,
+                                      color: Color(0xFFFF0000),
+                                      textStyle: FlutterFlowTheme.of(context)
+                                          .subtitle2
+                                          .override(
+                                            fontFamily: 'Poppins',
+                                            color: Colors.white,
+                                          ),
+                                      borderSide: BorderSide(
+                                        color: Colors.black,
+                                        width: 1,
+                                      ),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
             ],
