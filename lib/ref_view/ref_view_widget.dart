@@ -5,6 +5,7 @@ import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_timer.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
+import '../custom_code/actions/index.dart' as actions;
 import '../flutter_flow/custom_functions.dart' as functions;
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -716,11 +717,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                           children: [
                             FFButtonWidget(
                               onPressed: () async {
-                                setState(() => FFAppState().endOfBout = false);
-                                setState(
-                                    () => FFAppState().endOfBoutPopup = false);
-                                setState(
-                                    () => FFAppState().showActions = false);
+                                await actions.flushLocalCache();
                                 await widget.currentMatchInProgress!.reference
                                     .delete();
                                 Navigator.pop(context);
@@ -761,11 +758,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                 );
                                 await widget.currentMatchInProgress!.reference
                                     .update(matchesUpdateData);
-                                setState(() => FFAppState().endOfBout = false);
-                                setState(
-                                    () => FFAppState().endOfBoutPopup = false);
-                                setState(
-                                    () => FFAppState().showActions = false);
+                                await actions.flushLocalCache();
                                 Navigator.pop(context);
                               },
                               text: 'Save and Continue',
