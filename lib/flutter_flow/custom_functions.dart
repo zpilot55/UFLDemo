@@ -21,11 +21,23 @@ int minutesToMS(int inputMinutes) {
 
 String getActionStringFromID(int actionID) {
   switch (actionID) {
+    case -2:
+      {
+        return "End of period";
+      }
+    case -1:
+      {
+        return "End of match";
+      }
     case 0:
+      {
+        return "Start of match";
+      }
+    case 1:
       {
         return "Referee called halt";
       }
-    case 1:
+    case 2:
       {
         return "Simultaneous action";
       }

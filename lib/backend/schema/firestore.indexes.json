@@ -13,20 +13,6 @@
           "order": "DESCENDING"
         }
       ]
-    },
-    {
-      "collectionGroup": "MatchEvents",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "periodOfAction",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "timeOfAction",
-          "order": "DESCENDING"
-        }
-      ]
     }
   ]
 }
