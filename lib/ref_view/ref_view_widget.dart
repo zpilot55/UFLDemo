@@ -1,6 +1,6 @@
 import '../auth/auth_util.dart';
 import '../backend/backend.dart';
-import '../flutter_flow/flutter_flow_radio_button.dart';
+import '../flutter_flow/flutter_flow_drop_down.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_timer.dart';
 import '../flutter_flow/flutter_flow_util.dart';
@@ -30,8 +30,8 @@ class _RefViewWidgetState extends State<RefViewWidget> {
   late final StopWatchTimer timerController;
   late String timerValue;
   late int timerMilliseconds;
-  String? radioButtonValue1;
-  String? radioButtonValue2;
+  String? dropDownValue1;
+  String? dropDownValue2;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -611,176 +611,301 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text(
-                              'Action - ${FFAppState().currentFencerName}',
-                              style: FlutterFlowTheme.of(context).bodyText1,
+                            Padding(
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(0, 5, 0, 20),
+                              child: Text(
+                                'Action - ${FFAppState().currentFencerName}',
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyText1
+                                    .override(
+                                      fontFamily: 'Poppins',
+                                      fontSize: 18,
+                                    ),
+                              ),
                             ),
                           ],
                         ),
-                        Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Column(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                FlutterFlowRadioButton(
-                                  options: [
-                                    'Simple Attack',
-                                    'Compound',
-                                    'Parry/Riposte',
-                                    'Remise',
-                                    'Counter',
-                                    'Point in Line'
-                                  ].toList(),
-                                  onChanged: (value) {
-                                    setState(() => radioButtonValue1 = value);
-                                  },
-                                  optionHeight: 25,
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              FlutterFlowDropDown(
+                                options: [
+                                  'Simple Attack',
+                                  'Compound',
+                                  'Parry/Riposte',
+                                  'Remise',
+                                  'Counter',
+                                  'Point in Line'
+                                ],
+                                onChanged: (val) =>
+                                    setState(() => dropDownValue1 = val),
+                                width: 180,
+                                height: 50,
+                                textStyle: FlutterFlowTheme.of(context)
+                                    .bodyText1
+                                    .override(
+                                      fontFamily: 'Poppins',
+                                      color: Colors.black,
+                                    ),
+                                hintText: 'Type of Attack?',
+                                fillColor: Colors.white,
+                                elevation: 2,
+                                borderColor: Colors.black,
+                                borderWidth: 1,
+                                borderRadius: 0,
+                                margin: EdgeInsetsDirectional.fromSTEB(
+                                    12, 4, 12, 4),
+                                hidesUnderline: true,
+                              ),
+                              FlutterFlowDropDown(
+                                options: ['Hit', 'Off Target'],
+                                onChanged: (val) =>
+                                    setState(() => dropDownValue2 = val),
+                                width: 180,
+                                height: 50,
+                                textStyle: FlutterFlowTheme.of(context)
+                                    .bodyText1
+                                    .override(
+                                      fontFamily: 'Poppins',
+                                      color: Colors.black,
+                                    ),
+                                hintText: 'Hit/Off Target?',
+                                fillColor: Colors.white,
+                                elevation: 2,
+                                borderColor: Colors.black,
+                                borderWidth: 1,
+                                borderRadius: 0,
+                                margin: EdgeInsetsDirectional.fromSTEB(
+                                    12, 4, 12, 4),
+                                hidesUnderline: true,
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding:
+                              EdgeInsetsDirectional.fromSTEB(10, 20, 10, 0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              FFButtonWidget(
+                                onPressed: () {
+                                  print('Button pressed ...');
+                                },
+                                text: 'Simultaneous',
+                                options: FFButtonOptions(
+                                  width: 130,
+                                  height: 40,
+                                  color: Colors.black,
                                   textStyle: FlutterFlowTheme.of(context)
-                                      .bodyText1
+                                      .subtitle2
                                       .override(
                                         fontFamily: 'Poppins',
-                                        color: Colors.black,
+                                        color: Colors.white,
+                                        fontSize: 14,
                                       ),
-                                  buttonPosition: RadioButtonPosition.left,
-                                  direction: Axis.vertical,
-                                  radioButtonColor: Colors.blue,
-                                  inactiveRadioButtonColor: Color(0x8A000000),
-                                  toggleable: false,
-                                  horizontalAlignment: WrapAlignment.start,
-                                  verticalAlignment: WrapCrossAlignment.start,
+                                  borderSide: BorderSide(
+                                    color: Colors.black,
+                                    width: 1,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8),
                                 ),
-                              ],
-                            ),
-                            Column(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                FlutterFlowRadioButton(
-                                  options: [
-                                    'HIT',
-                                    'Off Target',
-                                    'Simultaneous',
-                                    'Pause',
-                                    'Yellow Card',
-                                    'Red Card'
-                                  ].toList(),
-                                  onChanged: (value) {
-                                    setState(() => radioButtonValue2 = value);
-                                  },
-                                  optionHeight: 25,
+                              ),
+                              FFButtonWidget(
+                                onPressed: () {
+                                  print('Button pressed ...');
+                                },
+                                text: 'Pause',
+                                options: FFButtonOptions(
+                                  width: 130,
+                                  height: 40,
+                                  color: Colors.black,
                                   textStyle: FlutterFlowTheme.of(context)
-                                      .bodyText1
+                                      .subtitle2
                                       .override(
                                         fontFamily: 'Poppins',
-                                        color: Colors.black,
+                                        color: Colors.white,
+                                        fontSize: 14,
                                       ),
-                                  buttonPosition: RadioButtonPosition.left,
-                                  direction: Axis.vertical,
-                                  radioButtonColor: Colors.blue,
-                                  inactiveRadioButtonColor: Color(0x8A000000),
-                                  toggleable: false,
-                                  horizontalAlignment: WrapAlignment.start,
-                                  verticalAlignment: WrapCrossAlignment.start,
+                                  borderSide: BorderSide(
+                                    color: Colors.black,
+                                    width: 1,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8),
                                 ),
-                              ],
-                            ),
-                            Column(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0, 0, 5, 20),
-                                  child: FFButtonWidget(
-                                    onPressed: () async {
-                                      if (FFAppState().isLeftFencerAction) {
-                                        if (radioButtonValue2 == 'HIT') {
+                              ),
+                              FFButtonWidget(
+                                onPressed: () {
+                                  print('Button pressed ...');
+                                },
+                                text: 'Yellow Card',
+                                options: FFButtonOptions(
+                                  width: 130,
+                                  height: 40,
+                                  color: Color(0xFFECD803),
+                                  textStyle: FlutterFlowTheme.of(context)
+                                      .subtitle2
+                                      .override(
+                                        fontFamily: 'Poppins',
+                                        color: Colors.white,
+                                        fontSize: 14,
+                                      ),
+                                  borderSide: BorderSide(
+                                    color: Colors.black,
+                                    width: 1,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                              FFButtonWidget(
+                                onPressed: () {
+                                  print('Button pressed ...');
+                                },
+                                text: 'Red Card',
+                                options: FFButtonOptions(
+                                  width: 130,
+                                  height: 40,
+                                  color: Color(0xFFFF0000),
+                                  textStyle: FlutterFlowTheme.of(context)
+                                      .subtitle2
+                                      .override(
+                                        fontFamily: 'Poppins',
+                                        color: Colors.white,
+                                      ),
+                                  borderSide: BorderSide(
+                                    color: Colors.black,
+                                    width: 1,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 40, 0, 0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Padding(
+                                padding:
+                                    EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
+                                child: FFButtonWidget(
+                                  onPressed: () async {
+                                    if (FFAppState().isLeftFencerAction) {
+                                      if (dropDownValue2 == 'HIT') {
+                                        setState(() =>
+                                            FFAppState().refLeftScore =
+                                                FFAppState().refLeftScore + 1);
+
+                                        final matchesUpdateData = {
+                                          'MatchEvents': FieldValue.arrayUnion([
+                                            getMatchEventFirestoreData(
+                                              createMatchEventStruct(
+                                                actionableFencer:
+                                                    FFAppState().leftFencerRef,
+                                                scoreLeft:
+                                                    FFAppState().refLeftScore,
+                                                scoreRight:
+                                                    FFAppState().refRightScore,
+                                                timeOfAction: timerMilliseconds,
+                                                periodOfAction:
+                                                    FFAppState().startPeriods,
+                                                actionID: 100,
+                                                clearUnsetFields: false,
+                                              ),
+                                              true,
+                                            )
+                                          ]),
+                                        };
+                                        await widget
+                                            .currentMatchInProgress!.reference
+                                            .update(matchesUpdateData);
+                                        if (FFAppState().refLeftScore ==
+                                            FFAppState().startTotalTouches) {
                                           setState(() => FFAppState()
-                                                  .refLeftScore =
-                                              FFAppState().refLeftScore + 1);
-                                          if (FFAppState().refLeftScore ==
-                                              FFAppState().startTotalTouches) {
-                                            setState(() => FFAppState()
-                                                .startStopText = 'END BOUT');
-                                            setState(() =>
-                                                FFAppState().endOfBout = true);
-                                          }
-                                        }
-                                      } else {
-                                        if (radioButtonValue2 == 'HIT') {
-                                          setState(() => FFAppState()
-                                                  .refRightScore =
-                                              FFAppState().refRightScore + 1);
-                                          if (FFAppState().refRightScore ==
-                                              FFAppState().startTotalTouches) {
-                                            setState(() => FFAppState()
-                                                .startStopText = 'END BOUT');
-                                            setState(() =>
-                                                FFAppState().endOfBout = true);
-                                          }
+                                              .startStopText = 'END BOUT');
+                                          setState(() =>
+                                              FFAppState().endOfBout = true);
                                         }
                                       }
+                                    } else {
+                                      if (dropDownValue2 == 'HIT') {
+                                        setState(() =>
+                                            FFAppState().refRightScore =
+                                                FFAppState().refRightScore + 1);
+                                        if (FFAppState().refRightScore ==
+                                            FFAppState().startTotalTouches) {
+                                          setState(() => FFAppState()
+                                              .startStopText = 'END BOUT');
+                                          setState(() =>
+                                              FFAppState().endOfBout = true);
+                                        }
+                                      }
+                                    }
 
-                                      setState(() =>
-                                          FFAppState().showActions = false);
-                                      setState(() =>
-                                          FFAppState().currentFencerName = '');
-                                    },
-                                    text: 'OK',
-                                    options: FFButtonOptions(
-                                      width: 100,
-                                      height: 40,
-                                      color: Color(0xFF00FF00),
-                                      textStyle: FlutterFlowTheme.of(context)
-                                          .subtitle2
-                                          .override(
-                                            fontFamily: 'Poppins',
-                                            color: Colors.white,
-                                          ),
-                                      borderSide: BorderSide(
-                                        color: Colors.black,
-                                        width: 1,
-                                      ),
-                                      borderRadius: BorderRadius.circular(8),
+                                    setState(
+                                        () => FFAppState().showActions = false);
+                                    setState(() =>
+                                        FFAppState().currentFencerName = '');
+                                  },
+                                  text: 'OK',
+                                  options: FFButtonOptions(
+                                    width: 100,
+                                    height: 40,
+                                    color: Color(0xFF00FF00),
+                                    textStyle: FlutterFlowTheme.of(context)
+                                        .subtitle2
+                                        .override(
+                                          fontFamily: 'Poppins',
+                                          color: Colors.white,
+                                        ),
+                                    borderSide: BorderSide(
+                                      color: Colors.black,
+                                      width: 1,
                                     ),
+                                    borderRadius: BorderRadius.circular(8),
                                   ),
                                 ),
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0, 0, 5, 0),
-                                  child: FFButtonWidget(
-                                    onPressed: () async {
-                                      setState(() =>
-                                          FFAppState().showActions = false);
-                                      setState(() =>
-                                          FFAppState().currentFencerName = '');
-                                    },
-                                    text: 'CANCEL',
-                                    options: FFButtonOptions(
-                                      width: 100,
-                                      height: 40,
-                                      color: Color(0xFFFF0000),
-                                      textStyle: FlutterFlowTheme.of(context)
-                                          .subtitle2
-                                          .override(
-                                            fontFamily: 'Poppins',
-                                            color: Colors.white,
-                                          ),
-                                      borderSide: BorderSide(
-                                        color: Colors.black,
-                                        width: 1,
-                                      ),
-                                      borderRadius: BorderRadius.circular(8),
+                              ),
+                              Padding(
+                                padding:
+                                    EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
+                                child: FFButtonWidget(
+                                  onPressed: () async {
+                                    setState(
+                                        () => FFAppState().showActions = false);
+                                    setState(() =>
+                                        FFAppState().currentFencerName = '');
+                                  },
+                                  text: 'CANCEL',
+                                  options: FFButtonOptions(
+                                    width: 100,
+                                    height: 40,
+                                    color: Color(0xFFFF0000),
+                                    textStyle: FlutterFlowTheme.of(context)
+                                        .subtitle2
+                                        .override(
+                                          fontFamily: 'Poppins',
+                                          color: Colors.white,
+                                        ),
+                                    borderSide: BorderSide(
+                                      color: Colors.black,
+                                      width: 1,
                                     ),
+                                    borderRadius: BorderRadius.circular(8),
                                   ),
                                 ),
-                              ],
-                            ),
-                          ],
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),

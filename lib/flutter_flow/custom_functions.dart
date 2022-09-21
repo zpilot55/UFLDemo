@@ -21,17 +21,21 @@ int minutesToMS(int inputMinutes) {
 
 String getActionStringFromID(int actionID) {
   switch (actionID) {
-    case -2:
+    case -3:
       {
         return "End of period";
       }
-    case -1:
+    case -2:
       {
         return "End of match";
       }
-    case 0:
+    case -1:
       {
         return "Start of match";
+      }
+    case 0:
+      {
+        return "ERROR: NOT FOUND";
       }
     case 1:
       {
@@ -166,4 +170,50 @@ String getActionStringFromID(int actionID) {
         return "ERROR: No action ID!";
       }
   }
+}
+
+int getActionIDfromRefState(
+  bool isLeftFencer,
+  String? drop1,
+  String? drop2,
+) {
+  int code = 0;
+  switch (drop1) {
+    case "Simple Attack":
+      {
+        code = code + 100;
+        break;
+      }
+    case "Compound":
+      {
+        code = code + 101;
+        break;
+      }
+    case "Parry/Riposte":
+      {
+        code = code + 102;
+        break;
+      }
+    case "Remise":
+      {
+        code = code + 103;
+        break;
+      }
+    case "Counterattack":
+      {
+        code = code + 104;
+        break;
+      }
+    case "Point in Line":
+      {
+        code = code + 105;
+      }
+  }
+  if (drop2 == "Off Target") {
+    code = code + 40;
+  }
+  if (!isLeftFencer) {
+    code = code + 100;
+  }
+  return code;
 }
