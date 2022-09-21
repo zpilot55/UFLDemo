@@ -570,6 +570,7 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                         'MatchEvents': [
                           getMatchEventFirestoreData(
                             createMatchEventStruct(
+                              actionableFencer: FFAppState().refereeReference,
                               scoreLeft: 0,
                               scoreRight: 0,
                               timeOfAction: FFAppState().startTimePeriod,
