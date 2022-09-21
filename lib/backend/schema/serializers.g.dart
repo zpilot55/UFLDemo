@@ -8,7 +8,6 @@ part of 'serializers.dart';
 
 Serializers _$serializers = (new Serializers().toBuilder()
       ..add(MatchEventStruct.serializer)
-      ..add(MatchEventsRecord.serializer)
       ..add(MatchesRecord.serializer)
       ..add(UsersRecord.serializer)
       ..addBuilderFactory(

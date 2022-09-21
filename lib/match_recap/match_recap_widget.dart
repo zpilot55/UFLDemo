@@ -2,6 +2,7 @@ import '../backend/backend.dart';
 import '../flutter_flow/flutter_flow_icon_button.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
+import '../flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -299,81 +300,111 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                 ],
               ),
             ),
-            ListView(
-              padding: EdgeInsets.zero,
-              shrinkWrap: true,
-              scrollDirection: Axis.vertical,
-              children: [
-                Card(
-                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                  color: Color(0xFFF5F5F5),
-                  child: Container(
-                    width: 100,
-                    height: 100,
-                    decoration: BoxDecoration(
-                      color: FlutterFlowTheme.of(context).secondaryBackground,
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Column(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Text(
-                              'Fencer:',
-                              style: FlutterFlowTheme.of(context).bodyText1,
-                            ),
-                            Text(
-                              'Hello World',
-                              style: FlutterFlowTheme.of(context).bodyText1,
-                            ),
-                          ],
-                        ),
-                        Column(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Text(
-                              'Time:',
-                              style: FlutterFlowTheme.of(context).bodyText1,
-                            ),
-                            Text(
-                              'Hello World',
-                              style: FlutterFlowTheme.of(context).bodyText1,
-                            ),
-                          ],
-                        ),
-                        Column(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Text(
-                              'Action:',
-                              style: FlutterFlowTheme.of(context).bodyText1,
-                            ),
-                            Text(
-                              'Hello World',
-                              style: FlutterFlowTheme.of(context).bodyText1,
-                            ),
-                          ],
-                        ),
-                        Column(
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Text(
-                              'Score:',
-                              style: FlutterFlowTheme.of(context).bodyText1,
-                            ),
-                            Text(
-                              'Hello World',
-                              style: FlutterFlowTheme.of(context).bodyText1,
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
+            Builder(
+              builder: (context) {
+                final currentMatchEvent =
+                    widget.currentMatch!.matchEvents!.toList();
+                return ListView.builder(
+                  padding: EdgeInsets.zero,
+                  shrinkWrap: true,
+                  scrollDirection: Axis.vertical,
+                  itemCount: currentMatchEvent.length,
+                  itemBuilder: (context, currentMatchEventIndex) {
+                    final currentMatchEventItem =
+                        currentMatchEvent[currentMatchEventIndex];
+                    return Container(
+                      width: 100,
+                      height: 100,
+                      decoration: BoxDecoration(
+                        color: FlutterFlowTheme.of(context).secondaryBackground,
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Column(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Text(
+                                'Fencer:',
+                                style: FlutterFlowTheme.of(context).bodyText1,
+                              ),
+                              StreamBuilder<UsersRecord>(
+                                stream: UsersRecord.getDocument(
+                                    currentMatchEventItem.actionableFencer!),
+                                builder: (context, snapshot) {
+                                  // Customize what your widget looks like when it's loading.
+                                  if (!snapshot.hasData) {
+                                    return Center(
+                                      child: SizedBox(
+                                        width: 50,
+                                        height: 50,
+                                        child: CircularProgressIndicator(
+                                          color: FlutterFlowTheme.of(context)
+                                              .primaryColor,
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                  final textUsersRecord = snapshot.data!;
+                                  return Text(
+                                    valueOrDefault<String>(
+                                      textUsersRecord.displayName,
+                                      'Referee',
+                                    ),
+                                    style:
+                                        FlutterFlowTheme.of(context).bodyText1,
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                          Column(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Text(
+                                'Time:',
+                                style: FlutterFlowTheme.of(context).bodyText1,
+                              ),
+                              Text(
+                                currentMatchEventItem.timeOfAction!.toString(),
+                                style: FlutterFlowTheme.of(context).bodyText1,
+                              ),
+                            ],
+                          ),
+                          Column(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Text(
+                                'Action:',
+                                style: FlutterFlowTheme.of(context).bodyText1,
+                              ),
+                              Text(
+                                functions.getActionStringFromID(
+                                    currentMatchEventItem.actionID!),
+                                style: FlutterFlowTheme.of(context).bodyText1,
+                              ),
+                            ],
+                          ),
+                          Column(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Text(
+                                'Score:',
+                                style: FlutterFlowTheme.of(context).bodyText1,
+                              ),
+                              Text(
+                                '${currentMatchEventItem.scoreLeft?.toString()} - ${currentMatchEventItem.scoreRight?.toString()}',
+                                style: FlutterFlowTheme.of(context).bodyText1,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                );
+              },
             ),
           ],
         ),

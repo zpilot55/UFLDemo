@@ -79,6 +79,9 @@ class FFAppState {
   List<DocumentReference> refFencers = [];
 
   bool endOfBoutPopup = false;
+
+  DocumentReference? refereeReference =
+      FirebaseFirestore.instance.doc('/users/0');
 }
 
 LatLng? _latLngFromString(String? val) {
