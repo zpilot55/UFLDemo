@@ -176,37 +176,62 @@ int getActionIDfromRefState(
   bool isLeftFencer,
   String? drop1,
   String? drop2,
+  String? nonAttackLabel,
 ) {
   int code = 0;
-  switch (drop1) {
-    case "Simple Attack":
+  switch (nonAttackLabel) {
+    case "Simultaneous":
       {
-        code = code + 100;
+        return 2;
+      }
+    case "Yellow Card":
+      {
+        code = 190;
         break;
       }
-    case "Compound":
+    case "Red Card":
       {
-        code = code + 101;
+        code = 191;
         break;
       }
-    case "Parry/Riposte":
+    case "Pause":
       {
-        code = code + 102;
+        code = 180;
         break;
       }
-    case "Remise":
+    default:
       {
-        code = code + 103;
-        break;
-      }
-    case "Counterattack":
-      {
-        code = code + 104;
-        break;
-      }
-    case "Point in Line":
-      {
-        code = code + 105;
+        switch (drop1) {
+          case "Simple Attack":
+            {
+              code = 100;
+              break;
+            }
+          case "Compound":
+            {
+              code = 101;
+              break;
+            }
+          case "Parry/Riposte":
+            {
+              code = 102;
+              break;
+            }
+          case "Remise":
+            {
+              code = 103;
+              break;
+            }
+          case "Counterattack":
+            {
+              code = 104;
+              break;
+            }
+          case "Point in Line":
+            {
+              code = 105;
+            }
+        }
       }
   }
   if (drop2 == "Off Target") {
@@ -216,4 +241,22 @@ int getActionIDfromRefState(
     code = code + 100;
   }
   return code;
+}
+
+dynamic makeMatchEventJSON(
+  int actionID,
+  DocumentReference actionableFencer,
+  int periodOfAction,
+  int scoreLeft,
+  int scoreRight,
+  int timeOfAction,
+) {
+  dynamic json = {};
+  json['actionID'] = actionID;
+  json['actionableFencer'] = actionableFencer;
+  json['periodOfAction'] = periodOfAction;
+  json['scoreLeft'] = scoreLeft;
+  json['scoreRight'] = scoreRight;
+  json['timeOfAction'] = timeOfAction;
+  return json;
 }
