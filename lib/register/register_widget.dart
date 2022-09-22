@@ -16,21 +16,15 @@ class RegisterWidget extends StatefulWidget {
 
 class _RegisterWidgetState extends State<RegisterWidget> {
   TextEditingController? dobController;
-
   TextEditingController? firstNameController;
-
   TextEditingController? lastNameController;
-
   TextEditingController? emailController;
-
   TextEditingController? passwordController;
 
   late bool passwordVisibility;
-
   TextEditingController? retypedController;
 
   late bool retypedVisibility;
-
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -44,6 +38,17 @@ class _RegisterWidgetState extends State<RegisterWidget> {
     passwordVisibility = false;
     retypedController = TextEditingController();
     retypedVisibility = false;
+  }
+
+  @override
+  void dispose() {
+    dobController?.dispose();
+    firstNameController?.dispose();
+    lastNameController?.dispose();
+    emailController?.dispose();
+    passwordController?.dispose();
+    retypedController?.dispose();
+    super.dispose();
   }
 
   @override
