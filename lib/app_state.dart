@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'flutter_flow/flutter_flow_util.dart';
 import 'flutter_flow/lat_lng.dart';
+import 'dart:convert';
 
 class FFAppState {
   static final FFAppState _instance = FFAppState._internal();
@@ -82,6 +83,14 @@ class FFAppState {
 
   DocumentReference? refereeReference =
       FirebaseFirestore.instance.doc('/users/0');
+
+  List<dynamic> currentMatchEvents = [];
+
+  String nonAttackLabel = '';
+
+  String refSecondTextAction = '';
+
+  bool isSimultaneous = false;
 }
 
 LatLng? _latLngFromString(String? val) {

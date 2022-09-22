@@ -15,13 +15,18 @@ class VerifyWidget extends StatefulWidget {
 
 class _VerifyWidgetState extends State<VerifyWidget> {
   TextEditingController? phoneNumberController;
-
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
     phoneNumberController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    phoneNumberController?.dispose();
+    super.dispose();
   }
 
   @override

@@ -12,6 +12,7 @@ Future flushLocalState() async {
   FFAppState().beginNextPer = false;
   FFAppState().currentFencerName = "";
   FFAppState().currentFencerPicURL = "";
+  FFAppState().currentMatchEvents = [];
   FFAppState().currentPeriod = 1;
   FFAppState().endOfBout = false;
   FFAppState().endOfBoutPopup = false;
@@ -20,6 +21,7 @@ Future flushLocalState() async {
   FFAppState().isRightFencer = false;
   FFAppState().isTimerRunning = false;
   FFAppState().leftFencerRef = null;
+  FFAppState().nonAttackLabel = "";
   FFAppState().onBreak = false;
   FFAppState().refFencers.clear();
   FFAppState().refLeftName = "";
