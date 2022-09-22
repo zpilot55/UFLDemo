@@ -17,9 +17,7 @@ class EditProfileWidget extends StatefulWidget {
 
 class _EditProfileWidgetState extends State<EditProfileWidget> {
   TextEditingController? textController1;
-
   TextEditingController? textController2;
-
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -27,6 +25,13 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
     super.initState();
     textController1 = TextEditingController(text: currentUserEmail);
     textController2 = TextEditingController(text: currentUserDisplayName);
+  }
+
+  @override
+  void dispose() {
+    textController1?.dispose();
+    textController2?.dispose();
+    super.dispose();
   }
 
   @override
