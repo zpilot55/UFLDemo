@@ -260,3 +260,20 @@ dynamic makeMatchEventJSON(
   json['timeOfAction'] = timeOfAction;
   return json;
 }
+
+List<MatchEventStruct> makeJSONtoMatchEventList(List<dynamic> jsonList) {
+  // json to data type
+  List<MatchEventStruct> matchEventList = [];
+  for (int i = 0; i < jsonList.length; i++) {
+    MatchEventStruct tempME = MatchEventStruct();
+    dynamic currJSON = jsonList[i];
+    tempME.actionID = currJSON['actionID'];
+    tempME.periodOfAction = currJSON['periodOfAction'];
+    tempME.scoreLeft = currJSON['scoreLeft'];
+    tempME.scoreRight = currJSON['scoreRight'];
+    tempME.timeOfAction = currJSON['timeOfAction'];
+    matchEventList.add(tempME);
+  }
+
+  return matchEventList;
+}
