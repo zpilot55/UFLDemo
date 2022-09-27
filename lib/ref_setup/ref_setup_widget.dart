@@ -6,6 +6,7 @@ import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import '../ref_view/ref_view_widget.dart';
 import '../select_fencer/select_fencer_widget.dart';
+import '../flutter_flow/custom_functions.dart' as functions;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -573,7 +574,8 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                               actionableFencer: FFAppState().refereeReference,
                               scoreLeft: 0,
                               scoreRight: 0,
-                              timeOfAction: FFAppState().startTimePeriod,
+                              timeOfAction: functions
+                                  .minutesToMS(FFAppState().startTimePeriod),
                               periodOfAction: 1,
                               actionID: -1,
                               clearUnsetFields: false,
@@ -589,6 +591,26 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                       currentMatchInProgress =
                           MatchesRecord.getDocumentFromData(
                               matchesCreateData, matchesRecordReference);
+
+                      final matchesUpdateData = {
+                        'MatchEvents': FieldValue.arrayUnion([
+                          getMatchEventFirestoreData(
+                            createMatchEventStruct(
+                              actionableFencer: FFAppState().refereeReference,
+                              scoreLeft: 0,
+                              scoreRight: 0,
+                              timeOfAction: functions
+                                  .minutesToMS(FFAppState().startTimePeriod),
+                              periodOfAction: 1,
+                              actionID: -11,
+                              clearUnsetFields: false,
+                            ),
+                            true,
+                          )
+                        ]),
+                      };
+                      await currentMatchInProgress!.reference
+                          .update(matchesUpdateData);
                       await Navigator.push(
                         context,
                         MaterialPageRoute(
