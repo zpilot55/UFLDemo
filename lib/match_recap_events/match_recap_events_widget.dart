@@ -58,7 +58,7 @@ class _MatchRecapEventsWidgetState extends State<MatchRecapEventsWidget> {
       body: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Builder(
               builder: (context) {
