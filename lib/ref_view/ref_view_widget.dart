@@ -753,21 +753,39 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                       FFAppState().refereeweaponselect,
                                       FFAppState().refIsHit,
                                     );
-                                    setState(() => FFAppState()
-                                        .currentMatchEvents
-                                        .add(functions.makeMatchEventJSON(
-                                            functions.getActionIDfromRefState(
-                                                FFAppState().isLeftFencerAction,
-                                                dropDownValue1,
-                                                dropDownValue2,
-                                                FFAppState().nonAttackLabel),
-                                            FFAppState().isLeftFencerAction
-                                                ? FFAppState().leftFencerRef!
-                                                : FFAppState().rightFencerRef!,
-                                            FFAppState().currentPeriod,
-                                            FFAppState().refLeftScore,
-                                            FFAppState().refRightScore,
-                                            timerMilliseconds!)));
+
+                                    final matchesUpdateData = {
+                                      'MatchEvents': FieldValue.arrayUnion([
+                                        getMatchEventFirestoreData(
+                                          createMatchEventStruct(
+                                            actionableFencer: FFAppState()
+                                                    .isLeftFencerAction
+                                                ? FFAppState().leftFencerRef
+                                                : FFAppState().rightFencerRef,
+                                            scoreLeft:
+                                                FFAppState().refLeftScore,
+                                            scoreRight:
+                                                FFAppState().refRightScore,
+                                            timeOfAction: timerMilliseconds,
+                                            periodOfAction:
+                                                FFAppState().currentPeriod,
+                                            actionID: functions
+                                                .getActionIDfromRefState(
+                                                    FFAppState()
+                                                        .isLeftFencerAction,
+                                                    dropDownValue1,
+                                                    dropDownValue2,
+                                                    FFAppState()
+                                                        .nonAttackLabel),
+                                            clearUnsetFields: false,
+                                          ),
+                                          true,
+                                        )
+                                      ]),
+                                    };
+                                    await widget
+                                        .currentMatchInProgress!.reference
+                                        .update(matchesUpdateData);
                                     await actions.flushMatchActionState();
                                   },
                                   text: 'OK',
@@ -926,12 +944,22 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                     scoreRight: FFAppState().refRightScore,
                                     noOfPeriods: FFAppState().currentPeriod,
                                   ),
-                                  'MatchEvents': getMatchEventListFirestoreData(
-                                    functions.makeJSONtoMatchEventList(
-                                        FFAppState()
-                                            .currentMatchEvents
-                                            .toList()),
-                                  ),
+                                  'MatchEvents': FieldValue.arrayUnion([
+                                    getMatchEventFirestoreData(
+                                      createMatchEventStruct(
+                                        actionableFencer:
+                                            FFAppState().refereeReference,
+                                        scoreLeft: FFAppState().refLeftScore,
+                                        scoreRight: FFAppState().refRightScore,
+                                        timeOfAction: timerMilliseconds,
+                                        periodOfAction:
+                                            FFAppState().currentPeriod,
+                                        actionID: -2,
+                                        clearUnsetFields: false,
+                                      ),
+                                      true,
+                                    )
+                                  ]),
                                 };
                                 await widget.currentMatchInProgress!.reference
                                     .update(matchesUpdateData);
