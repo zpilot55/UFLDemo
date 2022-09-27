@@ -267,6 +267,7 @@ List<MatchEventStruct> makeJSONtoMatchEventList(List<dynamic> jsonList) {
   for (int i = 0; i < jsonList.length; i++) {
     MatchEventStruct tempME = MatchEventStruct();
     dynamic currJSON = jsonList[i];
+    tempME.actionableFencer = currJSON['actionableFencer'];
     tempME.actionID = currJSON['actionID'];
     tempME.periodOfAction = currJSON['periodOfAction'];
     tempME.scoreLeft = currJSON['scoreLeft'];
