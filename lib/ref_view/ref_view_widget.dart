@@ -786,6 +786,8 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                     await widget
                                         .currentMatchInProgress!.reference
                                         .update(matchesUpdateData);
+                                    await Future.delayed(
+                                        const Duration(milliseconds: 100));
                                     await actions.flushMatchActionState();
                                   },
                                   text: 'OK',
