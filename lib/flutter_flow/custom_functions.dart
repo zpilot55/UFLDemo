@@ -23,27 +23,27 @@ String getActionStringFromID(int actionID) {
   switch (actionID) {
     case -32:
       {
-        return "End of period 3";
+        return "End of Per. 3";
       }
     case -31:
       {
-        return "Beginning of period 3";
+        return "Beg. of Per. 3";
       }
     case -22:
       {
-        return "End of period 2";
+        return "End of Per. 2";
       }
     case -21:
       {
-        return "Beginning of period 2";
+        return "Beg. of Per. 2";
       }
     case -12:
       {
-        return "End of period 1";
+        return "End of Per. 1";
       }
     case -11:
       {
-        return "Beginning of period 1";
+        return "Beg. of Per. 1";
       }
     case -2:
       {
@@ -59,23 +59,23 @@ String getActionStringFromID(int actionID) {
       }
     case 1:
       {
-        return "Referee called halt";
+        return "Ref. HALT";
       }
     case 2:
       {
-        return "Simultaneous action";
+        return "Simult.";
       }
     case 100:
       {
-        return "Simple attack HITS";
+        return "Simp atk HITS";
       }
     case 101:
       {
-        return "Compound attack HITS";
+        return "Comp atk HITS";
       }
     case 102:
       {
-        return "Parry riposte HITS";
+        return "Pry/Rip HITS";
       }
     case 103:
       {
@@ -83,43 +83,43 @@ String getActionStringFromID(int actionID) {
       }
     case 104:
       {
-        return "Counterattack HITS";
+        return "Cnt/Atk HITS";
       }
     case 105:
       {
-        return "Point in line HITS";
+        return "Pt/Ln HITS";
       }
     case 140:
       {
-        return "Simple attack OFF TARGET";
+        return "Simp atk OFF TAR";
       }
     case 141:
       {
-        return "Compound attack OFF TARGET";
+        return "Comp atk OFF TAR";
       }
     case 142:
       {
-        return "Parry riposte OFF TARGET";
+        return "Pry/Rip OFF TAR";
       }
     case 143:
       {
-        return "Remise OFF TARGET";
+        return "Remise OFF TAR";
       }
     case 144:
       {
-        return "Counterattack OFF TARGET";
+        return "Cnt/Atk OFF TAR";
       }
     case 145:
       {
-        return "Point in line OFF TARGET";
+        return "Pt/Ln OFF TAR";
       }
     case 180:
       {
-        return "Fencer called halt";
+        return "Fencer HALT";
       }
     case 190:
       {
-        return "YELLOW CARD";
+        return "YLW CARD";
       }
     case 191:
       {
@@ -127,15 +127,15 @@ String getActionStringFromID(int actionID) {
       }
     case 200:
       {
-        return "Simple attack HITS";
+        return "Simp atk HITS";
       }
     case 201:
       {
-        return "Compound attack HITS";
+        return "Comp atk HITS";
       }
     case 202:
       {
-        return "Parry riposte HITS";
+        return "Pry/Rip HITS";
       }
     case 203:
       {
@@ -143,39 +143,39 @@ String getActionStringFromID(int actionID) {
       }
     case 204:
       {
-        return "Counterattack HITS";
+        return "Cnt/Atk HITS";
       }
     case 205:
       {
-        return "Point in line HITS";
+        return "Pt/Ln HITS";
       }
     case 240:
       {
-        return "Simple attack OFF TARGET";
+        return "Simp atk OFF TAR";
       }
     case 241:
       {
-        return "Compound attack OFF TARGET";
+        return "Comp atk OFF TAR";
       }
     case 242:
       {
-        return "Parry riposte OFF TARGET";
+        return "Pry/Rip OFF TAR";
       }
     case 243:
       {
-        return "Remise OFF TARGET";
+        return "Remise OFF TAR";
       }
     case 244:
       {
-        return "Counterattack OFF TARGET";
+        return "Cnt/Atk OFF TAR";
       }
     case 245:
       {
-        return "Point in line OFF TARGET";
+        return "Pt/Ln OFF TAR";
       }
     case 280:
       {
-        return "Fencer called halt";
+        return "Fencer HALT";
       }
     case 290:
       {
