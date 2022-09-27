@@ -359,100 +359,104 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 5),
-                            child: FFButtonWidget(
-                              onPressed: () async {
-                                if (FFAppState().endOfBout) {
-                                  setState(
-                                      () => FFAppState().endOfBoutPopup = true);
-                                } else {
-                                  if (FFAppState().beginBreak) {
-                                    setState(
-                                        () => FFAppState().beginBreak = false);
-                                    setState(() => FFAppState().onBreak = true);
-                                    setState(() => FFAppState().timerStartTime =
-                                        functions.minutesToMS(
-                                            FFAppState().breakDuration));
-                                    await Future.delayed(
-                                        const Duration(milliseconds: 100));
-                                    timerController.onExecute.add(
-                                      StopWatchExecute.reset,
-                                    );
-
-                                    timerController.onExecute.add(
-                                      StopWatchExecute.start,
-                                    );
-
-                                    setState(
-                                        () => FFAppState().showActions = false);
-                                    setState(() => FFAppState().startStopText =
-                                        'ON BREAK');
+                          if (!FFAppState().showActions)
+                            Padding(
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(0, 0, 0, 5),
+                              child: FFButtonWidget(
+                                onPressed: () async {
+                                  if (FFAppState().endOfBout) {
+                                    setState(() =>
+                                        FFAppState().endOfBoutPopup = true);
                                   } else {
-                                    if (!FFAppState().onBreak) {
-                                      if (FFAppState().beginNextPer) {
-                                        setState(() => FFAppState()
-                                                .timerStartTime =
-                                            functions.minutesToMS(
-                                                FFAppState().startTimePeriod));
-                                        await Future.delayed(
-                                            const Duration(milliseconds: 100));
-                                        timerController.onExecute.add(
-                                          StopWatchExecute.reset,
-                                        );
+                                    if (FFAppState().beginBreak) {
+                                      setState(() =>
+                                          FFAppState().beginBreak = false);
+                                      setState(
+                                          () => FFAppState().onBreak = true);
+                                      setState(() =>
+                                          FFAppState().timerStartTime =
+                                              functions.minutesToMS(
+                                                  FFAppState().breakDuration));
+                                      await Future.delayed(
+                                          const Duration(milliseconds: 100));
+                                      timerController.onExecute.add(
+                                        StopWatchExecute.reset,
+                                      );
 
-                                        setState(() => FFAppState()
-                                            .startStopText = 'START');
-                                        setState(() =>
-                                            FFAppState().currentPeriod =
-                                                FFAppState().currentPeriod + 1);
-                                      } else {
-                                        if (FFAppState().isTimerRunning) {
+                                      timerController.onExecute.add(
+                                        StopWatchExecute.start,
+                                      );
+
+                                      setState(() =>
+                                          FFAppState().showActions = false);
+                                      setState(() => FFAppState()
+                                          .startStopText = 'ON BREAK');
+                                    } else {
+                                      if (!FFAppState().onBreak) {
+                                        if (FFAppState().beginNextPer) {
+                                          setState(() => FFAppState()
+                                                  .timerStartTime =
+                                              functions.minutesToMS(FFAppState()
+                                                  .startTimePeriod));
+                                          await Future.delayed(const Duration(
+                                              milliseconds: 100));
                                           timerController.onExecute.add(
-                                            StopWatchExecute.stop,
+                                            StopWatchExecute.reset,
                                           );
 
-                                          setState(() => FFAppState()
-                                              .isTimerRunning = false);
                                           setState(() => FFAppState()
                                               .startStopText = 'START');
+                                          setState(() => FFAppState()
+                                                  .currentPeriod =
+                                              FFAppState().currentPeriod + 1);
                                         } else {
-                                          timerController.onExecute.add(
-                                            StopWatchExecute.start,
-                                          );
+                                          if (FFAppState().isTimerRunning) {
+                                            timerController.onExecute.add(
+                                              StopWatchExecute.stop,
+                                            );
 
-                                          setState(() => FFAppState()
-                                              .isTimerRunning = true);
-                                          setState(() => FFAppState()
-                                              .startStopText = 'STOP');
+                                            setState(() => FFAppState()
+                                                .isTimerRunning = false);
+                                            setState(() => FFAppState()
+                                                .startStopText = 'START');
+                                          } else {
+                                            timerController.onExecute.add(
+                                              StopWatchExecute.start,
+                                            );
+
+                                            setState(() => FFAppState()
+                                                .isTimerRunning = true);
+                                            setState(() => FFAppState()
+                                                .startStopText = 'STOP');
+                                          }
                                         }
                                       }
                                     }
                                   }
-                                }
-                              },
-                              text: valueOrDefault<String>(
-                                FFAppState().startStopText,
-                                'START',
-                              ),
-                              options: FFButtonOptions(
-                                width: 200,
-                                height: 60,
-                                color: Colors.black,
-                                textStyle: FlutterFlowTheme.of(context)
-                                    .subtitle2
-                                    .override(
-                                      fontFamily: 'Poppins',
-                                      color: Colors.white,
-                                    ),
-                                borderSide: BorderSide(
-                                  color: Colors.black,
-                                  width: 1,
+                                },
+                                text: valueOrDefault<String>(
+                                  FFAppState().startStopText,
+                                  'START',
                                 ),
-                                borderRadius: BorderRadius.circular(8),
+                                options: FFButtonOptions(
+                                  width: 200,
+                                  height: 60,
+                                  color: Colors.black,
+                                  textStyle: FlutterFlowTheme.of(context)
+                                      .subtitle2
+                                      .override(
+                                        fontFamily: 'Poppins',
+                                        color: Colors.white,
+                                      ),
+                                  borderSide: BorderSide(
+                                    color: Colors.black,
+                                    width: 1,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
                               ),
                             ),
-                          ),
                         ],
                       ),
                     ],
