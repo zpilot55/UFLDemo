@@ -53,7 +53,7 @@ dependencies:
   intl: 0.17.0
   json_path: 0.4.1
   json_serializable: 6.3.1
-  page_transition: 2.0.9
+  page_transition: 2.0.4
   plugin_platform_interface: 2.1.2
   qr_flutter:
   rxdart: 0.27.4

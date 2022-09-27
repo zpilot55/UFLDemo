@@ -59,8 +59,6 @@ class FFAppState {
 
   bool showActions = false;
 
-  bool isActionArrives = false;
-
   String startStopText = 'START';
 
   int currentPeriod = 1;
@@ -91,6 +89,8 @@ class FFAppState {
   String refSecondTextAction = '';
 
   bool isSimultaneous = false;
+
+  bool refIsHit = false;
 }
 
 LatLng? _latLngFromString(String? val) {
