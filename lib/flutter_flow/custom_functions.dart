@@ -21,9 +21,29 @@ int minutesToMS(int inputMinutes) {
 
 String getActionStringFromID(int actionID) {
   switch (actionID) {
-    case -3:
+    case -32:
       {
-        return "End of period";
+        return "End of period 3";
+      }
+    case -31:
+      {
+        return "Beginning of period 3";
+      }
+    case -22:
+      {
+        return "End of period 2";
+      }
+    case -21:
+      {
+        return "Beginning of period 2";
+      }
+    case -12:
+      {
+        return "End of period 1";
+      }
+    case -11:
+      {
+        return "Beginning of period 1";
       }
     case -2:
       {
@@ -261,20 +281,24 @@ dynamic makeMatchEventJSON(
   return json;
 }
 
-List<MatchEventStruct> makeJSONtoMatchEventList(List<dynamic> jsonList) {
-  // json to data type
-  List<MatchEventStruct> matchEventList = [];
-  for (int i = 0; i < jsonList.length; i++) {
-    MatchEventStruct tempME = MatchEventStruct();
-    dynamic currJSON = jsonList[i];
-    tempME.actionableFencer = currJSON['actionableFencer'];
-    tempME.actionID = currJSON['actionID'];
-    tempME.periodOfAction = currJSON['periodOfAction'];
-    tempME.scoreLeft = currJSON['scoreLeft'];
-    tempME.scoreRight = currJSON['scoreRight'];
-    tempME.timeOfAction = currJSON['timeOfAction'];
-    matchEventList.add(tempME);
-  }
+String msToMinSecFormat(int inputMS) {
+  // convert milliseconds to minutes and seconds
+  var ms = inputMS;
+  var sec = (ms / 1000).truncate();
 
-  return matchEventList;
+  ms -= sec * 1000;
+  var min = (sec / 60).truncate();
+  sec -= (min * 60);
+//  var hours = (min / 60).truncate();
+//  min -= (hours * 60);
+
+  String minStr = min.toString();
+  if (min < 10) {
+    minStr = '0' + min.toString();
+  }
+  String secStr = sec.toString();
+  if (sec < 10) {
+    secStr = '0' + sec.toString();
+  }
+  return '$minStr:$secStr';
 }
