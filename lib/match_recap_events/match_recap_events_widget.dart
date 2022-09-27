@@ -55,25 +55,22 @@ class _MatchRecapEventsWidgetState extends State<MatchRecapEventsWidget> {
         elevation: 0,
       ),
       backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Builder(
-              builder: (context) {
-                final currentMatchEvent =
-                    widget.currentMatch!.matchEvents!.toList();
-                return ListView.builder(
-                  padding: EdgeInsets.zero,
-                  shrinkWrap: true,
-                  scrollDirection: Axis.vertical,
-                  itemCount: currentMatchEvent.length,
-                  itemBuilder: (context, currentMatchEventIndex) {
-                    final currentMatchEventItem =
-                        currentMatchEvent[currentMatchEventIndex];
-                    return Container(
-                      width: 100,
+      body: Builder(
+        builder: (context) {
+          final currentMatchEvent = widget.currentMatch!.matchEvents!.toList();
+          return SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: List.generate(currentMatchEvent.length,
+                  (currentMatchEventIndex) {
+                final currentMatchEventItem =
+                    currentMatchEvent[currentMatchEventIndex];
+                return Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width,
                       height: 100,
                       decoration: BoxDecoration(
                         color: FlutterFlowTheme.of(context).secondaryBackground,
@@ -248,13 +245,13 @@ class _MatchRecapEventsWidgetState extends State<MatchRecapEventsWidget> {
                           ),
                         ],
                       ),
-                    );
-                  },
+                    ),
+                  ],
                 );
-              },
+              }),
             ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
