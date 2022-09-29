@@ -51,11 +51,9 @@ class _VideoTestPageWidgetState extends State<VideoTestPageWidget> {
                   children: [
                     FFButtonWidget(
                       onPressed: () async {
-                        final selectedMedia =
-                            await selectMediaWithSourceBottomSheet(
-                          context: context,
-                          allowPhoto: false,
-                          allowVideo: true,
+                        final selectedMedia = await selectMedia(
+                          isVideo: true,
+                          multiImage: false,
                         );
                         if (selectedMedia != null &&
                             selectedMedia.every((m) =>
