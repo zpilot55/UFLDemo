@@ -129,7 +129,6 @@ class _VerifyWidgetState extends State<VerifyWidget> {
                       fontSize: 14,
                       fontWeight: FontWeight.normal,
                     ),
-                maxLines: null,
               ),
             ),
             Padding(
