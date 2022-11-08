@@ -25,7 +25,8 @@ class FFAppState {
 
   bool isRightFencer = false;
 
-  DocumentReference? scannedFencerRef;
+  DocumentReference? scannedFencerRef =
+      FirebaseFirestore.instance.doc('/users/2');
 
   String currentFencerName = '';
 
@@ -37,9 +38,10 @@ class FFAppState {
 
   int startTimePeriod = 1;
 
-  DocumentReference? leftFencerRef;
+  DocumentReference? leftFencerRef = FirebaseFirestore.instance.doc('/users/2');
 
-  DocumentReference? rightFencerRef;
+  DocumentReference? rightFencerRef =
+      FirebaseFirestore.instance.doc('/users/2');
 
   String refLeftName = 'Left Fencer';
 

@@ -38,6 +38,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
+      backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
       appBar: AppBar(
         backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
         automaticallyImplyLeading: false,
@@ -67,7 +68,6 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
         centerTitle: false,
         elevation: 0,
       ),
-      backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
       body: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.max,
@@ -242,6 +242,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                                   ),
                                 ),
                                 style: FlutterFlowTheme.of(context).bodyText1,
+                                maxLines: null,
                               ),
                             ),
                           ],
@@ -293,6 +294,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                                     ),
                                   ),
                                   style: FlutterFlowTheme.of(context).bodyText1,
+                                  maxLines: null,
                                 ),
                               ),
                             ),
