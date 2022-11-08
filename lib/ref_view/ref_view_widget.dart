@@ -27,9 +27,9 @@ class RefViewWidget extends StatefulWidget {
 }
 
 class _RefViewWidgetState extends State<RefViewWidget> {
-  late final StopWatchTimer timerController;
-  late String timerValue;
-  late int timerMilliseconds;
+  StopWatchTimer? timerController;
+  String? timerValue;
+  int? timerMilliseconds;
   String? dropDownValue1;
   String? dropDownValue2;
   final scaffoldKey = GlobalKey<ScaffoldState>();
@@ -37,35 +37,13 @@ class _RefViewWidgetState extends State<RefViewWidget> {
   @override
   void initState() {
     super.initState();
-    timerMilliseconds = functions.minutesToMS(widget.initStartTime!);
-    timerValue = StopWatchTimer.getDisplayTime(
-      0,
-      hours: false,
-      minute: true,
-      second: true,
-      milliSecond: true,
-    );
-    timerController = StopWatchTimer(
-      mode: StopWatchMode.countDown,
-      presetMillisecond: functions.minutesToMS(widget.initStartTime!),
-      onChange: (value) {
-        setState(() {
-          timerMilliseconds = value;
-          timerValue = StopWatchTimer.getDisplayTime(
-            value,
-            hours: false,
-            minute: true,
-            second: true,
-            milliSecond: true,
-          );
-        });
-      },
-    );
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
   @override
   void dispose() {
-    timerController.dispose();
+    timerController?.dispose();
     super.dispose();
   }
 
@@ -106,8 +84,33 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                   ),
                             ),
                             FlutterFlowTimer(
-                              timerValue: timerValue,
-                              timer: timerController,
+                              timerValue: timerValue ??=
+                                  StopWatchTimer.getDisplayTime(
+                                timerMilliseconds ??= functions
+                                    .minutesToMS(widget.initStartTime!),
+                                hours: false,
+                                minute: true,
+                                second: true,
+                                milliSecond: true,
+                              ),
+                              timer: timerController ??= StopWatchTimer(
+                                mode: StopWatchMode.countDown,
+                                presetMillisecond: timerMilliseconds ??=
+                                    functions
+                                        .minutesToMS(widget.initStartTime!),
+                                onChange: (value) {
+                                  setState(() {
+                                    timerMilliseconds = value;
+                                    timerValue = StopWatchTimer.getDisplayTime(
+                                      value,
+                                      hours: false,
+                                      minute: true,
+                                      second: true,
+                                      milliSecond: true,
+                                    );
+                                  });
+                                },
+                              ),
                               textAlign: TextAlign.start,
                               style: FlutterFlowTheme.of(context).title3,
                               onEnded: () async {
@@ -380,11 +383,11 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                                   FFAppState().breakDuration));
                                       await Future.delayed(
                                           const Duration(milliseconds: 100));
-                                      timerController.onExecute.add(
+                                      timerController?.onExecute.add(
                                         StopWatchExecute.reset,
                                       );
 
-                                      timerController.onExecute.add(
+                                      timerController?.onExecute.add(
                                         StopWatchExecute.start,
                                       );
 
@@ -401,7 +404,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                                   .startTimePeriod));
                                           await Future.delayed(const Duration(
                                               milliseconds: 100));
-                                          timerController.onExecute.add(
+                                          timerController?.onExecute.add(
                                             StopWatchExecute.reset,
                                           );
 
@@ -412,7 +415,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                               FFAppState().currentPeriod + 1);
                                         } else {
                                           if (FFAppState().isTimerRunning) {
-                                            timerController.onExecute.add(
+                                            timerController?.onExecute.add(
                                               StopWatchExecute.stop,
                                             );
 
@@ -421,7 +424,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                             setState(() => FFAppState()
                                                 .startStopText = 'START');
                                           } else {
-                                            timerController.onExecute.add(
+                                            timerController?.onExecute.add(
                                               StopWatchExecute.start,
                                             );
 

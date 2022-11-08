@@ -32,17 +32,17 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
+      backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+      drawer: Drawer(
+        elevation: 16,
+        child: ColMainDrawerWidget(),
+      ),
       appBar: AppBar(
         backgroundColor: FlutterFlowTheme.of(context).primaryColor,
         automaticallyImplyLeading: true,
         actions: [],
         centerTitle: true,
         elevation: 4,
-      ),
-      backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-      drawer: Drawer(
-        elevation: 16,
-        child: ColMainDrawerWidget(),
       ),
       body: SafeArea(
         child: GestureDetector(
@@ -357,9 +357,13 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                                         children: [
                                           Text(
                                             dateTimeFormat(
-                                                'MMMEd',
-                                                listViewMatchesRecord
-                                                    .scheduledTime!),
+                                              'MMMEd',
+                                              listViewMatchesRecord
+                                                  .scheduledTime!,
+                                              locale:
+                                                  FFLocalizations.of(context)
+                                                      .languageCode,
+                                            ),
                                             style: FlutterFlowTheme.of(context)
                                                 .bodyText2,
                                           ),

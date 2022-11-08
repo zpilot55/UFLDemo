@@ -10,9 +10,13 @@ class UFLDemoFirebaseUser {
 UFLDemoFirebaseUser? currentUser;
 bool get loggedIn => currentUser?.loggedIn ?? false;
 Stream<UFLDemoFirebaseUser> uFLDemoFirebaseUserStream() => FirebaseAuth.instance
-    .authStateChanges()
-    .debounce((user) => user == null && !loggedIn
-        ? TimerStream(true, const Duration(seconds: 1))
-        : Stream.value(user))
-    .map<UFLDemoFirebaseUser>(
-        (user) => currentUser = UFLDemoFirebaseUser(user));
+        .authStateChanges()
+        .debounce((user) => user == null && !loggedIn
+            ? TimerStream(true, const Duration(seconds: 1))
+            : Stream.value(user))
+        .map<UFLDemoFirebaseUser>(
+      (user) {
+        currentUser = UFLDemoFirebaseUser(user);
+        return currentUser!;
+      },
+    );

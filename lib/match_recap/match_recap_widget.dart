@@ -26,6 +26,7 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
+      backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
       appBar: AppBar(
         backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
         automaticallyImplyLeading: false,
@@ -55,7 +56,6 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
         centerTitle: false,
         elevation: 0,
       ),
-      backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
       body: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.max,
@@ -269,7 +269,11 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Text(
-                            'Start Time: ${dateTimeFormat('MMMEd', widget.currentMatch!.scheduledTime)}',
+                            'Start Time: ${dateTimeFormat(
+                              'MMMEd',
+                              widget.currentMatch!.scheduledTime,
+                              locale: FFLocalizations.of(context).languageCode,
+                            )}',
                             style: FlutterFlowTheme.of(context).bodyText1,
                           ),
                         ],

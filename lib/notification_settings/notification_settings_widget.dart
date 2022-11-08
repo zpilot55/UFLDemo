@@ -23,6 +23,7 @@ class _NotificationSettingsWidgetState
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
+      backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
       appBar: AppBar(
         backgroundColor: FlutterFlowTheme.of(context).primaryColor,
         automaticallyImplyLeading: false,
@@ -52,7 +53,6 @@ class _NotificationSettingsWidgetState
         centerTitle: false,
         elevation: 0,
       ),
-      backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
       body: Column(
         mainAxisSize: MainAxisSize.max,
         children: [
@@ -79,8 +79,9 @@ class _NotificationSettingsWidgetState
             padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
             child: SwitchListTile.adaptive(
               value: switchListTileValue1 ??= true,
-              onChanged: (newValue) =>
-                  setState(() => switchListTileValue1 = newValue),
+              onChanged: (newValue) async {
+                setState(() => switchListTileValue1 = newValue!);
+              },
               title: Text(
                 'Push Notifications',
                 style: FlutterFlowTheme.of(context).title3.override(
@@ -108,8 +109,9 @@ class _NotificationSettingsWidgetState
           ),
           SwitchListTile.adaptive(
             value: switchListTileValue2 ??= true,
-            onChanged: (newValue) =>
-                setState(() => switchListTileValue2 = newValue),
+            onChanged: (newValue) async {
+              setState(() => switchListTileValue2 = newValue!);
+            },
             title: Text(
               'Email Notifications',
               style: FlutterFlowTheme.of(context).title3.override(
