@@ -328,6 +328,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                 ),
                               ),
                             ),
+                          Spacer(),
                           if (!FFAppState().showActions)
                             Padding(
                               padding:
@@ -426,6 +427,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                 ),
                               ),
                             ),
+                          Spacer(),
                           if (FFAppState().isTimerRunning == false)
                             Padding(
                               padding:
