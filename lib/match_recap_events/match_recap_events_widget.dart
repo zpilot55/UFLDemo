@@ -25,6 +25,7 @@ class _MatchRecapEventsWidgetState extends State<MatchRecapEventsWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
+      backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
       appBar: AppBar(
         backgroundColor: FlutterFlowTheme.of(context).secondaryBackground,
         automaticallyImplyLeading: false,
@@ -54,7 +55,6 @@ class _MatchRecapEventsWidgetState extends State<MatchRecapEventsWidget> {
         centerTitle: false,
         elevation: 0,
       ),
-      backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
       body: Builder(
         builder: (context) {
           final currentMatchEvent = widget.currentMatch!.matchEvents!.toList();

@@ -33,6 +33,7 @@ class _VerifyWidgetState extends State<VerifyWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
+      backgroundColor: Color(0xFF4B39EF),
       appBar: AppBar(
         backgroundColor: Color(0xFF4B39EF),
         automaticallyImplyLeading: false,
@@ -54,7 +55,6 @@ class _VerifyWidgetState extends State<VerifyWidget> {
         centerTitle: false,
         elevation: 0,
       ),
-      backgroundColor: Color(0xFF4B39EF),
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height * 1,
@@ -129,6 +129,7 @@ class _VerifyWidgetState extends State<VerifyWidget> {
                       fontSize: 14,
                       fontWeight: FontWeight.normal,
                     ),
+                maxLines: null,
               ),
             ),
             Padding(

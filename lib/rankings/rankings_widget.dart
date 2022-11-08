@@ -18,17 +18,17 @@ class _RankingsWidgetState extends State<RankingsWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
+      backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+      drawer: Drawer(
+        elevation: 16,
+        child: ColMainDrawerWidget(),
+      ),
       appBar: AppBar(
         backgroundColor: FlutterFlowTheme.of(context).primaryColor,
         automaticallyImplyLeading: true,
         actions: [],
         centerTitle: true,
         elevation: 4,
-      ),
-      backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-      drawer: Drawer(
-        elevation: 16,
-        child: ColMainDrawerWidget(),
       ),
       body: SafeArea(
         child: GestureDetector(
