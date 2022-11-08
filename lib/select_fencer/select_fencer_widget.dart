@@ -41,6 +41,7 @@ class _SelectFencerWidgetState extends State<SelectFencerWidget> {
         List<UsersRecord> selectFencerUsersRecordList = snapshot.data!;
         return Scaffold(
           key: scaffoldKey,
+          backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
           appBar: AppBar(
             backgroundColor: FlutterFlowTheme.of(context).primaryColor,
             automaticallyImplyLeading: true,
@@ -48,7 +49,6 @@ class _SelectFencerWidgetState extends State<SelectFencerWidget> {
             centerTitle: true,
             elevation: 4,
           ),
-          backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
           body: SafeArea(
             child: GestureDetector(
               onTap: () => FocusScope.of(context).unfocus(),
@@ -196,8 +196,8 @@ class _SelectFencerWidgetState extends State<SelectFencerWidget> {
                                       FFAppState().currentFencerPicURL);
                                 }
 
-                                setState(
-                                    () => FFAppState().scannedFencerRef = null);
+                                setState(() => FFAppState().scannedFencerRef =
+                                    FirebaseFirestore.instance.doc('/users/2'));
                                 setState(
                                     () => FFAppState().currentFencerName = '');
                                 setState(() =>
