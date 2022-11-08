@@ -63,6 +63,13 @@ class _$MatchEventStructSerializer
         ..add('actionID')
         ..add(serializers.serialize(value, specifiedType: const FullType(int)));
     }
+    value = object.actionURL;
+    if (value != null) {
+      result
+        ..add('actionURL')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
+    }
     return result;
   }
 
@@ -104,6 +111,10 @@ class _$MatchEventStructSerializer
           result.actionID = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int?;
           break;
+        case 'actionURL':
+          result.actionURL = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
+          break;
         case 'firestoreUtilData':
           result.firestoreUtilData = serializers.deserialize(value,
                   specifiedType: const FullType(FirestoreUtilData))!
@@ -130,6 +141,8 @@ class _$MatchEventStruct extends MatchEventStruct {
   @override
   final int? actionID;
   @override
+  final String? actionURL;
+  @override
   final FirestoreUtilData firestoreUtilData;
 
   factory _$MatchEventStruct(
@@ -143,6 +156,7 @@ class _$MatchEventStruct extends MatchEventStruct {
       this.timeOfAction,
       this.periodOfAction,
       this.actionID,
+      this.actionURL,
       required this.firestoreUtilData})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(
@@ -167,6 +181,7 @@ class _$MatchEventStruct extends MatchEventStruct {
         timeOfAction == other.timeOfAction &&
         periodOfAction == other.periodOfAction &&
         actionID == other.actionID &&
+        actionURL == other.actionURL &&
         firestoreUtilData == other.firestoreUtilData;
   }
 
@@ -177,12 +192,14 @@ class _$MatchEventStruct extends MatchEventStruct {
             $jc(
                 $jc(
                     $jc(
-                        $jc($jc(0, actionableFencer.hashCode),
-                            scoreLeft.hashCode),
-                        scoreRight.hashCode),
-                    timeOfAction.hashCode),
-                periodOfAction.hashCode),
-            actionID.hashCode),
+                        $jc(
+                            $jc($jc(0, actionableFencer.hashCode),
+                                scoreLeft.hashCode),
+                            scoreRight.hashCode),
+                        timeOfAction.hashCode),
+                    periodOfAction.hashCode),
+                actionID.hashCode),
+            actionURL.hashCode),
         firestoreUtilData.hashCode));
   }
 
@@ -195,6 +212,7 @@ class _$MatchEventStruct extends MatchEventStruct {
           ..add('timeOfAction', timeOfAction)
           ..add('periodOfAction', periodOfAction)
           ..add('actionID', actionID)
+          ..add('actionURL', actionURL)
           ..add('firestoreUtilData', firestoreUtilData))
         .toString();
   }
@@ -230,6 +248,10 @@ class MatchEventStructBuilder
   int? get actionID => _$this._actionID;
   set actionID(int? actionID) => _$this._actionID = actionID;
 
+  String? _actionURL;
+  String? get actionURL => _$this._actionURL;
+  set actionURL(String? actionURL) => _$this._actionURL = actionURL;
+
   FirestoreUtilData? _firestoreUtilData;
   FirestoreUtilData? get firestoreUtilData => _$this._firestoreUtilData;
   set firestoreUtilData(FirestoreUtilData? firestoreUtilData) =>
@@ -248,6 +270,7 @@ class MatchEventStructBuilder
       _timeOfAction = $v.timeOfAction;
       _periodOfAction = $v.periodOfAction;
       _actionID = $v.actionID;
+      _actionURL = $v.actionURL;
       _firestoreUtilData = $v.firestoreUtilData;
       _$v = null;
     }
@@ -277,6 +300,7 @@ class MatchEventStructBuilder
             timeOfAction: timeOfAction,
             periodOfAction: periodOfAction,
             actionID: actionID,
+            actionURL: actionURL,
             firestoreUtilData: BuiltValueNullFieldError.checkNotNull(
                 firestoreUtilData, r'MatchEventStruct', 'firestoreUtilData'));
     replace(_$result);
