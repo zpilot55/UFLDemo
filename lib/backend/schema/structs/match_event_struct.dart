@@ -23,6 +23,8 @@ abstract class MatchEventStruct
 
   int? get actionID;
 
+  String? get videoURL;
+
   /// Utility class for Firestore updates
   FirestoreUtilData get firestoreUtilData;
 
@@ -32,6 +34,7 @@ abstract class MatchEventStruct
     ..timeOfAction = 0
     ..periodOfAction = 0
     ..actionID = 0
+    ..videoURL = ''
     ..firestoreUtilData = FirestoreUtilData();
 
   MatchEventStruct._();
@@ -46,6 +49,7 @@ MatchEventStruct createMatchEventStruct({
   int? timeOfAction,
   int? periodOfAction,
   int? actionID,
+  String? videoURL,
   Map<String, dynamic> fieldValues = const {},
   bool clearUnsetFields = true,
   bool create = false,
@@ -59,6 +63,7 @@ MatchEventStruct createMatchEventStruct({
         ..timeOfAction = timeOfAction
         ..periodOfAction = periodOfAction
         ..actionID = actionID
+        ..videoURL = videoURL
         ..firestoreUtilData = FirestoreUtilData(
           clearUnsetFields: clearUnsetFields,
           create: create,
