@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 
 // Begin custom action code
 Future flushMatchActionState() async {
+  FFAppState().curentActionVideoURL = "";
   FFAppState().isLeftFencerAction = true;
   FFAppState().isSimultaneous = false;
   FFAppState().nonAttackLabel = "";
