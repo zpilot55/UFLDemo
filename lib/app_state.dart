@@ -93,6 +93,9 @@ class FFAppState {
   bool isSimultaneous = false;
 
   bool refIsHit = false;
+
+  String tempVideoURL =
+      'https://firebasestorage.googleapis.com/v0/b/universalfencingleague.appspot.com/o/matches%2F7gV34Hk9G3BXNKAu8GQ3%2FREC8439795998652433271.mp4-s?alt=media&token=56c0477b-8eb6-4e06-a539-3816f081bcda';
 }
 
 LatLng? _latLngFromString(String? val) {
