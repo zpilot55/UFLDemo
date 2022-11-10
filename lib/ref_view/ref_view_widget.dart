@@ -785,7 +785,6 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                                     dropDownValue2,
                                                     FFAppState()
                                                         .nonAttackLabel),
-                                            actionURL: 'jsadbvnjkwEANJONn',
                                             clearUnsetFields: false,
                                           ),
                                           true,
