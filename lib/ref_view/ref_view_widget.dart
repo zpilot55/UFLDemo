@@ -750,74 +750,75 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Padding(
-                                padding:
-                                    EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
-                                child: FFButtonWidget(
-                                  onPressed: () async {
-                                    await actions.awardPointIfApplicable(
-                                      FFAppState().isLeftFencerAction,
-                                      FFAppState().nonAttackLabel,
-                                      FFAppState().refereeweaponselect,
-                                      FFAppState().refIsHit,
-                                    );
+                              if (FFAppState().videoHasUploaded)
+                                Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0, 0, 5, 0),
+                                  child: FFButtonWidget(
+                                    onPressed: () async {
+                                      await actions.awardPointIfApplicable(
+                                        FFAppState().isLeftFencerAction,
+                                        FFAppState().nonAttackLabel,
+                                        FFAppState().refereeweaponselect,
+                                        FFAppState().refIsHit,
+                                      );
 
-                                    final matchesUpdateData = {
-                                      'MatchEvents': FieldValue.arrayUnion([
-                                        getMatchEventFirestoreData(
-                                          createMatchEventStruct(
-                                            actionableFencer: FFAppState()
-                                                    .isLeftFencerAction
-                                                ? FFAppState().leftFencerRef
-                                                : FFAppState().rightFencerRef,
-                                            scoreLeft:
-                                                FFAppState().refLeftScore,
-                                            scoreRight:
-                                                FFAppState().refRightScore,
-                                            timeOfAction: timerMilliseconds,
-                                            periodOfAction:
-                                                FFAppState().currentPeriod,
-                                            actionID: functions
-                                                .getActionIDfromRefState(
-                                                    FFAppState()
-                                                        .isLeftFencerAction,
-                                                    dropDownValue1,
-                                                    dropDownValue2,
-                                                    FFAppState()
-                                                        .nonAttackLabel),
-                                            videoURL: '3br3rb3e3rq',
-                                            clearUnsetFields: false,
+                                      final matchesUpdateData = {
+                                        'MatchEvents': FieldValue.arrayUnion([
+                                          getMatchEventFirestoreData(
+                                            createMatchEventStruct(
+                                              actionableFencer: FFAppState()
+                                                      .isLeftFencerAction
+                                                  ? FFAppState().leftFencerRef
+                                                  : FFAppState().rightFencerRef,
+                                              scoreLeft:
+                                                  FFAppState().refLeftScore,
+                                              scoreRight:
+                                                  FFAppState().refRightScore,
+                                              timeOfAction: timerMilliseconds,
+                                              periodOfAction:
+                                                  FFAppState().currentPeriod,
+                                              actionID: functions
+                                                  .getActionIDfromRefState(
+                                                      FFAppState()
+                                                          .isLeftFencerAction,
+                                                      dropDownValue1,
+                                                      dropDownValue2,
+                                                      FFAppState()
+                                                          .nonAttackLabel),
+                                              videoURL: '3br3rb3e3rq',
+                                              clearUnsetFields: false,
+                                            ),
+                                            true,
+                                          )
+                                        ]),
+                                      };
+                                      await widget
+                                          .currentMatchInProgress!.reference
+                                          .update(matchesUpdateData);
+                                      await actions.flushMatchActionState();
+                                      setState(() =>
+                                          FFAppState().showActions = false);
+                                    },
+                                    text: 'OK',
+                                    options: FFButtonOptions(
+                                      width: 100,
+                                      height: 40,
+                                      color: Color(0xFF00FF00),
+                                      textStyle: FlutterFlowTheme.of(context)
+                                          .subtitle2
+                                          .override(
+                                            fontFamily: 'Poppins',
+                                            color: Colors.white,
                                           ),
-                                          true,
-                                        )
-                                      ]),
-                                    };
-                                    await widget
-                                        .currentMatchInProgress!.reference
-                                        .update(matchesUpdateData);
-                                    await actions.flushMatchActionState();
-                                    setState(
-                                        () => FFAppState().showActions = false);
-                                  },
-                                  text: 'OK',
-                                  options: FFButtonOptions(
-                                    width: 100,
-                                    height: 40,
-                                    color: Color(0xFF00FF00),
-                                    textStyle: FlutterFlowTheme.of(context)
-                                        .subtitle2
-                                        .override(
-                                          fontFamily: 'Poppins',
-                                          color: Colors.white,
-                                        ),
-                                    borderSide: BorderSide(
-                                      color: Colors.black,
-                                      width: 1,
+                                      borderSide: BorderSide(
+                                        color: Colors.black,
+                                        width: 1,
+                                      ),
+                                      borderRadius: BorderRadius.circular(8),
                                     ),
-                                    borderRadius: BorderRadius.circular(8),
                                   ),
                                 ),
-                              ),
                               Padding(
                                 padding:
                                     EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
