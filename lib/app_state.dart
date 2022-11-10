@@ -95,6 +95,8 @@ class FFAppState {
   bool refIsHit = false;
 
   String curentActionVideoURL = '';
+
+  bool videoHasUploaded = false;
 }
 
 LatLng? _latLngFromString(String? val) {
