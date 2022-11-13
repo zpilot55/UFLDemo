@@ -30,7 +30,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
   StopWatchTimer? timerController;
   String? timerValue;
   int? timerMilliseconds;
+  String? actionText1;
   String? dropDownValue1;
+  String? actionText2;
   String? dropDownValue2;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -536,8 +538,18 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                   'Counterattack',
                                   'Point in Line'
                                 ],
-                                onChanged: (val) =>
-                                    setState(() => dropDownValue1 = val),
+                                onChanged: (val) async {
+                                  setState(() => dropDownValue1 = val);
+                                  actionText1 =
+                                      await actions.setActionFromDropdown(
+                                    dropDownValue1,
+                                    dropDownValue2,
+                                  );
+                                  setState(() => FFAppState()
+                                      .refSecondTextAction = actionText1!);
+
+                                  setState(() {});
+                                },
                                 width: 180,
                                 height: 50,
                                 textStyle: FlutterFlowTheme.of(context)
@@ -556,45 +568,20 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                     12, 4, 12, 4),
                                 hidesUnderline: true,
                               ),
-                              FFButtonWidget(
-                                onPressed: () async {
-                                  setState(() => FFAppState()
-                                          .refSecondTextAction =
-                                      '\'s ${dropDownValue1}${dropDownValue2 == 'HITS' ? ' HITS' : ' IS OFF TARGET'}');
-                                  setState(() =>
-                                      FFAppState().isSimultaneous = false);
-                                  setState(
-                                      () => FFAppState().nonAttackLabel = '');
-                                  if (dropDownValue2 == 'HITS') {
-                                    setState(
-                                        () => FFAppState().refIsHit = true);
-                                  } else {
-                                    setState(
-                                        () => FFAppState().refIsHit = false);
-                                  }
-                                },
-                                text: 'CONFIRM ATTACK',
-                                options: FFButtonOptions(
-                                  width: 170,
-                                  height: 40,
-                                  color: Color(0xFFFF0000),
-                                  textStyle: FlutterFlowTheme.of(context)
-                                      .subtitle2
-                                      .override(
-                                        fontFamily: 'Poppins',
-                                        color: Colors.white,
-                                      ),
-                                  borderSide: BorderSide(
-                                    color: Colors.black,
-                                    width: 1,
-                                  ),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
                               FlutterFlowDropDown(
                                 options: ['HITS', 'OFF TARGET'],
-                                onChanged: (val) =>
-                                    setState(() => dropDownValue2 = val),
+                                onChanged: (val) async {
+                                  setState(() => dropDownValue2 = val);
+                                  actionText2 =
+                                      await actions.setActionFromDropdown(
+                                    dropDownValue1,
+                                    dropDownValue2,
+                                  );
+                                  setState(() => FFAppState()
+                                      .refSecondTextAction = actionText2!);
+
+                                  setState(() {});
+                                },
                                 width: 180,
                                 height: 50,
                                 textStyle: FlutterFlowTheme.of(context)
@@ -750,75 +737,74 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              if (FFAppState().videoHasUploaded)
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      0, 0, 5, 0),
-                                  child: FFButtonWidget(
-                                    onPressed: () async {
-                                      await actions.awardPointIfApplicable(
-                                        FFAppState().isLeftFencerAction,
-                                        FFAppState().nonAttackLabel,
-                                        FFAppState().refereeweaponselect,
-                                        FFAppState().refIsHit,
-                                      );
+                              Padding(
+                                padding:
+                                    EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
+                                child: FFButtonWidget(
+                                  onPressed: () async {
+                                    await actions.awardPointIfApplicable(
+                                      FFAppState().isLeftFencerAction,
+                                      FFAppState().nonAttackLabel,
+                                      FFAppState().refereeweaponselect,
+                                      FFAppState().refIsHit,
+                                    );
 
-                                      final matchesUpdateData = {
-                                        'MatchEvents': FieldValue.arrayUnion([
-                                          getMatchEventFirestoreData(
-                                            createMatchEventStruct(
-                                              actionableFencer: FFAppState()
-                                                      .isLeftFencerAction
-                                                  ? FFAppState().leftFencerRef
-                                                  : FFAppState().rightFencerRef,
-                                              scoreLeft:
-                                                  FFAppState().refLeftScore,
-                                              scoreRight:
-                                                  FFAppState().refRightScore,
-                                              timeOfAction: timerMilliseconds,
-                                              periodOfAction:
-                                                  FFAppState().currentPeriod,
-                                              actionID: functions
-                                                  .getActionIDfromRefState(
-                                                      FFAppState()
-                                                          .isLeftFencerAction,
-                                                      dropDownValue1,
-                                                      dropDownValue2,
-                                                      FFAppState()
-                                                          .nonAttackLabel),
-                                              videoURL: '3br3rb3e3rq',
-                                              clearUnsetFields: false,
-                                            ),
-                                            true,
-                                          )
-                                        ]),
-                                      };
-                                      await widget
-                                          .currentMatchInProgress!.reference
-                                          .update(matchesUpdateData);
-                                      await actions.flushMatchActionState();
-                                      setState(() =>
-                                          FFAppState().showActions = false);
-                                    },
-                                    text: 'OK',
-                                    options: FFButtonOptions(
-                                      width: 100,
-                                      height: 40,
-                                      color: Color(0xFF00FF00),
-                                      textStyle: FlutterFlowTheme.of(context)
-                                          .subtitle2
-                                          .override(
-                                            fontFamily: 'Poppins',
-                                            color: Colors.white,
+                                    final matchesUpdateData = {
+                                      'MatchEvents': FieldValue.arrayUnion([
+                                        getMatchEventFirestoreData(
+                                          createMatchEventStruct(
+                                            actionableFencer: FFAppState()
+                                                    .isLeftFencerAction
+                                                ? FFAppState().leftFencerRef
+                                                : FFAppState().rightFencerRef,
+                                            scoreLeft:
+                                                FFAppState().refLeftScore,
+                                            scoreRight:
+                                                FFAppState().refRightScore,
+                                            timeOfAction: timerMilliseconds,
+                                            periodOfAction:
+                                                FFAppState().currentPeriod,
+                                            actionID: functions
+                                                .getActionIDfromRefState(
+                                                    FFAppState()
+                                                        .isLeftFencerAction,
+                                                    dropDownValue1,
+                                                    dropDownValue2,
+                                                    FFAppState()
+                                                        .nonAttackLabel),
+                                            videoURL: '3br3rb3e3rq',
+                                            clearUnsetFields: false,
                                           ),
-                                      borderSide: BorderSide(
-                                        color: Colors.black,
-                                        width: 1,
-                                      ),
-                                      borderRadius: BorderRadius.circular(8),
+                                          true,
+                                        )
+                                      ]),
+                                    };
+                                    await widget
+                                        .currentMatchInProgress!.reference
+                                        .update(matchesUpdateData);
+                                    await actions.flushMatchActionState();
+                                    setState(
+                                        () => FFAppState().showActions = false);
+                                  },
+                                  text: 'OK',
+                                  options: FFButtonOptions(
+                                    width: 100,
+                                    height: 40,
+                                    color: Color(0xFF00FF00),
+                                    textStyle: FlutterFlowTheme.of(context)
+                                        .subtitle2
+                                        .override(
+                                          fontFamily: 'Poppins',
+                                          color: Colors.white,
+                                        ),
+                                    borderSide: BorderSide(
+                                      color: Colors.black,
+                                      width: 1,
                                     ),
+                                    borderRadius: BorderRadius.circular(8),
                                   ),
                                 ),
+                              ),
                               Padding(
                                 padding:
                                     EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
