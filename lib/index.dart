@@ -19,4 +19,3 @@ export 'notification_settings/notification_settings_widget.dart'
 export 'select_fencer/select_fencer_widget.dart' show SelectFencerWidget;
 export 'ref_setup/ref_setup_widget.dart' show RefSetupWidget;
 export 'ref_view/ref_view_widget.dart' show RefViewWidget;
-export 'video_test_page/video_test_page_widget.dart' show VideoTestPageWidget;

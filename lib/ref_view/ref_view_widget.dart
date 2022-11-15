@@ -39,7 +39,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
   StopWatchTimer? timerController;
   String? timerValue;
   int? timerMilliseconds;
+  String? actionText1;
   String? dropDownValue1;
+  String? actionText2;
   String? dropDownValue2;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -629,6 +631,156 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                   ),
                 ],
               ),
+              if (FFAppState().endOfBoutPopup)
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 230,
+                  decoration: BoxDecoration(
+                    color: FlutterFlowTheme.of(context).secondaryBackground,
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 20),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'You are about to end the bout. Do you wish to continue?',
+                              style: FlutterFlowTheme.of(context).bodyText1,
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 20),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            FFButtonWidget(
+                              onPressed: () async {
+                                setState(() => FFAppState().endOfBout = false);
+                                setState(
+                                    () => FFAppState().endOfBoutPopup = false);
+                              },
+                              text: 'Cancel',
+                              options: FFButtonOptions(
+                                width: 250,
+                                height: 40,
+                                color: Color(0xFFFF0000),
+                                textStyle: FlutterFlowTheme.of(context)
+                                    .subtitle2
+                                    .override(
+                                      fontFamily: 'Poppins',
+                                      color: Colors.white,
+                                    ),
+                                borderSide: BorderSide(
+                                  color: Colors.transparent,
+                                  width: 1,
+                                ),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 20),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            FFButtonWidget(
+                              onPressed: () async {
+                                await actions.flushLocalState();
+                                await widget.currentMatchInProgress!.reference
+                                    .delete();
+                                Navigator.pop(context);
+                              },
+                              text: 'Continue without Saving',
+                              options: FFButtonOptions(
+                                width: 250,
+                                height: 40,
+                                color: Color(0xFFECD803),
+                                textStyle: FlutterFlowTheme.of(context)
+                                    .subtitle2
+                                    .override(
+                                      fontFamily: 'Poppins',
+                                      color: Colors.white,
+                                    ),
+                                borderSide: BorderSide(
+                                  color: Colors.transparent,
+                                  width: 1,
+                                ),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 20),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            FFButtonWidget(
+                              onPressed: () async {
+                                final matchesUpdateData = {
+                                  ...createMatchesRecordData(
+                                    scoreLeft: FFAppState().refLeftScore,
+                                    scoreRight: FFAppState().refRightScore,
+                                    noOfPeriods: FFAppState().currentPeriod,
+                                  ),
+                                  'MatchEvents': FieldValue.arrayUnion([
+                                    getMatchEventFirestoreData(
+                                      createMatchEventStruct(
+                                        actionableFencer:
+                                            FFAppState().refereeReference,
+                                        scoreLeft: FFAppState().refLeftScore,
+                                        scoreRight: FFAppState().refRightScore,
+                                        timeOfAction: timerMilliseconds,
+                                        periodOfAction:
+                                            FFAppState().currentPeriod,
+                                        actionID: -2,
+                                        clearUnsetFields: false,
+                                      ),
+                                      true,
+                                    )
+                                  ]),
+                                };
+                                await widget.currentMatchInProgress!.reference
+                                    .update(matchesUpdateData);
+                                await actions.flushLocalState();
+                                Navigator.pop(context);
+                              },
+                              text: 'Save and Continue',
+                              options: FFButtonOptions(
+                                width: 250,
+                                height: 40,
+                                color: Color(0xFF00FF00),
+                                textStyle: FlutterFlowTheme.of(context)
+                                    .subtitle2
+                                    .override(
+                                      fontFamily: 'Poppins',
+                                      color: Colors.white,
+                                    ),
+                                borderSide: BorderSide(
+                                  color: Colors.transparent,
+                                  width: 1,
+                                ),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               if (FFAppState().showActions)
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
@@ -698,8 +850,20 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                   'Counterattack',
                                   'Point in Line'
                                 ],
-                                onChanged: (val) =>
-                                    setState(() => dropDownValue1 = val),
+                                onChanged: (val) async {
+                                  setState(() => dropDownValue1 = val);
+                                  actionText1 =
+                                      await actions.setActionFromDropdown(
+                                    dropDownValue1,
+                                    dropDownValue2,
+                                  );
+                                  setState(() => FFAppState()
+                                      .refSecondTextAction = actionText1!);
+                                  setState(() =>
+                                      FFAppState().isSimultaneous = false);
+
+                                  setState(() {});
+                                },
                                 width: 180,
                                 height: 50,
                                 textStyle: FlutterFlowTheme.of(context)
@@ -718,45 +882,23 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                     12, 4, 12, 4),
                                 hidesUnderline: true,
                               ),
-                              FFButtonWidget(
-                                onPressed: () async {
-                                  setState(() => FFAppState()
-                                          .refSecondTextAction =
-                                      '\'s ${dropDownValue1}${dropDownValue2 == 'HITS' ? ' HITS' : ' IS OFF TARGET'}');
-                                  setState(() =>
-                                      FFAppState().isSimultaneous = false);
-                                  setState(
-                                      () => FFAppState().nonAttackLabel = '');
-                                  if (dropDownValue2 == 'HITS') {
-                                    setState(
-                                        () => FFAppState().refIsHit = true);
-                                  } else {
-                                    setState(
-                                        () => FFAppState().refIsHit = false);
-                                  }
-                                },
-                                text: 'CONFIRM ATTACK',
-                                options: FFButtonOptions(
-                                  width: 170,
-                                  height: 40,
-                                  color: Color(0xFFFF0000),
-                                  textStyle: FlutterFlowTheme.of(context)
-                                      .subtitle2
-                                      .override(
-                                        fontFamily: 'Poppins',
-                                        color: Colors.white,
-                                      ),
-                                  borderSide: BorderSide(
-                                    color: Colors.black,
-                                    width: 1,
-                                  ),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
                               FlutterFlowDropDown(
                                 options: ['HITS', 'OFF TARGET'],
-                                onChanged: (val) =>
-                                    setState(() => dropDownValue2 = val),
+                                onChanged: (val) async {
+                                  setState(() => dropDownValue2 = val);
+                                  actionText2 =
+                                      await actions.setActionFromDropdown(
+                                    dropDownValue1,
+                                    dropDownValue2,
+                                  );
+                                  setState(() => FFAppState()
+                                      .refSecondTextAction = actionText2!);
+                                  setState(() => FFAppState().refIsHit = true);
+                                  setState(() =>
+                                      FFAppState().isSimultaneous = false);
+
+                                  setState(() {});
+                                },
                                 width: 180,
                                 height: 50,
                                 textStyle: FlutterFlowTheme.of(context)
@@ -1025,156 +1167,6 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                         ),
                       ],
                     ),
-                  ),
-                ),
-              if (FFAppState().endOfBoutPopup)
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: 230,
-                  decoration: BoxDecoration(
-                    color: FlutterFlowTheme.of(context).secondaryBackground,
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 20),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'You are about to end the bout. Do you wish to continue?',
-                              style: FlutterFlowTheme.of(context).bodyText1,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 20),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            FFButtonWidget(
-                              onPressed: () async {
-                                setState(() => FFAppState().endOfBout = false);
-                                setState(
-                                    () => FFAppState().endOfBoutPopup = false);
-                              },
-                              text: 'Cancel',
-                              options: FFButtonOptions(
-                                width: 250,
-                                height: 40,
-                                color: Color(0xFFFF0000),
-                                textStyle: FlutterFlowTheme.of(context)
-                                    .subtitle2
-                                    .override(
-                                      fontFamily: 'Poppins',
-                                      color: Colors.white,
-                                    ),
-                                borderSide: BorderSide(
-                                  color: Colors.transparent,
-                                  width: 1,
-                                ),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 20),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            FFButtonWidget(
-                              onPressed: () async {
-                                await actions.flushLocalState();
-                                await widget.currentMatchInProgress!.reference
-                                    .delete();
-                                Navigator.pop(context);
-                              },
-                              text: 'Continue without Saving',
-                              options: FFButtonOptions(
-                                width: 250,
-                                height: 40,
-                                color: Color(0xFFECD803),
-                                textStyle: FlutterFlowTheme.of(context)
-                                    .subtitle2
-                                    .override(
-                                      fontFamily: 'Poppins',
-                                      color: Colors.white,
-                                    ),
-                                borderSide: BorderSide(
-                                  color: Colors.transparent,
-                                  width: 1,
-                                ),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 20),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            FFButtonWidget(
-                              onPressed: () async {
-                                final matchesUpdateData = {
-                                  ...createMatchesRecordData(
-                                    scoreLeft: FFAppState().refLeftScore,
-                                    scoreRight: FFAppState().refRightScore,
-                                    noOfPeriods: FFAppState().currentPeriod,
-                                  ),
-                                  'MatchEvents': FieldValue.arrayUnion([
-                                    getMatchEventFirestoreData(
-                                      createMatchEventStruct(
-                                        actionableFencer:
-                                            FFAppState().refereeReference,
-                                        scoreLeft: FFAppState().refLeftScore,
-                                        scoreRight: FFAppState().refRightScore,
-                                        timeOfAction: timerMilliseconds,
-                                        periodOfAction:
-                                            FFAppState().currentPeriod,
-                                        actionID: -2,
-                                        clearUnsetFields: false,
-                                      ),
-                                      true,
-                                    )
-                                  ]),
-                                };
-                                await widget.currentMatchInProgress!.reference
-                                    .update(matchesUpdateData);
-                                await actions.flushLocalState();
-                                Navigator.pop(context);
-                              },
-                              text: 'Save and Continue',
-                              options: FFButtonOptions(
-                                width: 250,
-                                height: 40,
-                                color: Color(0xFF00FF00),
-                                textStyle: FlutterFlowTheme.of(context)
-                                    .subtitle2
-                                    .override(
-                                      fontFamily: 'Poppins',
-                                      color: Colors.white,
-                                    ),
-                                borderSide: BorderSide(
-                                  color: Colors.transparent,
-                                  width: 1,
-                                ),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
                   ),
                 ),
             ],
