@@ -19,8 +19,6 @@ import 'package:flutter/services.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
 
-import '../flutter_flow/upload_media.dart';
-
 class RefViewWidget extends StatefulWidget {
   const RefViewWidget({
     Key? key,
@@ -215,6 +213,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: Stack(
+            alignment: Alignment.center,
             children: [
               CameraPreview(_cameraController),
               Column(
@@ -1108,11 +1107,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                           FFAppState().showActions = false);
                                     }
                                     else {
-                                      showUploadMessage(
-                                        context,
-                                        'Please wait for video to upload...',
-                                        showLoading: true,
-                                      );
+
                                     }
                                   },
                                   text: 'OK',

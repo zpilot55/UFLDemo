@@ -39,6 +39,9 @@ dependencies:
   firebase_core: 1.19.1
   firebase_core_platform_interface: 4.4.3
   firebase_core_web: 1.6.6
+  firebase_storage: 10.3.1
+  firebase_storage_platform_interface: 4.1.10
+  firebase_storage_web: 3.2.19
   flutter_animate: 1.0.0
   flutter_barcode_scanner:
     git:
