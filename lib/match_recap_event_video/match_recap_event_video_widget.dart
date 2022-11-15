@@ -63,7 +63,7 @@ class _MatchRecapEventVideoWidgetState
         looping: true,
         showControls: true,
         allowFullScreen: true,
-        allowPlaybackSpeedMenu: false,
+        allowPlaybackSpeedMenu: true,
       ),
     );
   }
