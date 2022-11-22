@@ -7,8 +7,8 @@ import '../flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class MatchRecapEventsWidget extends StatefulWidget {
-  const MatchRecapEventsWidget({
+class RefMatchRecapEventsWidget extends StatefulWidget {
+  const RefMatchRecapEventsWidget({
     Key? key,
     this.currentMatch,
   }) : super(key: key);
@@ -16,10 +16,11 @@ class MatchRecapEventsWidget extends StatefulWidget {
   final MatchesRecord? currentMatch;
 
   @override
-  _MatchRecapEventsWidgetState createState() => _MatchRecapEventsWidgetState();
+  _RefMatchRecapEventsWidgetState createState() =>
+      _RefMatchRecapEventsWidgetState();
 }
 
-class _MatchRecapEventsWidgetState extends State<MatchRecapEventsWidget> {
+class _RefMatchRecapEventsWidgetState extends State<RefMatchRecapEventsWidget> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override

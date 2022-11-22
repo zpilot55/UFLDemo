@@ -5,6 +5,7 @@ import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_timer.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
+import '../ref_match_recap_events/ref_match_recap_events_widget.dart';
 import '../custom_code/actions/index.dart' as actions;
 import '../flutter_flow/custom_functions.dart' as functions;
 import 'package:stop_watch_timer/stop_watch_timer.dart';
@@ -209,6 +210,113 @@ class _RefViewWidgetState extends State<RefViewWidget> {
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: Color(0x00FFFFFF),
+      endDrawer: Drawer(
+        elevation: 16,
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SelectionArea(
+                    child: Text(
+                  'Match Options',
+                  style: FlutterFlowTheme.of(context).title3,
+                )),
+              ],
+            ),
+            Padding(
+              padding: EdgeInsetsDirectional.fromSTEB(10, 20, 10, 0),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SelectionArea(
+                      child: Text(
+                    'Replay Last Action',
+                    style: FlutterFlowTheme.of(context).subtitle1,
+                  )),
+                  Icon(
+                    Icons.arrow_forward,
+                    color: Colors.black,
+                    size: 24,
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: EdgeInsetsDirectional.fromSTEB(10, 20, 10, 0),
+              child: InkWell(
+                onTap: () async {
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => RefMatchRecapEventsWidget(
+                        currentMatch: widget.currentMatchInProgress,
+                      ),
+                    ),
+                  );
+                },
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SelectionArea(
+                        child: Text(
+                      'View Match Timeline',
+                      style: FlutterFlowTheme.of(context).subtitle1,
+                    )),
+                    Icon(
+                      Icons.arrow_forward,
+                      color: Colors.black,
+                      size: 24,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsetsDirectional.fromSTEB(10, 20, 10, 0),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SelectionArea(
+                      child: Text(
+                    'Undo Last Action',
+                    style: FlutterFlowTheme.of(context).subtitle1,
+                  )),
+                  Icon(
+                    Icons.arrow_forward,
+                    color: Colors.black,
+                    size: 24,
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: EdgeInsetsDirectional.fromSTEB(10, 20, 10, 0),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SelectionArea(
+                      child: Text(
+                    'Issue Black Card',
+                    style: FlutterFlowTheme.of(context).subtitle1,
+                  )),
+                  Icon(
+                    Icons.arrow_forward,
+                    color: Colors.black,
+                    size: 24,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
       body: SafeArea(
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
@@ -224,7 +332,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                     width: MediaQuery.of(context).size.width,
                     height: 160,
                     decoration: BoxDecoration(
-                      color: Color(0x1AF1F4F8),
+                      color: Color(0x80FFFFFF),
                     ),
                     child: Column(
                       mainAxisSize: MainAxisSize.max,
@@ -446,7 +554,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                     width: MediaQuery.of(context).size.width,
                     height: 100,
                     decoration: BoxDecoration(
-                      color: Color(0x1AF1F4F8),
+                      color: Color(0x80FFFFFF),
                     ),
                     child: Padding(
                       padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
@@ -840,7 +948,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              FlutterFlowDropDown(
+                              FlutterFlowDropDown<String>(
                                 options: [
                                   'Simple Attack',
                                   'Compound',
@@ -881,7 +989,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                     12, 4, 12, 4),
                                 hidesUnderline: true,
                               ),
-                              FlutterFlowDropDown(
+                              FlutterFlowDropDown<String>(
                                 options: ['HITS', 'OFF TARGET'],
                                 onChanged: (val) async {
                                   setState(() => dropDownValue2 = val);
@@ -892,9 +1000,6 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                   );
                                   setState(() => FFAppState()
                                       .refSecondTextAction = actionText2!);
-                                  setState(() => FFAppState().refIsHit = true);
-                                  setState(() =>
-                                      FFAppState().isSimultaneous = false);
 
                                   setState(() {});
                                 },
@@ -1066,42 +1171,40 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                         FFAppState().refIsHit,
                                       );
 
-                                      uploadedURL = await uploadTask!.snapshot.ref.getDownloadURL();
-
-                                      final matchesUpdateData = {
-                                        'MatchEvents': FieldValue.arrayUnion([
-                                          getMatchEventFirestoreData(
-                                            createMatchEventStruct(
-                                              actionableFencer: FFAppState()
-                                                  .isLeftFencerAction
-                                                  ? FFAppState().leftFencerRef
-                                                  : FFAppState().rightFencerRef,
-                                              scoreLeft:
-                                              FFAppState().refLeftScore,
-                                              scoreRight:
-                                              FFAppState().refRightScore,
-                                              timeOfAction: timerMilliseconds,
-                                              periodOfAction:
-                                              FFAppState().currentPeriod,
-                                              actionID: functions
-                                                  .getActionIDfromRefState(
-                                                  FFAppState()
-                                                      .isLeftFencerAction,
-                                                  dropDownValue1,
-                                                  dropDownValue2,
-                                                  FFAppState()
-                                                      .nonAttackLabel),
-                                              videoURL: uploadedURL,
-                                              clearUnsetFields: false,
-                                            ),
-                                            true,
-                                          )
-                                        ]),
-                                      };
-                                      await widget
-                                          .currentMatchInProgress!.reference
-                                          .update(matchesUpdateData);
-                                      await actions.flushMatchActionState();
+                                    final matchesUpdateData = {
+                                      'MatchEvents': FieldValue.arrayUnion([
+                                        getMatchEventFirestoreData(
+                                          createMatchEventStruct(
+                                            actionableFencer: FFAppState()
+                                                    .isLeftFencerAction
+                                                ? FFAppState().leftFencerRef
+                                                : FFAppState().rightFencerRef,
+                                            scoreLeft:
+                                                FFAppState().refLeftScore,
+                                            scoreRight:
+                                                FFAppState().refRightScore,
+                                            timeOfAction: timerMilliseconds,
+                                            periodOfAction:
+                                                FFAppState().currentPeriod,
+                                            actionID: functions
+                                                .getActionIDfromRefState(
+                                                    FFAppState()
+                                                        .isLeftFencerAction,
+                                                    dropDownValue1,
+                                                    !FFAppState().refIsHit,
+                                                    FFAppState()
+                                                        .nonAttackLabel),
+                                            videoURL: uploadedURL,
+                                            clearUnsetFields: false,
+                                          ),
+                                          true,
+                                        )
+                                      ]),
+                                    };
+                                    await widget
+                                        .currentMatchInProgress!.reference
+                                        .update(matchesUpdateData);
+                                    await actions.flushMatchActionState();
                                       setState(
                                               () =>
                                           FFAppState().showActions = false);

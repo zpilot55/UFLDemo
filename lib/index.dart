@@ -19,3 +19,5 @@ export 'notification_settings/notification_settings_widget.dart'
 export 'select_fencer/select_fencer_widget.dart' show SelectFencerWidget;
 export 'ref_setup/ref_setup_widget.dart' show RefSetupWidget;
 export 'ref_view/ref_view_widget.dart' show RefViewWidget;
+export 'ref_match_recap_events/ref_match_recap_events_widget.dart'
+    show RefMatchRecapEventsWidget;

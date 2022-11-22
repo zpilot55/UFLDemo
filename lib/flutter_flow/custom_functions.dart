@@ -195,7 +195,7 @@ String getActionStringFromID(int actionID) {
 int getActionIDfromRefState(
   bool isLeftFencer,
   String? drop1,
-  String? drop2,
+  bool isOffTarget,
   String? nonAttackLabel,
 ) {
   int code = 0;
@@ -254,7 +254,7 @@ int getActionIDfromRefState(
         }
       }
   }
-  if (drop2 == "Off Target") {
+  if (isOffTarget) {
     code = code + 40;
   }
   if (!isLeftFencer) {
