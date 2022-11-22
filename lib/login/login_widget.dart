@@ -174,7 +174,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                     fontSize: 14,
                                     fontWeight: FontWeight.normal,
                                   ),
-                              hintText: 'Enter your email here...',
+                              hintText: 'Enter your password here...',
                               hintStyle: FlutterFlowTheme.of(context)
                                   .bodyText1
                                   .override(
