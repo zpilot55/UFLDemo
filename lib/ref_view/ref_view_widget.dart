@@ -5,19 +5,13 @@ import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_timer.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
+import '../ref_match_recap_events/ref_match_recap_events_widget.dart';
 import '../custom_code/actions/index.dart' as actions;
 import '../flutter_flow/custom_functions.dart' as functions;
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import 'package:camera/camera.dart';
-import 'package:ffmpeg_kit_flutter_https_gpl/return_code.dart';
-import 'package:ffmpeg_kit_flutter_https_gpl/ffmpeg_kit.dart';
-import 'package:flutter/services.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'dart:io';
 
 class RefViewWidget extends StatefulWidget {
   const RefViewWidget({
@@ -43,179 +37,136 @@ class _RefViewWidgetState extends State<RefViewWidget> {
   String? dropDownValue2;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
-  bool _isLoading = true;
-  bool _isRecording = false;
-  bool _isUploading = false;
-  late CameraController _cameraController;
-  String? uploadedURL;
-  UploadTask? uploadTask;
-
   @override
   void initState() {
     super.initState();
-    _initCamera();
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.landscapeRight,
-      DeviceOrientation.landscapeLeft,
-    ]);
+
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
   @override
   void dispose() {
     timerController?.dispose();
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-      DeviceOrientation.landscapeRight,
-      DeviceOrientation.landscapeLeft,
-    ]);
     super.dispose();
   }
-
-  _initCamera() async {
-    final cameras = await availableCameras();
-    final backCamera = cameras.firstWhere((camera) => camera.lensDirection == CameraLensDirection.back);
-    _cameraController = CameraController(backCamera, ResolutionPreset.medium);
-    await _cameraController.initialize();
-    //_cameraController.lockCaptureOrientation([DeviceOrientation.landscapeLeft]);
-    setState(() => _isLoading = false);
-  }
-
-  _startRecording() async {
-    await _cameraController.prepareForVideoRecording();
-    await _cameraController.startVideoRecording();
-    setState(() => _isRecording = true);
-  }
-
-  _stopRecording() async {
-    final file = await _cameraController.stopVideoRecording();
-    setState(() => _isRecording = false);
-    int cutOffEndTime = -3; //Hardcoded cutoff time
-    String newFilePath = '${file.path.split('.mp4')[0]}-s.mp4';
-    await FFmpegKit.executeAsync('-encoders');
-    await FFmpegKit.execute('-sseof $cutOffEndTime -i ${file.path} -f mp4 $newFilePath').then((session) async {
-
-      // Return code for completed sessions. Will be undefined if session is still running or FFmpegKit fails to run it
-      final returnCode = await session.getReturnCode();
-
-      // The list of logs generated for this execution
-      final logs = await session.getLogs();
-      print(logs);
-
-      if (ReturnCode.isSuccess(returnCode)) {
-
-        print("Success!");
-
-      } else if (ReturnCode.isCancel(returnCode)) {
-
-        print("CANCEL!");
-
-      } else {
-
-        print("ERROR!");
-
-      }
-    });
-    setState(() => _isRecording = false);
-
-    setState(() => _isUploading = true);
-    final newFile = File(newFilePath);
-    String matchID = widget.currentMatchInProgress!.reference.id;
-    String fileName = newFilePath.split('/').last;
-    String newPath = 'matches/$matchID/$fileName';
-
-// Create the file metadata
-    final metadata = SettableMetadata(contentType: "video/mp4");
-
-// Create a reference to the Firebase Storage bucket
-    final storageRef = FirebaseStorage.instance.ref();
-
-// Upload file and metadata to the path 'images/mountains.jpg'
-    uploadTask = storageRef
-        .child(newPath)
-        .putFile(newFile, metadata);
-
-// Listen for state changes, errors, and completion of the upload.
-    uploadTask!.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
-      switch (taskSnapshot.state) {
-        case TaskState.running:
-          final progress =
-              100.0 * (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
-          print("Upload is $progress% complete.");
-          break;
-        case TaskState.paused:
-          print("Upload is paused.");
-          break;
-        case TaskState.canceled:
-          print("Upload was canceled");
-          break;
-        case TaskState.error:
-        // Handle unsuccessful uploads
-          break;
-        case TaskState.success:
-          break;
-      }
-    });
-    _isUploading = false;
-  }
-
-//   _uploadVideo(String filePath) async {
-//     setState(() => _isUploading = true);
-//     final file = File(filePath);
-//     String matchID = widget.currentMatchInProgress!.reference.id;
-//     String fileName = filePath.split('/').last;
-//     String newPath = 'matches/$matchID/$fileName';
-//
-// // Create the file metadata
-//     final metadata = SettableMetadata(contentType: "video/mp4");
-//
-// // Create a reference to the Firebase Storage bucket
-//     final storageRef = FirebaseStorage.instance.ref();
-//
-// // Upload file and metadata to the path 'images/mountains.jpg'
-//     final uploadTask = storageRef
-//         .child(newPath)
-//         .putFile(file, metadata);
-//
-// // Listen for state changes, errors, and completion of the upload.
-//     uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
-//       switch (taskSnapshot.state) {
-//         case TaskState.running:
-//           final progress =
-//               100.0 * (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
-//           print("Upload is $progress% complete.");
-//           break;
-//         case TaskState.paused:
-//           print("Upload is paused.");
-//           break;
-//         case TaskState.canceled:
-//           print("Upload was canceled");
-//           break;
-//         case TaskState.error:
-//         // Handle unsuccessful uploads
-//           break;
-//         case TaskState.success:
-//           break;
-//       }
-//     });
-//
-//     uploadedURL = await uploadTask.snapshot.ref.getDownloadURL();
-//     _isUploading = false;
-//   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: Color(0x00FFFFFF),
+      endDrawer: Drawer(
+        elevation: 16,
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SelectionArea(
+                    child: Text(
+                  'Match Options',
+                  style: FlutterFlowTheme.of(context).title3,
+                )),
+              ],
+            ),
+            Padding(
+              padding: EdgeInsetsDirectional.fromSTEB(10, 20, 10, 0),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SelectionArea(
+                      child: Text(
+                    'Replay Last Action',
+                    style: FlutterFlowTheme.of(context).subtitle1,
+                  )),
+                  Icon(
+                    Icons.arrow_forward,
+                    color: Colors.black,
+                    size: 24,
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: EdgeInsetsDirectional.fromSTEB(10, 20, 10, 0),
+              child: InkWell(
+                onTap: () async {
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => RefMatchRecapEventsWidget(
+                        currentMatch: widget.currentMatchInProgress,
+                      ),
+                    ),
+                  );
+                },
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SelectionArea(
+                        child: Text(
+                      'View Match Timeline',
+                      style: FlutterFlowTheme.of(context).subtitle1,
+                    )),
+                    Icon(
+                      Icons.arrow_forward,
+                      color: Colors.black,
+                      size: 24,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsetsDirectional.fromSTEB(10, 20, 10, 0),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SelectionArea(
+                      child: Text(
+                    'Undo Last Action',
+                    style: FlutterFlowTheme.of(context).subtitle1,
+                  )),
+                  Icon(
+                    Icons.arrow_forward,
+                    color: Colors.black,
+                    size: 24,
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: EdgeInsetsDirectional.fromSTEB(10, 20, 10, 0),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  SelectionArea(
+                      child: Text(
+                    'Issue Black Card',
+                    style: FlutterFlowTheme.of(context).subtitle1,
+                  )),
+                  Icon(
+                    Icons.arrow_forward,
+                    color: Colors.black,
+                    size: 24,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
       body: SafeArea(
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: Stack(
-            alignment: Alignment.center,
             children: [
-              CameraPreview(_cameraController),
               Column(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -224,7 +175,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                     width: MediaQuery.of(context).size.width,
                     height: 160,
                     decoration: BoxDecoration(
-                      color: Color(0x1AF1F4F8),
+                      color: Color(0x80FFFFFF),
                     ),
                     child: Column(
                       mainAxisSize: MainAxisSize.max,
@@ -446,7 +397,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                     width: MediaQuery.of(context).size.width,
                     height: 100,
                     decoration: BoxDecoration(
-                      color: Color(0x1AF1F4F8),
+                      color: Color(0x80FFFFFF),
                     ),
                     child: Padding(
                       padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
@@ -545,18 +496,14 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                               StopWatchExecute.stop,
                                             );
 
-                                            _stopRecording();
-
                                             setState(() => FFAppState()
                                                 .isTimerRunning = false);
                                             setState(() => FFAppState()
                                                 .startStopText = 'START');
                                           } else {
-
                                             timerController?.onExecute.add(
                                               StopWatchExecute.start,
                                             );
-                                            _startRecording();
 
                                             setState(() => FFAppState()
                                                 .isTimerRunning = true);
@@ -840,7 +787,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              FlutterFlowDropDown(
+                              FlutterFlowDropDown<String>(
                                 options: [
                                   'Simple Attack',
                                   'Compound',
@@ -881,7 +828,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                     12, 4, 12, 4),
                                 hidesUnderline: true,
                               ),
-                              FlutterFlowDropDown(
+                              FlutterFlowDropDown<String>(
                                 options: ['HITS', 'OFF TARGET'],
                                 onChanged: (val) async {
                                   setState(() => dropDownValue2 = val);
@@ -892,9 +839,6 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                   );
                                   setState(() => FFAppState()
                                       .refSecondTextAction = actionText2!);
-                                  setState(() => FFAppState().refIsHit = true);
-                                  setState(() =>
-                                      FFAppState().isSimultaneous = false);
 
                                   setState(() {});
                                 },
@@ -1058,57 +1002,49 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                     EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
                                 child: FFButtonWidget(
                                   onPressed: () async {
-                                    if(!_isUploading) {
-                                      await actions.awardPointIfApplicable(
-                                        FFAppState().isLeftFencerAction,
-                                        FFAppState().nonAttackLabel,
-                                        FFAppState().refereeweaponselect,
-                                        FFAppState().refIsHit,
-                                      );
+                                    await actions.awardPointIfApplicable(
+                                      FFAppState().isLeftFencerAction,
+                                      FFAppState().nonAttackLabel,
+                                      FFAppState().refereeweaponselect,
+                                      FFAppState().refIsHit,
+                                    );
 
-                                      uploadedURL = await uploadTask!.snapshot.ref.getDownloadURL();
-
-                                      final matchesUpdateData = {
-                                        'MatchEvents': FieldValue.arrayUnion([
-                                          getMatchEventFirestoreData(
-                                            createMatchEventStruct(
-                                              actionableFencer: FFAppState()
-                                                  .isLeftFencerAction
-                                                  ? FFAppState().leftFencerRef
-                                                  : FFAppState().rightFencerRef,
-                                              scoreLeft:
-                                              FFAppState().refLeftScore,
-                                              scoreRight:
-                                              FFAppState().refRightScore,
-                                              timeOfAction: timerMilliseconds,
-                                              periodOfAction:
-                                              FFAppState().currentPeriod,
-                                              actionID: functions
-                                                  .getActionIDfromRefState(
-                                                  FFAppState()
-                                                      .isLeftFencerAction,
-                                                  dropDownValue1,
-                                                  dropDownValue2,
-                                                  FFAppState()
-                                                      .nonAttackLabel),
-                                              videoURL: uploadedURL,
-                                              clearUnsetFields: false,
-                                            ),
-                                            true,
-                                          )
-                                        ]),
-                                      };
-                                      await widget
-                                          .currentMatchInProgress!.reference
-                                          .update(matchesUpdateData);
-                                      await actions.flushMatchActionState();
-                                      setState(
-                                              () =>
-                                          FFAppState().showActions = false);
-                                    }
-                                    else {
-
-                                    }
+                                    final matchesUpdateData = {
+                                      'MatchEvents': FieldValue.arrayUnion([
+                                        getMatchEventFirestoreData(
+                                          createMatchEventStruct(
+                                            actionableFencer: FFAppState()
+                                                    .isLeftFencerAction
+                                                ? FFAppState().leftFencerRef
+                                                : FFAppState().rightFencerRef,
+                                            scoreLeft:
+                                                FFAppState().refLeftScore,
+                                            scoreRight:
+                                                FFAppState().refRightScore,
+                                            timeOfAction: timerMilliseconds,
+                                            periodOfAction:
+                                                FFAppState().currentPeriod,
+                                            actionID: functions
+                                                .getActionIDfromRefState(
+                                                    FFAppState()
+                                                        .isLeftFencerAction,
+                                                    dropDownValue1,
+                                                    !FFAppState().refIsHit,
+                                                    FFAppState()
+                                                        .nonAttackLabel),
+                                            videoURL: '3br3rb3e3rq',
+                                            clearUnsetFields: false,
+                                          ),
+                                          true,
+                                        )
+                                      ]),
+                                    };
+                                    await widget
+                                        .currentMatchInProgress!.reference
+                                        .update(matchesUpdateData);
+                                    await actions.flushMatchActionState();
+                                    setState(
+                                        () => FFAppState().showActions = false);
                                   },
                                   text: 'OK',
                                   options: FFButtonOptions(

@@ -342,6 +342,10 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                 ],
               ),
             ),
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              children: [],
+            ),
           ],
         ),
       ),
