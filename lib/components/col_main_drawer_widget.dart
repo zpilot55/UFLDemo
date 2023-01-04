@@ -8,6 +8,7 @@ import '../profile/profile_widget.dart';
 import '../ref_setup/ref_setup_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class ColMainDrawerWidget extends StatefulWidget {
   const ColMainDrawerWidget({Key? key}) : super(key: key);
@@ -19,6 +20,8 @@ class ColMainDrawerWidget extends StatefulWidget {
 class _ColMainDrawerWidgetState extends State<ColMainDrawerWidget> {
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return Column(
       mainAxisSize: MainAxisSize.max,
       children: [
@@ -44,7 +47,7 @@ class _ColMainDrawerWidgetState extends State<ColMainDrawerWidget> {
                           Align(
                             alignment: AlignmentDirectional(-0.7, 0),
                             child: AuthUserStreamWidget(
-                              child: Container(
+                              builder: (context) => Container(
                                 width: 80,
                                 height: 80,
                                 clipBehavior: Clip.antiAlias,
@@ -76,7 +79,7 @@ class _ColMainDrawerWidgetState extends State<ColMainDrawerWidget> {
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           AuthUserStreamWidget(
-                            child: Text(
+                            builder: (context) => Text(
                               currentUserDisplayName,
                               style:
                                   FlutterFlowTheme.of(context).title3.override(

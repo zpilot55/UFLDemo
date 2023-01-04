@@ -1,10 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'flutter_flow/flutter_flow_util.dart';
 import 'flutter_flow/lat_lng.dart';
 import 'dart:convert';
 
-class FFAppState {
+class FFAppState extends ChangeNotifier {
   static final FFAppState _instance = FFAppState._internal();
 
   factory FFAppState() {
@@ -19,82 +20,254 @@ class FFAppState {
     prefs = await SharedPreferences.getInstance();
   }
 
+  void update(VoidCallback callback) {
+    callback();
+    notifyListeners();
+  }
+
   late SharedPreferences prefs;
 
-  String refereeweaponselect = '';
+  String _refereeweaponselect = '';
+  String get refereeweaponselect => _refereeweaponselect;
+  set refereeweaponselect(String _value) {
+    _refereeweaponselect = _value;
+  }
 
-  bool isRightFencer = false;
+  bool _isRightFencer = false;
+  bool get isRightFencer => _isRightFencer;
+  set isRightFencer(bool _value) {
+    _isRightFencer = _value;
+  }
 
-  DocumentReference? scannedFencerRef =
+  DocumentReference? _scannedFencerRef =
       FirebaseFirestore.instance.doc('/users/2');
+  DocumentReference? get scannedFencerRef => _scannedFencerRef;
+  set scannedFencerRef(DocumentReference? _value) {
+    _scannedFencerRef = _value;
+  }
 
-  String currentFencerName = '';
+  String _currentFencerName = '';
+  String get currentFencerName => _currentFencerName;
+  set currentFencerName(String _value) {
+    _currentFencerName = _value;
+  }
 
-  String currentFencerPicURL = '';
+  String _currentFencerPicURL = '';
+  String get currentFencerPicURL => _currentFencerPicURL;
+  set currentFencerPicURL(String _value) {
+    _currentFencerPicURL = _value;
+  }
 
-  int startPeriods = 1;
+  int _startPeriods = 1;
+  int get startPeriods => _startPeriods;
+  set startPeriods(int _value) {
+    _startPeriods = _value;
+  }
 
-  int startTotalTouches = 5;
+  int _startTotalTouches = 5;
+  int get startTotalTouches => _startTotalTouches;
+  set startTotalTouches(int _value) {
+    _startTotalTouches = _value;
+  }
 
-  int startTimePeriod = 1;
+  int _startTimePeriod = 1;
+  int get startTimePeriod => _startTimePeriod;
+  set startTimePeriod(int _value) {
+    _startTimePeriod = _value;
+  }
 
-  DocumentReference? leftFencerRef = FirebaseFirestore.instance.doc('/users/2');
-
-  DocumentReference? rightFencerRef =
+  DocumentReference? _leftFencerRef =
       FirebaseFirestore.instance.doc('/users/2');
+  DocumentReference? get leftFencerRef => _leftFencerRef;
+  set leftFencerRef(DocumentReference? _value) {
+    _leftFencerRef = _value;
+  }
 
-  String refLeftName = 'Left Fencer';
+  DocumentReference? _rightFencerRef =
+      FirebaseFirestore.instance.doc('/users/2');
+  DocumentReference? get rightFencerRef => _rightFencerRef;
+  set rightFencerRef(DocumentReference? _value) {
+    _rightFencerRef = _value;
+  }
 
-  String refRightName = 'Right Fencer';
+  String _refLeftName = 'Left Fencer';
+  String get refLeftName => _refLeftName;
+  set refLeftName(String _value) {
+    _refLeftName = _value;
+  }
 
-  String refLeftPhoto = '';
+  String _refRightName = 'Right Fencer';
+  String get refRightName => _refRightName;
+  set refRightName(String _value) {
+    _refRightName = _value;
+  }
 
-  String refRightPhoto = '';
+  String _refLeftPhoto = '';
+  String get refLeftPhoto => _refLeftPhoto;
+  set refLeftPhoto(String _value) {
+    _refLeftPhoto = _value;
+  }
 
-  bool isTimerRunning = false;
+  String _refRightPhoto = '';
+  String get refRightPhoto => _refRightPhoto;
+  set refRightPhoto(String _value) {
+    _refRightPhoto = _value;
+  }
 
-  int refLeftScore = 0;
+  bool _isTimerRunning = false;
+  bool get isTimerRunning => _isTimerRunning;
+  set isTimerRunning(bool _value) {
+    _isTimerRunning = _value;
+  }
 
-  int refRightScore = 0;
+  int _refLeftScore = 0;
+  int get refLeftScore => _refLeftScore;
+  set refLeftScore(int _value) {
+    _refLeftScore = _value;
+  }
 
-  bool isLeftFencerAction = true;
+  int _refRightScore = 0;
+  int get refRightScore => _refRightScore;
+  set refRightScore(int _value) {
+    _refRightScore = _value;
+  }
 
-  bool showActions = false;
+  bool _isLeftFencerAction = true;
+  bool get isLeftFencerAction => _isLeftFencerAction;
+  set isLeftFencerAction(bool _value) {
+    _isLeftFencerAction = _value;
+  }
 
-  String startStopText = 'START';
+  bool _showActions = false;
+  bool get showActions => _showActions;
+  set showActions(bool _value) {
+    _showActions = _value;
+  }
 
-  int currentPeriod = 1;
+  String _startStopText = 'START';
+  String get startStopText => _startStopText;
+  set startStopText(String _value) {
+    _startStopText = _value;
+  }
 
-  bool endOfBout = false;
+  int _currentPeriod = 1;
+  int get currentPeriod => _currentPeriod;
+  set currentPeriod(int _value) {
+    _currentPeriod = _value;
+  }
 
-  bool onBreak = false;
+  bool _endOfBout = false;
+  bool get endOfBout => _endOfBout;
+  set endOfBout(bool _value) {
+    _endOfBout = _value;
+  }
 
-  int timerStartTime = 60000;
+  bool _onBreak = false;
+  bool get onBreak => _onBreak;
+  set onBreak(bool _value) {
+    _onBreak = _value;
+  }
 
-  int breakDuration = 10000;
+  int _timerStartTime = 60000;
+  int get timerStartTime => _timerStartTime;
+  set timerStartTime(int _value) {
+    _timerStartTime = _value;
+  }
 
-  bool beginNextPer = false;
+  int _breakDuration = 10000;
+  int get breakDuration => _breakDuration;
+  set breakDuration(int _value) {
+    _breakDuration = _value;
+  }
 
-  bool beginBreak = false;
+  bool _beginNextPer = false;
+  bool get beginNextPer => _beginNextPer;
+  set beginNextPer(bool _value) {
+    _beginNextPer = _value;
+  }
 
-  List<DocumentReference> refFencers = [];
+  bool _beginBreak = false;
+  bool get beginBreak => _beginBreak;
+  set beginBreak(bool _value) {
+    _beginBreak = _value;
+  }
 
-  bool endOfBoutPopup = false;
+  List<DocumentReference> _refFencers = [];
+  List<DocumentReference> get refFencers => _refFencers;
+  set refFencers(List<DocumentReference> _value) {
+    _refFencers = _value;
+  }
 
-  DocumentReference? refereeReference =
+  void addToRefFencers(DocumentReference _value) {
+    _refFencers.add(_value);
+  }
+
+  void removeFromRefFencers(DocumentReference _value) {
+    _refFencers.remove(_value);
+  }
+
+  bool _endOfBoutPopup = false;
+  bool get endOfBoutPopup => _endOfBoutPopup;
+  set endOfBoutPopup(bool _value) {
+    _endOfBoutPopup = _value;
+  }
+
+  DocumentReference? _refereeReference =
       FirebaseFirestore.instance.doc('/users/0');
+  DocumentReference? get refereeReference => _refereeReference;
+  set refereeReference(DocumentReference? _value) {
+    _refereeReference = _value;
+  }
 
-  List<dynamic> currentMatchEvents = [];
+  List<dynamic> _currentMatchEvents = [];
+  List<dynamic> get currentMatchEvents => _currentMatchEvents;
+  set currentMatchEvents(List<dynamic> _value) {
+    _currentMatchEvents = _value;
+  }
 
-  String nonAttackLabel = '';
+  void addToCurrentMatchEvents(dynamic _value) {
+    _currentMatchEvents.add(_value);
+  }
 
-  String refSecondTextAction = '';
+  void removeFromCurrentMatchEvents(dynamic _value) {
+    _currentMatchEvents.remove(_value);
+  }
 
-  bool isSimultaneous = false;
+  String _nonAttackLabel = '';
+  String get nonAttackLabel => _nonAttackLabel;
+  set nonAttackLabel(String _value) {
+    _nonAttackLabel = _value;
+  }
 
-  bool refIsHit = false;
+  String _refSecondTextAction = '';
+  String get refSecondTextAction => _refSecondTextAction;
+  set refSecondTextAction(String _value) {
+    _refSecondTextAction = _value;
+  }
 
-  String curentActionVideoURL = '';
+  bool _isSimultaneous = false;
+  bool get isSimultaneous => _isSimultaneous;
+  set isSimultaneous(bool _value) {
+    _isSimultaneous = _value;
+  }
+
+  bool _refIsHit = false;
+  bool get refIsHit => _refIsHit;
+  set refIsHit(bool _value) {
+    _refIsHit = _value;
+  }
+
+  String _curentActionVideoURL = '';
+  String get curentActionVideoURL => _curentActionVideoURL;
+  set curentActionVideoURL(String _value) {
+    _curentActionVideoURL = _value;
+  }
+
+  String _refereemodeselect = '';
+  String get refereemodeselect => _refereemodeselect;
+  set refereemodeselect(String _value) {
+    _refereemodeselect = _value;
+  }
 }
 
 LatLng? _latLngFromString(String? val) {

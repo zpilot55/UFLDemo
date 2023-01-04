@@ -6,6 +6,7 @@ import '../flutter_flow/flutter_flow_widgets.dart';
 import '../match_recap_events/match_recap_events_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class MatchRecapWidget extends StatefulWidget {
   const MatchRecapWidget({
@@ -24,6 +25,8 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -341,10 +344,6 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                   ),
                 ],
               ),
-            ),
-            Row(
-              mainAxisSize: MainAxisSize.max,
-              children: [],
             ),
           ],
         ),

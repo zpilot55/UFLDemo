@@ -7,6 +7,7 @@ import '../flutter_flow/flutter_flow_widgets.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class EditProfileWidget extends StatefulWidget {
   const EditProfileWidget({Key? key}) : super(key: key);
@@ -36,6 +37,8 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -163,7 +166,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                         child: Padding(
                           padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
                           child: AuthUserStreamWidget(
-                            child: Container(
+                            builder: (context) => Container(
                               width: 80,
                               height: 80,
                               clipBehavior: Clip.antiAlias,
@@ -254,7 +257,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                           children: [
                             Expanded(
                               child: AuthUserStreamWidget(
-                                child: TextFormField(
+                                builder: (context) => TextFormField(
                                   controller: textController2,
                                   obscureText: false,
                                   decoration: InputDecoration(

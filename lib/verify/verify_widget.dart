@@ -5,6 +5,7 @@ import '../flutter_flow/flutter_flow_widgets.dart';
 import '../main.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class VerifyWidget extends StatefulWidget {
   const VerifyWidget({Key? key}) : super(key: key);
@@ -31,6 +32,8 @@ class _VerifyWidgetState extends State<VerifyWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: Color(0xFF4B39EF),

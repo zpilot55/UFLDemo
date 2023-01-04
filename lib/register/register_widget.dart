@@ -6,6 +6,7 @@ import '../flutter_flow/flutter_flow_widgets.dart';
 import '../main.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class RegisterWidget extends StatefulWidget {
   const RegisterWidget({Key? key}) : super(key: key);
@@ -20,11 +21,10 @@ class _RegisterWidgetState extends State<RegisterWidget> {
   TextEditingController? lastNameController;
   TextEditingController? emailController;
   TextEditingController? passwordController;
-
   late bool passwordVisibility;
   TextEditingController? retypedController;
-
   late bool retypedVisibility;
+  final _unfocusNode = FocusNode();
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -42,6 +42,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
 
   @override
   void dispose() {
+    _unfocusNode.dispose();
     dobController?.dispose();
     firstNameController?.dispose();
     lastNameController?.dispose();
@@ -53,11 +54,13 @@ class _RegisterWidgetState extends State<RegisterWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: Color(0xFF4B39EF),
       body: GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(),
+        onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
         child: Container(
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height * 1,
@@ -600,6 +603,12 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                   '${firstNameController!.text} ${lastNameController!.text}',
                               photoUrl:
                                   'https://firebasestorage.googleapis.com/v0/b/universalfencingleague.appspot.com/o/Fencer_silhouette.png?alt=media&token=7ae87fd2-6264-446f-abbf-c4a7d8d5b642',
+                              eloAdult: 1000,
+                              eloYouth: 1000,
+                              matchesUntilRankedAdult: 5,
+                              matchesUntilRankedYouth: 5,
+                              isRankedAdult: false,
+                              isRankedYouth: false,
                             );
                             await UsersRecord.collection
                                 .doc(user.uid)

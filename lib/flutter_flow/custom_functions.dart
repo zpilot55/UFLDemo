@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
@@ -301,4 +302,45 @@ String msToMinSecFormat(int inputMS) {
     secStr = '0' + sec.toString();
   }
   return '$minStr:$secStr';
+}
+
+MatchStatisticsStruct generateMatchStatistics(
+    List<MatchEventStruct> matchEventsList) {
+  MatchStatisticsStruct matchStats = MatchStatisticsStruct();
+  matchStats.actionPerL = 0;
+  matchStats.actionPerR = 0;
+  matchStats.hOTRatioL = 0;
+  matchStats.hOTRatioR = 0;
+  matchStats.p1pointsL = 0;
+  matchStats.p1pointsR = 0;
+  matchStats.p2pointsL = 0;
+  matchStats.p2pointsR = 0;
+  matchStats.p3pointsL = 0;
+  matchStats.p3pointsR = 0;
+  matchStats.rOWRatioL = 0;
+  matchStats.rOWRatioR = 0;
+  matchStats.sIMULPer = 0;
+  matchStats.aggroRatioL = 0;
+  matchStats.aggroRatioR = 0;
+
+  int numActionsLeft = 0;
+  int numActionsRight = 0;
+  int numSimultaneous = 0;
+
+  int numROWLeft = 0;
+  int numROWRight = 0;
+
+  int numHitsLeft = 0;
+  int numHitsRight = 0;
+
+  int numOffTarLeft = 0;
+  int numOffTarRight = 0;
+
+  int numYellowLeft = 0;
+  int numYellowRight = 0;
+
+  int numRedLeft = 0;
+  int numRedRight = 0;
+
+  return matchStats;
 }

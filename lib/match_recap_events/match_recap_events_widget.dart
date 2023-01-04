@@ -6,6 +6,7 @@ import '../match_recap_event_video/match_recap_event_video_widget.dart';
 import '../flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class MatchRecapEventsWidget extends StatefulWidget {
   const MatchRecapEventsWidget({
@@ -24,6 +25,8 @@ class _MatchRecapEventsWidgetState extends State<MatchRecapEventsWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
