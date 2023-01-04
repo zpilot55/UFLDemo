@@ -13,6 +13,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'package:camera/camera.dart';
+import 'package:ffmpeg_kit_flutter_https_gpl/return_code.dart';
+import 'package:ffmpeg_kit_flutter_https_gpl/ffmpeg_kit.dart';
+import 'package:flutter/services.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'dart:io';
+
 class RefViewWidget extends StatefulWidget {
   const RefViewWidget({
     Key? key,
@@ -37,18 +44,297 @@ class _RefViewWidgetState extends State<RefViewWidget> {
   String? dropDownValue2;
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
+  bool _isLoading = true;
+  bool _isRecording = false;
+  bool _isUploading = false;
+
+  late String uploadURL;
+  late CameraController _cameraController;
+
   @override
   void initState() {
     super.initState();
-
+    _initCamera();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+    ]);
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
   @override
   void dispose() {
     timerController?.dispose();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+    ]);
     super.dispose();
   }
+
+  _initCamera() async {
+    final cameras = await availableCameras();
+    final backCamera = cameras.firstWhere((camera) =>
+    camera.lensDirection == CameraLensDirection.back);
+    _cameraController = CameraController(backCamera, ResolutionPreset.medium);
+    await _cameraController.initialize();
+    //_cameraController.lockCaptureOrientation([DeviceOrientation.landscapeLeft]);
+    setState(() => _isLoading = false);
+  }
+
+  _startRecording() async {
+    await _cameraController.prepareForVideoRecording();
+    await _cameraController.startVideoRecording();
+    setState(() => _isRecording = true);
+  }
+
+  Future<XFile> _stopRecording() async {
+    final file = await _cameraController.stopVideoRecording();
+    setState(() => _isRecording = false);
+    return file;
+  }
+
+  Future<String> _trimAndUpload(XFile localFile) async {
+
+    int cutOffEndTime = -3; //Hardcoded cutoff time
+    String newFilePath = '${localFile.path.split('.mp4')[0]}-s.mp4';
+    await FFmpegKit.executeAsync('-encoders');
+    await FFmpegKit.execute('-sseof $cutOffEndTime -i ${localFile.path} -f mp4 $newFilePath').then((session) async {
+
+      // Return code for completed sessions. Will be undefined if session is still running or FFmpegKit fails to run it
+      final returnCode = await session.getReturnCode();
+
+      // The list of logs generated for this execution
+      final logs = await session.getLogs();
+
+      if (ReturnCode.isSuccess(returnCode)) {
+
+        print("Video Chop Success!");
+
+      } else if (ReturnCode.isCancel(returnCode)) {
+
+        print("Video Chop CANCEL!");
+
+      } else {
+
+        print("Video Chop ERROR!");
+
+      }
+    });
+
+    setState(() => _isUploading = true);
+    final newFile = File(newFilePath);
+    String matchID = widget.currentMatchInProgress!.reference.id;
+    String fileName = newFilePath.split('/').last;
+    String newPath = 'matches/$matchID/$fileName';
+
+// Create the file metadata
+    final metadata = SettableMetadata(contentType: "video/mp4");
+
+// Create a reference to the Firebase Storage bucket
+    final storageRef = FirebaseStorage.instance.ref();
+
+// Upload file and metadata to the path 'images/mountains.jpg'
+    final uploadTask = storageRef
+        .child(newPath)
+        .putFile(newFile, metadata);
+
+// Listen for state changes, errors, and completion of the upload.
+    uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
+      switch (taskSnapshot.state) {
+        case TaskState.running:
+          final progress =
+              100.0 * (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
+          print("Upload is $progress% complete.");
+          break;
+        case TaskState.paused:
+          print("Upload is paused.");
+          break;
+        case TaskState.canceled:
+          print("Upload was canceled");
+          break;
+        case TaskState.error:
+        // Handle unsuccessful uploads
+          break;
+        case TaskState.success:
+          print("Uploaded Succeeded!");
+          break;
+      }
+
+    });
+
+    String uploadedURL = await (await uploadTask).ref.getDownloadURL();
+    setState(() => _isUploading = false);
+    return uploadedURL;
+  }
+
+ /* Future<String> _uploadVideo(String localFilePath) async {
+    setState(() => _isUploading = true);
+    final newFile = File(localFilePath);
+    String matchID = widget.currentMatchInProgress!.reference.id;
+    String fileName = localFilePath
+        .split('/')
+        .last;
+    String newPath = 'matches/$matchID/$fileName';
+
+// Create the file metadata
+    final metadata = SettableMetadata(contentType: "video/mp4");
+
+// Create a reference to the Firebase Storage bucket
+    final storageRef = FirebaseStorage.instance.ref();
+
+// Upload file and metadata to the path 'images/mountains.jpg'
+    final uploadTask = storageRef
+        .child(newPath)
+        .putFile(newFile, metadata);
+
+// Listen for state changes, errors, and completion of the upload.
+    uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
+      switch (taskSnapshot.state) {
+        case TaskState.running:
+          final progress =
+              100.0 * (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
+          print("Upload is $progress% complete.");
+          break;
+        case TaskState.paused:
+          print("Upload is paused.");
+          break;
+        case TaskState.canceled:
+          print("Upload was canceled");
+          break;
+        case TaskState.error:
+        // Handle unsuccessful uploads
+          break;
+        case TaskState.success:
+          print("Uploaded Succeeded!");
+          setState(() => _isUploading = false);
+          break;
+      }
+    });
+    Future<String> uploadedURL = uploadTask.snapshot.ref.getDownloadURL();
+
+    return uploadedURL;
+  }*/
+
+/*  _stopRecording() async {
+    final file = await _cameraController.stopVideoRecording();
+    setState(() => _isRecording = false);
+    int cutOffEndTime = -3; //Hardcoded cutoff time
+    String newFilePath = '${file.path.split('.mp4')[0]}-s.mp4';
+    await FFmpegKit.executeAsync('-encoders');
+    await FFmpegKit.execute('-sseof $cutOffEndTime -i ${file.path} -f mp4 $newFilePath').then((session) async {
+
+      // Return code for completed sessions. Will be undefined if session is still running or FFmpegKit fails to run it
+      final returnCode = await session.getReturnCode();
+
+      // The list of logs generated for this execution
+      final logs = await session.getLogs();
+
+      if (ReturnCode.isSuccess(returnCode)) {
+
+        print("Video Chop Success!");
+
+      } else if (ReturnCode.isCancel(returnCode)) {
+
+        print("Video Chop CANCEL!");
+
+      } else {
+
+        print("Video Chop ERROR!");
+
+      }
+    });
+    setState(() => _isRecording = false);
+
+    setState(() => _isUploading = true);
+    final newFile = File(newFilePath);
+    String matchID = widget.currentMatchInProgress!.reference.id;
+    String fileName = newFilePath.split('/').last;
+    String newPath = 'matches/$matchID/$fileName';
+
+// Create the file metadata
+    final metadata = SettableMetadata(contentType: "video/mp4");
+
+// Create a reference to the Firebase Storage bucket
+    final storageRef = FirebaseStorage.instance.ref();
+
+// Upload file and metadata to the path 'images/mountains.jpg'
+    final uploadTask = storageRef
+        .child(newPath)
+        .putFile(newFile, metadata);
+
+// Listen for state changes, errors, and completion of the upload.
+    uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
+      switch (taskSnapshot.state) {
+        case TaskState.running:
+          final progress =
+              100.0 * (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
+          print("Upload is $progress% complete.");
+          break;
+        case TaskState.paused:
+          print("Upload is paused.");
+          break;
+        case TaskState.canceled:
+          print("Upload was canceled");
+          break;
+        case TaskState.error:
+        // Handle unsuccessful uploads
+          break;
+        case TaskState.success:
+          print("Uploaded Succeeded!");
+          break;
+      }
+
+    });
+    uploadedURL = await uploadTask.snapshot.ref.getDownloadURL();
+    _isUploading = false;
+  }*/
+
+  /* _uploadVideo(String filePath) async {
+    setState(() => _isUploading = true);
+    final file = File(filePath);
+    String matchID = widget.currentMatchInProgress!.reference.id;
+    String fileName = filePath.split('/').last;
+    String newPath = 'matches/$matchID/$fileName';
+
+// Create the file metadata
+    final metadata = SettableMetadata(contentType: "video/mp4");
+
+// Create a reference to the Firebase Storage bucket
+    final storageRef = FirebaseStorage.instance.ref();
+
+// Upload file and metadata to the path 'images/mountains.jpg'
+    final uploadTask = storageRef
+        .child(newPath)
+        .putFile(file, metadata);
+
+// Listen for state changes, errors, and completion of the upload.
+    uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
+      switch (taskSnapshot.state) {
+        case TaskState.running:
+          final progress =
+              100.0 * (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
+          print("Upload is $progress% complete.");
+          break;
+        case TaskState.paused:
+          print("Upload is paused.");
+          break;
+        case TaskState.canceled:
+          print("Upload was canceled");
+          break;
+        case TaskState.error:
+        // Handle unsuccessful uploads
+          break;
+        case TaskState.success:
+          break;
+      }
+    });
+
+    uploadedURL = await uploadTask.snapshot.ref.getDownloadURL();
+    _isUploading = false;
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -66,9 +352,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
               children: [
                 SelectionArea(
                     child: Text(
-                  'Match Options',
-                  style: FlutterFlowTheme.of(context).title3,
-                )),
+                      'Match Options',
+                      style: FlutterFlowTheme.of(context).title3,
+                    )),
               ],
             ),
             Padding(
@@ -79,9 +365,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                 children: [
                   SelectionArea(
                       child: Text(
-                    'Replay Last Action',
-                    style: FlutterFlowTheme.of(context).subtitle1,
-                  )),
+                        'Replay Last Action',
+                        style: FlutterFlowTheme.of(context).subtitle1,
+                      )),
                   Icon(
                     Icons.arrow_forward,
                     color: Colors.black,
@@ -109,9 +395,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                   children: [
                     SelectionArea(
                         child: Text(
-                      'View Match Timeline',
-                      style: FlutterFlowTheme.of(context).subtitle1,
-                    )),
+                          'View Match Timeline',
+                          style: FlutterFlowTheme.of(context).subtitle1,
+                        )),
                     Icon(
                       Icons.arrow_forward,
                       color: Colors.black,
@@ -129,9 +415,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                 children: [
                   SelectionArea(
                       child: Text(
-                    'Undo Last Action',
-                    style: FlutterFlowTheme.of(context).subtitle1,
-                  )),
+                        'Undo Last Action',
+                        style: FlutterFlowTheme.of(context).subtitle1,
+                      )),
                   Icon(
                     Icons.arrow_forward,
                     color: Colors.black,
@@ -148,9 +434,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                 children: [
                   SelectionArea(
                       child: Text(
-                    'Issue Black Card',
-                    style: FlutterFlowTheme.of(context).subtitle1,
-                  )),
+                        'Issue Black Card',
+                        style: FlutterFlowTheme.of(context).subtitle1,
+                      )),
                   Icon(
                     Icons.arrow_forward,
                     color: Colors.black,
@@ -166,7 +452,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: Stack(
+            alignment: Alignment.center,
             children: [
+              CameraPreview(_cameraController),
               Column(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -189,20 +477,20 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                               style: FlutterFlowTheme.of(context)
                                   .bodyText1
                                   .override(
-                                    fontFamily: 'Poppins',
-                                    fontSize: 18,
-                                  ),
+                                fontFamily: 'Poppins',
+                                fontSize: 18,
+                              ),
                             ),
                             FlutterFlowTimer(
                               timerValue: timerValue ??=
                                   StopWatchTimer.getDisplayTime(
-                                timerMilliseconds ??= functions
-                                    .minutesToMS(widget.initStartTime!),
-                                hours: false,
-                                minute: true,
-                                second: true,
-                                milliSecond: true,
-                              ),
+                                    timerMilliseconds ??= functions
+                                        .minutesToMS(widget.initStartTime!),
+                                    hours: false,
+                                    minute: true,
+                                    second: true,
+                                    milliSecond: true,
+                                  ),
                               timer: timerController ??= StopWatchTimer(
                                 mode: StopWatchMode.countDown,
                                 presetMillisecond: timerMilliseconds ??=
@@ -225,27 +513,27 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                               style: FlutterFlowTheme.of(context).title3,
                               onEnded: () async {
                                 setState(
-                                    () => FFAppState().isTimerRunning = false);
+                                        () => FFAppState().isTimerRunning = false);
                                 if (FFAppState().currentPeriod ==
                                     FFAppState().startPeriods) {
                                   setState(() => FFAppState().endOfBout = true);
                                   setState(() => FFAppState().startStopText =
-                                      'END OF BOUT');
+                                  'END OF BOUT');
                                 } else {
                                   if (FFAppState().onBreak) {
                                     setState(
-                                        () => FFAppState().onBreak = false);
+                                            () => FFAppState().onBreak = false);
                                     await Future.delayed(
                                         const Duration(milliseconds: 100));
                                     setState(
-                                        () => FFAppState().beginNextPer = true);
+                                            () => FFAppState().beginNextPer = true);
                                     setState(() => FFAppState().startStopText =
-                                        'NEXT PER');
+                                    'NEXT PER');
                                   } else {
                                     setState(
-                                        () => FFAppState().beginBreak = true);
+                                            () => FFAppState().beginBreak = true);
                                     setState(() => FFAppState().startStopText =
-                                        'BEGIN BREAK');
+                                    'BEGIN BREAK');
                                   }
                                 }
                               },
@@ -277,7 +565,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                       'Left Fencer',
                                     ),
                                     style:
-                                        FlutterFlowTheme.of(context).bodyText1,
+                                    FlutterFlowTheme.of(context).bodyText1,
                                   ),
                                 ],
                               ),
@@ -292,9 +580,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                         style: FlutterFlowTheme.of(context)
                                             .bodyText1
                                             .override(
-                                              fontFamily: 'Poppins',
-                                              fontSize: 14,
-                                            ),
+                                          fontFamily: 'Poppins',
+                                          fontSize: 14,
+                                        ),
                                       ),
                                       Text(
                                         valueOrDefault<String>(
@@ -352,7 +640,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                       'Right Fencer',
                                     ),
                                     style:
-                                        FlutterFlowTheme.of(context).bodyText1,
+                                    FlutterFlowTheme.of(context).bodyText1,
                                   ),
                                 ],
                               ),
@@ -368,7 +656,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                 onPressed: () async {
                                   setState(() => FFAppState().endOfBout = true);
                                   setState(
-                                      () => FFAppState().endOfBoutPopup = true);
+                                          () => FFAppState().endOfBoutPopup = true);
                                 },
                                 text: 'END BOUT',
                                 options: FFButtonOptions(
@@ -378,9 +666,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                   textStyle: FlutterFlowTheme.of(context)
                                       .subtitle2
                                       .override(
-                                        fontFamily: 'Poppins',
-                                        color: Colors.white,
-                                      ),
+                                    fontFamily: 'Poppins',
+                                    color: Colors.white,
+                                  ),
                                   borderSide: BorderSide(
                                     color: Colors.transparent,
                                     width: 1,
@@ -408,16 +696,16 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                           if (FFAppState().isTimerRunning == false)
                             Padding(
                               padding:
-                                  EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
+                              EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
                               child: FFButtonWidget(
                                 onPressed: () async {
                                   setState(() =>
-                                      FFAppState().isLeftFencerAction = true);
+                                  FFAppState().isLeftFencerAction = true);
                                   setState(
-                                      () => FFAppState().showActions = true);
+                                          () => FFAppState().showActions = true);
                                   setState(() =>
-                                      FFAppState().currentFencerName =
-                                          FFAppState().refLeftName);
+                                  FFAppState().currentFencerName =
+                                      FFAppState().refLeftName);
                                 },
                                 text: 'L',
                                 options: FFButtonOptions(
@@ -427,9 +715,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                   textStyle: FlutterFlowTheme.of(context)
                                       .subtitle2
                                       .override(
-                                        fontFamily: 'Poppins',
-                                        color: Colors.white,
-                                      ),
+                                    fontFamily: 'Poppins',
+                                    color: Colors.white,
+                                  ),
                                   borderSide: BorderSide(
                                     color: Colors.black,
                                     width: 1,
@@ -442,22 +730,22 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                           if (!FFAppState().showActions)
                             Padding(
                               padding:
-                                  EdgeInsetsDirectional.fromSTEB(0, 0, 0, 5),
+                              EdgeInsetsDirectional.fromSTEB(0, 0, 0, 5),
                               child: FFButtonWidget(
                                 onPressed: () async {
                                   if (FFAppState().endOfBout) {
                                     setState(() =>
-                                        FFAppState().endOfBoutPopup = true);
+                                    FFAppState().endOfBoutPopup = true);
                                   } else {
                                     if (FFAppState().beginBreak) {
                                       setState(() =>
-                                          FFAppState().beginBreak = false);
+                                      FFAppState().beginBreak = false);
                                       setState(
-                                          () => FFAppState().onBreak = true);
+                                              () => FFAppState().onBreak = true);
                                       setState(() =>
-                                          FFAppState().timerStartTime =
-                                              functions.minutesToMS(
-                                                  FFAppState().breakDuration));
+                                      FFAppState().timerStartTime =
+                                          functions.minutesToMS(
+                                              FFAppState().breakDuration));
                                       await Future.delayed(
                                           const Duration(milliseconds: 100));
                                       timerController?.onExecute.add(
@@ -469,14 +757,14 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                       );
 
                                       setState(() =>
-                                          FFAppState().showActions = false);
+                                      FFAppState().showActions = false);
                                       setState(() => FFAppState()
                                           .startStopText = 'ON BREAK');
                                     } else {
                                       if (!FFAppState().onBreak) {
                                         if (FFAppState().beginNextPer) {
                                           setState(() => FFAppState()
-                                                  .timerStartTime =
+                                              .timerStartTime =
                                               functions.minutesToMS(FFAppState()
                                                   .startTimePeriod));
                                           await Future.delayed(const Duration(
@@ -488,7 +776,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                           setState(() => FFAppState()
                                               .startStopText = 'START');
                                           setState(() => FFAppState()
-                                                  .currentPeriod =
+                                              .currentPeriod =
                                               FFAppState().currentPeriod + 1);
                                         } else {
                                           if (FFAppState().isTimerRunning) {
@@ -496,14 +784,19 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                               StopWatchExecute.stop,
                                             );
 
+                                            var currFile = await _stopRecording();
+                                            uploadURL = await _trimAndUpload(currFile);
+
                                             setState(() => FFAppState()
                                                 .isTimerRunning = false);
                                             setState(() => FFAppState()
                                                 .startStopText = 'START');
                                           } else {
+
                                             timerController?.onExecute.add(
                                               StopWatchExecute.start,
                                             );
+                                            _startRecording();
 
                                             setState(() => FFAppState()
                                                 .isTimerRunning = true);
@@ -526,9 +819,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                   textStyle: FlutterFlowTheme.of(context)
                                       .subtitle2
                                       .override(
-                                        fontFamily: 'Poppins',
-                                        color: Colors.white,
-                                      ),
+                                    fontFamily: 'Poppins',
+                                    color: Colors.white,
+                                  ),
                                   borderSide: BorderSide(
                                     color: Colors.black,
                                     width: 1,
@@ -541,16 +834,16 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                           if (FFAppState().isTimerRunning == false)
                             Padding(
                               padding:
-                                  EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
+                              EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
                               child: FFButtonWidget(
                                 onPressed: () async {
                                   setState(() =>
-                                      FFAppState().isLeftFencerAction = false);
+                                  FFAppState().isLeftFencerAction = false);
                                   setState(
-                                      () => FFAppState().showActions = true);
+                                          () => FFAppState().showActions = true);
                                   setState(() =>
-                                      FFAppState().currentFencerName =
-                                          FFAppState().refRightName);
+                                  FFAppState().currentFencerName =
+                                      FFAppState().refRightName);
                                 },
                                 text: 'R',
                                 options: FFButtonOptions(
@@ -560,9 +853,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                   textStyle: FlutterFlowTheme.of(context)
                                       .subtitle2
                                       .override(
-                                        fontFamily: 'Poppins',
-                                        color: Colors.white,
-                                      ),
+                                    fontFamily: 'Poppins',
+                                    color: Colors.white,
+                                  ),
                                   borderSide: BorderSide(
                                     color: Colors.black,
                                     width: 1,
@@ -577,6 +870,387 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                   ),
                 ],
               ),
+              if (FFAppState().showActions)
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 250,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.rectangle,
+                      border: Border.all(
+                        color: Colors.black,
+                      ),
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 5, 0, 20),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Action: ',
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyText1
+                                    .override(
+                                  fontFamily: 'Poppins',
+                                  fontSize: 18,
+                                ),
+                              ),
+                              if (!FFAppState().isSimultaneous)
+                                Text(
+                                  FFAppState().currentFencerName,
+                                  style: FlutterFlowTheme.of(context)
+                                      .bodyText1
+                                      .override(
+                                    fontFamily: 'Poppins',
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              Text(
+                                FFAppState().refSecondTextAction,
+                                style: FlutterFlowTheme.of(context)
+                                    .bodyText1
+                                    .override(
+                                  fontFamily: 'Poppins',
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              FlutterFlowDropDown<String>(
+                                options: [
+                                  'Simple Attack',
+                                  'Compound',
+                                  'Parry/Riposte',
+                                  'Remise',
+                                  'Counterattack',
+                                  'Point in Line'
+                                ],
+                                onChanged: (val) async {
+                                  setState(() => dropDownValue1 = val);
+                                  actionText1 =
+                                  await actions.setActionFromDropdown(
+                                    dropDownValue1,
+                                    dropDownValue2,
+                                  );
+                                  setState(() => FFAppState()
+                                      .refSecondTextAction = actionText1!);
+                                  setState(() =>
+                                  FFAppState().isSimultaneous = false);
+
+                                  setState(() {});
+                                },
+                                width: 180,
+                                height: 50,
+                                textStyle: FlutterFlowTheme.of(context)
+                                    .bodyText1
+                                    .override(
+                                  fontFamily: 'Poppins',
+                                  color: Colors.black,
+                                ),
+                                hintText: 'Type of Attack?',
+                                fillColor: Colors.white,
+                                elevation: 2,
+                                borderColor: Colors.black,
+                                borderWidth: 1,
+                                borderRadius: 0,
+                                margin: EdgeInsetsDirectional.fromSTEB(
+                                    12, 4, 12, 4),
+                                hidesUnderline: true,
+                              ),
+                              FlutterFlowDropDown<String>(
+                                options: ['HITS', 'OFF TARGET'],
+                                onChanged: (val) async {
+                                  setState(() => dropDownValue2 = val);
+                                  actionText2 =
+                                  await actions.setActionFromDropdown(
+                                    dropDownValue1,
+                                    dropDownValue2,
+                                  );
+                                  setState(() => FFAppState()
+                                      .refSecondTextAction = actionText2!);
+
+                                  setState(() {});
+                                },
+                                width: 180,
+                                height: 50,
+                                textStyle: FlutterFlowTheme.of(context)
+                                    .bodyText1
+                                    .override(
+                                  fontFamily: 'Poppins',
+                                  color: Colors.black,
+                                ),
+                                hintText: 'Hits/Off Target?',
+                                fillColor: Colors.white,
+                                elevation: 2,
+                                borderColor: Colors.black,
+                                borderWidth: 1,
+                                borderRadius: 0,
+                                margin: EdgeInsetsDirectional.fromSTEB(
+                                    12, 4, 12, 4),
+                                hidesUnderline: true,
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding:
+                          EdgeInsetsDirectional.fromSTEB(10, 20, 10, 0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              FFButtonWidget(
+                                onPressed: () async {
+                                  setState(
+                                          () => FFAppState().isSimultaneous = true);
+                                  setState(() => FFAppState().nonAttackLabel =
+                                  'Simultaneous');
+                                  setState(() =>
+                                  FFAppState().refSecondTextAction =
+                                  'Attacks are Simultaneous');
+                                  setState(() => FFAppState().refIsHit = false);
+                                },
+                                text: 'Simultaneous',
+                                options: FFButtonOptions(
+                                  width: 130,
+                                  height: 40,
+                                  color: Colors.black,
+                                  textStyle: FlutterFlowTheme.of(context)
+                                      .subtitle2
+                                      .override(
+                                    fontFamily: 'Poppins',
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                  ),
+                                  borderSide: BorderSide(
+                                    color: Colors.black,
+                                    width: 1,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                              FFButtonWidget(
+                                onPressed: () async {
+                                  setState(() =>
+                                  FFAppState().nonAttackLabel = 'Pause');
+                                  setState(() => FFAppState()
+                                      .refSecondTextAction = ' called halt');
+                                  setState(() =>
+                                  FFAppState().isSimultaneous = false);
+                                  setState(() => FFAppState().refIsHit = false);
+                                },
+                                text: 'Pause',
+                                options: FFButtonOptions(
+                                  width: 130,
+                                  height: 40,
+                                  color: Colors.black,
+                                  textStyle: FlutterFlowTheme.of(context)
+                                      .subtitle2
+                                      .override(
+                                    fontFamily: 'Poppins',
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                  ),
+                                  borderSide: BorderSide(
+                                    color: Colors.black,
+                                    width: 1,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                              FFButtonWidget(
+                                onPressed: () async {
+                                  setState(() =>
+                                  FFAppState().refSecondTextAction =
+                                  'is awarded a Yellow Card');
+                                  setState(() => FFAppState().nonAttackLabel =
+                                  'Yellow Card');
+                                  setState(() =>
+                                  FFAppState().isSimultaneous = false);
+                                  setState(() => FFAppState().refIsHit = false);
+                                },
+                                text: 'Yellow Card',
+                                options: FFButtonOptions(
+                                  width: 130,
+                                  height: 40,
+                                  color: Color(0xFFECD803),
+                                  textStyle: FlutterFlowTheme.of(context)
+                                      .subtitle2
+                                      .override(
+                                    fontFamily: 'Poppins',
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                  ),
+                                  borderSide: BorderSide(
+                                    color: Colors.black,
+                                    width: 1,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                              FFButtonWidget(
+                                onPressed: () async {
+                                  setState(() =>
+                                  FFAppState().refSecondTextAction =
+                                  'is awarded a Red Card');
+                                  setState(() =>
+                                  FFAppState().nonAttackLabel = 'Red Card');
+                                  setState(() =>
+                                  FFAppState().isSimultaneous = false);
+                                  setState(() => FFAppState().refIsHit = false);
+                                },
+                                text: 'Red Card',
+                                options: FFButtonOptions(
+                                  width: 130,
+                                  height: 40,
+                                  color: Color(0xFFFF0000),
+                                  textStyle: FlutterFlowTheme.of(context)
+                                      .subtitle2
+                                      .override(
+                                    fontFamily: 'Poppins',
+                                    color: Colors.white,
+                                  ),
+                                  borderSide: BorderSide(
+                                    color: Colors.black,
+                                    width: 1,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsetsDirectional.fromSTEB(0, 40, 0, 0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Padding(
+                                padding:
+                                EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
+                                child: FFButtonWidget(
+                                  onPressed: () async {
+                                    if(!_isUploading) {
+                                      await actions.awardPointIfApplicable(
+                                        FFAppState().isLeftFencerAction,
+                                        FFAppState().nonAttackLabel,
+                                        FFAppState().refereeweaponselect,
+                                        FFAppState().refIsHit,
+                                      );
+
+                                      //uploadedURL = await uploadTask!.snapshot.ref.getDownloadURL();
+
+                                      final matchesUpdateData = {
+                                        'MatchEvents': FieldValue.arrayUnion([
+                                          getMatchEventFirestoreData(
+                                            createMatchEventStruct(
+                                              actionableFencer: FFAppState()
+                                                  .isLeftFencerAction
+                                                  ? FFAppState().leftFencerRef
+                                                  : FFAppState().rightFencerRef,
+                                              scoreLeft:
+                                              FFAppState().refLeftScore,
+                                              scoreRight:
+                                              FFAppState().refRightScore,
+                                              timeOfAction: timerMilliseconds,
+                                              periodOfAction:
+                                              FFAppState().currentPeriod,
+                                              actionID: functions
+                                                  .getActionIDfromRefState(
+                                                  FFAppState()
+                                                      .isLeftFencerAction,
+                                                  dropDownValue1,
+                                                  !FFAppState().refIsHit,
+                                                  FFAppState()
+                                                      .nonAttackLabel),
+                                              videoURL: uploadURL,
+                                              clearUnsetFields: false,
+                                            ),
+                                            true,
+                                          )
+                                        ]),
+                                      };
+                                      await widget
+                                          .currentMatchInProgress!.reference
+                                          .update(matchesUpdateData);
+                                      await actions.flushMatchActionState();
+                                      setState(
+                                              () =>
+                                          FFAppState().showActions = false);
+                                    }
+                                    else {
+
+                                    }
+                                  },
+                                  text: 'OK',
+                                  options: FFButtonOptions(
+                                    width: 100,
+                                    height: 40,
+                                    color: Color(0xFF00FF00),
+                                    textStyle: FlutterFlowTheme.of(context)
+                                        .subtitle2
+                                        .override(
+                                      fontFamily: 'Poppins',
+                                      color: Colors.white,
+                                    ),
+                                    borderSide: BorderSide(
+                                      color: Colors.black,
+                                      width: 1,
+                                    ),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
+                                child: FFButtonWidget(
+                                  onPressed: () async {
+                                    await actions.flushMatchActionState();
+                                    setState(
+                                            () => FFAppState().showActions = false);
+                                  },
+                                  text: 'CANCEL',
+                                  options: FFButtonOptions(
+                                    width: 100,
+                                    height: 40,
+                                    color: Color(0xFFFF0000),
+                                    textStyle: FlutterFlowTheme.of(context)
+                                        .subtitle2
+                                        .override(
+                                      fontFamily: 'Poppins',
+                                      color: Colors.white,
+                                    ),
+                                    borderSide: BorderSide(
+                                      color: Colors.black,
+                                      width: 1,
+                                    ),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               if (FFAppState().endOfBoutPopup)
                 Container(
                   width: MediaQuery.of(context).size.width,
@@ -610,7 +1284,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                               onPressed: () async {
                                 setState(() => FFAppState().endOfBout = false);
                                 setState(
-                                    () => FFAppState().endOfBoutPopup = false);
+                                        () => FFAppState().endOfBoutPopup = false);
                               },
                               text: 'Cancel',
                               options: FFButtonOptions(
@@ -620,9 +1294,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                 textStyle: FlutterFlowTheme.of(context)
                                     .subtitle2
                                     .override(
-                                      fontFamily: 'Poppins',
-                                      color: Colors.white,
-                                    ),
+                                  fontFamily: 'Poppins',
+                                  color: Colors.white,
+                                ),
                                 borderSide: BorderSide(
                                   color: Colors.transparent,
                                   width: 1,
@@ -654,9 +1328,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                 textStyle: FlutterFlowTheme.of(context)
                                     .subtitle2
                                     .override(
-                                      fontFamily: 'Poppins',
-                                      color: Colors.white,
-                                    ),
+                                  fontFamily: 'Poppins',
+                                  color: Colors.white,
+                                ),
                                 borderSide: BorderSide(
                                   color: Colors.transparent,
                                   width: 1,
@@ -685,12 +1359,12 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                     getMatchEventFirestoreData(
                                       createMatchEventStruct(
                                         actionableFencer:
-                                            FFAppState().refereeReference,
+                                        FFAppState().refereeReference,
                                         scoreLeft: FFAppState().refLeftScore,
                                         scoreRight: FFAppState().refRightScore,
                                         timeOfAction: timerMilliseconds,
                                         periodOfAction:
-                                            FFAppState().currentPeriod,
+                                        FFAppState().currentPeriod,
                                         actionID: -2,
                                         clearUnsetFields: false,
                                       ),
@@ -711,9 +1385,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                 textStyle: FlutterFlowTheme.of(context)
                                     .subtitle2
                                     .override(
-                                      fontFamily: 'Poppins',
-                                      color: Colors.white,
-                                    ),
+                                  fontFamily: 'Poppins',
+                                  color: Colors.white,
+                                ),
                                 borderSide: BorderSide(
                                   color: Colors.transparent,
                                   width: 1,
@@ -725,379 +1399,6 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                         ),
                       ),
                     ],
-                  ),
-                ),
-              if (FFAppState().showActions)
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 250,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.rectangle,
-                      border: Border.all(
-                        color: Colors.black,
-                      ),
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(0, 5, 0, 20),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Action: ',
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyText1
-                                    .override(
-                                      fontFamily: 'Poppins',
-                                      fontSize: 18,
-                                    ),
-                              ),
-                              if (!FFAppState().isSimultaneous)
-                                Text(
-                                  FFAppState().currentFencerName,
-                                  style: FlutterFlowTheme.of(context)
-                                      .bodyText1
-                                      .override(
-                                        fontFamily: 'Poppins',
-                                        fontSize: 18,
-                                      ),
-                                ),
-                              Text(
-                                FFAppState().refSecondTextAction,
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyText1
-                                    .override(
-                                      fontFamily: 'Poppins',
-                                      fontSize: 18,
-                                    ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              FlutterFlowDropDown<String>(
-                                options: [
-                                  'Simple Attack',
-                                  'Compound',
-                                  'Parry/Riposte',
-                                  'Remise',
-                                  'Counterattack',
-                                  'Point in Line'
-                                ],
-                                onChanged: (val) async {
-                                  setState(() => dropDownValue1 = val);
-                                  actionText1 =
-                                      await actions.setActionFromDropdown(
-                                    dropDownValue1,
-                                    dropDownValue2,
-                                  );
-                                  setState(() => FFAppState()
-                                      .refSecondTextAction = actionText1!);
-                                  setState(() =>
-                                      FFAppState().isSimultaneous = false);
-
-                                  setState(() {});
-                                },
-                                width: 180,
-                                height: 50,
-                                textStyle: FlutterFlowTheme.of(context)
-                                    .bodyText1
-                                    .override(
-                                      fontFamily: 'Poppins',
-                                      color: Colors.black,
-                                    ),
-                                hintText: 'Type of Attack?',
-                                fillColor: Colors.white,
-                                elevation: 2,
-                                borderColor: Colors.black,
-                                borderWidth: 1,
-                                borderRadius: 0,
-                                margin: EdgeInsetsDirectional.fromSTEB(
-                                    12, 4, 12, 4),
-                                hidesUnderline: true,
-                              ),
-                              FlutterFlowDropDown<String>(
-                                options: ['HITS', 'OFF TARGET'],
-                                onChanged: (val) async {
-                                  setState(() => dropDownValue2 = val);
-                                  actionText2 =
-                                      await actions.setActionFromDropdown(
-                                    dropDownValue1,
-                                    dropDownValue2,
-                                  );
-                                  setState(() => FFAppState()
-                                      .refSecondTextAction = actionText2!);
-
-                                  setState(() {});
-                                },
-                                width: 180,
-                                height: 50,
-                                textStyle: FlutterFlowTheme.of(context)
-                                    .bodyText1
-                                    .override(
-                                      fontFamily: 'Poppins',
-                                      color: Colors.black,
-                                    ),
-                                hintText: 'Hits/Off Target?',
-                                fillColor: Colors.white,
-                                elevation: 2,
-                                borderColor: Colors.black,
-                                borderWidth: 1,
-                                borderRadius: 0,
-                                margin: EdgeInsetsDirectional.fromSTEB(
-                                    12, 4, 12, 4),
-                                hidesUnderline: true,
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding:
-                              EdgeInsetsDirectional.fromSTEB(10, 20, 10, 0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              FFButtonWidget(
-                                onPressed: () async {
-                                  setState(
-                                      () => FFAppState().isSimultaneous = true);
-                                  setState(() => FFAppState().nonAttackLabel =
-                                      'Simultaneous');
-                                  setState(() =>
-                                      FFAppState().refSecondTextAction =
-                                          'Attacks are Simultaneous');
-                                  setState(() => FFAppState().refIsHit = false);
-                                },
-                                text: 'Simultaneous',
-                                options: FFButtonOptions(
-                                  width: 130,
-                                  height: 40,
-                                  color: Colors.black,
-                                  textStyle: FlutterFlowTheme.of(context)
-                                      .subtitle2
-                                      .override(
-                                        fontFamily: 'Poppins',
-                                        color: Colors.white,
-                                        fontSize: 14,
-                                      ),
-                                  borderSide: BorderSide(
-                                    color: Colors.black,
-                                    width: 1,
-                                  ),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                              FFButtonWidget(
-                                onPressed: () async {
-                                  setState(() =>
-                                      FFAppState().nonAttackLabel = 'Pause');
-                                  setState(() => FFAppState()
-                                      .refSecondTextAction = ' called halt');
-                                  setState(() =>
-                                      FFAppState().isSimultaneous = false);
-                                  setState(() => FFAppState().refIsHit = false);
-                                },
-                                text: 'Pause',
-                                options: FFButtonOptions(
-                                  width: 130,
-                                  height: 40,
-                                  color: Colors.black,
-                                  textStyle: FlutterFlowTheme.of(context)
-                                      .subtitle2
-                                      .override(
-                                        fontFamily: 'Poppins',
-                                        color: Colors.white,
-                                        fontSize: 14,
-                                      ),
-                                  borderSide: BorderSide(
-                                    color: Colors.black,
-                                    width: 1,
-                                  ),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                              FFButtonWidget(
-                                onPressed: () async {
-                                  setState(() =>
-                                      FFAppState().refSecondTextAction =
-                                          'is awarded a Yellow Card');
-                                  setState(() => FFAppState().nonAttackLabel =
-                                      'Yellow Card');
-                                  setState(() =>
-                                      FFAppState().isSimultaneous = false);
-                                  setState(() => FFAppState().refIsHit = false);
-                                },
-                                text: 'Yellow Card',
-                                options: FFButtonOptions(
-                                  width: 130,
-                                  height: 40,
-                                  color: Color(0xFFECD803),
-                                  textStyle: FlutterFlowTheme.of(context)
-                                      .subtitle2
-                                      .override(
-                                        fontFamily: 'Poppins',
-                                        color: Colors.white,
-                                        fontSize: 14,
-                                      ),
-                                  borderSide: BorderSide(
-                                    color: Colors.black,
-                                    width: 1,
-                                  ),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                              FFButtonWidget(
-                                onPressed: () async {
-                                  setState(() =>
-                                      FFAppState().refSecondTextAction =
-                                          'is awarded a Red Card');
-                                  setState(() =>
-                                      FFAppState().nonAttackLabel = 'Red Card');
-                                  setState(() =>
-                                      FFAppState().isSimultaneous = false);
-                                  setState(() => FFAppState().refIsHit = false);
-                                },
-                                text: 'Red Card',
-                                options: FFButtonOptions(
-                                  width: 130,
-                                  height: 40,
-                                  color: Color(0xFFFF0000),
-                                  textStyle: FlutterFlowTheme.of(context)
-                                      .subtitle2
-                                      .override(
-                                        fontFamily: 'Poppins',
-                                        color: Colors.white,
-                                      ),
-                                  borderSide: BorderSide(
-                                    color: Colors.black,
-                                    width: 1,
-                                  ),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(0, 40, 0, 0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Padding(
-                                padding:
-                                    EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
-                                child: FFButtonWidget(
-                                  onPressed: () async {
-                                    await actions.awardPointIfApplicable(
-                                      FFAppState().isLeftFencerAction,
-                                      FFAppState().nonAttackLabel,
-                                      FFAppState().refereeweaponselect,
-                                      FFAppState().refIsHit,
-                                    );
-
-                                    final matchesUpdateData = {
-                                      'MatchEvents': FieldValue.arrayUnion([
-                                        getMatchEventFirestoreData(
-                                          createMatchEventStruct(
-                                            actionableFencer: FFAppState()
-                                                    .isLeftFencerAction
-                                                ? FFAppState().leftFencerRef
-                                                : FFAppState().rightFencerRef,
-                                            scoreLeft:
-                                                FFAppState().refLeftScore,
-                                            scoreRight:
-                                                FFAppState().refRightScore,
-                                            timeOfAction: timerMilliseconds,
-                                            periodOfAction:
-                                                FFAppState().currentPeriod,
-                                            actionID: functions
-                                                .getActionIDfromRefState(
-                                                    FFAppState()
-                                                        .isLeftFencerAction,
-                                                    dropDownValue1,
-                                                    !FFAppState().refIsHit,
-                                                    FFAppState()
-                                                        .nonAttackLabel),
-                                            videoURL: '3br3rb3e3rq',
-                                            clearUnsetFields: false,
-                                          ),
-                                          true,
-                                        )
-                                      ]),
-                                    };
-                                    await widget
-                                        .currentMatchInProgress!.reference
-                                        .update(matchesUpdateData);
-                                    await actions.flushMatchActionState();
-                                    setState(
-                                        () => FFAppState().showActions = false);
-                                  },
-                                  text: 'OK',
-                                  options: FFButtonOptions(
-                                    width: 100,
-                                    height: 40,
-                                    color: Color(0xFF00FF00),
-                                    textStyle: FlutterFlowTheme.of(context)
-                                        .subtitle2
-                                        .override(
-                                          fontFamily: 'Poppins',
-                                          color: Colors.white,
-                                        ),
-                                    borderSide: BorderSide(
-                                      color: Colors.black,
-                                      width: 1,
-                                    ),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding:
-                                    EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
-                                child: FFButtonWidget(
-                                  onPressed: () async {
-                                    await actions.flushMatchActionState();
-                                    setState(
-                                        () => FFAppState().showActions = false);
-                                  },
-                                  text: 'CANCEL',
-                                  options: FFButtonOptions(
-                                    width: 100,
-                                    height: 40,
-                                    color: Color(0xFFFF0000),
-                                    textStyle: FlutterFlowTheme.of(context)
-                                        .subtitle2
-                                        .override(
-                                          fontFamily: 'Poppins',
-                                          color: Colors.white,
-                                        ),
-                                    borderSide: BorderSide(
-                                      color: Colors.black,
-                                      width: 1,
-                                    ),
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
                   ),
                 ),
             ],
