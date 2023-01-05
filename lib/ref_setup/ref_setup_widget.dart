@@ -955,108 +955,144 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  FFButtonWidget(
-                                    onPressed: () async {
-                                      FFAppState().update(() {
-                                        FFAppState().refereeweaponselect =
-                                            'Foil';
-                                      });
-                                    },
-                                    text: 'Foil',
-                                    options: FFButtonOptions(
-                                      width: 110,
-                                      height: 40,
+                                  Container(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.25,
+                                    height: 50,
+                                    decoration: BoxDecoration(
                                       color: FlutterFlowTheme.of(context)
-                                          .primaryColor,
-                                      textStyle: FlutterFlowTheme.of(context)
-                                          .subtitle2
-                                          .override(
-                                            fontFamily: 'Poppins',
-                                            color: Colors.white,
-                                          ),
-                                      borderSide: BorderSide(
-                                        color: Colors.transparent,
-                                        width: 1,
+                                          .secondaryBackground,
+                                    ),
+                                    child: FFButtonWidget(
+                                      onPressed: () async {
+                                        FFAppState().update(() {
+                                          FFAppState().refereeweaponselect =
+                                              'Foil';
+                                        });
+                                      },
+                                      text: 'Foil',
+                                      options: FFButtonOptions(
+                                        width: 110,
+                                        height: 40,
+                                        color: FlutterFlowTheme.of(context)
+                                            .primaryColor,
+                                        textStyle: FlutterFlowTheme.of(context)
+                                            .subtitle2
+                                            .override(
+                                              fontFamily: 'Poppins',
+                                              color: Colors.white,
+                                            ),
+                                        borderSide: BorderSide(
+                                          color: Colors.transparent,
+                                          width: 1,
+                                        ),
+                                        borderRadius: BorderRadius.circular(12),
                                       ),
-                                      borderRadius: BorderRadius.circular(12),
                                     ),
                                   ),
-                                  FFButtonWidget(
-                                    onPressed: () async {
-                                      FFAppState().update(() {
-                                        FFAppState().refereeweaponselect =
-                                            'Epee';
-                                      });
-                                    },
-                                    text: 'Epee',
-                                    options: FFButtonOptions(
-                                      width: 100,
-                                      height: 40,
+                                  Container(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.25,
+                                    height: 50,
+                                    decoration: BoxDecoration(
                                       color: FlutterFlowTheme.of(context)
-                                          .primaryColor,
-                                      textStyle: FlutterFlowTheme.of(context)
-                                          .subtitle2
-                                          .override(
-                                            fontFamily: 'Poppins',
-                                            color: Colors.white,
-                                          ),
-                                      borderSide: BorderSide(
-                                        color: Colors.transparent,
-                                        width: 1,
+                                          .secondaryBackground,
+                                    ),
+                                    child: FFButtonWidget(
+                                      onPressed: () async {
+                                        FFAppState().update(() {
+                                          FFAppState().refereeweaponselect =
+                                              'Epee';
+                                        });
+                                      },
+                                      text: 'Epee',
+                                      options: FFButtonOptions(
+                                        width: 100,
+                                        height: 40,
+                                        color: FlutterFlowTheme.of(context)
+                                            .primaryColor,
+                                        textStyle: FlutterFlowTheme.of(context)
+                                            .subtitle2
+                                            .override(
+                                              fontFamily: 'Poppins',
+                                              color: Colors.white,
+                                            ),
+                                        borderSide: BorderSide(
+                                          color: Colors.transparent,
+                                          width: 1,
+                                        ),
+                                        borderRadius: BorderRadius.circular(12),
                                       ),
-                                      borderRadius: BorderRadius.circular(12),
                                     ),
                                   ),
-                                  FFButtonWidget(
-                                    onPressed: () async {
-                                      FFAppState().update(() {
-                                        FFAppState().refereeweaponselect =
-                                            'Sabre';
-                                      });
-                                    },
-                                    text: 'Sabre',
-                                    options: FFButtonOptions(
-                                      width: 110,
-                                      height: 40,
+                                  Container(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.25,
+                                    height: 50,
+                                    decoration: BoxDecoration(
                                       color: FlutterFlowTheme.of(context)
-                                          .primaryColor,
-                                      textStyle: FlutterFlowTheme.of(context)
-                                          .subtitle2
-                                          .override(
-                                            fontFamily: 'Poppins',
-                                            color: Colors.white,
-                                          ),
-                                      borderSide: BorderSide(
-                                        color: Colors.transparent,
-                                        width: 1,
+                                          .secondaryBackground,
+                                    ),
+                                    child: FFButtonWidget(
+                                      onPressed: () async {
+                                        FFAppState().update(() {
+                                          FFAppState().refereeweaponselect =
+                                              'Sabre';
+                                        });
+                                      },
+                                      text: 'Sabre',
+                                      options: FFButtonOptions(
+                                        width: 110,
+                                        height: 40,
+                                        color: FlutterFlowTheme.of(context)
+                                            .primaryColor,
+                                        textStyle: FlutterFlowTheme.of(context)
+                                            .subtitle2
+                                            .override(
+                                              fontFamily: 'Poppins',
+                                              color: Colors.white,
+                                            ),
+                                        borderSide: BorderSide(
+                                          color: Colors.transparent,
+                                          width: 1,
+                                        ),
+                                        borderRadius: BorderRadius.circular(12),
                                       ),
-                                      borderRadius: BorderRadius.circular(12),
                                     ),
                                   ),
-                                  FFButtonWidget(
-                                    onPressed: () async {
-                                      FFAppState().update(() {
-                                        FFAppState().refereeweaponselect =
-                                            'Noodle';
-                                      });
-                                    },
-                                    text: 'Noodle',
-                                    options: FFButtonOptions(
-                                      width: 110,
-                                      height: 40,
+                                  Container(
+                                    width: MediaQuery.of(context).size.width *
+                                        0.25,
+                                    height: 50,
+                                    decoration: BoxDecoration(
                                       color: FlutterFlowTheme.of(context)
-                                          .primaryColor,
-                                      textStyle: FlutterFlowTheme.of(context)
-                                          .subtitle2
-                                          .override(
-                                            fontFamily: 'Poppins',
-                                            color: Colors.white,
-                                          ),
-                                      borderSide: BorderSide(
-                                        color: Colors.transparent,
-                                        width: 1,
+                                          .secondaryBackground,
+                                    ),
+                                    child: FFButtonWidget(
+                                      onPressed: () async {
+                                        FFAppState().update(() {
+                                          FFAppState().refereeweaponselect =
+                                              'Noodle';
+                                        });
+                                      },
+                                      text: 'Noodle',
+                                      options: FFButtonOptions(
+                                        width: 110,
+                                        height: 40,
+                                        color: FlutterFlowTheme.of(context)
+                                            .primaryColor,
+                                        textStyle: FlutterFlowTheme.of(context)
+                                            .subtitle2
+                                            .override(
+                                              fontFamily: 'Poppins',
+                                              color: Colors.white,
+                                            ),
+                                        borderSide: BorderSide(
+                                          color: Colors.transparent,
+                                          width: 1,
+                                        ),
+                                        borderRadius: BorderRadius.circular(12),
                                       ),
-                                      borderRadius: BorderRadius.circular(12),
                                     ),
                                   ),
                                 ],
