@@ -7,9 +7,8 @@ part of 'serializers.dart';
 // **************************************************************************
 
 Serializers _$serializers = (new Serializers().toBuilder()
-      ..add(ClubRecord.serializer)
+      ..add(ClubsRecord.serializer)
       ..add(MatchEventStruct.serializer)
-      ..add(MatchStatisticsStruct.serializer)
       ..add(MatchesRecord.serializer)
       ..add(UsersRecord.serializer)
       ..addBuilderFactory(

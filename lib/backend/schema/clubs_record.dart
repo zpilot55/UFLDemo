@@ -4,10 +4,10 @@ import 'index.dart';
 import 'serializers.dart';
 import 'package:built_value/built_value.dart';
 
-part 'club_record.g.dart';
+part 'clubs_record.g.dart';
 
-abstract class ClubRecord implements Built<ClubRecord, ClubRecordBuilder> {
-  static Serializer<ClubRecord> get serializer => _$clubRecordSerializer;
+abstract class ClubsRecord implements Built<ClubsRecord, ClubsRecordBuilder> {
+  static Serializer<ClubsRecord> get serializer => _$clubsRecordSerializer;
 
   String? get name;
 
@@ -24,30 +24,31 @@ abstract class ClubRecord implements Built<ClubRecord, ClubRecordBuilder> {
   DocumentReference? get ffRef;
   DocumentReference get reference => ffRef!;
 
-  static void _initializeBuilder(ClubRecordBuilder builder) =>
+  static void _initializeBuilder(ClubsRecordBuilder builder) =>
       builder..name = '';
 
   static CollectionReference get collection =>
-      FirebaseFirestore.instance.collection('club');
+      FirebaseFirestore.instance.collection('clubs');
 
-  static Stream<ClubRecord> getDocument(DocumentReference ref) => ref
+  static Stream<ClubsRecord> getDocument(DocumentReference ref) => ref
       .snapshots()
       .map((s) => serializers.deserializeWith(serializer, serializedData(s))!);
 
-  static Future<ClubRecord> getDocumentOnce(DocumentReference ref) => ref
+  static Future<ClubsRecord> getDocumentOnce(DocumentReference ref) => ref
       .get()
       .then((s) => serializers.deserializeWith(serializer, serializedData(s))!);
 
-  ClubRecord._();
-  factory ClubRecord([void Function(ClubRecordBuilder) updates]) = _$ClubRecord;
+  ClubsRecord._();
+  factory ClubsRecord([void Function(ClubsRecordBuilder) updates]) =
+      _$ClubsRecord;
 
-  static ClubRecord getDocumentFromData(
+  static ClubsRecord getDocumentFromData(
           Map<String, dynamic> data, DocumentReference reference) =>
       serializers.deserializeWith(serializer,
           {...mapFromFirestore(data), kDocumentReferenceField: reference})!;
 }
 
-Map<String, dynamic> createClubRecordData({
+Map<String, dynamic> createClubsRecordData({
   String? name,
   LatLng? location,
   DateTime? foundingDate,
@@ -55,8 +56,8 @@ Map<String, dynamic> createClubRecordData({
   DocumentReference? coach2,
 }) {
   final firestoreData = serializers.toFirestore(
-    ClubRecord.serializer,
-    ClubRecord(
+    ClubsRecord.serializer,
+    ClubsRecord(
       (c) => c
         ..name = name
         ..location = location

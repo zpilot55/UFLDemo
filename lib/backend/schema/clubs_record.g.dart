@@ -1,21 +1,21 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'club_record.dart';
+part of 'clubs_record.dart';
 
 // **************************************************************************
 // BuiltValueGenerator
 // **************************************************************************
 
-Serializer<ClubRecord> _$clubRecordSerializer = new _$ClubRecordSerializer();
+Serializer<ClubsRecord> _$clubsRecordSerializer = new _$ClubsRecordSerializer();
 
-class _$ClubRecordSerializer implements StructuredSerializer<ClubRecord> {
+class _$ClubsRecordSerializer implements StructuredSerializer<ClubsRecord> {
   @override
-  final Iterable<Type> types = const [ClubRecord, _$ClubRecord];
+  final Iterable<Type> types = const [ClubsRecord, _$ClubsRecord];
   @override
-  final String wireName = 'ClubRecord';
+  final String wireName = 'ClubsRecord';
 
   @override
-  Iterable<Object?> serialize(Serializers serializers, ClubRecord object,
+  Iterable<Object?> serialize(Serializers serializers, ClubsRecord object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object?>[];
     Object? value;
@@ -68,9 +68,9 @@ class _$ClubRecordSerializer implements StructuredSerializer<ClubRecord> {
   }
 
   @override
-  ClubRecord deserialize(Serializers serializers, Iterable<Object?> serialized,
+  ClubsRecord deserialize(Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new ClubRecordBuilder();
+    final result = new ClubsRecordBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -115,7 +115,7 @@ class _$ClubRecordSerializer implements StructuredSerializer<ClubRecord> {
   }
 }
 
-class _$ClubRecord extends ClubRecord {
+class _$ClubsRecord extends ClubsRecord {
   @override
   final String? name;
   @override
@@ -129,10 +129,10 @@ class _$ClubRecord extends ClubRecord {
   @override
   final DocumentReference<Object?>? ffRef;
 
-  factory _$ClubRecord([void Function(ClubRecordBuilder)? updates]) =>
-      (new ClubRecordBuilder()..update(updates))._build();
+  factory _$ClubsRecord([void Function(ClubsRecordBuilder)? updates]) =>
+      (new ClubsRecordBuilder()..update(updates))._build();
 
-  _$ClubRecord._(
+  _$ClubsRecord._(
       {this.name,
       this.location,
       this.foundingDate,
@@ -142,16 +142,16 @@ class _$ClubRecord extends ClubRecord {
       : super._();
 
   @override
-  ClubRecord rebuild(void Function(ClubRecordBuilder) updates) =>
+  ClubsRecord rebuild(void Function(ClubsRecordBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  ClubRecordBuilder toBuilder() => new ClubRecordBuilder()..replace(this);
+  ClubsRecordBuilder toBuilder() => new ClubsRecordBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is ClubRecord &&
+    return other is ClubsRecord &&
         name == other.name &&
         location == other.location &&
         foundingDate == other.foundingDate &&
@@ -174,7 +174,7 @@ class _$ClubRecord extends ClubRecord {
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'ClubRecord')
+    return (newBuiltValueToStringHelper(r'ClubsRecord')
           ..add('name', name)
           ..add('location', location)
           ..add('foundingDate', foundingDate)
@@ -185,8 +185,8 @@ class _$ClubRecord extends ClubRecord {
   }
 }
 
-class ClubRecordBuilder implements Builder<ClubRecord, ClubRecordBuilder> {
-  _$ClubRecord? _$v;
+class ClubsRecordBuilder implements Builder<ClubsRecord, ClubsRecordBuilder> {
+  _$ClubsRecord? _$v;
 
   String? _name;
   String? get name => _$this._name;
@@ -213,11 +213,11 @@ class ClubRecordBuilder implements Builder<ClubRecord, ClubRecordBuilder> {
   DocumentReference<Object?>? get ffRef => _$this._ffRef;
   set ffRef(DocumentReference<Object?>? ffRef) => _$this._ffRef = ffRef;
 
-  ClubRecordBuilder() {
-    ClubRecord._initializeBuilder(this);
+  ClubsRecordBuilder() {
+    ClubsRecord._initializeBuilder(this);
   }
 
-  ClubRecordBuilder get _$this {
+  ClubsRecordBuilder get _$this {
     final $v = _$v;
     if ($v != null) {
       _name = $v.name;
@@ -232,22 +232,22 @@ class ClubRecordBuilder implements Builder<ClubRecord, ClubRecordBuilder> {
   }
 
   @override
-  void replace(ClubRecord other) {
+  void replace(ClubsRecord other) {
     ArgumentError.checkNotNull(other, 'other');
-    _$v = other as _$ClubRecord;
+    _$v = other as _$ClubsRecord;
   }
 
   @override
-  void update(void Function(ClubRecordBuilder)? updates) {
+  void update(void Function(ClubsRecordBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
   @override
-  ClubRecord build() => _build();
+  ClubsRecord build() => _build();
 
-  _$ClubRecord _build() {
+  _$ClubsRecord _build() {
     final _$result = _$v ??
-        new _$ClubRecord._(
+        new _$ClubsRecord._(
             name: name,
             location: location,
             foundingDate: foundingDate,
