@@ -7,7 +7,7 @@ import '../flutter_flow/flutter_flow_util.dart';
 
 import 'schema/users_record.dart';
 import 'schema/matches_record.dart';
-import 'schema/club_record.dart';
+import 'schema/clubs_record.dart';
 import 'schema/serializers.dart';
 
 export 'dart:async' show StreamSubscription;
@@ -17,9 +17,19 @@ export 'schema/serializers.dart';
 
 export 'schema/users_record.dart';
 export 'schema/matches_record.dart';
-export 'schema/club_record.dart';
+export 'schema/clubs_record.dart';
 
 /// Functions to query UsersRecords (as a Stream and as a Future).
+Future<int> queryUsersRecordCount({
+  Query Function(Query)? queryBuilder,
+  int limit = -1,
+}) =>
+    queryCollectionCount(
+      UsersRecord.collection,
+      queryBuilder: queryBuilder,
+      limit: limit,
+    );
+
 Stream<List<UsersRecord>> queryUsersRecord({
   Query Function(Query)? queryBuilder,
   int limit = -1,
@@ -62,6 +72,16 @@ Future<FFFirestorePage<UsersRecord>> queryUsersRecordPage({
     );
 
 /// Functions to query MatchesRecords (as a Stream and as a Future).
+Future<int> queryMatchesRecordCount({
+  Query Function(Query)? queryBuilder,
+  int limit = -1,
+}) =>
+    queryCollectionCount(
+      MatchesRecord.collection,
+      queryBuilder: queryBuilder,
+      limit: limit,
+    );
+
 Stream<List<MatchesRecord>> queryMatchesRecord({
   Query Function(Query)? queryBuilder,
   int limit = -1,
@@ -103,47 +123,73 @@ Future<FFFirestorePage<MatchesRecord>> queryMatchesRecordPage({
       isStream: isStream,
     );
 
-/// Functions to query ClubRecords (as a Stream and as a Future).
-Stream<List<ClubRecord>> queryClubRecord({
+/// Functions to query ClubsRecords (as a Stream and as a Future).
+Future<int> queryClubsRecordCount({
+  Query Function(Query)? queryBuilder,
+  int limit = -1,
+}) =>
+    queryCollectionCount(
+      ClubsRecord.collection,
+      queryBuilder: queryBuilder,
+      limit: limit,
+    );
+
+Stream<List<ClubsRecord>> queryClubsRecord({
   Query Function(Query)? queryBuilder,
   int limit = -1,
   bool singleRecord = false,
 }) =>
     queryCollection(
-      ClubRecord.collection,
-      ClubRecord.serializer,
+      ClubsRecord.collection,
+      ClubsRecord.serializer,
       queryBuilder: queryBuilder,
       limit: limit,
       singleRecord: singleRecord,
     );
 
-Future<List<ClubRecord>> queryClubRecordOnce({
+Future<List<ClubsRecord>> queryClubsRecordOnce({
   Query Function(Query)? queryBuilder,
   int limit = -1,
   bool singleRecord = false,
 }) =>
     queryCollectionOnce(
-      ClubRecord.collection,
-      ClubRecord.serializer,
+      ClubsRecord.collection,
+      ClubsRecord.serializer,
       queryBuilder: queryBuilder,
       limit: limit,
       singleRecord: singleRecord,
     );
 
-Future<FFFirestorePage<ClubRecord>> queryClubRecordPage({
+Future<FFFirestorePage<ClubsRecord>> queryClubsRecordPage({
   Query Function(Query)? queryBuilder,
   DocumentSnapshot? nextPageMarker,
   required int pageSize,
   required bool isStream,
 }) =>
     queryCollectionPage(
-      ClubRecord.collection,
-      ClubRecord.serializer,
+      ClubsRecord.collection,
+      ClubsRecord.serializer,
       queryBuilder: queryBuilder,
       nextPageMarker: nextPageMarker,
       pageSize: pageSize,
       isStream: isStream,
     );
+
+Future<int> queryCollectionCount(
+  Query collection, {
+  Query Function(Query)? queryBuilder,
+  int limit = -1,
+}) {
+  final builder = queryBuilder ?? (q) => q;
+  var query = builder(collection);
+  if (limit > 0) {
+    query = query.limit(limit);
+  }
+
+  return query.count().get().catchError((err) {
+    print('Error querying $collection: $err');
+  }).then((value) => value.count);
+}
 
 Stream<List<T>> queryCollection<T>(Query collection, Serializer<T> serializer,
     {Query Function(Query)? queryBuilder,
