@@ -278,6 +278,7 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                         FFAppState().update(() {
                                           FFAppState().refereeweaponselect =
                                               'Foil';
+                                          FFAppState().isWeaponSelected = true;
                                         });
                                       },
                                       text: 'Foil',
@@ -312,6 +313,7 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                         FFAppState().update(() {
                                           FFAppState().refereeweaponselect =
                                               'Epee';
+                                          FFAppState().isWeaponSelected = true;
                                         });
                                       },
                                       text: 'Epee',
@@ -346,6 +348,7 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                         FFAppState().update(() {
                                           FFAppState().refereeweaponselect =
                                               'Sabre';
+                                          FFAppState().isWeaponSelected = true;
                                         });
                                       },
                                       text: 'Sabre',
@@ -380,6 +383,7 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                         FFAppState().update(() {
                                           FFAppState().refereeweaponselect =
                                               'Noodle';
+                                          FFAppState().isWeaponSelected = true;
                                         });
                                       },
                                       text: 'Noodle',
