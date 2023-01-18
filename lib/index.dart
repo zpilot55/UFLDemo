@@ -21,4 +21,3 @@ export 'ref_setup/ref_setup_widget.dart' show RefSetupWidget;
 export 'ref_view/ref_view_widget.dart' show RefViewWidget;
 export 'ref_match_recap_events/ref_match_recap_events_widget.dart'
     show RefMatchRecapEventsWidget;
-export 'ref_setup_copy/ref_setup_copy_widget.dart' show RefSetupCopyWidget;
