@@ -12,18 +12,28 @@ Future awardPointIfApplicable(bool isLeftFencerAction, String nonAttackLabel,
     String weapon, bool isHit) async {
   if (nonAttackLabel == "Red Card") {
     if (isLeftFencerAction) {
-      FFAppState().refRightScore += 1;
+      FFAppState().update(() {
+        FFAppState().refRightScore += 1;
+      });
     } else {
-      FFAppState().refLeftScore += 1;
+      FFAppState().update(() {
+        FFAppState().refLeftScore += 1;
+      });
     }
   } else if (nonAttackLabel == "Simultaneous" && weapon == "Epee") {
-    FFAppState().refLeftScore += 1;
-    FFAppState().refRightScore += 1;
+    FFAppState().update(() {
+      FFAppState().refLeftScore += 1;
+      FFAppState().refRightScore += 1;
+    });
   } else if (isHit) {
     if (isLeftFencerAction) {
-      FFAppState().refLeftScore += 1;
+      FFAppState().update(() {
+        FFAppState().refLeftScore += 1;
+      });
     } else {
-      FFAppState().refRightScore += 1;
+      FFAppState().update(() {
+        FFAppState().refRightScore += 1;
+      });
     }
   }
 }
