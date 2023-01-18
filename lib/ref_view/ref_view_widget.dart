@@ -12,6 +12,7 @@ import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 import 'package:camera/camera.dart';
 import 'package:ffmpeg_kit_flutter_https_gpl/return_code.dart';
@@ -35,13 +36,19 @@ class RefViewWidget extends StatefulWidget {
 }
 
 class _RefViewWidgetState extends State<RefViewWidget> {
-  StopWatchTimer? timerController;
-  String? timerValue;
-  int? timerMilliseconds;
+  int timerMilliseconds = 0;
+  String timerValue = StopWatchTimer.getDisplayTime(
+    0,
+    hours: false,
+  );
+  StopWatchTimer timerController =
+      StopWatchTimer(mode: StopWatchMode.countDown);
+
   String? actionText1;
   String? dropDownValue1;
   String? actionText2;
   String? dropDownValue2;
+  final _unfocusNode = FocusNode();
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   bool _isLoading = true;
@@ -64,7 +71,8 @@ class _RefViewWidgetState extends State<RefViewWidget> {
 
   @override
   void dispose() {
-    timerController?.dispose();
+    _unfocusNode.dispose();
+    timerController.dispose();
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
@@ -338,6 +346,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: Color(0x00FFFFFF),
@@ -450,7 +459,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
       ),
       body: SafeArea(
         child: GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(),
+          onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
           child: Stack(
             alignment: Alignment.center,
             children: [
@@ -482,61 +491,51 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                               ),
                             ),
                             FlutterFlowTimer(
-                              timerValue: timerValue ??=
+                              initialTime:
+                                  functions.minutesToMS(widget.initStartTime!),
+                              getDisplayTime: (value) =>
                                   StopWatchTimer.getDisplayTime(
-                                    timerMilliseconds ??= functions
-                                        .minutesToMS(widget.initStartTime!),
+                                    value,
                                     hours: false,
-                                    minute: true,
-                                    second: true,
-                                    milliSecond: true,
                                   ),
-                              timer: timerController ??= StopWatchTimer(
-                                mode: StopWatchMode.countDown,
-                                presetMillisecond: timerMilliseconds ??=
-                                    functions
-                                        .minutesToMS(widget.initStartTime!),
-                                onChange: (value) {
-                                  setState(() {
-                                    timerMilliseconds = value;
-                                    timerValue = StopWatchTimer.getDisplayTime(
-                                      value,
-                                      hours: false,
-                                      minute: true,
-                                      second: true,
-                                      milliSecond: true,
-                                    );
-                                  });
-                                },
-                              ),
-                              textAlign: TextAlign.start,
-                              style: FlutterFlowTheme.of(context).title3,
+                              timer: timerController,
+                              onChanged: (value, displayTime, shouldUpdate) {
+                                timerMilliseconds = value;
+                                timerValue = displayTime;
+                                if (shouldUpdate) setState(() {});
+                              },
                               onEnded: () async {
-                                setState(
-                                        () => FFAppState().isTimerRunning = false);
+                                FFAppState().update(() {
+                                  FFAppState().isTimerRunning = false;
+                                });
                                 if (FFAppState().currentPeriod ==
                                     FFAppState().startPeriods) {
-                                  setState(() => FFAppState().endOfBout = true);
-                                  setState(() => FFAppState().startStopText =
-                                  'END OF BOUT');
+                                  FFAppState().update(() {
+                                    FFAppState().endOfBout = true;
+                                    FFAppState().startStopText = 'END OF BOUT';
+                                  });
                                 } else {
                                   if (FFAppState().onBreak) {
-                                    setState(
-                                            () => FFAppState().onBreak = false);
+                                    FFAppState().update(() {
+                                      FFAppState().onBreak = false;
+                                    });
                                     await Future.delayed(
                                         const Duration(milliseconds: 100));
-                                    setState(
-                                            () => FFAppState().beginNextPer = true);
-                                    setState(() => FFAppState().startStopText =
-                                    'NEXT PER');
+                                    FFAppState().update(() {
+                                      FFAppState().beginNextPer = true;
+                                      FFAppState().startStopText = 'NEXT PER';
+                                    });
                                   } else {
-                                    setState(
-                                            () => FFAppState().beginBreak = true);
-                                    setState(() => FFAppState().startStopText =
-                                    'BEGIN BREAK');
+                                    FFAppState().update(() {
+                                      FFAppState().beginBreak = true;
+                                      FFAppState().startStopText =
+                                          'BEGIN BREAK';
+                                    });
                                   }
                                 }
                               },
+                              textAlign: TextAlign.start,
+                              style: FlutterFlowTheme.of(context).title3,
                             ),
                           ],
                         ),
@@ -654,9 +653,10 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                             if (!FFAppState().isTimerRunning)
                               FFButtonWidget(
                                 onPressed: () async {
-                                  setState(() => FFAppState().endOfBout = true);
-                                  setState(
-                                          () => FFAppState().endOfBoutPopup = true);
+                                  FFAppState().update(() {
+                                    FFAppState().endOfBout = true;
+                                    FFAppState().endOfBoutPopup = true;
+                                  });
                                 },
                                 text: 'END BOUT',
                                 options: FFButtonOptions(
@@ -699,13 +699,14 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                               EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
                               child: FFButtonWidget(
                                 onPressed: () async {
-                                  setState(() =>
-                                  FFAppState().isLeftFencerAction = true);
-                                  setState(
-                                          () => FFAppState().showActions = true);
-                                  setState(() =>
-                                  FFAppState().currentFencerName =
-                                      FFAppState().refLeftName);
+                                  FFAppState().update(() {
+                                    FFAppState().isLeftFencerAction = true;
+                                    FFAppState().showActions = true;
+                                  });
+                                  FFAppState().update(() {
+                                    FFAppState().currentFencerName =
+                                        FFAppState().refLeftName;
+                                  });
                                 },
                                 text: 'L',
                                 options: FFButtonOptions(
@@ -734,74 +735,78 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                               child: FFButtonWidget(
                                 onPressed: () async {
                                   if (FFAppState().endOfBout) {
-                                    setState(() =>
-                                    FFAppState().endOfBoutPopup = true);
+                                    FFAppState().update(() {
+                                      FFAppState().endOfBoutPopup = true;
+                                    });
                                   } else {
                                     if (FFAppState().beginBreak) {
-                                      setState(() =>
-                                      FFAppState().beginBreak = false);
-                                      setState(
-                                              () => FFAppState().onBreak = true);
-                                      setState(() =>
-                                      FFAppState().timerStartTime =
-                                          functions.minutesToMS(
-                                              FFAppState().breakDuration));
+                                      FFAppState().update(() {
+                                        FFAppState().beginBreak = false;
+                                        FFAppState().onBreak = true;
+                                      });
+                                      FFAppState().update(() {
+                                        FFAppState().timerStartTime =
+                                            functions.minutesToMS(
+                                                FFAppState().breakDuration);
+                                      });
                                       await Future.delayed(
                                           const Duration(milliseconds: 100));
-                                      timerController?.onExecute.add(
-                                        StopWatchExecute.reset,
-                                      );
+                                      timerController.onExecute
+                                          .add(StopWatchExecute.reset);
 
-                                      timerController?.onExecute.add(
-                                        StopWatchExecute.start,
-                                      );
-
-                                      setState(() =>
-                                      FFAppState().showActions = false);
-                                      setState(() => FFAppState()
-                                          .startStopText = 'ON BREAK');
+                                      timerController.onExecute
+                                          .add(StopWatchExecute.start);
+                                      FFAppState().update(() {
+                                        FFAppState().showActions = false;
+                                        FFAppState().startStopText = 'ON BREAK';
+                                      });
                                     } else {
                                       if (!FFAppState().onBreak) {
                                         if (FFAppState().beginNextPer) {
-                                          setState(() => FFAppState()
-                                              .timerStartTime =
-                                              functions.minutesToMS(FFAppState()
-                                                  .startTimePeriod));
+                                          FFAppState().update(() {
+                                            FFAppState().timerStartTime =
+                                                functions.minutesToMS(
+                                                    FFAppState()
+                                                        .startTimePeriod);
+                                          });
                                           await Future.delayed(const Duration(
                                               milliseconds: 100));
-                                          timerController?.onExecute.add(
-                                            StopWatchExecute.reset,
-                                          );
+                                          timerController.onExecute
+                                              .add(StopWatchExecute.reset);
 
-                                          setState(() => FFAppState()
-                                              .startStopText = 'START');
-                                          setState(() => FFAppState()
-                                              .currentPeriod =
-                                              FFAppState().currentPeriod + 1);
+                                          FFAppState().update(() {
+                                            FFAppState().startStopText =
+                                                'START';
+                                            FFAppState().currentPeriod =
+                                                FFAppState().currentPeriod + 1;
+                                          });
                                         } else {
                                           if (FFAppState().isTimerRunning) {
-                                            timerController?.onExecute.add(
+                                            timerController.onExecute.add(
                                               StopWatchExecute.stop,
                                             );
 
                                             var currFile = await _stopRecording();
                                             uploadURL = await _trimAndUpload(currFile);
 
-                                            setState(() => FFAppState()
-                                                .isTimerRunning = false);
-                                            setState(() => FFAppState()
-                                                .startStopText = 'START');
+                                            FFAppState().update(() {
+                                              FFAppState().isTimerRunning =
+                                              false;
+                                              FFAppState().startStopText =
+                                              'START';
+                                            });
                                           } else {
+                                            timerController.onExecute
+                                                .add(StopWatchExecute.start);
 
-                                            timerController?.onExecute.add(
-                                              StopWatchExecute.start,
-                                            );
                                             _startRecording();
 
-                                            setState(() => FFAppState()
-                                                .isTimerRunning = true);
-                                            setState(() => FFAppState()
-                                                .startStopText = 'STOP');
+                                            FFAppState().update(() {
+                                              FFAppState().isTimerRunning =
+                                              true;
+                                              FFAppState().startStopText =
+                                              'STOP';
+                                            });
                                           }
                                         }
                                       }
@@ -837,13 +842,14 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                               EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
                               child: FFButtonWidget(
                                 onPressed: () async {
-                                  setState(() =>
-                                  FFAppState().isLeftFencerAction = false);
-                                  setState(
-                                          () => FFAppState().showActions = true);
-                                  setState(() =>
-                                  FFAppState().currentFencerName =
-                                      FFAppState().refRightName);
+                                  FFAppState().update(() {
+                                    FFAppState().isLeftFencerAction = false;
+                                    FFAppState().showActions = true;
+                                  });
+                                  FFAppState().update(() {
+                                    FFAppState().currentFencerName =
+                                        FFAppState().refRightName;
+                                  });
                                 },
                                 text: 'R',
                                 options: FFButtonOptions(
@@ -946,10 +952,11 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                     dropDownValue1,
                                     dropDownValue2,
                                   );
-                                  setState(() => FFAppState()
-                                      .refSecondTextAction = actionText1!);
-                                  setState(() =>
-                                  FFAppState().isSimultaneous = false);
+                                  FFAppState().update(() {
+                                    FFAppState().refSecondTextAction =
+                                        actionText1!;
+                                    FFAppState().isSimultaneous = false;
+                                  });
 
                                   setState(() {});
                                 },
@@ -980,8 +987,10 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                     dropDownValue1,
                                     dropDownValue2,
                                   );
-                                  setState(() => FFAppState()
-                                      .refSecondTextAction = actionText2!);
+                                  FFAppState().update(() {
+                                    FFAppState().refSecondTextAction =
+                                        actionText2!;
+                                  });
 
                                   setState(() {});
                                 },
@@ -1015,14 +1024,16 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                             children: [
                               FFButtonWidget(
                                 onPressed: () async {
-                                  setState(
-                                          () => FFAppState().isSimultaneous = true);
-                                  setState(() => FFAppState().nonAttackLabel =
-                                  'Simultaneous');
-                                  setState(() =>
-                                  FFAppState().refSecondTextAction =
-                                  'Attacks are Simultaneous');
-                                  setState(() => FFAppState().refIsHit = false);
+                                  FFAppState().update(() {
+                                    FFAppState().isSimultaneous = true;
+                                    FFAppState().nonAttackLabel =
+                                        'Simultaneous';
+                                  });
+                                  FFAppState().update(() {
+                                    FFAppState().refSecondTextAction =
+                                        'Attacks are Simultaneous';
+                                    FFAppState().refIsHit = false;
+                                  });
                                 },
                                 text: 'Simultaneous',
                                 options: FFButtonOptions(
@@ -1045,13 +1056,15 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                               ),
                               FFButtonWidget(
                                 onPressed: () async {
-                                  setState(() =>
-                                  FFAppState().nonAttackLabel = 'Pause');
-                                  setState(() => FFAppState()
-                                      .refSecondTextAction = ' called halt');
-                                  setState(() =>
-                                  FFAppState().isSimultaneous = false);
-                                  setState(() => FFAppState().refIsHit = false);
+                                  FFAppState().update(() {
+                                    FFAppState().nonAttackLabel = 'Pause';
+                                    FFAppState().refSecondTextAction =
+                                        ' called halt';
+                                  });
+                                  FFAppState().update(() {
+                                    FFAppState().isSimultaneous = false;
+                                    FFAppState().refIsHit = false;
+                                  });
                                 },
                                 text: 'Pause',
                                 options: FFButtonOptions(
@@ -1074,14 +1087,15 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                               ),
                               FFButtonWidget(
                                 onPressed: () async {
-                                  setState(() =>
-                                  FFAppState().refSecondTextAction =
-                                  'is awarded a Yellow Card');
-                                  setState(() => FFAppState().nonAttackLabel =
-                                  'Yellow Card');
-                                  setState(() =>
-                                  FFAppState().isSimultaneous = false);
-                                  setState(() => FFAppState().refIsHit = false);
+                                  FFAppState().update(() {
+                                    FFAppState().refSecondTextAction =
+                                        'is awarded a Yellow Card';
+                                    FFAppState().nonAttackLabel = 'Yellow Card';
+                                  });
+                                  FFAppState().update(() {
+                                    FFAppState().isSimultaneous = false;
+                                    FFAppState().refIsHit = false;
+                                  });
                                 },
                                 text: 'Yellow Card',
                                 options: FFButtonOptions(
@@ -1104,14 +1118,15 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                               ),
                               FFButtonWidget(
                                 onPressed: () async {
-                                  setState(() =>
-                                  FFAppState().refSecondTextAction =
-                                  'is awarded a Red Card');
-                                  setState(() =>
-                                  FFAppState().nonAttackLabel = 'Red Card');
-                                  setState(() =>
-                                  FFAppState().isSimultaneous = false);
-                                  setState(() => FFAppState().refIsHit = false);
+                                  FFAppState().update(() {
+                                    FFAppState().refSecondTextAction =
+                                        'is awarded a Red Card';
+                                    FFAppState().nonAttackLabel = 'Red Card';
+                                  });
+                                  FFAppState().update(() {
+                                    FFAppState().isSimultaneous = false;
+                                    FFAppState().refIsHit = false;
+                                  });
                                 },
                                 text: 'Red Card',
                                 options: FFButtonOptions(
@@ -1153,8 +1168,6 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                         FFAppState().refIsHit,
                                       );
 
-                                      //uploadedURL = await uploadTask!.snapshot.ref.getDownloadURL();
-
                                       final matchesUpdateData = {
                                         'MatchEvents': FieldValue.arrayUnion([
                                           getMatchEventFirestoreData(
@@ -1189,12 +1202,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                           .currentMatchInProgress!.reference
                                           .update(matchesUpdateData);
                                       await actions.flushMatchActionState();
-                                      setState(
-                                              () =>
-                                          FFAppState().showActions = false);
-                                    }
-                                    else {
-
+                                      FFAppState().update(() {
+                                        FFAppState().showActions = false;
+                                      });
                                     }
                                   },
                                   text: 'OK',
@@ -1222,8 +1232,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                 child: FFButtonWidget(
                                   onPressed: () async {
                                     await actions.flushMatchActionState();
-                                    setState(
-                                            () => FFAppState().showActions = false);
+                                    FFAppState().update(() {
+                                      FFAppState().showActions = false;
+                                    });
                                   },
                                   text: 'CANCEL',
                                   options: FFButtonOptions(
@@ -1282,9 +1293,10 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                           children: [
                             FFButtonWidget(
                               onPressed: () async {
-                                setState(() => FFAppState().endOfBout = false);
-                                setState(
-                                        () => FFAppState().endOfBoutPopup = false);
+                                FFAppState().update(() {
+                                  FFAppState().endOfBout = false;
+                                  FFAppState().endOfBoutPopup = false;
+                                });
                               },
                               text: 'Cancel',
                               options: FFButtonOptions(
@@ -1294,9 +1306,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                 textStyle: FlutterFlowTheme.of(context)
                                     .subtitle2
                                     .override(
-                                  fontFamily: 'Poppins',
-                                  color: Colors.white,
-                                ),
+                                      fontFamily: 'Poppins',
+                                      color: Colors.white,
+                                    ),
                                 borderSide: BorderSide(
                                   color: Colors.transparent,
                                   width: 1,
@@ -1328,9 +1340,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                 textStyle: FlutterFlowTheme.of(context)
                                     .subtitle2
                                     .override(
-                                  fontFamily: 'Poppins',
-                                  color: Colors.white,
-                                ),
+                                      fontFamily: 'Poppins',
+                                      color: Colors.white,
+                                    ),
                                 borderSide: BorderSide(
                                   color: Colors.transparent,
                                   width: 1,
@@ -1359,12 +1371,12 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                     getMatchEventFirestoreData(
                                       createMatchEventStruct(
                                         actionableFencer:
-                                        FFAppState().refereeReference,
+                                            FFAppState().refereeReference,
                                         scoreLeft: FFAppState().refLeftScore,
                                         scoreRight: FFAppState().refRightScore,
                                         timeOfAction: timerMilliseconds,
                                         periodOfAction:
-                                        FFAppState().currentPeriod,
+                                            FFAppState().currentPeriod,
                                         actionID: -2,
                                         clearUnsetFields: false,
                                       ),
@@ -1385,9 +1397,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                 textStyle: FlutterFlowTheme.of(context)
                                     .subtitle2
                                     .override(
-                                  fontFamily: 'Poppins',
-                                  color: Colors.white,
-                                ),
+                                      fontFamily: 'Poppins',
+                                      color: Colors.white,
+                                    ),
                                 borderSide: BorderSide(
                                   color: Colors.transparent,
                                   width: 1,

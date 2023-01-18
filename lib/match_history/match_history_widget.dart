@@ -7,6 +7,7 @@ import '../match_recap/match_recap_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:provider/provider.dart';
 
 class MatchHistoryWidget extends StatefulWidget {
   const MatchHistoryWidget({Key? key}) : super(key: key);
@@ -20,16 +21,20 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
   Query? _pagingQuery;
   List<StreamSubscription?> _streamSubscriptions = [];
 
+  final _unfocusNode = FocusNode();
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void dispose() {
     _streamSubscriptions.forEach((s) => s?.cancel());
+    _unfocusNode.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -46,7 +51,7 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
       ),
       body: SafeArea(
         child: GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(),
+          onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
           child: Column(
             mainAxisSize: MainAxisSize.max,
             children: [
@@ -112,10 +117,10 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                             );
                             final streamSubscription =
                                 page.dataStream?.listen((data) {
-                              final itemIndexes = _pagingController!.itemList!
-                                  .asMap()
-                                  .map((k, v) => MapEntry(v.reference.id, k));
                               data.forEach((item) {
+                                final itemIndexes = _pagingController!.itemList!
+                                    .asMap()
+                                    .map((k, v) => MapEntry(v.reference.id, k));
                                 final index = itemIndexes[item.reference.id];
                                 final items = _pagingController!.itemList!;
                                 if (index != null) {

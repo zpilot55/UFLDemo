@@ -9,6 +9,7 @@ import '../notification_settings/notification_settings_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class ProfileWidget extends StatefulWidget {
   const ProfileWidget({Key? key}) : super(key: key);
@@ -22,6 +23,8 @@ class _ProfileWidgetState extends State<ProfileWidget> {
 
   @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return Scaffold(
       key: scaffoldKey,
       backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -73,7 +76,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                                     padding: EdgeInsetsDirectional.fromSTEB(
                                         0, 105, 0, 0),
                                     child: AuthUserStreamWidget(
-                                      child: Container(
+                                      builder: (context) => Container(
                                         width: 80,
                                         height: 80,
                                         clipBehavior: Clip.antiAlias,
@@ -99,7 +102,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                           Padding(
                             padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
                             child: AuthUserStreamWidget(
-                              child: Text(
+                              builder: (context) => Text(
                                 currentUserDisplayName,
                                 style: FlutterFlowTheme.of(context)
                                     .title1

@@ -25,6 +25,24 @@ abstract class UsersRecord implements Built<UsersRecord, UsersRecordBuilder> {
   @BuiltValueField(wireName: 'phone_number')
   String? get phoneNumber;
 
+  @BuiltValueField(wireName: 'elo_adult')
+  int? get eloAdult;
+
+  @BuiltValueField(wireName: 'elo_youth')
+  int? get eloYouth;
+
+  @BuiltValueField(wireName: 'matchesUntilRanked_adult')
+  int? get matchesUntilRankedAdult;
+
+  @BuiltValueField(wireName: 'matchesUntilRanked_youth')
+  int? get matchesUntilRankedYouth;
+
+  @BuiltValueField(wireName: 'isRanked_adult')
+  bool? get isRankedAdult;
+
+  @BuiltValueField(wireName: 'isRanked_youth')
+  bool? get isRankedYouth;
+
   @BuiltValueField(wireName: kDocumentReferenceField)
   DocumentReference? get ffRef;
   DocumentReference get reference => ffRef!;
@@ -34,7 +52,13 @@ abstract class UsersRecord implements Built<UsersRecord, UsersRecordBuilder> {
     ..displayName = ''
     ..photoUrl = ''
     ..uid = ''
-    ..phoneNumber = '';
+    ..phoneNumber = ''
+    ..eloAdult = 0
+    ..eloYouth = 0
+    ..matchesUntilRankedAdult = 0
+    ..matchesUntilRankedYouth = 0
+    ..isRankedAdult = false
+    ..isRankedYouth = false;
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('users');
@@ -64,6 +88,12 @@ Map<String, dynamic> createUsersRecordData({
   String? uid,
   DateTime? createdTime,
   String? phoneNumber,
+  int? eloAdult,
+  int? eloYouth,
+  int? matchesUntilRankedAdult,
+  int? matchesUntilRankedYouth,
+  bool? isRankedAdult,
+  bool? isRankedYouth,
 }) {
   final firestoreData = serializers.toFirestore(
     UsersRecord.serializer,
@@ -74,7 +104,13 @@ Map<String, dynamic> createUsersRecordData({
         ..photoUrl = photoUrl
         ..uid = uid
         ..createdTime = createdTime
-        ..phoneNumber = phoneNumber,
+        ..phoneNumber = phoneNumber
+        ..eloAdult = eloAdult
+        ..eloYouth = eloYouth
+        ..matchesUntilRankedAdult = matchesUntilRankedAdult
+        ..matchesUntilRankedYouth = matchesUntilRankedYouth
+        ..isRankedAdult = isRankedAdult
+        ..isRankedYouth = isRankedYouth,
     ),
   );
 

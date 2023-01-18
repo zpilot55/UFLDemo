@@ -6,6 +6,7 @@ import '../custom_code/actions/index.dart' as actions;
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:text_search/text_search.dart';
 
 class SelectFencerWidget extends StatefulWidget {
@@ -19,10 +20,19 @@ class _SelectFencerWidgetState extends State<SelectFencerWidget> {
   List<UsersRecord> simpleSearchResults = [];
   var currentFencerID = '';
   UsersRecord? currentUserRecord;
+  final _unfocusNode = FocusNode();
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
+  void dispose() {
+    _unfocusNode.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    context.watch<FFAppState>();
+
     return FutureBuilder<List<UsersRecord>>(
       future: queryUsersRecordOnce(),
       builder: (context, snapshot) {
@@ -51,7 +61,7 @@ class _SelectFencerWidgetState extends State<SelectFencerWidget> {
           ),
           body: SafeArea(
             child: GestureDetector(
-              onTap: () => FocusScope.of(context).unfocus(),
+              onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
@@ -96,12 +106,16 @@ class _SelectFencerWidgetState extends State<SelectFencerWidget> {
                               await actions.getCurrentUserDocument(
                             simpleSearchResults.toList(),
                           );
-                          setState(() => FFAppState().scannedFencerRef =
-                              currentUserRecord!.reference);
-                          setState(() => FFAppState().currentFencerName =
-                              currentUserRecord!.displayName!);
-                          setState(() => FFAppState().currentFencerPicURL =
-                              currentUserRecord!.photoUrl!);
+                          FFAppState().update(() {
+                            FFAppState().scannedFencerRef =
+                                currentUserRecord!.reference;
+                            FFAppState().currentFencerName =
+                                currentUserRecord!.displayName!;
+                          });
+                          FFAppState().update(() {
+                            FFAppState().currentFencerPicURL =
+                                currentUserRecord!.photoUrl!;
+                          });
 
                           setState(() {});
                         },
@@ -181,27 +195,38 @@ class _SelectFencerWidgetState extends State<SelectFencerWidget> {
                             FFButtonWidget(
                               onPressed: () async {
                                 if (FFAppState().isRightFencer) {
-                                  setState(() => FFAppState().rightFencerRef =
-                                      FFAppState().scannedFencerRef);
-                                  setState(() => FFAppState().refRightName =
-                                      FFAppState().currentFencerName);
-                                  setState(() => FFAppState().refRightPhoto =
-                                      FFAppState().currentFencerPicURL);
+                                  FFAppState().update(() {
+                                    FFAppState().rightFencerRef =
+                                        FFAppState().scannedFencerRef;
+                                    FFAppState().refRightName =
+                                        FFAppState().currentFencerName;
+                                  });
+                                  FFAppState().update(() {
+                                    FFAppState().refRightPhoto =
+                                        FFAppState().currentFencerPicURL;
+                                  });
                                 } else {
-                                  setState(() => FFAppState().leftFencerRef =
-                                      FFAppState().scannedFencerRef);
-                                  setState(() => FFAppState().refLeftName =
-                                      FFAppState().currentFencerName);
-                                  setState(() => FFAppState().refLeftPhoto =
-                                      FFAppState().currentFencerPicURL);
+                                  FFAppState().update(() {
+                                    FFAppState().leftFencerRef =
+                                        FFAppState().scannedFencerRef;
+                                    FFAppState().refLeftName =
+                                        FFAppState().currentFencerName;
+                                  });
+                                  FFAppState().update(() {
+                                    FFAppState().refLeftPhoto =
+                                        FFAppState().currentFencerPicURL;
+                                  });
                                 }
 
-                                setState(() => FFAppState().scannedFencerRef =
-                                    FirebaseFirestore.instance.doc('/users/2'));
-                                setState(
-                                    () => FFAppState().currentFencerName = '');
-                                setState(() =>
-                                    FFAppState().currentFencerPicURL = '');
+                                FFAppState().update(() {
+                                  FFAppState().scannedFencerRef =
+                                      FirebaseFirestore.instance
+                                          .doc('/users/2');
+                                  FFAppState().currentFencerName = '';
+                                });
+                                FFAppState().update(() {
+                                  FFAppState().currentFencerPicURL = '';
+                                });
                                 Navigator.pop(context);
                               },
                               text: 'Confirm',
