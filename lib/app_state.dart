@@ -268,6 +268,13 @@ class FFAppState extends ChangeNotifier {
   set refereemodeselect(String _value) {
     _refereemodeselect = _value;
   }
+
+  DocumentReference? _SelectFencerReference =
+      FirebaseFirestore.instance.doc('/users/2');
+  DocumentReference? get SelectFencerReference => _SelectFencerReference;
+  set SelectFencerReference(DocumentReference? _value) {
+    _SelectFencerReference = _value;
+  }
 }
 
 LatLng? _latLngFromString(String? val) {

@@ -22,7 +22,7 @@ Future flushLocalState() async {
     FFAppState().isRightFencer = false;
     FFAppState().isSimultaneous = false;
     FFAppState().isTimerRunning = false;
-    FFAppState().leftFencerRef = null;
+    FFAppState().leftFencerRef = FirebaseFirestore.instance.doc('/users/2');
     FFAppState().nonAttackLabel = "";
     FFAppState().onBreak = false;
     FFAppState().refFencers.clear();
@@ -35,7 +35,7 @@ Future flushLocalState() async {
     FFAppState().refRightScore = 0;
     FFAppState().refSecondTextAction = "";
     FFAppState().refereeweaponselect = "";
-    FFAppState().rightFencerRef = null;
+    FFAppState().rightFencerRef = FirebaseFirestore.instance.doc('/users/2');
     FFAppState().scannedFencerRef = null;
     FFAppState().showActions = false;
     FFAppState().startStopText = "START";
