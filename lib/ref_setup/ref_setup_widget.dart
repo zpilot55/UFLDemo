@@ -649,8 +649,7 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                         FFAppState().SelectFencerReference) &&
                                     (FFAppState().rightFencerRef !=
                                         FFAppState().SelectFencerReference) &&
-                                    (FFAppState().refereeweaponselect !=
-                                        ' <No Weapon>'))
+                                    FFAppState().isWeaponSelected)
                                   Padding(
                                     padding: EdgeInsetsDirectional.fromSTEB(
                                         0, 0, 0, 30),
