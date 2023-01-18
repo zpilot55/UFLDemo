@@ -22,6 +22,7 @@ Future flushLocalState() async {
     FFAppState().isRightFencer = false;
     FFAppState().isSimultaneous = false;
     FFAppState().isTimerRunning = false;
+    FFAppState().isWeaponSelected = false;
     FFAppState().leftFencerRef = FirebaseFirestore.instance.doc('/users/2');
     FFAppState().nonAttackLabel = "";
     FFAppState().onBreak = false;
