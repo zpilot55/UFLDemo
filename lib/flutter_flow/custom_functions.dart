@@ -222,6 +222,9 @@ int getActionIDfromRefState(
       }
     default:
       {
+        if (isOffTarget) {
+          code = code + 40;
+        }
         switch (drop1) {
           case "Simple Attack":
             {
@@ -254,9 +257,6 @@ int getActionIDfromRefState(
             }
         }
       }
-  }
-  if (isOffTarget) {
-    code = code + 40;
   }
   if (!isLeftFencer) {
     code = code + 100;
