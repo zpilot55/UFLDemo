@@ -228,32 +228,32 @@ int getActionIDfromRefState(
         switch (drop1) {
           case "Simple Attack":
             {
-              code = 100;
+              code = code + 100;
               break;
             }
           case "Compound":
             {
-              code = 101;
+              code = code + 101;
               break;
             }
           case "Parry/Riposte":
             {
-              code = 102;
+              code = code + 102;
               break;
             }
           case "Remise":
             {
-              code = 103;
+              code = code + 103;
               break;
             }
           case "Counterattack":
             {
-              code = 104;
+              code = code + 104;
               break;
             }
           case "Point in Line":
             {
-              code = 105;
+              code = code + 105;
             }
         }
       }
