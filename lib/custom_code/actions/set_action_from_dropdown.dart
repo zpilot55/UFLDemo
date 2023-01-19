@@ -12,13 +12,21 @@ Future<String> setActionFromDropdown(
   String? actionDropText,
   String? hitDropText,
 ) async {
-  FFAppState().isSimultaneous = false;
-  FFAppState().nonAttackLabel = '';
+  FFAppState().update(() {
+    FFAppState().isSimultaneous = false;
+    FFAppState().nonAttackLabel = '';
+  });
   if (hitDropText == 'HITS') {
-    FFAppState().refIsHit = true;
+    FFAppState().update(() {
+      FFAppState().refIsHit = true;
+    });
   } else {
-    FFAppState().refIsHit = false;
+    FFAppState().update(() {
+      FFAppState().refIsHit = false;
+    });
   }
-  FFAppState().isSimultaneous = false;
+  FFAppState().update(() {
+    FFAppState().isSimultaneous = false;
+  });
   return "'s $actionDropText ${hitDropText == 'HITS' ? ' HITS' : ' IS OFF TARGET'}";
 }

@@ -9,12 +9,14 @@ import 'package:flutter/material.dart';
 // DO NOT REMOVE OR MODIFY THE CODE ABOVE!
 
 Future flushMatchActionState() async {
-  FFAppState().curentActionVideoURL = "";
-  FFAppState().isLeftFencerAction = true;
-  FFAppState().isSimultaneous = false;
-  FFAppState().nonAttackLabel = "";
-  FFAppState().refIsHit = false;
-  FFAppState().refSecondTextAction = "";
-  FFAppState().showActions = false;
-  FFAppState().startStopText = "START";
+  FFAppState().update(() {
+    FFAppState().curentActionVideoURL = "";
+    FFAppState().isLeftFencerAction = true;
+    FFAppState().isSimultaneous = false;
+    FFAppState().nonAttackLabel = "";
+    FFAppState().refIsHit = false;
+    FFAppState().refSecondTextAction = "";
+    FFAppState().showActions = false;
+    FFAppState().startStopText = "START";
+  });
 }
