@@ -297,12 +297,6 @@ class _$MatchStatsStructSerializer
             specifiedType:
                 const FullType(BuiltList, const [const FullType(int)])));
     }
-    value = object.testValue;
-    if (value != null) {
-      result
-        ..add('testValue')
-        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
-    }
     return result;
   }
 
@@ -522,10 +516,6 @@ class _$MatchStatsStructSerializer
                       const FullType(BuiltList, const [const FullType(int)]))!
               as BuiltList<Object?>);
           break;
-        case 'testValue':
-          result.testValue = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int?;
-          break;
         case 'firestoreUtilData':
           result.firestoreUtilData = serializers.deserialize(value,
                   specifiedType: const FullType(FirestoreUtilData))!
@@ -608,8 +598,6 @@ class _$MatchStatsStruct extends MatchStatsStruct {
   @override
   final BuiltList<int>? pointInLineOffTarR;
   @override
-  final int? testValue;
-  @override
   final FirestoreUtilData firestoreUtilData;
 
   factory _$MatchStatsStruct(
@@ -651,7 +639,6 @@ class _$MatchStatsStruct extends MatchStatsStruct {
       this.pointInLineHitsR,
       this.pointInLineOffTarL,
       this.pointInLineOffTarR,
-      this.testValue,
       required this.firestoreUtilData})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(
@@ -704,7 +691,6 @@ class _$MatchStatsStruct extends MatchStatsStruct {
         pointInLineHitsR == other.pointInLineHitsR &&
         pointInLineOffTarL == other.pointInLineOffTarL &&
         pointInLineOffTarR == other.pointInLineOffTarR &&
-        testValue == other.testValue &&
         firestoreUtilData == other.firestoreUtilData;
   }
 
@@ -728,25 +714,25 @@ class _$MatchStatsStruct extends MatchStatsStruct {
                                                                 $jc(
                                                                     $jc(
                                                                         $jc(
-                                                                            $jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc(0, pointsL.hashCode), pointsR.hashCode), yellowCardsL.hashCode), yellowCardsR.hashCode), redCardsL.hashCode), redCardsR.hashCode), simultaneous.hashCode), haltsRef.hashCode), haltsL.hashCode), haltsR.hashCode), simpleAttackHitsL.hashCode), simpleAttackHitsR.hashCode), simpleAttackOffTarL.hashCode), simpleAttackOffTarR.hashCode), compoundHitsL.hashCode), compoundHitsR.hashCode), compoundOffTarL.hashCode),
-                                                                                compoundOffTarR.hashCode),
-                                                                            parryRiposteHitsL.hashCode),
-                                                                        parryRiposteHitsR.hashCode),
-                                                                    parryRiposteOffTarL.hashCode),
-                                                                parryRiposteOffTarR.hashCode),
-                                                            remiseHitsL.hashCode),
-                                                        remiseHitsR.hashCode),
-                                                    remiseOffTarL.hashCode),
-                                                remiseOffTarR.hashCode),
-                                            counterattackHitsL.hashCode),
-                                        counterattackHitsR.hashCode),
-                                    counterattackOffTarL.hashCode),
-                                counterattackOffTarR.hashCode),
-                            pointInLineHitsL.hashCode),
-                        pointInLineHitsR.hashCode),
-                    pointInLineOffTarL.hashCode),
-                pointInLineOffTarR.hashCode),
-            testValue.hashCode),
+                                                                            $jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc(0, pointsL.hashCode), pointsR.hashCode), yellowCardsL.hashCode), yellowCardsR.hashCode), redCardsL.hashCode), redCardsR.hashCode), simultaneous.hashCode), haltsRef.hashCode), haltsL.hashCode), haltsR.hashCode), simpleAttackHitsL.hashCode), simpleAttackHitsR.hashCode), simpleAttackOffTarL.hashCode), simpleAttackOffTarR.hashCode), compoundHitsL.hashCode), compoundHitsR.hashCode),
+                                                                                compoundOffTarL.hashCode),
+                                                                            compoundOffTarR.hashCode),
+                                                                        parryRiposteHitsL.hashCode),
+                                                                    parryRiposteHitsR.hashCode),
+                                                                parryRiposteOffTarL.hashCode),
+                                                            parryRiposteOffTarR.hashCode),
+                                                        remiseHitsL.hashCode),
+                                                    remiseHitsR.hashCode),
+                                                remiseOffTarL.hashCode),
+                                            remiseOffTarR.hashCode),
+                                        counterattackHitsL.hashCode),
+                                    counterattackHitsR.hashCode),
+                                counterattackOffTarL.hashCode),
+                            counterattackOffTarR.hashCode),
+                        pointInLineHitsL.hashCode),
+                    pointInLineHitsR.hashCode),
+                pointInLineOffTarL.hashCode),
+            pointInLineOffTarR.hashCode),
         firestoreUtilData.hashCode));
   }
 
@@ -787,7 +773,6 @@ class _$MatchStatsStruct extends MatchStatsStruct {
           ..add('pointInLineHitsR', pointInLineHitsR)
           ..add('pointInLineOffTarL', pointInLineOffTarL)
           ..add('pointInLineOffTarR', pointInLineOffTarR)
-          ..add('testValue', testValue)
           ..add('firestoreUtilData', firestoreUtilData))
         .toString();
   }
@@ -989,10 +974,6 @@ class MatchStatsStructBuilder
   set pointInLineOffTarR(ListBuilder<int>? pointInLineOffTarR) =>
       _$this._pointInLineOffTarR = pointInLineOffTarR;
 
-  int? _testValue;
-  int? get testValue => _$this._testValue;
-  set testValue(int? testValue) => _$this._testValue = testValue;
-
   FirestoreUtilData? _firestoreUtilData;
   FirestoreUtilData? get firestoreUtilData => _$this._firestoreUtilData;
   set firestoreUtilData(FirestoreUtilData? firestoreUtilData) =>
@@ -1039,7 +1020,6 @@ class MatchStatsStructBuilder
       _pointInLineHitsR = $v.pointInLineHitsR?.toBuilder();
       _pointInLineOffTarL = $v.pointInLineOffTarL?.toBuilder();
       _pointInLineOffTarR = $v.pointInLineOffTarR?.toBuilder();
-      _testValue = $v.testValue;
       _firestoreUtilData = $v.firestoreUtilData;
       _$v = null;
     }
@@ -1099,7 +1079,6 @@ class MatchStatsStructBuilder
               pointInLineHitsR: _pointInLineHitsR?.build(),
               pointInLineOffTarL: _pointInLineOffTarL?.build(),
               pointInLineOffTarR: _pointInLineOffTarR?.build(),
-              testValue: testValue,
               firestoreUtilData: BuiltValueNullFieldError.checkNotNull(
                   firestoreUtilData, r'MatchStatsStruct', 'firestoreUtilData'));
     } catch (_) {
