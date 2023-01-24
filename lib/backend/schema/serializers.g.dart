@@ -11,6 +11,7 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(MatchEventStruct.serializer)
       ..add(MatchStatsStruct.serializer)
       ..add(MatchesRecord.serializer)
+      ..add(PeriodStatsStruct.serializer)
       ..add(UsersRecord.serializer)
       ..addBuilderFactory(
           const FullType(BuiltList, const [
@@ -21,6 +22,9 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(MatchEventStruct)]),
           () => new ListBuilder<MatchEventStruct>())
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(PeriodStatsStruct)]),
+          () => new ListBuilder<PeriodStatsStruct>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(int)]),
           () => new ListBuilder<int>())

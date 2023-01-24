@@ -18,11 +18,7 @@ class _$MatchesRecordSerializer implements StructuredSerializer<MatchesRecord> {
   @override
   Iterable<Object?> serialize(Serializers serializers, MatchesRecord object,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object?>[
-      'MatchStats',
-      serializers.serialize(object.matchStats,
-          specifiedType: const FullType(MatchStatsStruct)),
-    ];
+    final result = <Object?>[];
     Object? value;
     value = object.user1;
     if (value != null) {
@@ -96,6 +92,14 @@ class _$MatchesRecordSerializer implements StructuredSerializer<MatchesRecord> {
         ..add(serializers.serialize(value,
             specifiedType: const FullType(
                 BuiltList, const [const FullType(MatchEventStruct)])));
+    }
+    value = object.matchStats;
+    if (value != null) {
+      result
+        ..add('MatchStats')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(
+                BuiltList, const [const FullType(PeriodStatsStruct)])));
     }
     value = object.ffRef;
     if (value != null) {
@@ -171,8 +175,9 @@ class _$MatchesRecordSerializer implements StructuredSerializer<MatchesRecord> {
           break;
         case 'MatchStats':
           result.matchStats.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(MatchStatsStruct))!
-              as MatchStatsStruct);
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(PeriodStatsStruct)]))!
+              as BuiltList<Object?>);
           break;
         case 'Document__Reference__Field':
           result.ffRef = serializers.deserialize(value,
@@ -209,7 +214,7 @@ class _$MatchesRecord extends MatchesRecord {
   @override
   final BuiltList<MatchEventStruct>? matchEvents;
   @override
-  final MatchStatsStruct matchStats;
+  final BuiltList<PeriodStatsStruct>? matchStats;
   @override
   final DocumentReference<Object?>? ffRef;
 
@@ -227,12 +232,9 @@ class _$MatchesRecord extends MatchesRecord {
       this.scoreLeft,
       this.scoreRight,
       this.matchEvents,
-      required this.matchStats,
+      this.matchStats,
       this.ffRef})
-      : super._() {
-    BuiltValueNullFieldError.checkNotNull(
-        matchStats, r'MatchesRecord', 'matchStats');
-  }
+      : super._();
 
   @override
   MatchesRecord rebuild(void Function(MatchesRecordBuilder) updates) =>
@@ -353,10 +355,10 @@ class MatchesRecordBuilder
   set matchEvents(ListBuilder<MatchEventStruct>? matchEvents) =>
       _$this._matchEvents = matchEvents;
 
-  MatchStatsStructBuilder? _matchStats;
-  MatchStatsStructBuilder get matchStats =>
-      _$this._matchStats ??= new MatchStatsStructBuilder();
-  set matchStats(MatchStatsStructBuilder? matchStats) =>
+  ListBuilder<PeriodStatsStruct>? _matchStats;
+  ListBuilder<PeriodStatsStruct> get matchStats =>
+      _$this._matchStats ??= new ListBuilder<PeriodStatsStruct>();
+  set matchStats(ListBuilder<PeriodStatsStruct>? matchStats) =>
       _$this._matchStats = matchStats;
 
   DocumentReference<Object?>? _ffRef;
@@ -380,7 +382,7 @@ class MatchesRecordBuilder
       _scoreLeft = $v.scoreLeft;
       _scoreRight = $v.scoreRight;
       _matchEvents = $v.matchEvents?.toBuilder();
-      _matchStats = $v.matchStats.toBuilder();
+      _matchStats = $v.matchStats?.toBuilder();
       _ffRef = $v.ffRef;
       _$v = null;
     }
@@ -416,7 +418,7 @@ class MatchesRecordBuilder
               scoreLeft: scoreLeft,
               scoreRight: scoreRight,
               matchEvents: _matchEvents?.build(),
-              matchStats: matchStats.build(),
+              matchStats: _matchStats?.build(),
               ffRef: ffRef);
     } catch (_) {
       late String _$failedField;
@@ -427,7 +429,7 @@ class MatchesRecordBuilder
         _$failedField = 'matchEvents';
         _matchEvents?.build();
         _$failedField = 'matchStats';
-        matchStats.build();
+        _matchStats?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             r'MatchesRecord', _$failedField, e.toString());

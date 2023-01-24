@@ -36,7 +36,7 @@ abstract class MatchesRecord
   BuiltList<MatchEventStruct>? get matchEvents;
 
   @BuiltValueField(wireName: 'MatchStats')
-  MatchStatsStruct get matchStats;
+  BuiltList<PeriodStatsStruct>? get matchStats;
 
   @BuiltValueField(wireName: kDocumentReferenceField)
   DocumentReference? get ffRef;
@@ -49,7 +49,7 @@ abstract class MatchesRecord
     ..scoreLeft = 0
     ..scoreRight = 0
     ..matchEvents = ListBuilder()
-    ..matchStats = MatchStatsStructBuilder();
+    ..matchStats = ListBuilder();
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('matches');
@@ -81,7 +81,6 @@ Map<String, dynamic> createMatchesRecordData({
   LatLng? location,
   int? scoreLeft,
   int? scoreRight,
-  MatchStatsStruct? matchStats,
 }) {
   final firestoreData = serializers.toFirestore(
     MatchesRecord.serializer,
@@ -97,12 +96,9 @@ Map<String, dynamic> createMatchesRecordData({
         ..scoreLeft = scoreLeft
         ..scoreRight = scoreRight
         ..matchEvents = null
-        ..matchStats = MatchStatsStructBuilder(),
+        ..matchStats = null,
     ),
   );
-
-  // Handle nested data for "MatchStats" field.
-  addMatchStatsStructData(firestoreData, matchStats, 'MatchStats');
 
   return firestoreData;
 }

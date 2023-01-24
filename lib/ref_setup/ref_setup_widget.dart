@@ -21,13 +21,14 @@ class RefSetupWidget extends StatefulWidget {
 }
 
 class _RefSetupWidgetState extends State<RefSetupWidget> {
+  LatLng? currentUserLocationValue;
+  final _unfocusNode = FocusNode();
+  final scaffoldKey = GlobalKey<ScaffoldState>();
   MatchesRecord? currentMatchInProgress2;
   MatchesRecord? currentMatchInProgress;
   int? periodCountValue;
   int? timeCountValue;
   int? touchesCountValue;
-  final _unfocusNode = FocusNode();
-  final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void dispose() {
@@ -655,6 +656,10 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                         0, 0, 0, 30),
                                     child: FFButtonWidget(
                                       onPressed: () async {
+                                        currentUserLocationValue =
+                                            await getCurrentUserLocation(
+                                                defaultLocation:
+                                                    LatLng(0.0, 0.0));
                                         FFAppState().update(() {
                                           FFAppState().startPeriods =
                                               periodCountValue!;
@@ -677,54 +682,15 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                           ...createMatchesRecordData(
                                             user1: FFAppState().leftFencerRef,
                                             user2: FFAppState().rightFencerRef,
-                                            scheduledTime: getCurrentTimestamp,
                                             weapon: FFAppState()
                                                 .refereeweaponselect,
-                                            noOfPeriods:
-                                                FFAppState().startPeriods,
+                                            noOfPeriods: periodCountValue,
                                             scoreLeft: 0,
                                             scoreRight: 0,
-                                            matchStats: createMatchStatsStruct(
-                                              fieldValues: {
-                                                'Points_L': [0],
-                                                'Points_R': [0],
-                                                'YellowCards_L': [0],
-                                                'YellowCards_R': [0],
-                                                'RedCards_L': [0],
-                                                'RedCards_R': [0],
-                                                'Simultaneous': [0],
-                                                'Halts_Ref': [0],
-                                                'Halts_L': [0],
-                                                'Halts_R': [0],
-                                                'SimpleAttackHits_L': [0],
-                                                'SimpleAttackHits_R': [0],
-                                                'SimpleAttackOffTar_L': [0],
-                                                'SimpleAttackOffTar_R': [0],
-                                                'CompoundHits_L': [0],
-                                                'CompoundHits_R': [0],
-                                                'CompoundOffTar_L': [0],
-                                                'CompoundOffTar_R': [0],
-                                                'ParryRiposteHits_L': [0],
-                                                'ParryRiposteHits_R': [0],
-                                                'ParryRiposteOffTar_L': [0],
-                                                'ParryRiposteOffTar_R': [0],
-                                                'RemiseHits_L': [0],
-                                                'RemiseHits_R': [0],
-                                                'RemiseOffTar_L': [0],
-                                                'RemiseOffTar_R': [0],
-                                                'CounterattackHits_L': [0],
-                                                'CounterattackHits_R': [0],
-                                                'CounterattackOffTar_L': [0],
-                                                'CounterattackOffTar_R': [0],
-                                                'PointInLineHits_L': [0],
-                                                'PointInLineHits_R': [0],
-                                                'PointInLineOffTar_L': [0],
-                                                'PointInLineOffTar_R': [0],
-                                              },
-                                              clearUnsetFields: false,
-                                              create: true,
-                                            ),
+                                            location: currentUserLocationValue,
                                           ),
+                                          'scheduled_time':
+                                              FieldValue.serverTimestamp(),
                                           'fencers': FFAppState().refFencers,
                                           'MatchEvents': [
                                             getMatchEventFirestoreData(
