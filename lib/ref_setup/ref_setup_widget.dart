@@ -660,10 +660,11 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                               periodCountValue!;
                                           FFAppState().startTimePeriod =
                                               timeCountValue!;
+                                          FFAppState().startTotalTouches =
+                                              FFAppState().startTotalTouches;
+                                          FFAppState().currentPeriod = 1;
                                         });
                                         FFAppState().update(() {
-                                          FFAppState().startTotalTouches =
-                                              touchesCountValue!;
                                           FFAppState().addToRefFencers(
                                               FFAppState().leftFencerRef!);
                                         });
@@ -683,6 +684,46 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                                 FFAppState().startPeriods,
                                             scoreLeft: 0,
                                             scoreRight: 0,
+                                            matchStats: createMatchStatsStruct(
+                                              fieldValues: {
+                                                'Points_L': [0],
+                                                'Points_R': [0],
+                                                'YellowCards_L': [0],
+                                                'YellowCards_R': [0],
+                                                'RedCards_L': [0],
+                                                'RedCards_R': [0],
+                                                'Simultaneous': [0],
+                                                'Halts_Ref': [0],
+                                                'Halts_L': [0],
+                                                'Halts_R': [0],
+                                                'SimpleAttackHits_L': [0],
+                                                'SimpleAttackHits_R': [0],
+                                                'SimpleAttackOffTar_L': [0],
+                                                'SimpleAttackOffTar_R': [0],
+                                                'CompoundHits_L': [0],
+                                                'CompoundHits_R': [0],
+                                                'CompoundOffTar_L': [0],
+                                                'CompoundOffTar_R': [0],
+                                                'ParryRiposteHits_L': [0],
+                                                'ParryRiposteHits_R': [0],
+                                                'ParryRiposteOffTar_L': [0],
+                                                'ParryRiposteOffTar_R': [0],
+                                                'RemiseHits_L': [0],
+                                                'RemiseHits_R': [0],
+                                                'RemiseOffTar_L': [0],
+                                                'RemiseOffTar_R': [0],
+                                                'CounterattackHits_L': [0],
+                                                'CounterattackHits_R': [0],
+                                                'CounterattackOffTar_L': [0],
+                                                'CounterattackOffTar_R': [0],
+                                                'PointInLineHits_L': [0],
+                                                'PointInLineHits_R': [0],
+                                                'PointInLineOffTar_L': [0],
+                                                'PointInLineOffTar_R': [0],
+                                              },
+                                              clearUnsetFields: false,
+                                              create: true,
+                                            ),
                                           ),
                                           'fencers': FFAppState().refFencers,
                                           'MatchEvents': [
