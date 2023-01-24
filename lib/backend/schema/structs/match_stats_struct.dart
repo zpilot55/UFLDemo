@@ -113,8 +113,6 @@ abstract class MatchStatsStruct
   @BuiltValueField(wireName: 'PointInLineOffTar_R')
   BuiltList<int>? get pointInLineOffTarR;
 
-  int? get testValue;
-
   /// Utility class for Firestore updates
   FirestoreUtilData get firestoreUtilData;
 
@@ -153,7 +151,6 @@ abstract class MatchStatsStruct
     ..pointInLineHitsR = ListBuilder()
     ..pointInLineOffTarL = ListBuilder()
     ..pointInLineOffTarR = ListBuilder()
-    ..testValue = 0
     ..firestoreUtilData = FirestoreUtilData();
 
   MatchStatsStruct._();
@@ -162,7 +159,6 @@ abstract class MatchStatsStruct
 }
 
 MatchStatsStruct createMatchStatsStruct({
-  int? testValue,
   Map<String, dynamic> fieldValues = const {},
   bool clearUnsetFields = true,
   bool create = false,
@@ -204,7 +200,6 @@ MatchStatsStruct createMatchStatsStruct({
         ..pointInLineHitsR = null
         ..pointInLineOffTarL = null
         ..pointInLineOffTarR = null
-        ..testValue = testValue
         ..firestoreUtilData = FirestoreUtilData(
           clearUnsetFields: clearUnsetFields,
           create: create,
