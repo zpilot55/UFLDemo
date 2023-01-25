@@ -106,7 +106,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
 
   Future<String> _trimAndUpload(XFile localFile) async {
 
-    int cutOffEndTime = -3; //Hardcoded cutoff time
+    int cutOffEndTime = -5; //Hardcoded cutoff time
     String newFilePath = '${localFile.path.split('.mp4')[0]}-s.mp4';
     await FFmpegKit.executeAsync('-encoders');
     await FFmpegKit.execute('-sseof $cutOffEndTime -i ${localFile.path} -f mp4 $newFilePath').then((session) async {
