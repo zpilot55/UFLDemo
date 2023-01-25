@@ -26,10 +26,14 @@ class RefViewWidget extends StatefulWidget {
     Key? key,
     this.initStartTime,
     this.currentMatchInProgress,
+    this.startNumOfPeriods,
+    this.startNumOfTouches,
   }) : super(key: key);
 
   final int? initStartTime;
   final MatchesRecord? currentMatchInProgress;
+  final int? startNumOfPeriods;
+  final int? startNumOfTouches;
 
   @override
   _RefViewWidgetState createState() => _RefViewWidgetState();
@@ -347,7 +351,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
   @override
   Widget build(BuildContext context) {
     context.watch<FFAppState>();
-    return Scaffold(
+    return WillPopScope(
+      onWillPop: () async => false,
+    child: Scaffold(
       key: scaffoldKey,
       backgroundColor: Color(0x00FFFFFF),
       endDrawer: Drawer(
@@ -361,9 +367,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
               children: [
                 SelectionArea(
                     child: Text(
-                      'Match Options',
-                      style: FlutterFlowTheme.of(context).title3,
-                    )),
+                  'Match Options',
+                  style: FlutterFlowTheme.of(context).title3,
+                )),
               ],
             ),
             Padding(
@@ -374,9 +380,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                 children: [
                   SelectionArea(
                       child: Text(
-                        'Replay Last Action',
-                        style: FlutterFlowTheme.of(context).subtitle1,
-                      )),
+                    'Replay Last Action',
+                    style: FlutterFlowTheme.of(context).subtitle1,
+                  )),
                   Icon(
                     Icons.arrow_forward,
                     color: Colors.black,
@@ -404,9 +410,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                   children: [
                     SelectionArea(
                         child: Text(
-                          'View Match Timeline',
-                          style: FlutterFlowTheme.of(context).subtitle1,
-                        )),
+                      'View Match Timeline',
+                      style: FlutterFlowTheme.of(context).subtitle1,
+                    )),
                     Icon(
                       Icons.arrow_forward,
                       color: Colors.black,
@@ -424,9 +430,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                 children: [
                   SelectionArea(
                       child: Text(
-                        'Undo Last Action',
-                        style: FlutterFlowTheme.of(context).subtitle1,
-                      )),
+                    'Undo Last Action',
+                    style: FlutterFlowTheme.of(context).subtitle1,
+                  )),
                   Icon(
                     Icons.arrow_forward,
                     color: Colors.black,
@@ -443,9 +449,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                 children: [
                   SelectionArea(
                       child: Text(
-                        'Issue Black Card',
-                        style: FlutterFlowTheme.of(context).subtitle1,
-                      )),
+                    'Issue Black Card',
+                    style: FlutterFlowTheme.of(context).subtitle1,
+                  )),
                   Icon(
                     Icons.arrow_forward,
                     color: Colors.black,
@@ -486,18 +492,18 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                               style: FlutterFlowTheme.of(context)
                                   .bodyText1
                                   .override(
-                                fontFamily: 'Poppins',
-                                fontSize: 18,
-                              ),
+                                    fontFamily: 'Poppins',
+                                    fontSize: 18,
+                                  ),
                             ),
                             FlutterFlowTimer(
                               initialTime:
                                   functions.minutesToMS(widget.initStartTime!),
                               getDisplayTime: (value) =>
                                   StopWatchTimer.getDisplayTime(
-                                    value,
-                                    hours: false,
-                                  ),
+                                value,
+                                hours: false,
+                              ),
                               timer: timerController,
                               onChanged: (value, displayTime, shouldUpdate) {
                                 timerMilliseconds = value;
@@ -509,7 +515,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                   FFAppState().isTimerRunning = false;
                                 });
                                 if (FFAppState().currentPeriod ==
-                                    FFAppState().startPeriods) {
+                                    widget.startNumOfPeriods) {
                                   FFAppState().update(() {
                                     FFAppState().endOfBout = true;
                                     FFAppState().startStopText = 'END OF BOUT';
@@ -564,7 +570,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                       'Left Fencer',
                                     ),
                                     style:
-                                    FlutterFlowTheme.of(context).bodyText1,
+                                        FlutterFlowTheme.of(context).bodyText1,
                                   ),
                                 ],
                               ),
@@ -579,9 +585,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                         style: FlutterFlowTheme.of(context)
                                             .bodyText1
                                             .override(
-                                          fontFamily: 'Poppins',
-                                          fontSize: 14,
-                                        ),
+                                              fontFamily: 'Poppins',
+                                              fontSize: 14,
+                                            ),
                                       ),
                                       Text(
                                         valueOrDefault<String>(
@@ -639,7 +645,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                       'Right Fencer',
                                     ),
                                     style:
-                                    FlutterFlowTheme.of(context).bodyText1,
+                                        FlutterFlowTheme.of(context).bodyText1,
                                   ),
                                 ],
                               ),
@@ -666,9 +672,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                   textStyle: FlutterFlowTheme.of(context)
                                       .subtitle2
                                       .override(
-                                    fontFamily: 'Poppins',
-                                    color: Colors.white,
-                                  ),
+                                        fontFamily: 'Poppins',
+                                        color: Colors.white,
+                                      ),
                                   borderSide: BorderSide(
                                     color: Colors.transparent,
                                     width: 1,
@@ -696,7 +702,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                           if (FFAppState().isTimerRunning == false)
                             Padding(
                               padding:
-                              EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
+                                  EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
                               child: FFButtonWidget(
                                 onPressed: () async {
                                   FFAppState().update(() {
@@ -716,9 +722,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                   textStyle: FlutterFlowTheme.of(context)
                                       .subtitle2
                                       .override(
-                                    fontFamily: 'Poppins',
-                                    color: Colors.white,
-                                  ),
+                                        fontFamily: 'Poppins',
+                                        color: Colors.white,
+                                      ),
                                   borderSide: BorderSide(
                                     color: Colors.black,
                                     width: 1,
@@ -731,7 +737,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                           if (!FFAppState().showActions)
                             Padding(
                               padding:
-                              EdgeInsetsDirectional.fromSTEB(0, 0, 0, 5),
+                                  EdgeInsetsDirectional.fromSTEB(0, 0, 0, 5),
                               child: FFButtonWidget(
                                 onPressed: () async {
                                   if (FFAppState().endOfBout) {
@@ -766,8 +772,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                           FFAppState().update(() {
                                             FFAppState().timerStartTime =
                                                 functions.minutesToMS(
-                                                    FFAppState()
-                                                        .startTimePeriod);
+                                                    widget.initStartTime!);
                                           });
                                           await Future.delayed(const Duration(
                                               milliseconds: 100));
@@ -782,18 +787,17 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                           });
                                         } else {
                                           if (FFAppState().isTimerRunning) {
-                                            timerController.onExecute.add(
-                                              StopWatchExecute.stop,
-                                            );
+                                            timerController.onExecute
+                                                .add(StopWatchExecute.stop);
 
                                             var currFile = await _stopRecording();
                                             uploadURL = await _trimAndUpload(currFile);
 
                                             FFAppState().update(() {
                                               FFAppState().isTimerRunning =
-                                              false;
+                                                  false;
                                               FFAppState().startStopText =
-                                              'START';
+                                                  'START';
                                             });
                                           } else {
                                             timerController.onExecute
@@ -803,9 +807,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
 
                                             FFAppState().update(() {
                                               FFAppState().isTimerRunning =
-                                              true;
+                                                  true;
                                               FFAppState().startStopText =
-                                              'STOP';
+                                                  'STOP';
                                             });
                                           }
                                         }
@@ -824,9 +828,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                   textStyle: FlutterFlowTheme.of(context)
                                       .subtitle2
                                       .override(
-                                    fontFamily: 'Poppins',
-                                    color: Colors.white,
-                                  ),
+                                        fontFamily: 'Poppins',
+                                        color: Colors.white,
+                                      ),
                                   borderSide: BorderSide(
                                     color: Colors.black,
                                     width: 1,
@@ -839,7 +843,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                           if (FFAppState().isTimerRunning == false)
                             Padding(
                               padding:
-                              EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
+                                  EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
                               child: FFButtonWidget(
                                 onPressed: () async {
                                   FFAppState().update(() {
@@ -859,9 +863,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                   textStyle: FlutterFlowTheme.of(context)
                                       .subtitle2
                                       .override(
-                                    fontFamily: 'Poppins',
-                                    color: Colors.white,
-                                  ),
+                                        fontFamily: 'Poppins',
+                                        color: Colors.white,
+                                      ),
                                   borderSide: BorderSide(
                                     color: Colors.black,
                                     width: 1,
@@ -903,9 +907,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                 style: FlutterFlowTheme.of(context)
                                     .bodyText1
                                     .override(
-                                  fontFamily: 'Poppins',
-                                  fontSize: 18,
-                                ),
+                                      fontFamily: 'Poppins',
+                                      fontSize: 18,
+                                    ),
                               ),
                               if (!FFAppState().isSimultaneous)
                                 Text(
@@ -913,18 +917,18 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                   style: FlutterFlowTheme.of(context)
                                       .bodyText1
                                       .override(
-                                    fontFamily: 'Poppins',
-                                    fontSize: 18,
-                                  ),
+                                        fontFamily: 'Poppins',
+                                        fontSize: 18,
+                                      ),
                                 ),
                               Text(
                                 FFAppState().refSecondTextAction,
                                 style: FlutterFlowTheme.of(context)
                                     .bodyText1
                                     .override(
-                                  fontFamily: 'Poppins',
-                                  fontSize: 18,
-                                ),
+                                      fontFamily: 'Poppins',
+                                      fontSize: 18,
+                                    ),
                               ),
                             ],
                           ),
@@ -948,7 +952,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                 onChanged: (val) async {
                                   setState(() => dropDownValue1 = val);
                                   actionText1 =
-                                  await actions.setActionFromDropdown(
+                                      await actions.setActionFromDropdown(
                                     dropDownValue1,
                                     dropDownValue2,
                                   );
@@ -965,9 +969,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                 textStyle: FlutterFlowTheme.of(context)
                                     .bodyText1
                                     .override(
-                                  fontFamily: 'Poppins',
-                                  color: Colors.black,
-                                ),
+                                      fontFamily: 'Poppins',
+                                      color: Colors.black,
+                                    ),
                                 hintText: 'Type of Attack?',
                                 fillColor: Colors.white,
                                 elevation: 2,
@@ -983,7 +987,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                 onChanged: (val) async {
                                   setState(() => dropDownValue2 = val);
                                   actionText2 =
-                                  await actions.setActionFromDropdown(
+                                      await actions.setActionFromDropdown(
                                     dropDownValue1,
                                     dropDownValue2,
                                   );
@@ -999,9 +1003,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                 textStyle: FlutterFlowTheme.of(context)
                                     .bodyText1
                                     .override(
-                                  fontFamily: 'Poppins',
-                                  color: Colors.black,
-                                ),
+                                      fontFamily: 'Poppins',
+                                      color: Colors.black,
+                                    ),
                                 hintText: 'Hits/Off Target?',
                                 fillColor: Colors.white,
                                 elevation: 2,
@@ -1017,7 +1021,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                         ),
                         Padding(
                           padding:
-                          EdgeInsetsDirectional.fromSTEB(10, 20, 10, 0),
+                              EdgeInsetsDirectional.fromSTEB(10, 20, 10, 0),
                           child: Row(
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -1043,10 +1047,10 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                   textStyle: FlutterFlowTheme.of(context)
                                       .subtitle2
                                       .override(
-                                    fontFamily: 'Poppins',
-                                    color: Colors.white,
-                                    fontSize: 14,
-                                  ),
+                                        fontFamily: 'Poppins',
+                                        color: Colors.white,
+                                        fontSize: 14,
+                                      ),
                                   borderSide: BorderSide(
                                     color: Colors.black,
                                     width: 1,
@@ -1074,10 +1078,10 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                   textStyle: FlutterFlowTheme.of(context)
                                       .subtitle2
                                       .override(
-                                    fontFamily: 'Poppins',
-                                    color: Colors.white,
-                                    fontSize: 14,
-                                  ),
+                                        fontFamily: 'Poppins',
+                                        color: Colors.white,
+                                        fontSize: 14,
+                                      ),
                                   borderSide: BorderSide(
                                     color: Colors.black,
                                     width: 1,
@@ -1105,10 +1109,10 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                   textStyle: FlutterFlowTheme.of(context)
                                       .subtitle2
                                       .override(
-                                    fontFamily: 'Poppins',
-                                    color: Colors.white,
-                                    fontSize: 14,
-                                  ),
+                                        fontFamily: 'Poppins',
+                                        color: Colors.white,
+                                        fontSize: 14,
+                                      ),
                                   borderSide: BorderSide(
                                     color: Colors.black,
                                     width: 1,
@@ -1136,9 +1140,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                   textStyle: FlutterFlowTheme.of(context)
                                       .subtitle2
                                       .override(
-                                    fontFamily: 'Poppins',
-                                    color: Colors.white,
-                                  ),
+                                        fontFamily: 'Poppins',
+                                        color: Colors.white,
+                                      ),
                                   borderSide: BorderSide(
                                     color: Colors.black,
                                     width: 1,
@@ -1157,55 +1161,53 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                             children: [
                               Padding(
                                 padding:
-                                EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
+                                    EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
                                 child: FFButtonWidget(
                                   onPressed: () async {
-                                    if(!_isUploading) {
-                                      await actions.awardPointIfApplicable(
-                                        FFAppState().isLeftFencerAction,
-                                        FFAppState().nonAttackLabel,
-                                        FFAppState().refereeweaponselect,
-                                        FFAppState().refIsHit,
-                                      );
+                                    await actions.awardPointIfApplicable(
+                                      FFAppState().isLeftFencerAction,
+                                      FFAppState().nonAttackLabel,
+                                      FFAppState().refereeweaponselect,
+                                      FFAppState().refIsHit,
+                                    );
 
-                                      final matchesUpdateData = {
-                                        'MatchEvents': FieldValue.arrayUnion([
-                                          getMatchEventFirestoreData(
-                                            createMatchEventStruct(
-                                              actionableFencer: FFAppState()
-                                                  .isLeftFencerAction
-                                                  ? FFAppState().leftFencerRef
-                                                  : FFAppState().rightFencerRef,
-                                              scoreLeft:
-                                              FFAppState().refLeftScore,
-                                              scoreRight:
-                                              FFAppState().refRightScore,
-                                              timeOfAction: timerMilliseconds,
-                                              periodOfAction:
-                                              FFAppState().currentPeriod,
-                                              actionID: functions
-                                                  .getActionIDfromRefState(
-                                                  FFAppState()
-                                                      .isLeftFencerAction,
-                                                  dropDownValue1,
-                                                  !FFAppState().refIsHit,
-                                                  FFAppState()
-                                                      .nonAttackLabel),
-                                              videoURL: uploadURL,
-                                              clearUnsetFields: false,
-                                            ),
-                                            true,
-                                          )
-                                        ]),
-                                      };
-                                      await widget
-                                          .currentMatchInProgress!.reference
-                                          .update(matchesUpdateData);
-                                      await actions.flushMatchActionState();
-                                      FFAppState().update(() {
-                                        FFAppState().showActions = false;
-                                      });
-                                    }
+                                    final matchesUpdateData = {
+                                      'MatchEvents': FieldValue.arrayUnion([
+                                        getMatchEventFirestoreData(
+                                          createMatchEventStruct(
+                                            actionableFencer: FFAppState()
+                                                    .isLeftFencerAction
+                                                ? FFAppState().leftFencerRef
+                                                : FFAppState().rightFencerRef,
+                                            scoreLeft:
+                                                FFAppState().refLeftScore,
+                                            scoreRight:
+                                                FFAppState().refRightScore,
+                                            timeOfAction: timerMilliseconds,
+                                            periodOfAction:
+                                                FFAppState().currentPeriod,
+                                            actionID: functions
+                                                .getActionIDfromRefState(
+                                                    FFAppState()
+                                                        .isLeftFencerAction,
+                                                    dropDownValue1,
+                                                    !FFAppState().refIsHit,
+                                                    FFAppState()
+                                                        .nonAttackLabel),
+                                            videoURL: uploadURL,
+                                            clearUnsetFields: false,
+                                          ),
+                                          true,
+                                        )
+                                      ]),
+                                    };
+                                    await widget
+                                        .currentMatchInProgress!.reference
+                                        .update(matchesUpdateData);
+                                    await actions.flushMatchActionState();
+                                    FFAppState().update(() {
+                                      FFAppState().showActions = false;
+                                    });
                                   },
                                   text: 'OK',
                                   options: FFButtonOptions(
@@ -1215,9 +1217,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                     textStyle: FlutterFlowTheme.of(context)
                                         .subtitle2
                                         .override(
-                                      fontFamily: 'Poppins',
-                                      color: Colors.white,
-                                    ),
+                                          fontFamily: 'Poppins',
+                                          color: Colors.white,
+                                        ),
                                     borderSide: BorderSide(
                                       color: Colors.black,
                                       width: 1,
@@ -1228,7 +1230,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                               ),
                               Padding(
                                 padding:
-                                EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
+                                    EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
                                 child: FFButtonWidget(
                                   onPressed: () async {
                                     await actions.flushMatchActionState();
@@ -1244,9 +1246,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                     textStyle: FlutterFlowTheme.of(context)
                                         .subtitle2
                                         .override(
-                                      fontFamily: 'Poppins',
-                                      color: Colors.white,
-                                    ),
+                                          fontFamily: 'Poppins',
+                                          color: Colors.white,
+                                        ),
                                     borderSide: BorderSide(
                                       color: Colors.black,
                                       width: 1,
@@ -1417,6 +1419,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
           ),
         ),
       ),
+    ),
     );
   }
 }

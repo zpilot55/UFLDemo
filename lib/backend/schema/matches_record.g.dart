@@ -93,6 +93,14 @@ class _$MatchesRecordSerializer implements StructuredSerializer<MatchesRecord> {
             specifiedType: const FullType(
                 BuiltList, const [const FullType(MatchEventStruct)])));
     }
+    value = object.matchStats;
+    if (value != null) {
+      result
+        ..add('MatchStats')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(
+                BuiltList, const [const FullType(PeriodStatsStruct)])));
+    }
     value = object.ffRef;
     if (value != null) {
       result
@@ -165,6 +173,12 @@ class _$MatchesRecordSerializer implements StructuredSerializer<MatchesRecord> {
                       BuiltList, const [const FullType(MatchEventStruct)]))!
               as BuiltList<Object?>);
           break;
+        case 'MatchStats':
+          result.matchStats.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(PeriodStatsStruct)]))!
+              as BuiltList<Object?>);
+          break;
         case 'Document__Reference__Field':
           result.ffRef = serializers.deserialize(value,
               specifiedType: const FullType(DocumentReference, const [
@@ -200,6 +214,8 @@ class _$MatchesRecord extends MatchesRecord {
   @override
   final BuiltList<MatchEventStruct>? matchEvents;
   @override
+  final BuiltList<PeriodStatsStruct>? matchStats;
+  @override
   final DocumentReference<Object?>? ffRef;
 
   factory _$MatchesRecord([void Function(MatchesRecordBuilder)? updates]) =>
@@ -216,6 +232,7 @@ class _$MatchesRecord extends MatchesRecord {
       this.scoreLeft,
       this.scoreRight,
       this.matchEvents,
+      this.matchStats,
       this.ffRef})
       : super._();
 
@@ -240,6 +257,7 @@ class _$MatchesRecord extends MatchesRecord {
         scoreLeft == other.scoreLeft &&
         scoreRight == other.scoreRight &&
         matchEvents == other.matchEvents &&
+        matchStats == other.matchStats &&
         ffRef == other.ffRef;
   }
 
@@ -254,16 +272,18 @@ class _$MatchesRecord extends MatchesRecord {
                             $jc(
                                 $jc(
                                     $jc(
-                                        $jc($jc(0, user1.hashCode),
-                                            user2.hashCode),
-                                        scheduledTime.hashCode),
-                                    noOfPeriods.hashCode),
-                                weapon.hashCode),
-                            location.hashCode),
-                        fencers.hashCode),
-                    scoreLeft.hashCode),
-                scoreRight.hashCode),
-            matchEvents.hashCode),
+                                        $jc(
+                                            $jc($jc(0, user1.hashCode),
+                                                user2.hashCode),
+                                            scheduledTime.hashCode),
+                                        noOfPeriods.hashCode),
+                                    weapon.hashCode),
+                                location.hashCode),
+                            fencers.hashCode),
+                        scoreLeft.hashCode),
+                    scoreRight.hashCode),
+                matchEvents.hashCode),
+            matchStats.hashCode),
         ffRef.hashCode));
   }
 
@@ -280,6 +300,7 @@ class _$MatchesRecord extends MatchesRecord {
           ..add('scoreLeft', scoreLeft)
           ..add('scoreRight', scoreRight)
           ..add('matchEvents', matchEvents)
+          ..add('matchStats', matchStats)
           ..add('ffRef', ffRef))
         .toString();
   }
@@ -334,6 +355,12 @@ class MatchesRecordBuilder
   set matchEvents(ListBuilder<MatchEventStruct>? matchEvents) =>
       _$this._matchEvents = matchEvents;
 
+  ListBuilder<PeriodStatsStruct>? _matchStats;
+  ListBuilder<PeriodStatsStruct> get matchStats =>
+      _$this._matchStats ??= new ListBuilder<PeriodStatsStruct>();
+  set matchStats(ListBuilder<PeriodStatsStruct>? matchStats) =>
+      _$this._matchStats = matchStats;
+
   DocumentReference<Object?>? _ffRef;
   DocumentReference<Object?>? get ffRef => _$this._ffRef;
   set ffRef(DocumentReference<Object?>? ffRef) => _$this._ffRef = ffRef;
@@ -355,6 +382,7 @@ class MatchesRecordBuilder
       _scoreLeft = $v.scoreLeft;
       _scoreRight = $v.scoreRight;
       _matchEvents = $v.matchEvents?.toBuilder();
+      _matchStats = $v.matchStats?.toBuilder();
       _ffRef = $v.ffRef;
       _$v = null;
     }
@@ -390,6 +418,7 @@ class MatchesRecordBuilder
               scoreLeft: scoreLeft,
               scoreRight: scoreRight,
               matchEvents: _matchEvents?.build(),
+              matchStats: _matchStats?.build(),
               ffRef: ffRef);
     } catch (_) {
       late String _$failedField;
@@ -399,6 +428,8 @@ class MatchesRecordBuilder
 
         _$failedField = 'matchEvents';
         _matchEvents?.build();
+        _$failedField = 'matchStats';
+        _matchStats?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             r'MatchesRecord', _$failedField, e.toString());

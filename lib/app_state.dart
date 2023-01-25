@@ -58,24 +58,6 @@ class FFAppState extends ChangeNotifier {
     _currentFencerPicURL = _value;
   }
 
-  int _startPeriods = 1;
-  int get startPeriods => _startPeriods;
-  set startPeriods(int _value) {
-    _startPeriods = _value;
-  }
-
-  int _startTotalTouches = 5;
-  int get startTotalTouches => _startTotalTouches;
-  set startTotalTouches(int _value) {
-    _startTotalTouches = _value;
-  }
-
-  int _startTimePeriod = 1;
-  int get startTimePeriod => _startTimePeriod;
-  set startTimePeriod(int _value) {
-    _startTimePeriod = _value;
-  }
-
   DocumentReference? _leftFencerRef =
       FirebaseFirestore.instance.doc('/users/2');
   DocumentReference? get leftFencerRef => _leftFencerRef;

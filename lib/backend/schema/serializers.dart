@@ -18,6 +18,7 @@ const kDocumentReferenceField = 'Document__Reference__Field';
   MatchesRecord,
   ClubsRecord,
   MatchEventStruct,
+  PeriodStatsStruct,
 ])
 final Serializers serializers = (_$serializers.toBuilder()
       ..add(DocumentReferenceSerializer())
