@@ -24,11 +24,12 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
   LatLng? currentUserLocationValue;
   final _unfocusNode = FocusNode();
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  MatchesRecord? currentMatchInProgress2;
   MatchesRecord? currentMatchInProgress;
   int? periodCountValue;
   int? timeCountValue;
   int? touchesCountValue;
+  MatchesRecord? currentMatchInProgressRA;
+  MatchesRecord? currentMatchInProgressRY;
 
   @override
   void dispose() {
@@ -475,13 +476,11 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                             fontSize: 16,
                                           ),
                                         ),
-                                        count: periodCountValue ??=
-                                            FFAppState().startPeriods,
+                                        count: periodCountValue ??= 1,
                                         updateCount: (count) => setState(
                                             () => periodCountValue = count),
                                         stepSize: 1,
                                         minimum: 1,
-                                        maximum: 1,
                                       ),
                                     ),
                                   ),
@@ -503,7 +502,7 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                       color: Color(0xFFFAFAFA),
                                     ),
                                     child: Text(
-                                      'Time Per Period:',
+                                      'Time Per Period (Minutes):',
                                       style:
                                           FlutterFlowTheme.of(context).title3,
                                     ),
@@ -553,8 +552,7 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                             fontSize: 16,
                                           ),
                                         ),
-                                        count: timeCountValue ??=
-                                            FFAppState().startTimePeriod,
+                                        count: timeCountValue ??= 3,
                                         updateCount: (count) => setState(
                                             () => timeCountValue = count),
                                         stepSize: 1,
@@ -580,7 +578,7 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                       color: Color(0xFFFAFAFA),
                                     ),
                                     child: Text(
-                                      'Touches:',
+                                      'Touches to Win:',
                                       style:
                                           FlutterFlowTheme.of(context).title3,
                                     ),
@@ -630,8 +628,7 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                             fontSize: 16,
                                           ),
                                         ),
-                                        count: touchesCountValue ??=
-                                            FFAppState().startTotalTouches,
+                                        count: touchesCountValue ??= 5,
                                         updateCount: (count) => setState(
                                             () => touchesCountValue = count),
                                         stepSize: 1,
@@ -661,12 +658,6 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                                 defaultLocation:
                                                     LatLng(0.0, 0.0));
                                         FFAppState().update(() {
-                                          FFAppState().startPeriods =
-                                              periodCountValue!;
-                                          FFAppState().startTimePeriod =
-                                              timeCountValue!;
-                                          FFAppState().startTotalTouches =
-                                              FFAppState().startTotalTouches;
                                           FFAppState().currentPeriod = 1;
                                         });
                                         FFAppState().update(() {
@@ -699,9 +690,9 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                                     .refereeReference,
                                                 scoreLeft: 0,
                                                 scoreRight: 0,
-                                                timeOfAction: functions
-                                                    .minutesToMS(FFAppState()
-                                                        .startTimePeriod),
+                                                timeOfAction:
+                                                    functions.minutesToMS(
+                                                        timeCountValue!),
                                                 periodOfAction: 1,
                                                 actionID: -1,
                                                 clearUnsetFields: false,
@@ -728,9 +719,9 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                                     .refereeReference,
                                                 scoreLeft: 0,
                                                 scoreRight: 0,
-                                                timeOfAction: functions
-                                                    .minutesToMS(FFAppState()
-                                                        .startTimePeriod),
+                                                timeOfAction:
+                                                    functions.minutesToMS(
+                                                        timeCountValue!),
                                                 periodOfAction: 1,
                                                 actionID: -11,
                                                 clearUnsetFields: false,
@@ -745,10 +736,13 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) => RefViewWidget(
-                                              initStartTime:
-                                                  FFAppState().startTimePeriod,
+                                              initStartTime: timeCountValue,
                                               currentMatchInProgress:
                                                   currentMatchInProgress,
+                                              startNumOfPeriods:
+                                                  periodCountValue,
+                                              startNumOfTouches:
+                                                  touchesCountValue,
                                             ),
                                           ),
                                         );
@@ -1172,12 +1166,7 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                     onTap: () async {
                                       FFAppState().update(() {
                                         FFAppState().refereemodeselect =
-                                            'Adult';
-                                        FFAppState().startPeriods = 3;
-                                      });
-                                      FFAppState().update(() {
-                                        FFAppState().startTotalTouches = 15;
-                                        FFAppState().startTimePeriod = 3;
+                                            'RankedAdult';
                                       });
                                     },
                                     child: Material(
@@ -1256,12 +1245,7 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                     onTap: () async {
                                       FFAppState().update(() {
                                         FFAppState().refereemodeselect =
-                                            'Youth';
-                                        FFAppState().startPeriods = 2;
-                                      });
-                                      FFAppState().update(() {
-                                        FFAppState().startTotalTouches = 10;
-                                        FFAppState().startTimePeriod = 3;
+                                            'RankedYouth';
                                       });
                                     },
                                     child: Material(
@@ -1359,85 +1343,172 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                             FFAppState().addToRefFencers(
                                                 FFAppState().rightFencerRef!);
                                           });
-
-                                          final matchesCreateData = {
-                                            ...createMatchesRecordData(
-                                              user1: FFAppState().leftFencerRef,
-                                              user2:
-                                                  FFAppState().rightFencerRef,
-                                              scheduledTime:
-                                                  getCurrentTimestamp,
-                                              weapon: FFAppState()
-                                                  .refereeweaponselect,
-                                              noOfPeriods:
-                                                  FFAppState().startPeriods,
-                                              scoreLeft: 0,
-                                              scoreRight: 0,
-                                            ),
-                                            'fencers': FFAppState().refFencers,
-                                            'MatchEvents': [
-                                              getMatchEventFirestoreData(
-                                                createMatchEventStruct(
-                                                  actionableFencer: FFAppState()
-                                                      .refereeReference,
-                                                  scoreLeft: 0,
-                                                  scoreRight: 0,
-                                                  timeOfAction: functions
-                                                      .minutesToMS(FFAppState()
-                                                          .startTimePeriod),
-                                                  periodOfAction: 1,
-                                                  actionID: -1,
-                                                  clearUnsetFields: false,
-                                                  create: true,
-                                                ),
-                                                true,
-                                              )
-                                            ],
-                                          };
-                                          var matchesRecordReference =
-                                              MatchesRecord.collection.doc();
-                                          await matchesRecordReference
-                                              .set(matchesCreateData);
-                                          currentMatchInProgress2 =
-                                              MatchesRecord.getDocumentFromData(
-                                                  matchesCreateData,
-                                                  matchesRecordReference);
-
-                                          final matchesUpdateData = {
-                                            'MatchEvents':
-                                                FieldValue.arrayUnion([
-                                              getMatchEventFirestoreData(
-                                                createMatchEventStruct(
-                                                  actionableFencer: FFAppState()
-                                                      .refereeReference,
-                                                  scoreLeft: 0,
-                                                  scoreRight: 0,
-                                                  timeOfAction: functions
-                                                      .minutesToMS(FFAppState()
-                                                          .startTimePeriod),
-                                                  periodOfAction: 1,
-                                                  actionID: -11,
-                                                  clearUnsetFields: false,
-                                                ),
-                                                true,
-                                              )
-                                            ]),
-                                          };
-                                          await currentMatchInProgress2!
-                                              .reference
-                                              .update(matchesUpdateData);
-                                          await Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  RefViewWidget(
-                                                initStartTime: FFAppState()
-                                                    .startTimePeriod,
-                                                currentMatchInProgress:
-                                                    currentMatchInProgress2,
+                                          if (FFAppState().refereemodeselect ==
+                                              'RankedAdult') {
+                                            final matchesCreateData = {
+                                              ...createMatchesRecordData(
+                                                user1:
+                                                    FFAppState().leftFencerRef,
+                                                user2:
+                                                    FFAppState().rightFencerRef,
+                                                scheduledTime:
+                                                    getCurrentTimestamp,
+                                                weapon: FFAppState()
+                                                    .refereeweaponselect,
+                                                noOfPeriods: 3,
+                                                scoreLeft: 0,
+                                                scoreRight: 0,
                                               ),
-                                            ),
-                                          );
+                                              'fencers':
+                                                  FFAppState().refFencers,
+                                              'MatchEvents': [
+                                                getMatchEventFirestoreData(
+                                                  createMatchEventStruct(
+                                                    actionableFencer:
+                                                        FFAppState()
+                                                            .refereeReference,
+                                                    scoreLeft: 0,
+                                                    scoreRight: 0,
+                                                    timeOfAction: functions
+                                                        .minutesToMS(3),
+                                                    periodOfAction: 1,
+                                                    actionID: -1,
+                                                    clearUnsetFields: false,
+                                                    create: true,
+                                                  ),
+                                                  true,
+                                                )
+                                              ],
+                                            };
+                                            var matchesRecordReference =
+                                                MatchesRecord.collection.doc();
+                                            await matchesRecordReference
+                                                .set(matchesCreateData);
+                                            currentMatchInProgressRA =
+                                                MatchesRecord
+                                                    .getDocumentFromData(
+                                                        matchesCreateData,
+                                                        matchesRecordReference);
+
+                                            final matchesUpdateData = {
+                                              'MatchEvents':
+                                                  FieldValue.arrayUnion([
+                                                getMatchEventFirestoreData(
+                                                  createMatchEventStruct(
+                                                    actionableFencer:
+                                                        FFAppState()
+                                                            .refereeReference,
+                                                    scoreLeft: 0,
+                                                    scoreRight: 0,
+                                                    timeOfAction: functions
+                                                        .minutesToMS(3),
+                                                    periodOfAction: 1,
+                                                    actionID: -11,
+                                                    clearUnsetFields: false,
+                                                  ),
+                                                  true,
+                                                )
+                                              ]),
+                                            };
+                                            await currentMatchInProgressRA!
+                                                .reference
+                                                .update(matchesUpdateData);
+                                            await Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    RefViewWidget(
+                                                  initStartTime: 3,
+                                                  currentMatchInProgress:
+                                                      currentMatchInProgressRA,
+                                                  startNumOfPeriods: 3,
+                                                  startNumOfTouches: 15,
+                                                ),
+                                              ),
+                                            );
+                                          } else {
+                                            final matchesCreateData = {
+                                              ...createMatchesRecordData(
+                                                user1:
+                                                    FFAppState().leftFencerRef,
+                                                user2:
+                                                    FFAppState().rightFencerRef,
+                                                scheduledTime:
+                                                    getCurrentTimestamp,
+                                                weapon: FFAppState()
+                                                    .refereeweaponselect,
+                                                noOfPeriods: 2,
+                                                scoreLeft: 0,
+                                                scoreRight: 0,
+                                              ),
+                                              'fencers':
+                                                  FFAppState().refFencers,
+                                              'MatchEvents': [
+                                                getMatchEventFirestoreData(
+                                                  createMatchEventStruct(
+                                                    actionableFencer:
+                                                        FFAppState()
+                                                            .refereeReference,
+                                                    scoreLeft: 0,
+                                                    scoreRight: 0,
+                                                    timeOfAction: functions
+                                                        .minutesToMS(3),
+                                                    periodOfAction: 1,
+                                                    actionID: -1,
+                                                    clearUnsetFields: false,
+                                                    create: true,
+                                                  ),
+                                                  true,
+                                                )
+                                              ],
+                                            };
+                                            var matchesRecordReference =
+                                                MatchesRecord.collection.doc();
+                                            await matchesRecordReference
+                                                .set(matchesCreateData);
+                                            currentMatchInProgressRY =
+                                                MatchesRecord
+                                                    .getDocumentFromData(
+                                                        matchesCreateData,
+                                                        matchesRecordReference);
+
+                                            final matchesUpdateData = {
+                                              'MatchEvents':
+                                                  FieldValue.arrayUnion([
+                                                getMatchEventFirestoreData(
+                                                  createMatchEventStruct(
+                                                    actionableFencer:
+                                                        FFAppState()
+                                                            .refereeReference,
+                                                    scoreLeft: 0,
+                                                    scoreRight: 0,
+                                                    timeOfAction: functions
+                                                        .minutesToMS(3),
+                                                    periodOfAction: 1,
+                                                    actionID: -11,
+                                                    clearUnsetFields: false,
+                                                  ),
+                                                  true,
+                                                )
+                                              ]),
+                                            };
+                                            await currentMatchInProgressRY!
+                                                .reference
+                                                .update(matchesUpdateData);
+                                            await Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    RefViewWidget(
+                                                  initStartTime: 3,
+                                                  currentMatchInProgress:
+                                                      currentMatchInProgressRY,
+                                                  startNumOfPeriods: 2,
+                                                  startNumOfTouches: 10,
+                                                ),
+                                              ),
+                                            );
+                                          }
                                         }
 
                                         setState(() {});
