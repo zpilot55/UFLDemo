@@ -25,16 +25,13 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
   final _unfocusNode = FocusNode();
   final scaffoldKey = GlobalKey<ScaffoldState>();
   MatchdetailsDevRecord? currentMatchDetails;
-  MatchstatslogDevRecord? currentMatchStatsLog;
   MatchesDevRecord? currentMatchInProgress;
   int? periodCountValue;
   int? timeCountValue;
   int? touchesCountValue;
   MatchdetailsDevRecord? currentMatchDetailsRA;
-  MatchstatslogDevRecord? currentMatchStatsLogRA;
   MatchesDevRecord? currentMatchInProgressRA;
   MatchdetailsDevRecord? currentMatchDetailsRY;
-  MatchstatslogDevRecord? currentMatchStatsLogRY;
   MatchesDevRecord? currentMatchInProgressRY;
 
   @override
@@ -283,7 +280,7 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                     ),
                                     child: FFButtonWidget(
                                       onPressed: () async {
-                                        FFAppState().update(() {
+                                        setState(() {
                                           FFAppState().refereeweaponselect =
                                               'Foil';
                                           FFAppState().isWeaponSelected = true;
@@ -748,20 +745,6 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                             .getDocumentFromData(
                                                 matchdetailsDevCreateData,
                                                 matchdetailsDevRecordReference);
-                                        // create matchstatslog
-
-                                        final matchstatslogDevCreateData =
-                                            createMatchstatslogDevRecordData();
-                                        var matchstatslogDevRecordReference =
-                                            MatchstatslogDevRecord.collection
-                                                .doc();
-                                        await matchstatslogDevRecordReference
-                                            .set(matchstatslogDevCreateData);
-                                        currentMatchStatsLog =
-                                            MatchstatslogDevRecord
-                                                .getDocumentFromData(
-                                                    matchstatslogDevCreateData,
-                                                    matchstatslogDevRecordReference);
                                         // Create matches doc
 
                                         final matchesDevCreateData = {
@@ -776,8 +759,6 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                             location: currentUserLocationValue,
                                             matchDetails:
                                                 currentMatchDetails!.reference,
-                                            matchStatsLog:
-                                                currentMatchStatsLog!.reference,
                                             matchRanking: 'U',
                                           ),
                                           'scheduled_time':
@@ -804,8 +785,6 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                                   touchesCountValue,
                                               currentMatchInProgress:
                                                   currentMatchInProgress,
-                                              currentMatchStatsLog:
-                                                  currentMatchStatsLogRA,
                                               currentMatchDetails:
                                                   currentMatchDetailsRA,
                                             ),
@@ -1488,22 +1467,6 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                                     .getDocumentFromData(
                                                         matchdetailsDevCreateData,
                                                         matchdetailsDevRecordReference);
-                                            // create matchstatslog
-
-                                            final matchstatslogDevCreateData =
-                                                createMatchstatslogDevRecordData();
-                                            var matchstatslogDevRecordReference =
-                                                MatchstatslogDevRecord
-                                                    .collection
-                                                    .doc();
-                                            await matchstatslogDevRecordReference
-                                                .set(
-                                                    matchstatslogDevCreateData);
-                                            currentMatchStatsLogRA =
-                                                MatchstatslogDevRecord
-                                                    .getDocumentFromData(
-                                                        matchstatslogDevCreateData,
-                                                        matchstatslogDevRecordReference);
                                             // Create matches doc
 
                                             final matchesDevCreateData = {
@@ -1521,9 +1484,6 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                                     currentUserLocationValue,
                                                 matchDetails:
                                                     currentMatchDetailsRA!
-                                                        .reference,
-                                                matchStatsLog:
-                                                    currentMatchStatsLogRA!
                                                         .reference,
                                                 matchRanking: 'A',
                                               ),
@@ -1552,8 +1512,6 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                                   startNumOfTouches: 15,
                                                   currentMatchInProgress:
                                                       currentMatchInProgressRA,
-                                                  currentMatchStatsLog:
-                                                      currentMatchStatsLogRA,
                                                   currentMatchDetails:
                                                       currentMatchDetailsRA,
                                                 ),
@@ -1636,22 +1594,6 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                                     .getDocumentFromData(
                                                         matchdetailsDevCreateData,
                                                         matchdetailsDevRecordReference);
-                                            // create matchstatslog
-
-                                            final matchstatslogDevCreateData =
-                                                createMatchstatslogDevRecordData();
-                                            var matchstatslogDevRecordReference =
-                                                MatchstatslogDevRecord
-                                                    .collection
-                                                    .doc();
-                                            await matchstatslogDevRecordReference
-                                                .set(
-                                                    matchstatslogDevCreateData);
-                                            currentMatchStatsLogRY =
-                                                MatchstatslogDevRecord
-                                                    .getDocumentFromData(
-                                                        matchstatslogDevCreateData,
-                                                        matchstatslogDevRecordReference);
                                             // Create matches doc
 
                                             final matchesDevCreateData = {
@@ -1669,9 +1611,6 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                                     currentUserLocationValue,
                                                 matchDetails:
                                                     currentMatchDetails!
-                                                        .reference,
-                                                matchStatsLog:
-                                                    currentMatchStatsLog!
                                                         .reference,
                                                 matchRanking: 'Y',
                                               ),
@@ -1700,8 +1639,6 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                                   startNumOfTouches: 10,
                                                   currentMatchInProgress:
                                                       currentMatchInProgressRY,
-                                                  currentMatchStatsLog:
-                                                      currentMatchStatsLogRY,
                                                   currentMatchDetails:
                                                       currentMatchDetailsRY,
                                                 ),

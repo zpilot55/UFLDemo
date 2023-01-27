@@ -21,7 +21,6 @@ class RefViewWidget extends StatefulWidget {
     this.currentMatchInProgress,
     this.startNumOfPeriods,
     this.startNumOfTouches,
-    this.currentMatchStatsLog,
     this.currentMatchDetails,
   }) : super(key: key);
 
@@ -29,7 +28,6 @@ class RefViewWidget extends StatefulWidget {
   final MatchesDevRecord? currentMatchInProgress;
   final int? startNumOfPeriods;
   final int? startNumOfTouches;
-  final MatchstatslogDevRecord? currentMatchStatsLog;
   final MatchdetailsDevRecord? currentMatchDetails;
 
   @override
