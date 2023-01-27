@@ -1406,12 +1406,10 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                                 null &&
                                             FFAppState().refereemodeselect !=
                                                 '') {
-                                          FFAppState().update(() {
-                                            FFAppState().addToRefFencers(
-                                                FFAppState().leftFencerRef!);
-                                            FFAppState().addToRefFencers(
-                                                FFAppState().rightFencerRef!);
-                                          });
+                                          FFAppState().addToRefFencers(
+                                              FFAppState().leftFencerRef!);
+                                          FFAppState().addToRefFencers(
+                                              FFAppState().rightFencerRef!);
                                           if (FFAppState().refereemodeselect ==
                                               'RankedAdult') {
                                             // Create matchdetails
