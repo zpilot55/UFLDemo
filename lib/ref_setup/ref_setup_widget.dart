@@ -761,9 +761,9 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                                 currentMatchDetails!.reference,
                                             matchRanking: 'U',
                                           ),
+                                          'fencers': FFAppState().refFencers,
                                           'scheduled_time':
                                               FieldValue.serverTimestamp(),
-                                          'fencers': FFAppState().refFencers,
                                         };
                                         var matchesDevRecordReference =
                                             MatchesDevRecord.collection.doc();
