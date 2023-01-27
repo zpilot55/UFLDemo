@@ -6,8 +6,10 @@ import '../auth/auth_util.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 
 import 'schema/users_record.dart';
-import 'schema/matches_record.dart';
 import 'schema/clubs_record.dart';
+import 'schema/matchdetails_dev_record.dart';
+import 'schema/matchstatslog_dev_record.dart';
+import 'schema/matches_dev_record.dart';
 import 'schema/serializers.dart';
 
 export 'dart:async' show StreamSubscription;
@@ -16,8 +18,10 @@ export 'schema/index.dart';
 export 'schema/serializers.dart';
 
 export 'schema/users_record.dart';
-export 'schema/matches_record.dart';
 export 'schema/clubs_record.dart';
+export 'schema/matchdetails_dev_record.dart';
+export 'schema/matchstatslog_dev_record.dart';
+export 'schema/matches_dev_record.dart';
 
 /// Functions to query UsersRecords (as a Stream and as a Future).
 Future<int> queryUsersRecordCount({
@@ -71,58 +75,6 @@ Future<FFFirestorePage<UsersRecord>> queryUsersRecordPage({
       isStream: isStream,
     );
 
-/// Functions to query MatchesRecords (as a Stream and as a Future).
-Future<int> queryMatchesRecordCount({
-  Query Function(Query)? queryBuilder,
-  int limit = -1,
-}) =>
-    queryCollectionCount(
-      MatchesRecord.collection,
-      queryBuilder: queryBuilder,
-      limit: limit,
-    );
-
-Stream<List<MatchesRecord>> queryMatchesRecord({
-  Query Function(Query)? queryBuilder,
-  int limit = -1,
-  bool singleRecord = false,
-}) =>
-    queryCollection(
-      MatchesRecord.collection,
-      MatchesRecord.serializer,
-      queryBuilder: queryBuilder,
-      limit: limit,
-      singleRecord: singleRecord,
-    );
-
-Future<List<MatchesRecord>> queryMatchesRecordOnce({
-  Query Function(Query)? queryBuilder,
-  int limit = -1,
-  bool singleRecord = false,
-}) =>
-    queryCollectionOnce(
-      MatchesRecord.collection,
-      MatchesRecord.serializer,
-      queryBuilder: queryBuilder,
-      limit: limit,
-      singleRecord: singleRecord,
-    );
-
-Future<FFFirestorePage<MatchesRecord>> queryMatchesRecordPage({
-  Query Function(Query)? queryBuilder,
-  DocumentSnapshot? nextPageMarker,
-  required int pageSize,
-  required bool isStream,
-}) =>
-    queryCollectionPage(
-      MatchesRecord.collection,
-      MatchesRecord.serializer,
-      queryBuilder: queryBuilder,
-      nextPageMarker: nextPageMarker,
-      pageSize: pageSize,
-      isStream: isStream,
-    );
-
 /// Functions to query ClubsRecords (as a Stream and as a Future).
 Future<int> queryClubsRecordCount({
   Query Function(Query)? queryBuilder,
@@ -169,6 +121,163 @@ Future<FFFirestorePage<ClubsRecord>> queryClubsRecordPage({
     queryCollectionPage(
       ClubsRecord.collection,
       ClubsRecord.serializer,
+      queryBuilder: queryBuilder,
+      nextPageMarker: nextPageMarker,
+      pageSize: pageSize,
+      isStream: isStream,
+    );
+
+/// Functions to query MatchdetailsDevRecords (as a Stream and as a Future).
+Future<int> queryMatchdetailsDevRecordCount({
+  Query Function(Query)? queryBuilder,
+  int limit = -1,
+}) =>
+    queryCollectionCount(
+      MatchdetailsDevRecord.collection,
+      queryBuilder: queryBuilder,
+      limit: limit,
+    );
+
+Stream<List<MatchdetailsDevRecord>> queryMatchdetailsDevRecord({
+  Query Function(Query)? queryBuilder,
+  int limit = -1,
+  bool singleRecord = false,
+}) =>
+    queryCollection(
+      MatchdetailsDevRecord.collection,
+      MatchdetailsDevRecord.serializer,
+      queryBuilder: queryBuilder,
+      limit: limit,
+      singleRecord: singleRecord,
+    );
+
+Future<List<MatchdetailsDevRecord>> queryMatchdetailsDevRecordOnce({
+  Query Function(Query)? queryBuilder,
+  int limit = -1,
+  bool singleRecord = false,
+}) =>
+    queryCollectionOnce(
+      MatchdetailsDevRecord.collection,
+      MatchdetailsDevRecord.serializer,
+      queryBuilder: queryBuilder,
+      limit: limit,
+      singleRecord: singleRecord,
+    );
+
+Future<FFFirestorePage<MatchdetailsDevRecord>> queryMatchdetailsDevRecordPage({
+  Query Function(Query)? queryBuilder,
+  DocumentSnapshot? nextPageMarker,
+  required int pageSize,
+  required bool isStream,
+}) =>
+    queryCollectionPage(
+      MatchdetailsDevRecord.collection,
+      MatchdetailsDevRecord.serializer,
+      queryBuilder: queryBuilder,
+      nextPageMarker: nextPageMarker,
+      pageSize: pageSize,
+      isStream: isStream,
+    );
+
+/// Functions to query MatchstatslogDevRecords (as a Stream and as a Future).
+Future<int> queryMatchstatslogDevRecordCount({
+  Query Function(Query)? queryBuilder,
+  int limit = -1,
+}) =>
+    queryCollectionCount(
+      MatchstatslogDevRecord.collection,
+      queryBuilder: queryBuilder,
+      limit: limit,
+    );
+
+Stream<List<MatchstatslogDevRecord>> queryMatchstatslogDevRecord({
+  Query Function(Query)? queryBuilder,
+  int limit = -1,
+  bool singleRecord = false,
+}) =>
+    queryCollection(
+      MatchstatslogDevRecord.collection,
+      MatchstatslogDevRecord.serializer,
+      queryBuilder: queryBuilder,
+      limit: limit,
+      singleRecord: singleRecord,
+    );
+
+Future<List<MatchstatslogDevRecord>> queryMatchstatslogDevRecordOnce({
+  Query Function(Query)? queryBuilder,
+  int limit = -1,
+  bool singleRecord = false,
+}) =>
+    queryCollectionOnce(
+      MatchstatslogDevRecord.collection,
+      MatchstatslogDevRecord.serializer,
+      queryBuilder: queryBuilder,
+      limit: limit,
+      singleRecord: singleRecord,
+    );
+
+Future<FFFirestorePage<MatchstatslogDevRecord>>
+    queryMatchstatslogDevRecordPage({
+  Query Function(Query)? queryBuilder,
+  DocumentSnapshot? nextPageMarker,
+  required int pageSize,
+  required bool isStream,
+}) =>
+        queryCollectionPage(
+          MatchstatslogDevRecord.collection,
+          MatchstatslogDevRecord.serializer,
+          queryBuilder: queryBuilder,
+          nextPageMarker: nextPageMarker,
+          pageSize: pageSize,
+          isStream: isStream,
+        );
+
+/// Functions to query MatchesDevRecords (as a Stream and as a Future).
+Future<int> queryMatchesDevRecordCount({
+  Query Function(Query)? queryBuilder,
+  int limit = -1,
+}) =>
+    queryCollectionCount(
+      MatchesDevRecord.collection,
+      queryBuilder: queryBuilder,
+      limit: limit,
+    );
+
+Stream<List<MatchesDevRecord>> queryMatchesDevRecord({
+  Query Function(Query)? queryBuilder,
+  int limit = -1,
+  bool singleRecord = false,
+}) =>
+    queryCollection(
+      MatchesDevRecord.collection,
+      MatchesDevRecord.serializer,
+      queryBuilder: queryBuilder,
+      limit: limit,
+      singleRecord: singleRecord,
+    );
+
+Future<List<MatchesDevRecord>> queryMatchesDevRecordOnce({
+  Query Function(Query)? queryBuilder,
+  int limit = -1,
+  bool singleRecord = false,
+}) =>
+    queryCollectionOnce(
+      MatchesDevRecord.collection,
+      MatchesDevRecord.serializer,
+      queryBuilder: queryBuilder,
+      limit: limit,
+      singleRecord: singleRecord,
+    );
+
+Future<FFFirestorePage<MatchesDevRecord>> queryMatchesDevRecordPage({
+  Query Function(Query)? queryBuilder,
+  DocumentSnapshot? nextPageMarker,
+  required int pageSize,
+  required bool isStream,
+}) =>
+    queryCollectionPage(
+      MatchesDevRecord.collection,
+      MatchesDevRecord.serializer,
       queryBuilder: queryBuilder,
       nextPageMarker: nextPageMarker,
       pageSize: pageSize,

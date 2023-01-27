@@ -21,12 +21,16 @@ class RefViewWidget extends StatefulWidget {
     this.currentMatchInProgress,
     this.startNumOfPeriods,
     this.startNumOfTouches,
+    this.currentMatchStatsLog,
+    this.currentMatchDetails,
   }) : super(key: key);
 
   final int? initStartTime;
-  final MatchesRecord? currentMatchInProgress;
+  final MatchesDevRecord? currentMatchInProgress;
   final int? startNumOfPeriods;
   final int? startNumOfTouches;
+  final MatchstatslogDevRecord? currentMatchStatsLog;
+  final MatchdetailsDevRecord? currentMatchDetails;
 
   @override
   _RefViewWidgetState createState() => _RefViewWidgetState();
@@ -114,7 +118,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => RefMatchRecapEventsWidget(
-                          currentMatch: widget.currentMatchInProgress,
+                          currentMatch: widget.currentMatchDetails,
                         ),
                       ),
                     );
@@ -145,7 +149,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                   children: [
                     SelectionArea(
                         child: Text(
-                      'Undo Last Action',
+                      'Injured Fencer',
                       style: FlutterFlowTheme.of(context).subtitle1,
                     )),
                     Icon(
@@ -891,7 +895,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                         FFAppState().refIsHit,
                                       );
 
-                                      final matchesUpdateData = {
+                                      final matchdetailsDevUpdateData = {
                                         'MatchEvents': FieldValue.arrayUnion([
                                           getMatchEventFirestoreData(
                                             createMatchEventStruct(
@@ -914,7 +918,6 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                                       !FFAppState().refIsHit,
                                                       FFAppState()
                                                           .nonAttackLabel),
-                                              videoURL: '3br3rb3e3rq',
                                               clearUnsetFields: false,
                                             ),
                                             true,
@@ -922,8 +925,8 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                         ]),
                                       };
                                       await widget
-                                          .currentMatchInProgress!.reference
-                                          .update(matchesUpdateData);
+                                          .currentMatchDetails!.reference
+                                          .update(matchdetailsDevUpdateData);
                                       await actions.flushMatchActionState();
                                       FFAppState().update(() {
                                         FFAppState().showActions = false;
@@ -1083,12 +1086,16 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                             children: [
                               FFButtonWidget(
                                 onPressed: () async {
-                                  final matchesUpdateData = {
-                                    ...createMatchesRecordData(
-                                      scoreLeft: FFAppState().refLeftScore,
-                                      scoreRight: FFAppState().refRightScore,
-                                      noOfPeriods: FFAppState().currentPeriod,
-                                    ),
+                                  final matchesDevUpdateData =
+                                      createMatchesDevRecordData(
+                                    scoreLeft: FFAppState().refLeftScore,
+                                    scoreRight: FFAppState().refRightScore,
+                                    noOfPeriods: FFAppState().currentPeriod,
+                                  );
+                                  await widget.currentMatchInProgress!.reference
+                                      .update(matchesDevUpdateData);
+
+                                  final matchdetailsDevUpdateData = {
                                     'MatchEvents': FieldValue.arrayUnion([
                                       getMatchEventFirestoreData(
                                         createMatchEventStruct(
@@ -1107,8 +1114,8 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                       )
                                     ]),
                                   };
-                                  await widget.currentMatchInProgress!.reference
-                                      .update(matchesUpdateData);
+                                  await widget.currentMatchDetails!.reference
+                                      .update(matchdetailsDevUpdateData);
                                   await actions.flushLocalState();
                                   Navigator.pop(context);
                                 },

@@ -1,22 +1,23 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'matches_record.dart';
+part of 'matches_dev_record.dart';
 
 // **************************************************************************
 // BuiltValueGenerator
 // **************************************************************************
 
-Serializer<MatchesRecord> _$matchesRecordSerializer =
-    new _$MatchesRecordSerializer();
+Serializer<MatchesDevRecord> _$matchesDevRecordSerializer =
+    new _$MatchesDevRecordSerializer();
 
-class _$MatchesRecordSerializer implements StructuredSerializer<MatchesRecord> {
+class _$MatchesDevRecordSerializer
+    implements StructuredSerializer<MatchesDevRecord> {
   @override
-  final Iterable<Type> types = const [MatchesRecord, _$MatchesRecord];
+  final Iterable<Type> types = const [MatchesDevRecord, _$MatchesDevRecord];
   @override
-  final String wireName = 'MatchesRecord';
+  final String wireName = 'MatchesDevRecord';
 
   @override
-  Iterable<Object?> serialize(Serializers serializers, MatchesRecord object,
+  Iterable<Object?> serialize(Serializers serializers, MatchesDevRecord object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object?>[];
     Object? value;
@@ -85,21 +86,28 @@ class _$MatchesRecordSerializer implements StructuredSerializer<MatchesRecord> {
         ..add('ScoreRight')
         ..add(serializers.serialize(value, specifiedType: const FullType(int)));
     }
-    value = object.matchEvents;
+    value = object.matchDetails;
     if (value != null) {
       result
-        ..add('MatchEvents')
+        ..add('MatchDetails')
         ..add(serializers.serialize(value,
             specifiedType: const FullType(
-                BuiltList, const [const FullType(MatchEventStruct)])));
+                DocumentReference, const [const FullType.nullable(Object)])));
     }
-    value = object.matchStats;
+    value = object.matchStatsLog;
     if (value != null) {
       result
-        ..add('MatchStats')
+        ..add('MatchStatsLog')
         ..add(serializers.serialize(value,
             specifiedType: const FullType(
-                BuiltList, const [const FullType(PeriodStatsStruct)])));
+                DocumentReference, const [const FullType.nullable(Object)])));
+    }
+    value = object.matchRanking;
+    if (value != null) {
+      result
+        ..add('MatchRanking')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
     }
     value = object.ffRef;
     if (value != null) {
@@ -113,10 +121,10 @@ class _$MatchesRecordSerializer implements StructuredSerializer<MatchesRecord> {
   }
 
   @override
-  MatchesRecord deserialize(
+  MatchesDevRecord deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new MatchesRecordBuilder();
+    final result = new MatchesDevRecordBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -167,17 +175,21 @@ class _$MatchesRecordSerializer implements StructuredSerializer<MatchesRecord> {
           result.scoreRight = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int?;
           break;
-        case 'MatchEvents':
-          result.matchEvents.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(
-                      BuiltList, const [const FullType(MatchEventStruct)]))!
-              as BuiltList<Object?>);
+        case 'MatchDetails':
+          result.matchDetails = serializers.deserialize(value,
+              specifiedType: const FullType(DocumentReference, const [
+                const FullType.nullable(Object)
+              ])) as DocumentReference<Object?>?;
           break;
-        case 'MatchStats':
-          result.matchStats.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(
-                      BuiltList, const [const FullType(PeriodStatsStruct)]))!
-              as BuiltList<Object?>);
+        case 'MatchStatsLog':
+          result.matchStatsLog = serializers.deserialize(value,
+              specifiedType: const FullType(DocumentReference, const [
+                const FullType.nullable(Object)
+              ])) as DocumentReference<Object?>?;
+          break;
+        case 'MatchRanking':
+          result.matchRanking = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
           break;
         case 'Document__Reference__Field':
           result.ffRef = serializers.deserialize(value,
@@ -192,7 +204,7 @@ class _$MatchesRecordSerializer implements StructuredSerializer<MatchesRecord> {
   }
 }
 
-class _$MatchesRecord extends MatchesRecord {
+class _$MatchesDevRecord extends MatchesDevRecord {
   @override
   final DocumentReference<Object?>? user1;
   @override
@@ -212,16 +224,19 @@ class _$MatchesRecord extends MatchesRecord {
   @override
   final int? scoreRight;
   @override
-  final BuiltList<MatchEventStruct>? matchEvents;
+  final DocumentReference<Object?>? matchDetails;
   @override
-  final BuiltList<PeriodStatsStruct>? matchStats;
+  final DocumentReference<Object?>? matchStatsLog;
+  @override
+  final String? matchRanking;
   @override
   final DocumentReference<Object?>? ffRef;
 
-  factory _$MatchesRecord([void Function(MatchesRecordBuilder)? updates]) =>
-      (new MatchesRecordBuilder()..update(updates))._build();
+  factory _$MatchesDevRecord(
+          [void Function(MatchesDevRecordBuilder)? updates]) =>
+      (new MatchesDevRecordBuilder()..update(updates))._build();
 
-  _$MatchesRecord._(
+  _$MatchesDevRecord._(
       {this.user1,
       this.user2,
       this.scheduledTime,
@@ -231,22 +246,24 @@ class _$MatchesRecord extends MatchesRecord {
       this.fencers,
       this.scoreLeft,
       this.scoreRight,
-      this.matchEvents,
-      this.matchStats,
+      this.matchDetails,
+      this.matchStatsLog,
+      this.matchRanking,
       this.ffRef})
       : super._();
 
   @override
-  MatchesRecord rebuild(void Function(MatchesRecordBuilder) updates) =>
+  MatchesDevRecord rebuild(void Function(MatchesDevRecordBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  MatchesRecordBuilder toBuilder() => new MatchesRecordBuilder()..replace(this);
+  MatchesDevRecordBuilder toBuilder() =>
+      new MatchesDevRecordBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is MatchesRecord &&
+    return other is MatchesDevRecord &&
         user1 == other.user1 &&
         user2 == other.user2 &&
         scheduledTime == other.scheduledTime &&
@@ -256,8 +273,9 @@ class _$MatchesRecord extends MatchesRecord {
         fencers == other.fencers &&
         scoreLeft == other.scoreLeft &&
         scoreRight == other.scoreRight &&
-        matchEvents == other.matchEvents &&
-        matchStats == other.matchStats &&
+        matchDetails == other.matchDetails &&
+        matchStatsLog == other.matchStatsLog &&
+        matchRanking == other.matchRanking &&
         ffRef == other.ffRef;
   }
 
@@ -273,23 +291,25 @@ class _$MatchesRecord extends MatchesRecord {
                                 $jc(
                                     $jc(
                                         $jc(
-                                            $jc($jc(0, user1.hashCode),
-                                                user2.hashCode),
-                                            scheduledTime.hashCode),
-                                        noOfPeriods.hashCode),
-                                    weapon.hashCode),
-                                location.hashCode),
-                            fencers.hashCode),
-                        scoreLeft.hashCode),
-                    scoreRight.hashCode),
-                matchEvents.hashCode),
-            matchStats.hashCode),
+                                            $jc(
+                                                $jc($jc(0, user1.hashCode),
+                                                    user2.hashCode),
+                                                scheduledTime.hashCode),
+                                            noOfPeriods.hashCode),
+                                        weapon.hashCode),
+                                    location.hashCode),
+                                fencers.hashCode),
+                            scoreLeft.hashCode),
+                        scoreRight.hashCode),
+                    matchDetails.hashCode),
+                matchStatsLog.hashCode),
+            matchRanking.hashCode),
         ffRef.hashCode));
   }
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'MatchesRecord')
+    return (newBuiltValueToStringHelper(r'MatchesDevRecord')
           ..add('user1', user1)
           ..add('user2', user2)
           ..add('scheduledTime', scheduledTime)
@@ -299,16 +319,17 @@ class _$MatchesRecord extends MatchesRecord {
           ..add('fencers', fencers)
           ..add('scoreLeft', scoreLeft)
           ..add('scoreRight', scoreRight)
-          ..add('matchEvents', matchEvents)
-          ..add('matchStats', matchStats)
+          ..add('matchDetails', matchDetails)
+          ..add('matchStatsLog', matchStatsLog)
+          ..add('matchRanking', matchRanking)
           ..add('ffRef', ffRef))
         .toString();
   }
 }
 
-class MatchesRecordBuilder
-    implements Builder<MatchesRecord, MatchesRecordBuilder> {
-  _$MatchesRecord? _$v;
+class MatchesDevRecordBuilder
+    implements Builder<MatchesDevRecord, MatchesDevRecordBuilder> {
+  _$MatchesDevRecord? _$v;
 
   DocumentReference<Object?>? _user1;
   DocumentReference<Object?>? get user1 => _$this._user1;
@@ -349,27 +370,29 @@ class MatchesRecordBuilder
   int? get scoreRight => _$this._scoreRight;
   set scoreRight(int? scoreRight) => _$this._scoreRight = scoreRight;
 
-  ListBuilder<MatchEventStruct>? _matchEvents;
-  ListBuilder<MatchEventStruct> get matchEvents =>
-      _$this._matchEvents ??= new ListBuilder<MatchEventStruct>();
-  set matchEvents(ListBuilder<MatchEventStruct>? matchEvents) =>
-      _$this._matchEvents = matchEvents;
+  DocumentReference<Object?>? _matchDetails;
+  DocumentReference<Object?>? get matchDetails => _$this._matchDetails;
+  set matchDetails(DocumentReference<Object?>? matchDetails) =>
+      _$this._matchDetails = matchDetails;
 
-  ListBuilder<PeriodStatsStruct>? _matchStats;
-  ListBuilder<PeriodStatsStruct> get matchStats =>
-      _$this._matchStats ??= new ListBuilder<PeriodStatsStruct>();
-  set matchStats(ListBuilder<PeriodStatsStruct>? matchStats) =>
-      _$this._matchStats = matchStats;
+  DocumentReference<Object?>? _matchStatsLog;
+  DocumentReference<Object?>? get matchStatsLog => _$this._matchStatsLog;
+  set matchStatsLog(DocumentReference<Object?>? matchStatsLog) =>
+      _$this._matchStatsLog = matchStatsLog;
+
+  String? _matchRanking;
+  String? get matchRanking => _$this._matchRanking;
+  set matchRanking(String? matchRanking) => _$this._matchRanking = matchRanking;
 
   DocumentReference<Object?>? _ffRef;
   DocumentReference<Object?>? get ffRef => _$this._ffRef;
   set ffRef(DocumentReference<Object?>? ffRef) => _$this._ffRef = ffRef;
 
-  MatchesRecordBuilder() {
-    MatchesRecord._initializeBuilder(this);
+  MatchesDevRecordBuilder() {
+    MatchesDevRecord._initializeBuilder(this);
   }
 
-  MatchesRecordBuilder get _$this {
+  MatchesDevRecordBuilder get _$this {
     final $v = _$v;
     if ($v != null) {
       _user1 = $v.user1;
@@ -381,8 +404,9 @@ class MatchesRecordBuilder
       _fencers = $v.fencers?.toBuilder();
       _scoreLeft = $v.scoreLeft;
       _scoreRight = $v.scoreRight;
-      _matchEvents = $v.matchEvents?.toBuilder();
-      _matchStats = $v.matchStats?.toBuilder();
+      _matchDetails = $v.matchDetails;
+      _matchStatsLog = $v.matchStatsLog;
+      _matchRanking = $v.matchRanking;
       _ffRef = $v.ffRef;
       _$v = null;
     }
@@ -390,24 +414,24 @@ class MatchesRecordBuilder
   }
 
   @override
-  void replace(MatchesRecord other) {
+  void replace(MatchesDevRecord other) {
     ArgumentError.checkNotNull(other, 'other');
-    _$v = other as _$MatchesRecord;
+    _$v = other as _$MatchesDevRecord;
   }
 
   @override
-  void update(void Function(MatchesRecordBuilder)? updates) {
+  void update(void Function(MatchesDevRecordBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
   @override
-  MatchesRecord build() => _build();
+  MatchesDevRecord build() => _build();
 
-  _$MatchesRecord _build() {
-    _$MatchesRecord _$result;
+  _$MatchesDevRecord _build() {
+    _$MatchesDevRecord _$result;
     try {
       _$result = _$v ??
-          new _$MatchesRecord._(
+          new _$MatchesDevRecord._(
               user1: user1,
               user2: user2,
               scheduledTime: scheduledTime,
@@ -417,22 +441,18 @@ class MatchesRecordBuilder
               fencers: _fencers?.build(),
               scoreLeft: scoreLeft,
               scoreRight: scoreRight,
-              matchEvents: _matchEvents?.build(),
-              matchStats: _matchStats?.build(),
+              matchDetails: matchDetails,
+              matchStatsLog: matchStatsLog,
+              matchRanking: matchRanking,
               ffRef: ffRef);
     } catch (_) {
       late String _$failedField;
       try {
         _$failedField = 'fencers';
         _fencers?.build();
-
-        _$failedField = 'matchEvents';
-        _matchEvents?.build();
-        _$failedField = 'matchStats';
-        _matchStats?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            r'MatchesRecord', _$failedField, e.toString());
+            r'MatchesDevRecord', _$failedField, e.toString());
       }
       rethrow;
     }
