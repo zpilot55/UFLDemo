@@ -783,10 +783,6 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                                   periodCountValue,
                                               startNumOfTouches:
                                                   touchesCountValue,
-                                              currentMatchInProgress:
-                                                  currentMatchInProgress,
-                                              currentMatchDetails:
-                                                  currentMatchDetailsRA,
                                             ),
                                           ),
                                         );
@@ -1510,10 +1506,6 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                                   initStartTime: timeCountValue,
                                                   startNumOfPeriods: 3,
                                                   startNumOfTouches: 15,
-                                                  currentMatchInProgress:
-                                                      currentMatchInProgressRA,
-                                                  currentMatchDetails:
-                                                      currentMatchDetailsRA,
                                                 ),
                                               ),
                                             );
@@ -1637,10 +1629,6 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                                   initStartTime: timeCountValue,
                                                   startNumOfPeriods: 2,
                                                   startNumOfTouches: 10,
-                                                  currentMatchInProgress:
-                                                      currentMatchInProgressRY,
-                                                  currentMatchDetails:
-                                                      currentMatchDetailsRY,
                                                 ),
                                               ),
                                             );
