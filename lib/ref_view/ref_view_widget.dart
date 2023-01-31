@@ -136,9 +136,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
           location: currentUserLocationValue,
           matchDetails: currentMatchDetails!.reference,
           matchRanking: 'U',
+          scheduledTime: getCurrentTimestamp,
         ),
         'fencers': FFAppState().refFencers,
-        'scheduled_time': FieldValue.serverTimestamp(),
       };
       var matchesDevRecordReference = MatchesDevRecord.collection.doc();
       await matchesDevRecordReference.set(matchesDevCreateData);
