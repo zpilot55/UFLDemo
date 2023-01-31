@@ -11,6 +11,7 @@ import '../flutter_flow/custom_functions.dart' as functions;
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
@@ -18,17 +19,13 @@ class RefViewWidget extends StatefulWidget {
   const RefViewWidget({
     Key? key,
     this.initStartTime,
-    this.currentMatchInProgress,
     this.startNumOfPeriods,
     this.startNumOfTouches,
-    this.currentMatchDetails,
   }) : super(key: key);
 
   final int? initStartTime;
-  final MatchesDevRecord? currentMatchInProgress;
   final int? startNumOfPeriods;
   final int? startNumOfTouches;
-  final MatchdetailsDevRecord? currentMatchDetails;
 
   @override
   _RefViewWidgetState createState() => _RefViewWidgetState();
@@ -47,12 +44,107 @@ class _RefViewWidgetState extends State<RefViewWidget> {
   String? dropDownValue1;
   String? actionText2;
   String? dropDownValue2;
+  LatLng? currentUserLocationValue;
   final _unfocusNode = FocusNode();
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  MatchdetailsDevRecord? currentMatchDetails;
+  MatchesDevRecord? currentMatchInProgress;
 
   @override
   void initState() {
     super.initState();
+    // On page load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      currentUserLocationValue =
+          await getCurrentUserLocation(defaultLocation: LatLng(0.0, 0.0));
+      // Create matchdetails
+
+      final matchdetailsDevCreateData = {
+        ...createMatchdetailsDevRecordData(
+          overallStats: createPeriodStatsStruct(
+            pointsL: 0,
+            pointsR: 0,
+            yellowCardsL: 0,
+            yellowCardsR: 0,
+            redCardsL: 0,
+            redCardsR: 0,
+            simultaneous: 0,
+            haltsRef: 0,
+            haltsL: 0,
+            haltsR: 0,
+            simpleAttackHitsL: 0,
+            simpleAttackHitsR: 0,
+            simpleAttackOffTarL: 0,
+            simpleAttackOffTarR: 0,
+            compoundAttackHitsL: 0,
+            compoundAttackHitsR: 0,
+            compoundAttackOffTarL: 0,
+            compoundAttackOffTarR: 0,
+            parryRiposteHitsL: 0,
+            parryRiposteHitsR: 0,
+            parryRiposteOffTargetL: 0,
+            parryRiposteOffTargetR: 0,
+            remiseHitsL: 0,
+            remiseHitsR: 0,
+            remiseOffTarL: 0,
+            remiseOffTarR: 0,
+            counterattackHitsL: 0,
+            counterattackHitsR: 0,
+            counterattackOffTarL: 0,
+            counterattackOffTarR: 0,
+            pointInLineHitsL: 0,
+            pointInLineHitsR: 0,
+            pointInLineOffTarL: 0,
+            pointInLineOffTarR: 0,
+            timestamp: -1,
+            periodstamp: -1,
+            clearUnsetFields: false,
+            create: true,
+          ),
+        ),
+        'MatchEvents': [
+          getMatchEventFirestoreData(
+            createMatchEventStruct(
+              actionableFencer: FFAppState().refereeReference,
+              scoreLeft: 0,
+              scoreRight: 0,
+              timeOfAction: functions.minutesToMS(widget.initStartTime!),
+              periodOfAction: 1,
+              actionID: -1,
+              clearUnsetFields: false,
+              create: true,
+            ),
+            true,
+          )
+        ],
+      };
+      var matchdetailsDevRecordReference =
+          MatchdetailsDevRecord.collection.doc();
+      await matchdetailsDevRecordReference.set(matchdetailsDevCreateData);
+      currentMatchDetails = MatchdetailsDevRecord.getDocumentFromData(
+          matchdetailsDevCreateData, matchdetailsDevRecordReference);
+      // Create matches doc
+
+      final matchesDevCreateData = {
+        ...createMatchesDevRecordData(
+          user1: FFAppState().leftFencerRef,
+          user2: FFAppState().rightFencerRef,
+          weapon: FFAppState().refereeweaponselect,
+          noOfPeriods: widget.startNumOfPeriods,
+          scoreLeft: 0,
+          scoreRight: 0,
+          location: currentUserLocationValue,
+          matchDetails: currentMatchDetails!.reference,
+          matchRanking: 'U',
+        ),
+        'fencers': FFAppState().refFencers,
+        'scheduled_time': FieldValue.serverTimestamp(),
+      };
+      var matchesDevRecordReference = MatchesDevRecord.collection.doc();
+      await matchesDevRecordReference.set(matchesDevCreateData);
+      currentMatchInProgress = MatchesDevRecord.getDocumentFromData(
+          matchesDevCreateData, matchesDevRecordReference);
+    });
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
@@ -116,7 +208,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => RefMatchRecapEventsWidget(
-                          currentMatch: widget.currentMatchDetails,
+                          currentMatch: currentMatchDetails,
                         ),
                       ),
                     );
@@ -922,8 +1014,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                           )
                                         ]),
                                       };
-                                      await widget
-                                          .currentMatchDetails!.reference
+                                      await currentMatchDetails!.reference
                                           .update(matchdetailsDevUpdateData);
                                       await actions.flushMatchActionState();
                                       FFAppState().update(() {
@@ -1051,7 +1142,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                               FFButtonWidget(
                                 onPressed: () async {
                                   await actions.flushLocalState();
-                                  await widget.currentMatchInProgress!.reference
+                                  await currentMatchInProgress!.reference
                                       .delete();
                                   Navigator.pop(context);
                                 },
@@ -1090,7 +1181,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                     scoreRight: FFAppState().refRightScore,
                                     noOfPeriods: FFAppState().currentPeriod,
                                   );
-                                  await widget.currentMatchInProgress!.reference
+                                  await currentMatchInProgress!.reference
                                       .update(matchesDevUpdateData);
 
                                   final matchdetailsDevUpdateData = {
@@ -1112,7 +1203,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                       )
                                     ]),
                                   };
-                                  await widget.currentMatchDetails!.reference
+                                  await currentMatchDetails!.reference
                                       .update(matchdetailsDevUpdateData);
                                   await actions.flushLocalState();
                                   Navigator.pop(context);
