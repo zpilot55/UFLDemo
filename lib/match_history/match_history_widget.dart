@@ -171,7 +171,7 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                         color: FlutterFlowTheme.of(context).secondaryBackground,
                       ),
                       child: Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 30),
+                        padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 80),
                         child: PagedListView<DocumentSnapshot<Object?>?,
                             MatchesDevRecord>(
                           pagingController: () {
