@@ -1,13 +1,10 @@
 import '../auth/auth_util.dart';
-import '../backend/backend.dart';
 import '../flutter_flow/flutter_flow_count_controller.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import '../ref_view/ref_view_widget.dart';
 import '../select_fencer/select_fencer_widget.dart';
-import '../flutter_flow/custom_functions.dart' as functions;
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -21,18 +18,11 @@ class RefSetupWidget extends StatefulWidget {
 }
 
 class _RefSetupWidgetState extends State<RefSetupWidget> {
-  LatLng? currentUserLocationValue;
   final _unfocusNode = FocusNode();
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  MatchdetailsDevRecord? currentMatchDetails;
-  MatchesDevRecord? currentMatchInProgress;
   int? periodCountValue;
   int? timeCountValue;
   int? touchesCountValue;
-  MatchdetailsDevRecord? currentMatchDetailsRA;
-  MatchesDevRecord? currentMatchInProgressRA;
-  MatchdetailsDevRecord? currentMatchDetailsRY;
-  MatchesDevRecord? currentMatchInProgressRY;
 
   @override
   void dispose() {
@@ -656,10 +646,6 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                         0, 0, 0, 30),
                                     child: FFButtonWidget(
                                       onPressed: () async {
-                                        currentUserLocationValue =
-                                            await getCurrentUserLocation(
-                                                defaultLocation:
-                                                    LatLng(0.0, 0.0));
                                         FFAppState().update(() {
                                           FFAppState().currentPeriod = 1;
                                         });
@@ -671,109 +657,6 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                           FFAppState().addToRefFencers(
                                               FFAppState().rightFencerRef!);
                                         });
-                                        // Create matchdetails
-
-                                        final matchdetailsDevCreateData = {
-                                          ...createMatchdetailsDevRecordData(
-                                            overallStats:
-                                                createPeriodStatsStruct(
-                                              pointsL: 0,
-                                              pointsR: 0,
-                                              yellowCardsL: 0,
-                                              yellowCardsR: 0,
-                                              redCardsL: 0,
-                                              redCardsR: 0,
-                                              simultaneous: 0,
-                                              haltsRef: 0,
-                                              haltsL: 0,
-                                              haltsR: 0,
-                                              simpleAttackHitsL: 0,
-                                              simpleAttackHitsR: 0,
-                                              simpleAttackOffTarL: 0,
-                                              simpleAttackOffTarR: 0,
-                                              compoundAttackHitsL: 0,
-                                              compoundAttackHitsR: 0,
-                                              compoundAttackOffTarL: 0,
-                                              compoundAttackOffTarR: 0,
-                                              parryRiposteHitsL: 0,
-                                              parryRiposteHitsR: 0,
-                                              parryRiposteOffTargetL: 0,
-                                              parryRiposteOffTargetR: 0,
-                                              remiseHitsL: 0,
-                                              remiseHitsR: 0,
-                                              remiseOffTarL: 0,
-                                              remiseOffTarR: 0,
-                                              counterattackHitsL: 0,
-                                              counterattackHitsR: 0,
-                                              counterattackOffTarL: 0,
-                                              counterattackOffTarR: 0,
-                                              pointInLineHitsL: 0,
-                                              pointInLineHitsR: 0,
-                                              pointInLineOffTarL: 0,
-                                              pointInLineOffTarR: 0,
-                                              timestamp: -1,
-                                              periodstamp: -1,
-                                              clearUnsetFields: false,
-                                              create: true,
-                                            ),
-                                          ),
-                                          'MatchEvents': [
-                                            getMatchEventFirestoreData(
-                                              createMatchEventStruct(
-                                                actionableFencer: FFAppState()
-                                                    .refereeReference,
-                                                scoreLeft: 0,
-                                                scoreRight: 0,
-                                                timeOfAction:
-                                                    functions.minutesToMS(
-                                                        timeCountValue!),
-                                                periodOfAction: 1,
-                                                actionID: -1,
-                                                clearUnsetFields: false,
-                                                create: true,
-                                              ),
-                                              true,
-                                            )
-                                          ],
-                                        };
-                                        var matchdetailsDevRecordReference =
-                                            MatchdetailsDevRecord.collection
-                                                .doc();
-                                        await matchdetailsDevRecordReference
-                                            .set(matchdetailsDevCreateData);
-                                        currentMatchDetails = MatchdetailsDevRecord
-                                            .getDocumentFromData(
-                                                matchdetailsDevCreateData,
-                                                matchdetailsDevRecordReference);
-                                        // Create matches doc
-
-                                        final matchesDevCreateData = {
-                                          ...createMatchesDevRecordData(
-                                            user1: FFAppState().leftFencerRef,
-                                            user2: FFAppState().rightFencerRef,
-                                            weapon: FFAppState()
-                                                .refereeweaponselect,
-                                            noOfPeriods: periodCountValue,
-                                            scoreLeft: 0,
-                                            scoreRight: 0,
-                                            location: currentUserLocationValue,
-                                            matchDetails:
-                                                currentMatchDetails!.reference,
-                                            matchRanking: 'U',
-                                          ),
-                                          'fencers': FFAppState().refFencers,
-                                          'scheduled_time':
-                                              FieldValue.serverTimestamp(),
-                                        };
-                                        var matchesDevRecordReference =
-                                            MatchesDevRecord.collection.doc();
-                                        await matchesDevRecordReference
-                                            .set(matchesDevCreateData);
-                                        currentMatchInProgress =
-                                            MatchesDevRecord
-                                                .getDocumentFromData(
-                                                    matchesDevCreateData,
-                                                    matchesDevRecordReference);
                                         await Navigator.push(
                                           context,
                                           MaterialPageRoute(
@@ -786,8 +669,6 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                             ),
                                           ),
                                         );
-
-                                        setState(() {});
                                       },
                                       text: 'Start Match',
                                       options: FFButtonOptions(
@@ -1373,10 +1254,6 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                         0, 0, 0, 30),
                                     child: FFButtonWidget(
                                       onPressed: () async {
-                                        currentUserLocationValue =
-                                            await getCurrentUserLocation(
-                                                defaultLocation:
-                                                    LatLng(0.0, 0.0));
                                         if (FFAppState().refereemodeselect !=
                                                 null &&
                                             FFAppState().refereemodeselect !=
@@ -1387,117 +1264,6 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                               FFAppState().rightFencerRef!);
                                           if (FFAppState().refereemodeselect ==
                                               'RankedAdult') {
-                                            // Create matchdetails
-
-                                            final matchdetailsDevCreateData = {
-                                              ...createMatchdetailsDevRecordData(
-                                                overallStats:
-                                                    createPeriodStatsStruct(
-                                                  pointsL: 0,
-                                                  pointsR: 0,
-                                                  yellowCardsL: 0,
-                                                  yellowCardsR: 0,
-                                                  redCardsL: 0,
-                                                  redCardsR: 0,
-                                                  simultaneous: 0,
-                                                  haltsRef: 0,
-                                                  haltsL: 0,
-                                                  haltsR: 0,
-                                                  simpleAttackHitsL: 0,
-                                                  simpleAttackHitsR: 0,
-                                                  simpleAttackOffTarL: 0,
-                                                  simpleAttackOffTarR: 0,
-                                                  compoundAttackHitsL: 0,
-                                                  compoundAttackHitsR: 0,
-                                                  compoundAttackOffTarL: 0,
-                                                  compoundAttackOffTarR: 0,
-                                                  parryRiposteHitsL: 0,
-                                                  parryRiposteHitsR: 0,
-                                                  parryRiposteOffTargetL: 0,
-                                                  parryRiposteOffTargetR: 0,
-                                                  remiseHitsL: 0,
-                                                  remiseHitsR: 0,
-                                                  remiseOffTarL: 0,
-                                                  remiseOffTarR: 0,
-                                                  counterattackHitsL: 0,
-                                                  counterattackHitsR: 0,
-                                                  counterattackOffTarL: 0,
-                                                  counterattackOffTarR: 0,
-                                                  pointInLineHitsL: 0,
-                                                  pointInLineHitsR: 0,
-                                                  pointInLineOffTarL: 0,
-                                                  pointInLineOffTarR: 0,
-                                                  timestamp: -1,
-                                                  periodstamp: -1,
-                                                  clearUnsetFields: false,
-                                                  create: true,
-                                                ),
-                                              ),
-                                              'MatchEvents': [
-                                                getMatchEventFirestoreData(
-                                                  createMatchEventStruct(
-                                                    actionableFencer:
-                                                        FFAppState()
-                                                            .refereeReference,
-                                                    scoreLeft: 0,
-                                                    scoreRight: 0,
-                                                    timeOfAction:
-                                                        functions.minutesToMS(
-                                                            timeCountValue!),
-                                                    periodOfAction: 1,
-                                                    actionID: -1,
-                                                    clearUnsetFields: false,
-                                                    create: true,
-                                                  ),
-                                                  true,
-                                                )
-                                              ],
-                                            };
-                                            var matchdetailsDevRecordReference =
-                                                MatchdetailsDevRecord.collection
-                                                    .doc();
-                                            await matchdetailsDevRecordReference
-                                                .set(matchdetailsDevCreateData);
-                                            currentMatchDetailsRA =
-                                                MatchdetailsDevRecord
-                                                    .getDocumentFromData(
-                                                        matchdetailsDevCreateData,
-                                                        matchdetailsDevRecordReference);
-                                            // Create matches doc
-
-                                            final matchesDevCreateData = {
-                                              ...createMatchesDevRecordData(
-                                                user1:
-                                                    FFAppState().leftFencerRef,
-                                                user2:
-                                                    FFAppState().rightFencerRef,
-                                                weapon: FFAppState()
-                                                    .refereeweaponselect,
-                                                noOfPeriods: 3,
-                                                scoreLeft: 0,
-                                                scoreRight: 0,
-                                                location:
-                                                    currentUserLocationValue,
-                                                matchDetails:
-                                                    currentMatchDetailsRA!
-                                                        .reference,
-                                                matchRanking: 'A',
-                                              ),
-                                              'scheduled_time':
-                                                  FieldValue.serverTimestamp(),
-                                              'fencers':
-                                                  FFAppState().refFencers,
-                                            };
-                                            var matchesDevRecordReference =
-                                                MatchesDevRecord.collection
-                                                    .doc();
-                                            await matchesDevRecordReference
-                                                .set(matchesDevCreateData);
-                                            currentMatchInProgressRA =
-                                                MatchesDevRecord
-                                                    .getDocumentFromData(
-                                                        matchesDevCreateData,
-                                                        matchesDevRecordReference);
                                             await Navigator.push(
                                               context,
                                               MaterialPageRoute(
@@ -1510,117 +1276,6 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                               ),
                                             );
                                           } else {
-                                            // Create matchdetails
-
-                                            final matchdetailsDevCreateData = {
-                                              ...createMatchdetailsDevRecordData(
-                                                overallStats:
-                                                    createPeriodStatsStruct(
-                                                  pointsL: 0,
-                                                  pointsR: 0,
-                                                  yellowCardsL: 0,
-                                                  yellowCardsR: 0,
-                                                  redCardsL: 0,
-                                                  redCardsR: 0,
-                                                  simultaneous: 0,
-                                                  haltsRef: 0,
-                                                  haltsL: 0,
-                                                  haltsR: 0,
-                                                  simpleAttackHitsL: 0,
-                                                  simpleAttackHitsR: 0,
-                                                  simpleAttackOffTarL: 0,
-                                                  simpleAttackOffTarR: 0,
-                                                  compoundAttackHitsL: 0,
-                                                  compoundAttackHitsR: 0,
-                                                  compoundAttackOffTarL: 0,
-                                                  compoundAttackOffTarR: 0,
-                                                  parryRiposteHitsL: 0,
-                                                  parryRiposteHitsR: 0,
-                                                  parryRiposteOffTargetL: 0,
-                                                  parryRiposteOffTargetR: 0,
-                                                  remiseHitsL: 0,
-                                                  remiseHitsR: 0,
-                                                  remiseOffTarL: 0,
-                                                  remiseOffTarR: 0,
-                                                  counterattackHitsL: 0,
-                                                  counterattackHitsR: 0,
-                                                  counterattackOffTarL: 0,
-                                                  counterattackOffTarR: 0,
-                                                  pointInLineHitsL: 0,
-                                                  pointInLineHitsR: 0,
-                                                  pointInLineOffTarL: 0,
-                                                  pointInLineOffTarR: 0,
-                                                  timestamp: -1,
-                                                  periodstamp: -1,
-                                                  clearUnsetFields: false,
-                                                  create: true,
-                                                ),
-                                              ),
-                                              'MatchEvents': [
-                                                getMatchEventFirestoreData(
-                                                  createMatchEventStruct(
-                                                    actionableFencer:
-                                                        FFAppState()
-                                                            .refereeReference,
-                                                    scoreLeft: 0,
-                                                    scoreRight: 0,
-                                                    timeOfAction:
-                                                        functions.minutesToMS(
-                                                            timeCountValue!),
-                                                    periodOfAction: 1,
-                                                    actionID: -1,
-                                                    clearUnsetFields: false,
-                                                    create: true,
-                                                  ),
-                                                  true,
-                                                )
-                                              ],
-                                            };
-                                            var matchdetailsDevRecordReference =
-                                                MatchdetailsDevRecord.collection
-                                                    .doc();
-                                            await matchdetailsDevRecordReference
-                                                .set(matchdetailsDevCreateData);
-                                            currentMatchDetailsRY =
-                                                MatchdetailsDevRecord
-                                                    .getDocumentFromData(
-                                                        matchdetailsDevCreateData,
-                                                        matchdetailsDevRecordReference);
-                                            // Create matches doc
-
-                                            final matchesDevCreateData = {
-                                              ...createMatchesDevRecordData(
-                                                user1:
-                                                    FFAppState().leftFencerRef,
-                                                user2:
-                                                    FFAppState().rightFencerRef,
-                                                weapon: FFAppState()
-                                                    .refereeweaponselect,
-                                                noOfPeriods: 2,
-                                                scoreLeft: 0,
-                                                scoreRight: 0,
-                                                location:
-                                                    currentUserLocationValue,
-                                                matchDetails:
-                                                    currentMatchDetails!
-                                                        .reference,
-                                                matchRanking: 'Y',
-                                              ),
-                                              'scheduled_time':
-                                                  FieldValue.serverTimestamp(),
-                                              'fencers':
-                                                  FFAppState().refFencers,
-                                            };
-                                            var matchesDevRecordReference =
-                                                MatchesDevRecord.collection
-                                                    .doc();
-                                            await matchesDevRecordReference
-                                                .set(matchesDevCreateData);
-                                            currentMatchInProgressRY =
-                                                MatchesDevRecord
-                                                    .getDocumentFromData(
-                                                        matchesDevCreateData,
-                                                        matchesDevRecordReference);
                                             await Navigator.push(
                                               context,
                                               MaterialPageRoute(
@@ -1634,8 +1289,6 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                             );
                                           }
                                         }
-
-                                        setState(() {});
                                       },
                                       text: 'Start Match',
                                       options: FFButtonOptions(
