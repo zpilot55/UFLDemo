@@ -45,6 +45,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
   StopWatchTimer timerController =
       StopWatchTimer(mode: StopWatchMode.countDown);
 
+  MatchStatSnapshotStruct? newMatchStatsSnapshot;
   String? actionText1;
   String? dropDownValue1;
   String? actionText2;
@@ -927,15 +928,19 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                       await widget
                                           .currentMatchDetails!.reference
                                           .update(matchdetailsDevUpdateData);
+                                      newMatchStatsSnapshot =
+                                          await actions.updateStats(
+                                        101,
+                                        widget.currentMatchStatsLog!.matchStats!
+                                            .toList()
+                                            .last,
+                                      );
 
                                       final matchstatslogDevUpdateData = {
                                         'MatchStats': FieldValue.arrayUnion([
                                           getMatchStatSnapshotFirestoreData(
-                                            createMatchStatSnapshotStruct(
-                                              fieldValues: {
-                                                'PointsL':
-                                                    FieldValue.increment(1),
-                                              },
+                                            updateMatchStatSnapshotStruct(
+                                              newMatchStatsSnapshot,
                                               clearUnsetFields: false,
                                             ),
                                             true,
@@ -949,6 +954,8 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                       FFAppState().update(() {
                                         FFAppState().showActions = false;
                                       });
+
+                                      setState(() {});
                                     },
                                     text: 'OK',
                                     options: FFButtonOptions(
