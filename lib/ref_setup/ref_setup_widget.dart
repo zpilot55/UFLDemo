@@ -843,8 +843,6 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                                   currentMatchInProgress,
                                               currentMatchDetails:
                                                   currentMatchDetails,
-                                              currentMatchStatsLog:
-                                                  currentMatchStatsLog,
                                             ),
                                           ),
                                         );
