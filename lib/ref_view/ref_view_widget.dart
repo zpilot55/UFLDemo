@@ -961,6 +961,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                                 .matchStats!
                                                 .toList()
                                                 .last,
+                                            FFAppState().currentPeriod,
                                           );
 
                                           final matchstatslogDevUpdateData = {
