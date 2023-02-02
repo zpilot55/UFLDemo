@@ -263,6 +263,12 @@ class FFAppState extends ChangeNotifier {
   set isWeaponSelected(bool _value) {
     _isWeaponSelected = _value;
   }
+
+  int _snapshotCounter = 0;
+  int get snapshotCounter => _snapshotCounter;
+  set snapshotCounter(int _value) {
+    _snapshotCounter = _value;
+  }
 }
 
 LatLng? _latLngFromString(String? val) {
