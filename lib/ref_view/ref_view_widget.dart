@@ -45,7 +45,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
   StopWatchTimer timerController =
       StopWatchTimer(mode: StopWatchMode.countDown);
 
-  MatchStatSnapshotStruct? newMatchStatsSnapshot;
+  MatchStatSnapshotStruct? newStatsSnapshot;
   String? actionText1;
   String? dropDownValue1;
   String? actionText2;
@@ -928,19 +928,20 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                       await widget
                                           .currentMatchDetails!.reference
                                           .update(matchdetailsDevUpdateData);
-                                      newMatchStatsSnapshot =
+                                      newStatsSnapshot =
                                           await actions.updateStats(
                                         101,
+                                        timerMilliseconds,
                                         widget.currentMatchStatsLog!.matchStats!
-                                                .toList()[
-                                            FFAppState().snapshotCounter],
+                                            .toList()
+                                            .last,
                                       );
 
                                       final matchstatslogDevUpdateData = {
                                         'MatchStats': FieldValue.arrayUnion([
                                           getMatchStatSnapshotFirestoreData(
                                             updateMatchStatSnapshotStruct(
-                                              newMatchStatsSnapshot,
+                                              newStatsSnapshot,
                                               clearUnsetFields: false,
                                             ),
                                             true,

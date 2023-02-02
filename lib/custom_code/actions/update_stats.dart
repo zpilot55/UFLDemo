@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 
 Future<MatchStatSnapshotStruct> updateStats(
   int actionID,
+  int timestamp,
   MatchStatSnapshotStruct statsSnapshot,
 ) async {
   // Add your function code here!
@@ -19,6 +20,7 @@ Future<MatchStatSnapshotStruct> updateStats(
 
   newSnapshot.replace(statsSnapshot);
   newSnapshot.pointsL = (statsSnapshot.pointsL)! + 1;
+  newSnapshot.timestamp = timestamp;
 
   MatchStatSnapshotStruct newStruct = newSnapshot.build();
 
