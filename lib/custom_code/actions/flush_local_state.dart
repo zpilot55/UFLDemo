@@ -38,6 +38,7 @@ Future flushLocalState() async {
     FFAppState().refereeweaponselect = "";
     FFAppState().rightFencerRef = FirebaseFirestore.instance.doc('/users/2');
     FFAppState().scannedFencerRef = null;
+    FFAppState().snapshotCounter = 0;
     FFAppState().showActions = false;
     FFAppState().startStopText = "START";
   });

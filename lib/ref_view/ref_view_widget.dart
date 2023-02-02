@@ -932,8 +932,8 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                           await actions.updateStats(
                                         101,
                                         widget.currentMatchStatsLog!.matchStats!
-                                            .toList()
-                                            .last,
+                                                .toList()[
+                                            FFAppState().snapshotCounter],
                                       );
 
                                       final matchstatslogDevUpdateData = {
@@ -953,6 +953,8 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                       await actions.flushMatchActionState();
                                       FFAppState().update(() {
                                         FFAppState().showActions = false;
+                                        FFAppState().snapshotCounter =
+                                            FFAppState().snapshotCounter + 1;
                                       });
 
                                       setState(() {});
