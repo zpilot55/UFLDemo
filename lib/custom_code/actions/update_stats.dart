@@ -8,9 +8,11 @@ import 'package:flutter/material.dart';
 // Begin custom action code
 // DO NOT REMOVE OR MODIFY THE CODE ABOVE!
 
-Future updateStats(
+Future<MatchStatSnapshotStruct> updateStats(
   int actionID,
-  MatchStatSnapshotStruct? currentMatchStatsLog,
+  MatchStatSnapshotStruct statsSnapshot,
 ) async {
   // Add your function code here!
+
+  statsSnapshot.pointsL += 1;
 }
