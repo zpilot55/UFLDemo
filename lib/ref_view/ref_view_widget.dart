@@ -927,6 +927,24 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                       await widget
                                           .currentMatchDetails!.reference
                                           .update(matchdetailsDevUpdateData);
+
+                                      final matchstatslogDevUpdateData = {
+                                        'MatchStats': FieldValue.arrayUnion([
+                                          getMatchStatSnapshotFirestoreData(
+                                            createMatchStatSnapshotStruct(
+                                              fieldValues: {
+                                                'PointsL':
+                                                    FieldValue.increment(1),
+                                              },
+                                              clearUnsetFields: false,
+                                            ),
+                                            true,
+                                          )
+                                        ]),
+                                      };
+                                      await widget
+                                          .currentMatchStatsLog!.reference
+                                          .update(matchstatslogDevUpdateData);
                                       await actions.flushMatchActionState();
                                       FFAppState().update(() {
                                         FFAppState().showActions = false;

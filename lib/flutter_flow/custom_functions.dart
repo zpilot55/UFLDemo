@@ -303,3 +303,19 @@ String msToMinSecFormat(int inputMS) {
   }
   return '$minStr:$secStr';
 }
+
+String nameToAbbreviation(String fullname) {
+  // Get the first letter of the first word and the first 3 letters of the last word and concatenate them
+  final allnames = fullname.split(' ');
+  var firstinitial = fullname[0].toUpperCase();
+  var secondinitials;
+
+  if (allnames.last.length > 3) {
+    secondinitials = allnames.last.substring(0, 3);
+    secondinitials = secondinitials.toUpperCase();
+  } else {
+    secondinitials = allnames.last.toUpperCase();
+  }
+
+  return firstinitial + '. ' + secondinitials;
+}
