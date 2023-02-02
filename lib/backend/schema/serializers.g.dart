@@ -14,13 +14,8 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(MatchesDevRecord.serializer)
       ..add(MatchstatslogDevRecord.serializer)
       ..add(PeriodStatsStruct.serializer)
+      ..add(StatlineStruct.serializer)
       ..add(UsersRecord.serializer)
-      ..addBuilderFactory(
-          const FullType(BuiltList, const [
-            const FullType(
-                DocumentReference, const [const FullType.nullable(Object)])
-          ]),
-          () => new ListBuilder<DocumentReference<Object?>>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [
             const FullType(
@@ -31,8 +26,12 @@ Serializers _$serializers = (new Serializers().toBuilder()
           const FullType(BuiltList, const [const FullType(MatchEventStruct)]),
           () => new ListBuilder<MatchEventStruct>())
       ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(PeriodStatsStruct)]),
-          () => new ListBuilder<PeriodStatsStruct>())
+          const FullType(BuiltList, const [const FullType(StatlineStruct)]),
+          () => new ListBuilder<StatlineStruct>())
+      ..addBuilderFactory(
+          const FullType(
+              BuiltList, const [const FullType(MatchStatSnapshotStruct)]),
+          () => new ListBuilder<MatchStatSnapshotStruct>())
       ..addBuilderFactory(
           const FullType(
               BuiltList, const [const FullType(MatchStatSnapshotStruct)]),

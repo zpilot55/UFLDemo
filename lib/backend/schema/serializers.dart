@@ -24,6 +24,7 @@ const kDocumentReferenceField = 'Document__Reference__Field';
   MatchEventStruct,
   PeriodStatsStruct,
   MatchStatSnapshotStruct,
+  StatlineStruct,
 ])
 final Serializers serializers = (_$serializers.toBuilder()
       ..add(DocumentReferenceSerializer())

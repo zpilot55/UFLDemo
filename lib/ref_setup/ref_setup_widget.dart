@@ -673,7 +673,7 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                         final matchdetailsDevCreateData = {
                                           ...createMatchdetailsDevRecordData(
                                             overallStats:
-                                                createPeriodStatsStruct(
+                                                createMatchStatSnapshotStruct(
                                               pointsL: 0,
                                               pointsR: 0,
                                               yellowCardsL: 0,

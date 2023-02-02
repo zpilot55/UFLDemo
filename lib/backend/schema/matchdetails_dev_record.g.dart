@@ -26,7 +26,7 @@ class _$MatchdetailsDevRecordSerializer
     final result = <Object?>[
       'OverallStats',
       serializers.serialize(object.overallStats,
-          specifiedType: const FullType(PeriodStatsStruct)),
+          specifiedType: const FullType(MatchStatSnapshotStruct)),
     ];
     Object? value;
     value = object.matchEvents;
@@ -37,13 +37,21 @@ class _$MatchdetailsDevRecordSerializer
             specifiedType: const FullType(
                 BuiltList, const [const FullType(MatchEventStruct)])));
     }
+    value = object.statlines;
+    if (value != null) {
+      result
+        ..add('Statlines')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(
+                BuiltList, const [const FullType(StatlineStruct)])));
+    }
     value = object.periodStats;
     if (value != null) {
       result
         ..add('PeriodStats')
         ..add(serializers.serialize(value,
             specifiedType: const FullType(
-                BuiltList, const [const FullType(PeriodStatsStruct)])));
+                BuiltList, const [const FullType(MatchStatSnapshotStruct)])));
     }
     value = object.ffRef;
     if (value != null) {
@@ -74,16 +82,22 @@ class _$MatchdetailsDevRecordSerializer
                       BuiltList, const [const FullType(MatchEventStruct)]))!
               as BuiltList<Object?>);
           break;
+        case 'Statlines':
+          result.statlines.replace(serializers.deserialize(value,
+                  specifiedType: const FullType(
+                      BuiltList, const [const FullType(StatlineStruct)]))!
+              as BuiltList<Object?>);
+          break;
         case 'OverallStats':
           result.overallStats.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(PeriodStatsStruct))!
-              as PeriodStatsStruct);
+                  specifiedType: const FullType(MatchStatSnapshotStruct))!
+              as MatchStatSnapshotStruct);
           break;
         case 'PeriodStats':
           result.periodStats.replace(serializers.deserialize(value,
-                  specifiedType: const FullType(
-                      BuiltList, const [const FullType(PeriodStatsStruct)]))!
-              as BuiltList<Object?>);
+              specifiedType: const FullType(BuiltList, const [
+                const FullType(MatchStatSnapshotStruct)
+              ]))! as BuiltList<Object?>);
           break;
         case 'Document__Reference__Field':
           result.ffRef = serializers.deserialize(value,
@@ -102,9 +116,11 @@ class _$MatchdetailsDevRecord extends MatchdetailsDevRecord {
   @override
   final BuiltList<MatchEventStruct>? matchEvents;
   @override
-  final PeriodStatsStruct overallStats;
+  final BuiltList<StatlineStruct>? statlines;
   @override
-  final BuiltList<PeriodStatsStruct>? periodStats;
+  final MatchStatSnapshotStruct overallStats;
+  @override
+  final BuiltList<MatchStatSnapshotStruct>? periodStats;
   @override
   final DocumentReference<Object?>? ffRef;
 
@@ -114,6 +130,7 @@ class _$MatchdetailsDevRecord extends MatchdetailsDevRecord {
 
   _$MatchdetailsDevRecord._(
       {this.matchEvents,
+      this.statlines,
       required this.overallStats,
       this.periodStats,
       this.ffRef})
@@ -136,6 +153,7 @@ class _$MatchdetailsDevRecord extends MatchdetailsDevRecord {
     if (identical(other, this)) return true;
     return other is MatchdetailsDevRecord &&
         matchEvents == other.matchEvents &&
+        statlines == other.statlines &&
         overallStats == other.overallStats &&
         periodStats == other.periodStats &&
         ffRef == other.ffRef;
@@ -144,7 +162,9 @@ class _$MatchdetailsDevRecord extends MatchdetailsDevRecord {
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc($jc(0, matchEvents.hashCode), overallStats.hashCode),
+        $jc(
+            $jc($jc($jc(0, matchEvents.hashCode), statlines.hashCode),
+                overallStats.hashCode),
             periodStats.hashCode),
         ffRef.hashCode));
   }
@@ -153,6 +173,7 @@ class _$MatchdetailsDevRecord extends MatchdetailsDevRecord {
   String toString() {
     return (newBuiltValueToStringHelper(r'MatchdetailsDevRecord')
           ..add('matchEvents', matchEvents)
+          ..add('statlines', statlines)
           ..add('overallStats', overallStats)
           ..add('periodStats', periodStats)
           ..add('ffRef', ffRef))
@@ -170,16 +191,22 @@ class MatchdetailsDevRecordBuilder
   set matchEvents(ListBuilder<MatchEventStruct>? matchEvents) =>
       _$this._matchEvents = matchEvents;
 
-  PeriodStatsStructBuilder? _overallStats;
-  PeriodStatsStructBuilder get overallStats =>
-      _$this._overallStats ??= new PeriodStatsStructBuilder();
-  set overallStats(PeriodStatsStructBuilder? overallStats) =>
+  ListBuilder<StatlineStruct>? _statlines;
+  ListBuilder<StatlineStruct> get statlines =>
+      _$this._statlines ??= new ListBuilder<StatlineStruct>();
+  set statlines(ListBuilder<StatlineStruct>? statlines) =>
+      _$this._statlines = statlines;
+
+  MatchStatSnapshotStructBuilder? _overallStats;
+  MatchStatSnapshotStructBuilder get overallStats =>
+      _$this._overallStats ??= new MatchStatSnapshotStructBuilder();
+  set overallStats(MatchStatSnapshotStructBuilder? overallStats) =>
       _$this._overallStats = overallStats;
 
-  ListBuilder<PeriodStatsStruct>? _periodStats;
-  ListBuilder<PeriodStatsStruct> get periodStats =>
-      _$this._periodStats ??= new ListBuilder<PeriodStatsStruct>();
-  set periodStats(ListBuilder<PeriodStatsStruct>? periodStats) =>
+  ListBuilder<MatchStatSnapshotStruct>? _periodStats;
+  ListBuilder<MatchStatSnapshotStruct> get periodStats =>
+      _$this._periodStats ??= new ListBuilder<MatchStatSnapshotStruct>();
+  set periodStats(ListBuilder<MatchStatSnapshotStruct>? periodStats) =>
       _$this._periodStats = periodStats;
 
   DocumentReference<Object?>? _ffRef;
@@ -194,6 +221,7 @@ class MatchdetailsDevRecordBuilder
     final $v = _$v;
     if ($v != null) {
       _matchEvents = $v.matchEvents?.toBuilder();
+      _statlines = $v.statlines?.toBuilder();
       _overallStats = $v.overallStats.toBuilder();
       _periodStats = $v.periodStats?.toBuilder();
       _ffRef = $v.ffRef;
@@ -222,6 +250,7 @@ class MatchdetailsDevRecordBuilder
       _$result = _$v ??
           new _$MatchdetailsDevRecord._(
               matchEvents: _matchEvents?.build(),
+              statlines: _statlines?.build(),
               overallStats: overallStats.build(),
               periodStats: _periodStats?.build(),
               ffRef: ffRef);
@@ -230,6 +259,8 @@ class MatchdetailsDevRecordBuilder
       try {
         _$failedField = 'matchEvents';
         _matchEvents?.build();
+        _$failedField = 'statlines';
+        _statlines?.build();
         _$failedField = 'overallStats';
         overallStats.build();
         _$failedField = 'periodStats';

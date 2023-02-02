@@ -14,11 +14,14 @@ abstract class MatchdetailsDevRecord
   @BuiltValueField(wireName: 'MatchEvents')
   BuiltList<MatchEventStruct>? get matchEvents;
 
+  @BuiltValueField(wireName: 'Statlines')
+  BuiltList<StatlineStruct>? get statlines;
+
   @BuiltValueField(wireName: 'OverallStats')
-  PeriodStatsStruct get overallStats;
+  MatchStatSnapshotStruct get overallStats;
 
   @BuiltValueField(wireName: 'PeriodStats')
-  BuiltList<PeriodStatsStruct>? get periodStats;
+  BuiltList<MatchStatSnapshotStruct>? get periodStats;
 
   @BuiltValueField(wireName: kDocumentReferenceField)
   DocumentReference? get ffRef;
@@ -27,7 +30,8 @@ abstract class MatchdetailsDevRecord
   static void _initializeBuilder(MatchdetailsDevRecordBuilder builder) =>
       builder
         ..matchEvents = ListBuilder()
-        ..overallStats = PeriodStatsStructBuilder()
+        ..statlines = ListBuilder()
+        ..overallStats = MatchStatSnapshotStructBuilder()
         ..periodStats = ListBuilder();
 
   static CollectionReference get collection =>
@@ -53,20 +57,21 @@ abstract class MatchdetailsDevRecord
 }
 
 Map<String, dynamic> createMatchdetailsDevRecordData({
-  PeriodStatsStruct? overallStats,
+  MatchStatSnapshotStruct? overallStats,
 }) {
   final firestoreData = serializers.toFirestore(
     MatchdetailsDevRecord.serializer,
     MatchdetailsDevRecord(
       (m) => m
         ..matchEvents = null
-        ..overallStats = PeriodStatsStructBuilder()
+        ..statlines = null
+        ..overallStats = MatchStatSnapshotStructBuilder()
         ..periodStats = null,
     ),
   );
 
   // Handle nested data for "OverallStats" field.
-  addPeriodStatsStructData(firestoreData, overallStats, 'OverallStats');
+  addMatchStatSnapshotStructData(firestoreData, overallStats, 'OverallStats');
 
   return firestoreData;
 }
