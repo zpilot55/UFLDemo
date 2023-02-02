@@ -22,7 +22,6 @@ class RefViewWidget extends StatefulWidget {
     this.startNumOfTouches,
     this.currentMatchInProgress,
     this.currentMatchDetails,
-    this.currentMatchStatsLog,
   }) : super(key: key);
 
   final int? initStartTime;
@@ -30,7 +29,6 @@ class RefViewWidget extends StatefulWidget {
   final int? startNumOfTouches;
   final MatchesDevRecord? currentMatchInProgress;
   final MatchdetailsDevRecord? currentMatchDetails;
-  final MatchstatslogDevRecord? currentMatchStatsLog;
 
   @override
   _RefViewWidgetState createState() => _RefViewWidgetState();
@@ -887,96 +885,131 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                 Padding(
                                   padding: EdgeInsetsDirectional.fromSTEB(
                                       0, 0, 5, 0),
-                                  child: FFButtonWidget(
-                                    onPressed: () async {
-                                      await actions.awardPointIfApplicable(
-                                        FFAppState().isLeftFencerAction,
-                                        FFAppState().nonAttackLabel,
-                                        FFAppState().refereeweaponselect,
-                                        FFAppState().refIsHit,
-                                      );
-
-                                      final matchdetailsDevUpdateData = {
-                                        'MatchEvents': FieldValue.arrayUnion([
-                                          getMatchEventFirestoreData(
-                                            createMatchEventStruct(
-                                              actionableFencer: FFAppState()
-                                                      .isLeftFencerAction
-                                                  ? FFAppState().leftFencerRef
-                                                  : FFAppState().rightFencerRef,
-                                              scoreLeft:
-                                                  FFAppState().refLeftScore,
-                                              scoreRight:
-                                                  FFAppState().refRightScore,
-                                              timeOfAction: timerMilliseconds,
-                                              periodOfAction:
-                                                  FFAppState().currentPeriod,
-                                              actionID: functions
-                                                  .getActionIDfromRefState(
-                                                      FFAppState()
-                                                          .isLeftFencerAction,
-                                                      dropDownValue1,
-                                                      !FFAppState().refIsHit,
-                                                      FFAppState()
-                                                          .nonAttackLabel),
-                                              clearUnsetFields: false,
+                                  child: StreamBuilder<MatchstatslogDevRecord>(
+                                    stream: MatchstatslogDevRecord.getDocument(
+                                        widget.currentMatchInProgress!
+                                            .matchStatsLog!),
+                                    builder: (context, snapshot) {
+                                      // Customize what your widget looks like when it's loading.
+                                      if (!snapshot.hasData) {
+                                        return Center(
+                                          child: SizedBox(
+                                            width: 50,
+                                            height: 50,
+                                            child: CircularProgressIndicator(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primaryColor,
                                             ),
-                                            true,
-                                          )
-                                        ]),
-                                      };
-                                      await widget
-                                          .currentMatchDetails!.reference
-                                          .update(matchdetailsDevUpdateData);
-                                      newStatsSnapshot =
-                                          await actions.updateStats(
-                                        101,
-                                        timerMilliseconds,
-                                        widget.currentMatchStatsLog!.matchStats!
-                                                .toList()[
-                                            FFAppState().snapshotCounter],
-                                      );
-
-                                      final matchstatslogDevUpdateData = {
-                                        'MatchStats': FieldValue.arrayUnion([
-                                          getMatchStatSnapshotFirestoreData(
-                                            updateMatchStatSnapshotStruct(
-                                              newStatsSnapshot,
-                                              clearUnsetFields: false,
-                                            ),
-                                            true,
-                                          )
-                                        ]),
-                                      };
-                                      await widget
-                                          .currentMatchStatsLog!.reference
-                                          .update(matchstatslogDevUpdateData);
-                                      await actions.flushMatchActionState();
-                                      FFAppState().update(() {
-                                        FFAppState().showActions = false;
-                                        FFAppState().snapshotCounter =
-                                            FFAppState().snapshotCounter + 1;
-                                      });
-
-                                      setState(() {});
-                                    },
-                                    text: 'OK',
-                                    options: FFButtonOptions(
-                                      width: 100,
-                                      height: 40,
-                                      color: Color(0xFF00FF00),
-                                      textStyle: FlutterFlowTheme.of(context)
-                                          .subtitle2
-                                          .override(
-                                            fontFamily: 'Poppins',
-                                            color: Colors.white,
                                           ),
-                                      borderSide: BorderSide(
-                                        color: Colors.black,
-                                        width: 1,
-                                      ),
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
+                                        );
+                                      }
+                                      final buttonMatchstatslogDevRecord =
+                                          snapshot.data!;
+                                      return FFButtonWidget(
+                                        onPressed: () async {
+                                          await actions.awardPointIfApplicable(
+                                            FFAppState().isLeftFencerAction,
+                                            FFAppState().nonAttackLabel,
+                                            FFAppState().refereeweaponselect,
+                                            FFAppState().refIsHit,
+                                          );
+
+                                          final matchdetailsDevUpdateData = {
+                                            'MatchEvents':
+                                                FieldValue.arrayUnion([
+                                              getMatchEventFirestoreData(
+                                                createMatchEventStruct(
+                                                  actionableFencer: FFAppState()
+                                                          .isLeftFencerAction
+                                                      ? FFAppState()
+                                                          .leftFencerRef
+                                                      : FFAppState()
+                                                          .rightFencerRef,
+                                                  scoreLeft:
+                                                      FFAppState().refLeftScore,
+                                                  scoreRight: FFAppState()
+                                                      .refRightScore,
+                                                  timeOfAction:
+                                                      timerMilliseconds,
+                                                  periodOfAction: FFAppState()
+                                                      .currentPeriod,
+                                                  actionID: functions
+                                                      .getActionIDfromRefState(
+                                                          FFAppState()
+                                                              .isLeftFencerAction,
+                                                          dropDownValue1,
+                                                          !FFAppState()
+                                                              .refIsHit,
+                                                          FFAppState()
+                                                              .nonAttackLabel),
+                                                  clearUnsetFields: false,
+                                                ),
+                                                true,
+                                              )
+                                            ]),
+                                          };
+                                          await widget
+                                              .currentMatchDetails!.reference
+                                              .update(
+                                                  matchdetailsDevUpdateData);
+                                          newStatsSnapshot =
+                                              await actions.updateStats(
+                                            101,
+                                            timerMilliseconds,
+                                            buttonMatchstatslogDevRecord
+                                                .matchStats!
+                                                .toList()
+                                                .last,
+                                          );
+
+                                          final matchstatslogDevUpdateData = {
+                                            'MatchStats':
+                                                FieldValue.arrayUnion([
+                                              getMatchStatSnapshotFirestoreData(
+                                                updateMatchStatSnapshotStruct(
+                                                  newStatsSnapshot,
+                                                  clearUnsetFields: false,
+                                                ),
+                                                true,
+                                              )
+                                            ]),
+                                          };
+                                          await buttonMatchstatslogDevRecord
+                                              .reference
+                                              .update(
+                                                  matchstatslogDevUpdateData);
+                                          await actions.flushMatchActionState();
+                                          FFAppState().update(() {
+                                            FFAppState().showActions = false;
+                                            FFAppState().snapshotCounter =
+                                                FFAppState().snapshotCounter +
+                                                    1;
+                                          });
+
+                                          setState(() {});
+                                        },
+                                        text: 'OK',
+                                        options: FFButtonOptions(
+                                          width: 100,
+                                          height: 40,
+                                          color: Color(0xFF00FF00),
+                                          textStyle:
+                                              FlutterFlowTheme.of(context)
+                                                  .subtitle2
+                                                  .override(
+                                                    fontFamily: 'Poppins',
+                                                    color: Colors.white,
+                                                  ),
+                                          borderSide: BorderSide(
+                                            color: Colors.black,
+                                            width: 1,
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                      );
+                                    },
                                   ),
                                 ),
                                 Padding(
@@ -1082,8 +1115,6 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                 onPressed: () async {
                                   await actions.flushLocalState();
                                   await widget.currentMatchDetails!.reference
-                                      .delete();
-                                  await widget.currentMatchStatsLog!.reference
                                       .delete();
                                   await widget.currentMatchInProgress!.reference
                                       .delete();
