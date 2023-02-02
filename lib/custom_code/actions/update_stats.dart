@@ -14,5 +14,13 @@ Future<MatchStatSnapshotStruct> updateStats(
 ) async {
   // Add your function code here!
 
-  statsSnapshot.pointsL += 1;
+  MatchStatSnapshotStructBuilder newSnapshot =
+      new MatchStatSnapshotStructBuilder();
+
+  newSnapshot.replace(statsSnapshot);
+  newSnapshot.pointsL = (statsSnapshot.pointsL)! + 1;
+
+  MatchStatSnapshotStruct newStruct = newSnapshot.build();
+
+  return newStruct;
 }
