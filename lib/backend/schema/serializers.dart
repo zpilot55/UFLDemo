@@ -22,7 +22,6 @@ const kDocumentReferenceField = 'Document__Reference__Field';
   MatchstatslogDevRecord,
   MatchesDevRecord,
   MatchEventStruct,
-  PeriodStatsStruct,
   MatchStatSnapshotStruct,
   StatlineStruct,
 ])

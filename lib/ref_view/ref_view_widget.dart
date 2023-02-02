@@ -932,7 +932,10 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                         'MatchStats': FieldValue.arrayUnion([
                                           getMatchStatSnapshotFirestoreData(
                                             createMatchStatSnapshotStruct(
-                                              pointsL: 1,
+                                              fieldValues: {
+                                                'PointsL':
+                                                    FieldValue.increment(1),
+                                              },
                                               clearUnsetFields: false,
                                             ),
                                             true,
