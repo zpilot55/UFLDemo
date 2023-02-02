@@ -933,8 +933,8 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                         101,
                                         timerMilliseconds,
                                         widget.currentMatchStatsLog!.matchStats!
-                                            .toList()
-                                            .last,
+                                                .toList()[
+                                            FFAppState().snapshotCounter],
                                       );
 
                                       final matchstatslogDevUpdateData = {
