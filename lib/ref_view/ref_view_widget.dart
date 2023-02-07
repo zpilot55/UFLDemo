@@ -43,7 +43,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
   StopWatchTimer timerController =
       StopWatchTimer(mode: StopWatchMode.countDown);
 
+  List<StatlineStruct>? newMatchStatlines;
   MatchStatSnapshotStruct? newStatsSnapshot;
+  int? currentActionID;
   String? actionText1;
   String? dropDownValue1;
   String? actionText2;
@@ -914,52 +916,16 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                             FFAppState().refereeweaponselect,
                                             FFAppState().refIsHit,
                                           );
-
-                                          final matchdetailsDevUpdateData = {
-                                            'MatchEvents':
-                                                FieldValue.arrayUnion([
-                                              getMatchEventFirestoreData(
-                                                createMatchEventStruct(
-                                                  actionableFencer: FFAppState()
-                                                          .isLeftFencerAction
-                                                      ? FFAppState()
-                                                          .leftFencerRef
-                                                      : FFAppState()
-                                                          .rightFencerRef,
-                                                  scoreLeft:
-                                                      FFAppState().refLeftScore,
-                                                  scoreRight: FFAppState()
-                                                      .refRightScore,
-                                                  timeOfAction:
-                                                      timerMilliseconds,
-                                                  periodOfAction: FFAppState()
-                                                      .currentPeriod,
-                                                  actionID: functions
-                                                      .getActionIDfromRefState(
-                                                          FFAppState()
-                                                              .isLeftFencerAction,
-                                                          dropDownValue1,
-                                                          !FFAppState()
-                                                              .refIsHit,
-                                                          FFAppState()
-                                                              .nonAttackLabel),
-                                                  clearUnsetFields: false,
-                                                ),
-                                                true,
-                                              )
-                                            ]),
-                                          };
-                                          await widget
-                                              .currentMatchDetails!.reference
-                                              .update(
-                                                  matchdetailsDevUpdateData);
+                                          currentActionID =
+                                              await actions.generateActionID(
+                                            FFAppState().isLeftFencerAction,
+                                            dropDownValue1,
+                                            !FFAppState().refIsHit,
+                                            FFAppState().nonAttackLabel,
+                                          );
                                           newStatsSnapshot =
                                               await actions.updateStats(
-                                            widget.currentMatchDetails!
-                                                .matchEvents!
-                                                .toList()
-                                                .last
-                                                .actionID!,
+                                            currentActionID!,
                                             timerMilliseconds,
                                             buttonMatchstatslogDevRecord
                                                 .matchStats!
@@ -984,6 +950,46 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                               .reference
                                               .update(
                                                   matchstatslogDevUpdateData);
+                                          newMatchStatlines =
+                                              await actions.generateStatlines(
+                                            widget.currentMatchDetails!
+                                                .overallStats,
+                                          );
+
+                                          final matchdetailsDevUpdateData = {
+                                            'MatchEvents':
+                                                FieldValue.arrayUnion([
+                                              getMatchEventFirestoreData(
+                                                createMatchEventStruct(
+                                                  actionableFencer: FFAppState()
+                                                          .isLeftFencerAction
+                                                      ? FFAppState()
+                                                          .leftFencerRef
+                                                      : FFAppState()
+                                                          .rightFencerRef,
+                                                  scoreLeft:
+                                                      FFAppState().refLeftScore,
+                                                  scoreRight: FFAppState()
+                                                      .refRightScore,
+                                                  timeOfAction:
+                                                      timerMilliseconds,
+                                                  periodOfAction: FFAppState()
+                                                      .currentPeriod,
+                                                  actionID: currentActionID,
+                                                  clearUnsetFields: false,
+                                                ),
+                                                true,
+                                              )
+                                            ]),
+                                            'Statlines':
+                                                getStatlineListFirestoreData(
+                                              newMatchStatlines,
+                                            ),
+                                          };
+                                          await widget
+                                              .currentMatchDetails!.reference
+                                              .update(
+                                                  matchdetailsDevUpdateData);
                                           await actions.flushMatchActionState();
                                           FFAppState().update(() {
                                             FFAppState().showActions = false;
