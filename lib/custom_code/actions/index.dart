@@ -4,3 +4,4 @@ export 'flush_match_action_state.dart' show flushMatchActionState;
 export 'award_point_if_applicable.dart' show awardPointIfApplicable;
 export 'set_action_from_dropdown.dart' show setActionFromDropdown;
 export 'update_stats.dart' show updateStats;
+export 'generate_statlines.dart' show generateStatlines;
