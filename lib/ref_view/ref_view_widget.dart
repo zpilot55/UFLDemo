@@ -955,7 +955,11 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                                   matchdetailsDevUpdateData);
                                           newStatsSnapshot =
                                               await actions.updateStats(
-                                            101,
+                                            widget.currentMatchDetails!
+                                                .matchEvents!
+                                                .toList()
+                                                .last
+                                                .actionID!,
                                             timerMilliseconds,
                                             buttonMatchstatslogDevRecord
                                                 .matchStats!
