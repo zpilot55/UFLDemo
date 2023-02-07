@@ -21,9 +21,190 @@ Future<MatchStatSnapshotStruct> updateStats(
 
   newSnapshot.replace(statsSnapshot);
   newSnapshot.pointsL = (statsSnapshot.pointsL)! + 1;
+
+  switch (actionID) {
+    case 1:
+      {
+        newSnapshot.haltsRef = (statsSnapshot.haltsRef)! + 1;
+        break;
+      }
+    case 2:
+      {
+        newSnapshot.simultaneous = (statsSnapshot.simultaneous)! + 1;
+        break;
+      }
+    case 100:
+      {
+        newSnapshot.simpleAttackHitsL = (statsSnapshot.simpleAttackHitsL)! + 1;
+        break;
+      }
+    case 101:
+      {
+        newSnapshot.compoundAttackHitsL =
+            (statsSnapshot.compoundAttackHitsL)! + 1;
+        break;
+      }
+    case 102:
+      {
+        newSnapshot.parryRiposteHitsL = (statsSnapshot.parryRiposteHitsL)! + 1;
+        break;
+      }
+    case 103:
+      {
+        newSnapshot.remiseHitsL = (statsSnapshot.remiseHitsL)! + 1;
+        break;
+      }
+    case 104:
+      {
+        newSnapshot.counterattackHitsL =
+            (statsSnapshot.counterattackHitsL)! + 1;
+        break;
+      }
+    case 105:
+      {
+        newSnapshot.pointInLineHitsL = (statsSnapshot.pointInLineHitsL)! + 1;
+        break;
+      }
+    case 140:
+      {
+        newSnapshot.simpleAttackOffTarL =
+            (statsSnapshot.simpleAttackOffTarL)! + 1;
+        break;
+      }
+    case 141:
+      {
+        newSnapshot.compoundAttackOffTarL =
+            (statsSnapshot.compoundAttackOffTarL)! + 1;
+        break;
+      }
+    case 142:
+      {
+        newSnapshot.parryRiposteOffTargetL =
+            (statsSnapshot.parryRiposteOffTargetL)! + 1;
+        break;
+      }
+    case 143:
+      {
+        newSnapshot.remiseOffTarL = (statsSnapshot.remiseOffTarL)! + 1;
+        break;
+      }
+    case 144:
+      {
+        newSnapshot.counterattackOffTarL =
+            (statsSnapshot.counterattackOffTarL)! + 1;
+        break;
+      }
+    case 145:
+      {
+        newSnapshot.pointInLineOffTarL =
+            (statsSnapshot.pointInLineOffTarL)! + 1;
+        break;
+      }
+    case 180:
+      {
+        newSnapshot.haltsL = (statsSnapshot.haltsL)! + 1;
+        break;
+      }
+    case 190:
+      {
+        newSnapshot.yellowCardsL = (statsSnapshot.yellowCardsL)! + 1;
+        break;
+      }
+    case 191:
+      {
+        newSnapshot.redCardsL = (statsSnapshot.redCardsL)! + 1;
+        break;
+      }
+    case 200:
+      {
+        newSnapshot.simpleAttackHitsR = (statsSnapshot.simpleAttackHitsR)! + 1;
+        break;
+      }
+    case 201:
+      {
+        newSnapshot.compoundAttackHitsR =
+            (statsSnapshot.compoundAttackHitsR)! + 1;
+        break;
+      }
+    case 202:
+      {
+        newSnapshot.parryRiposteHitsR = (statsSnapshot.parryRiposteHitsR)! + 1;
+        break;
+      }
+    case 203:
+      {
+        newSnapshot.remiseHitsR = (statsSnapshot.remiseHitsR)! + 1;
+        break;
+      }
+    case 204:
+      {
+        newSnapshot.counterattackHitsR =
+            (statsSnapshot.counterattackHitsR)! + 1;
+        break;
+      }
+    case 205:
+      {
+        newSnapshot.pointInLineHitsR = (statsSnapshot.pointInLineHitsR)! + 1;
+        break;
+      }
+    case 240:
+      {
+        newSnapshot.simpleAttackOffTarR =
+            (statsSnapshot.simpleAttackOffTarR)! + 1;
+        break;
+      }
+    case 241:
+      {
+        newSnapshot.compoundAttackOffTarR =
+            (statsSnapshot.compoundAttackOffTarR)! + 1;
+        break;
+      }
+    case 242:
+      {
+        newSnapshot.parryRiposteOffTargetR =
+            (statsSnapshot.parryRiposteOffTargetR)! + 1;
+        break;
+      }
+    case 243:
+      {
+        newSnapshot.remiseOffTarR = (statsSnapshot.remiseOffTarR)! + 1;
+        break;
+      }
+    case 244:
+      {
+        newSnapshot.counterattackOffTarR =
+            (statsSnapshot.counterattackOffTarR)! + 1;
+        break;
+      }
+    case 245:
+      {
+        newSnapshot.pointInLineOffTarR =
+            (statsSnapshot.pointInLineOffTarR)! + 1;
+        break;
+      }
+    case 280:
+      {
+        newSnapshot.haltsR = (statsSnapshot.haltsR)! + 1;
+        break;
+      }
+    case 290:
+      {
+        newSnapshot.yellowCardsR = (statsSnapshot.yellowCardsR)! + 1;
+        break;
+      }
+    case 291:
+      {
+        newSnapshot.redCardsR = (statsSnapshot.redCardsR)! + 1;
+        break;
+      }
+    default:
+      {
+        return statsSnapshot;
+      }
+  }
+
   newSnapshot.timestamp = timestamp;
   newSnapshot.periodstamp = period;
-
   MatchStatSnapshotStruct newStruct = newSnapshot.build();
 
   return newStruct;

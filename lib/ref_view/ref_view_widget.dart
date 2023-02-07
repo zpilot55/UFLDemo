@@ -1148,58 +1148,93 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              FFButtonWidget(
-                                onPressed: () async {
-                                  final matchesDevUpdateData =
-                                      createMatchesDevRecordData(
-                                    scoreLeft: FFAppState().refLeftScore,
-                                    scoreRight: FFAppState().refRightScore,
-                                    noOfPeriods: FFAppState().currentPeriod,
-                                  );
-                                  await widget.currentMatchInProgress!.reference
-                                      .update(matchesDevUpdateData);
-
-                                  final matchdetailsDevUpdateData = {
-                                    'MatchEvents': FieldValue.arrayUnion([
-                                      getMatchEventFirestoreData(
-                                        createMatchEventStruct(
-                                          actionableFencer:
-                                              FFAppState().refereeReference,
-                                          scoreLeft: FFAppState().refLeftScore,
-                                          scoreRight:
-                                              FFAppState().refRightScore,
-                                          timeOfAction: timerMilliseconds,
-                                          periodOfAction:
-                                              FFAppState().currentPeriod,
-                                          actionID: -2,
-                                          clearUnsetFields: false,
+                              StreamBuilder<MatchstatslogDevRecord>(
+                                stream: MatchstatslogDevRecord.getDocument(
+                                    widget.currentMatchInProgress!
+                                        .matchStatsLog!),
+                                builder: (context, snapshot) {
+                                  // Customize what your widget looks like when it's loading.
+                                  if (!snapshot.hasData) {
+                                    return Center(
+                                      child: SizedBox(
+                                        width: 50,
+                                        height: 50,
+                                        child: CircularProgressIndicator(
+                                          color: FlutterFlowTheme.of(context)
+                                              .primaryColor,
                                         ),
-                                        true,
-                                      )
-                                    ]),
-                                  };
-                                  await widget.currentMatchDetails!.reference
-                                      .update(matchdetailsDevUpdateData);
-                                  await actions.flushLocalState();
-                                  Navigator.pop(context);
-                                },
-                                text: 'Save and Continue',
-                                options: FFButtonOptions(
-                                  width: 250,
-                                  height: 40,
-                                  color: Color(0xFF00FF00),
-                                  textStyle: FlutterFlowTheme.of(context)
-                                      .subtitle2
-                                      .override(
-                                        fontFamily: 'Poppins',
-                                        color: Colors.white,
                                       ),
-                                  borderSide: BorderSide(
-                                    color: Colors.transparent,
-                                    width: 1,
-                                  ),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
+                                    );
+                                  }
+                                  final buttonMatchstatslogDevRecord =
+                                      snapshot.data!;
+                                  return FFButtonWidget(
+                                    onPressed: () async {
+                                      final matchesDevUpdateData =
+                                          createMatchesDevRecordData(
+                                        scoreLeft: FFAppState().refLeftScore,
+                                        scoreRight: FFAppState().refRightScore,
+                                        noOfPeriods: FFAppState().currentPeriod,
+                                      );
+                                      await widget
+                                          .currentMatchInProgress!.reference
+                                          .update(matchesDevUpdateData);
+
+                                      final matchdetailsDevUpdateData = {
+                                        ...createMatchdetailsDevRecordData(
+                                          overallStats:
+                                              updateMatchStatSnapshotStruct(
+                                            buttonMatchstatslogDevRecord
+                                                .matchStats!
+                                                .toList()
+                                                .last,
+                                            clearUnsetFields: false,
+                                          ),
+                                        ),
+                                        'MatchEvents': FieldValue.arrayUnion([
+                                          getMatchEventFirestoreData(
+                                            createMatchEventStruct(
+                                              actionableFencer:
+                                                  FFAppState().refereeReference,
+                                              scoreLeft:
+                                                  FFAppState().refLeftScore,
+                                              scoreRight:
+                                                  FFAppState().refRightScore,
+                                              timeOfAction: timerMilliseconds,
+                                              periodOfAction:
+                                                  FFAppState().currentPeriod,
+                                              actionID: -2,
+                                              clearUnsetFields: false,
+                                            ),
+                                            true,
+                                          )
+                                        ]),
+                                      };
+                                      await widget
+                                          .currentMatchDetails!.reference
+                                          .update(matchdetailsDevUpdateData);
+                                      await actions.flushLocalState();
+                                      Navigator.pop(context);
+                                    },
+                                    text: 'Save and Continue',
+                                    options: FFButtonOptions(
+                                      width: 250,
+                                      height: 40,
+                                      color: Color(0xFF00FF00),
+                                      textStyle: FlutterFlowTheme.of(context)
+                                          .subtitle2
+                                          .override(
+                                            fontFamily: 'Poppins',
+                                            color: Colors.white,
+                                          ),
+                                      borderSide: BorderSide(
+                                        color: Colors.transparent,
+                                        width: 1,
+                                      ),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                  );
+                                },
                               ),
                             ],
                           ),
