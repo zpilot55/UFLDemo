@@ -110,8 +110,8 @@ Future<List<StatlineStruct>> generateStatlines(
 
   for (int i = 0; i < labels.length; i++) {
     tempstatlinebuilder.label = labels[i];
-    tempstatlinebuilder.leftValues = leftValues[i];
-    tempstatlinebuilder.rightValues = rightValues[i];
+    tempstatlinebuilder.leftStat = leftValues[i];
+    tempstatlinebuilder.rightStat = rightValues[i];
     tempstatline = tempstatlinebuilder.build();
     statlines.add(tempstatline);
   }
