@@ -20,7 +20,6 @@ Future<MatchStatSnapshotStruct> updateStats(
       new MatchStatSnapshotStructBuilder();
 
   newSnapshot.replace(statsSnapshot);
-  newSnapshot.pointsL = (statsSnapshot.pointsL)! + 1;
 
   switch (actionID) {
     case 1:
@@ -36,33 +35,39 @@ Future<MatchStatSnapshotStruct> updateStats(
     case 100:
       {
         newSnapshot.simpleAttackHitsL = (statsSnapshot.simpleAttackHitsL)! + 1;
+        newSnapshot.pointsL = (statsSnapshot.pointsL)! + 1;
         break;
       }
     case 101:
       {
         newSnapshot.compoundAttackHitsL =
             (statsSnapshot.compoundAttackHitsL)! + 1;
+        newSnapshot.pointsL = (statsSnapshot.pointsL)! + 1;
         break;
       }
     case 102:
       {
         newSnapshot.parryRiposteHitsL = (statsSnapshot.parryRiposteHitsL)! + 1;
+        newSnapshot.pointsL = (statsSnapshot.pointsL)! + 1;
         break;
       }
     case 103:
       {
         newSnapshot.remiseHitsL = (statsSnapshot.remiseHitsL)! + 1;
+        newSnapshot.pointsL = (statsSnapshot.pointsL)! + 1;
         break;
       }
     case 104:
       {
         newSnapshot.counterattackHitsL =
             (statsSnapshot.counterattackHitsL)! + 1;
+        newSnapshot.pointsL = (statsSnapshot.pointsL)! + 1;
         break;
       }
     case 105:
       {
         newSnapshot.pointInLineHitsL = (statsSnapshot.pointInLineHitsL)! + 1;
+        newSnapshot.pointsL = (statsSnapshot.pointsL)! + 1;
         break;
       }
     case 140:
@@ -113,38 +118,45 @@ Future<MatchStatSnapshotStruct> updateStats(
     case 191:
       {
         newSnapshot.redCardsL = (statsSnapshot.redCardsL)! + 1;
+        newSnapshot.pointsR = (statsSnapshot.pointsR)! + 1;
         break;
       }
     case 200:
       {
         newSnapshot.simpleAttackHitsR = (statsSnapshot.simpleAttackHitsR)! + 1;
+        newSnapshot.pointsR = (statsSnapshot.pointsR)! + 1;
         break;
       }
     case 201:
       {
         newSnapshot.compoundAttackHitsR =
             (statsSnapshot.compoundAttackHitsR)! + 1;
+        newSnapshot.pointsR = (statsSnapshot.pointsR)! + 1;
         break;
       }
     case 202:
       {
         newSnapshot.parryRiposteHitsR = (statsSnapshot.parryRiposteHitsR)! + 1;
+        newSnapshot.pointsR = (statsSnapshot.pointsR)! + 1;
         break;
       }
     case 203:
       {
         newSnapshot.remiseHitsR = (statsSnapshot.remiseHitsR)! + 1;
+        newSnapshot.pointsR = (statsSnapshot.pointsR)! + 1;
         break;
       }
     case 204:
       {
         newSnapshot.counterattackHitsR =
             (statsSnapshot.counterattackHitsR)! + 1;
+        newSnapshot.pointsR = (statsSnapshot.pointsR)! + 1;
         break;
       }
     case 205:
       {
         newSnapshot.pointInLineHitsR = (statsSnapshot.pointInLineHitsR)! + 1;
+        newSnapshot.pointsR = (statsSnapshot.pointsR)! + 1;
         break;
       }
     case 240:
@@ -190,6 +202,7 @@ Future<MatchStatSnapshotStruct> updateStats(
     case 290:
       {
         newSnapshot.yellowCardsR = (statsSnapshot.yellowCardsR)! + 1;
+        newSnapshot.pointsL = (statsSnapshot.pointsL)! + 1;
         break;
       }
     case 291:
