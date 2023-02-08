@@ -957,6 +957,13 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                           );
 
                                           final matchdetailsDevUpdateData = {
+                                            ...createMatchdetailsDevRecordData(
+                                              overallStats:
+                                                  updateMatchStatSnapshotStruct(
+                                                newStatsSnapshot,
+                                                clearUnsetFields: false,
+                                              ),
+                                            ),
                                             'MatchEvents':
                                                 FieldValue.arrayUnion([
                                               getMatchEventFirestoreData(
