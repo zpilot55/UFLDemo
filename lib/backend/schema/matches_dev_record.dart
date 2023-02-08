@@ -4,11 +4,12 @@ import 'index.dart';
 import 'serializers.dart';
 import 'package:built_value/built_value.dart';
 
-part 'matches_record.g.dart';
+part 'matches_dev_record.g.dart';
 
-abstract class MatchesRecord
-    implements Built<MatchesRecord, MatchesRecordBuilder> {
-  static Serializer<MatchesRecord> get serializer => _$matchesRecordSerializer;
+abstract class MatchesDevRecord
+    implements Built<MatchesDevRecord, MatchesDevRecordBuilder> {
+  static Serializer<MatchesDevRecord> get serializer =>
+      _$matchesDevRecordSerializer;
 
   DocumentReference? get user1;
 
@@ -32,47 +33,49 @@ abstract class MatchesRecord
   @BuiltValueField(wireName: 'ScoreRight')
   int? get scoreRight;
 
-  @BuiltValueField(wireName: 'MatchEvents')
-  BuiltList<MatchEventStruct>? get matchEvents;
+  @BuiltValueField(wireName: 'MatchDetails')
+  DocumentReference? get matchDetails;
 
-  @BuiltValueField(wireName: 'MatchStats')
-  BuiltList<PeriodStatsStruct>? get matchStats;
+  @BuiltValueField(wireName: 'MatchStatsLog')
+  DocumentReference? get matchStatsLog;
+
+  @BuiltValueField(wireName: 'MatchRanking')
+  String? get matchRanking;
 
   @BuiltValueField(wireName: kDocumentReferenceField)
   DocumentReference? get ffRef;
   DocumentReference get reference => ffRef!;
 
-  static void _initializeBuilder(MatchesRecordBuilder builder) => builder
+  static void _initializeBuilder(MatchesDevRecordBuilder builder) => builder
     ..noOfPeriods = 0
     ..weapon = ''
     ..fencers = ListBuilder()
     ..scoreLeft = 0
     ..scoreRight = 0
-    ..matchEvents = ListBuilder()
-    ..matchStats = ListBuilder();
+    ..matchRanking = '';
 
   static CollectionReference get collection =>
-      FirebaseFirestore.instance.collection('matches');
+      FirebaseFirestore.instance.collection('matches_dev');
 
-  static Stream<MatchesRecord> getDocument(DocumentReference ref) => ref
+  static Stream<MatchesDevRecord> getDocument(DocumentReference ref) => ref
       .snapshots()
       .map((s) => serializers.deserializeWith(serializer, serializedData(s))!);
 
-  static Future<MatchesRecord> getDocumentOnce(DocumentReference ref) => ref
+  static Future<MatchesDevRecord> getDocumentOnce(DocumentReference ref) => ref
       .get()
       .then((s) => serializers.deserializeWith(serializer, serializedData(s))!);
 
-  MatchesRecord._();
-  factory MatchesRecord([void Function(MatchesRecordBuilder) updates]) =
-      _$MatchesRecord;
+  MatchesDevRecord._();
+  factory MatchesDevRecord([void Function(MatchesDevRecordBuilder) updates]) =
+      _$MatchesDevRecord;
 
-  static MatchesRecord getDocumentFromData(
+  static MatchesDevRecord getDocumentFromData(
           Map<String, dynamic> data, DocumentReference reference) =>
       serializers.deserializeWith(serializer,
           {...mapFromFirestore(data), kDocumentReferenceField: reference})!;
 }
 
-Map<String, dynamic> createMatchesRecordData({
+Map<String, dynamic> createMatchesDevRecordData({
   DocumentReference? user1,
   DocumentReference? user2,
   DateTime? scheduledTime,
@@ -81,10 +84,13 @@ Map<String, dynamic> createMatchesRecordData({
   LatLng? location,
   int? scoreLeft,
   int? scoreRight,
+  DocumentReference? matchDetails,
+  DocumentReference? matchStatsLog,
+  String? matchRanking,
 }) {
   final firestoreData = serializers.toFirestore(
-    MatchesRecord.serializer,
-    MatchesRecord(
+    MatchesDevRecord.serializer,
+    MatchesDevRecord(
       (m) => m
         ..user1 = user1
         ..user2 = user2
@@ -95,8 +101,9 @@ Map<String, dynamic> createMatchesRecordData({
         ..fencers = null
         ..scoreLeft = scoreLeft
         ..scoreRight = scoreRight
-        ..matchEvents = null
-        ..matchStats = null,
+        ..matchDetails = matchDetails
+        ..matchStatsLog = matchStatsLog
+        ..matchRanking = matchRanking,
     ),
   );
 

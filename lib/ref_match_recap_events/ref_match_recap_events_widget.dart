@@ -14,7 +14,7 @@ class RefMatchRecapEventsWidget extends StatefulWidget {
     this.currentMatch,
   }) : super(key: key);
 
-  final MatchesRecord? currentMatch;
+  final MatchdetailsDevRecord? currentMatch;
 
   @override
   _RefMatchRecapEventsWidgetState createState() =>

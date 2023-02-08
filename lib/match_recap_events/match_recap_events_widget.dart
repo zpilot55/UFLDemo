@@ -11,10 +11,10 @@ import 'package:provider/provider.dart';
 class MatchRecapEventsWidget extends StatefulWidget {
   const MatchRecapEventsWidget({
     Key? key,
-    this.currentMatch,
+    this.currentMatchDetails,
   }) : super(key: key);
 
-  final MatchesRecord? currentMatch;
+  final MatchdetailsDevRecord? currentMatchDetails;
 
   @override
   _MatchRecapEventsWidgetState createState() => _MatchRecapEventsWidgetState();
@@ -61,7 +61,8 @@ class _MatchRecapEventsWidgetState extends State<MatchRecapEventsWidget> {
       ),
       body: Builder(
         builder: (context) {
-          final currentMatchEvent = widget.currentMatch!.matchEvents!.toList();
+          final currentMatchEvent =
+              widget.currentMatchDetails!.matchEvents!.toList();
           return SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.max,

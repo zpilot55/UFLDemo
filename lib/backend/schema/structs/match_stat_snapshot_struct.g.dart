@@ -1,23 +1,27 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'period_stats_struct.dart';
+part of 'match_stat_snapshot_struct.dart';
 
 // **************************************************************************
 // BuiltValueGenerator
 // **************************************************************************
 
-Serializer<PeriodStatsStruct> _$periodStatsStructSerializer =
-    new _$PeriodStatsStructSerializer();
+Serializer<MatchStatSnapshotStruct> _$matchStatSnapshotStructSerializer =
+    new _$MatchStatSnapshotStructSerializer();
 
-class _$PeriodStatsStructSerializer
-    implements StructuredSerializer<PeriodStatsStruct> {
+class _$MatchStatSnapshotStructSerializer
+    implements StructuredSerializer<MatchStatSnapshotStruct> {
   @override
-  final Iterable<Type> types = const [PeriodStatsStruct, _$PeriodStatsStruct];
+  final Iterable<Type> types = const [
+    MatchStatSnapshotStruct,
+    _$MatchStatSnapshotStruct
+  ];
   @override
-  final String wireName = 'PeriodStatsStruct';
+  final String wireName = 'MatchStatSnapshotStruct';
 
   @override
-  Iterable<Object?> serialize(Serializers serializers, PeriodStatsStruct object,
+  Iterable<Object?> serialize(
+      Serializers serializers, MatchStatSnapshotStruct object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object?>[
       'firestoreUtilData',
@@ -229,14 +233,26 @@ class _$PeriodStatsStructSerializer
         ..add('PointInLineOffTarR')
         ..add(serializers.serialize(value, specifiedType: const FullType(int)));
     }
+    value = object.timestamp;
+    if (value != null) {
+      result
+        ..add('timestamp')
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
+    }
+    value = object.periodstamp;
+    if (value != null) {
+      result
+        ..add('periodstamp')
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
+    }
     return result;
   }
 
   @override
-  PeriodStatsStruct deserialize(
+  MatchStatSnapshotStruct deserialize(
       Serializers serializers, Iterable<Object?> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new PeriodStatsStructBuilder();
+    final result = new MatchStatSnapshotStructBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -380,6 +396,14 @@ class _$PeriodStatsStructSerializer
           result.pointInLineOffTarR = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int?;
           break;
+        case 'timestamp':
+          result.timestamp = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
+          break;
+        case 'periodstamp':
+          result.periodstamp = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
+          break;
         case 'firestoreUtilData':
           result.firestoreUtilData = serializers.deserialize(value,
                   specifiedType: const FullType(FirestoreUtilData))!
@@ -392,7 +416,7 @@ class _$PeriodStatsStructSerializer
   }
 }
 
-class _$PeriodStatsStruct extends PeriodStatsStruct {
+class _$MatchStatSnapshotStruct extends MatchStatSnapshotStruct {
   @override
   final int? pointsL;
   @override
@@ -462,13 +486,17 @@ class _$PeriodStatsStruct extends PeriodStatsStruct {
   @override
   final int? pointInLineOffTarR;
   @override
+  final int? timestamp;
+  @override
+  final int? periodstamp;
+  @override
   final FirestoreUtilData firestoreUtilData;
 
-  factory _$PeriodStatsStruct(
-          [void Function(PeriodStatsStructBuilder)? updates]) =>
-      (new PeriodStatsStructBuilder()..update(updates))._build();
+  factory _$MatchStatSnapshotStruct(
+          [void Function(MatchStatSnapshotStructBuilder)? updates]) =>
+      (new MatchStatSnapshotStructBuilder()..update(updates))._build();
 
-  _$PeriodStatsStruct._(
+  _$MatchStatSnapshotStruct._(
       {this.pointsL,
       this.pointsR,
       this.yellowCardsL,
@@ -503,24 +531,27 @@ class _$PeriodStatsStruct extends PeriodStatsStruct {
       this.pointInLineHitsR,
       this.pointInLineOffTarL,
       this.pointInLineOffTarR,
+      this.timestamp,
+      this.periodstamp,
       required this.firestoreUtilData})
       : super._() {
     BuiltValueNullFieldError.checkNotNull(
-        firestoreUtilData, r'PeriodStatsStruct', 'firestoreUtilData');
+        firestoreUtilData, r'MatchStatSnapshotStruct', 'firestoreUtilData');
   }
 
   @override
-  PeriodStatsStruct rebuild(void Function(PeriodStatsStructBuilder) updates) =>
+  MatchStatSnapshotStruct rebuild(
+          void Function(MatchStatSnapshotStructBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  PeriodStatsStructBuilder toBuilder() =>
-      new PeriodStatsStructBuilder()..replace(this);
+  MatchStatSnapshotStructBuilder toBuilder() =>
+      new MatchStatSnapshotStructBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is PeriodStatsStruct &&
+    return other is MatchStatSnapshotStruct &&
         pointsL == other.pointsL &&
         pointsR == other.pointsR &&
         yellowCardsL == other.yellowCardsL &&
@@ -555,6 +586,8 @@ class _$PeriodStatsStruct extends PeriodStatsStruct {
         pointInLineHitsR == other.pointInLineHitsR &&
         pointInLineOffTarL == other.pointInLineOffTarL &&
         pointInLineOffTarR == other.pointInLineOffTarR &&
+        timestamp == other.timestamp &&
+        periodstamp == other.periodstamp &&
         firestoreUtilData == other.firestoreUtilData;
   }
 
@@ -578,31 +611,31 @@ class _$PeriodStatsStruct extends PeriodStatsStruct {
                                                                 $jc(
                                                                     $jc(
                                                                         $jc(
-                                                                            $jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc(0, pointsL.hashCode), pointsR.hashCode), yellowCardsL.hashCode), yellowCardsR.hashCode), redCardsL.hashCode), redCardsR.hashCode), simultaneous.hashCode), haltsRef.hashCode), haltsL.hashCode), haltsR.hashCode), simpleAttackHitsL.hashCode), simpleAttackHitsR.hashCode), simpleAttackOffTarL.hashCode), simpleAttackOffTarR.hashCode), compoundAttackHitsL.hashCode), compoundAttackHitsR.hashCode),
-                                                                                compoundAttackOffTarL.hashCode),
-                                                                            compoundAttackOffTarR.hashCode),
-                                                                        parryRiposteHitsL.hashCode),
-                                                                    parryRiposteHitsR.hashCode),
-                                                                parryRiposteOffTargetL.hashCode),
-                                                            parryRiposteOffTargetR.hashCode),
-                                                        remiseHitsL.hashCode),
-                                                    remiseHitsR.hashCode),
-                                                remiseOffTarL.hashCode),
-                                            remiseOffTarR.hashCode),
-                                        counterattackHitsL.hashCode),
-                                    counterattackHitsR.hashCode),
-                                counterattackOffTarL.hashCode),
-                            counterattackOffTarR.hashCode),
-                        pointInLineHitsL.hashCode),
-                    pointInLineHitsR.hashCode),
-                pointInLineOffTarL.hashCode),
-            pointInLineOffTarR.hashCode),
+                                                                            $jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc($jc(0, pointsL.hashCode), pointsR.hashCode), yellowCardsL.hashCode), yellowCardsR.hashCode), redCardsL.hashCode), redCardsR.hashCode), simultaneous.hashCode), haltsRef.hashCode), haltsL.hashCode), haltsR.hashCode), simpleAttackHitsL.hashCode), simpleAttackHitsR.hashCode), simpleAttackOffTarL.hashCode), simpleAttackOffTarR.hashCode), compoundAttackHitsL.hashCode), compoundAttackHitsR.hashCode), compoundAttackOffTarL.hashCode), compoundAttackOffTarR.hashCode),
+                                                                                parryRiposteHitsL.hashCode),
+                                                                            parryRiposteHitsR.hashCode),
+                                                                        parryRiposteOffTargetL.hashCode),
+                                                                    parryRiposteOffTargetR.hashCode),
+                                                                remiseHitsL.hashCode),
+                                                            remiseHitsR.hashCode),
+                                                        remiseOffTarL.hashCode),
+                                                    remiseOffTarR.hashCode),
+                                                counterattackHitsL.hashCode),
+                                            counterattackHitsR.hashCode),
+                                        counterattackOffTarL.hashCode),
+                                    counterattackOffTarR.hashCode),
+                                pointInLineHitsL.hashCode),
+                            pointInLineHitsR.hashCode),
+                        pointInLineOffTarL.hashCode),
+                    pointInLineOffTarR.hashCode),
+                timestamp.hashCode),
+            periodstamp.hashCode),
         firestoreUtilData.hashCode));
   }
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper(r'PeriodStatsStruct')
+    return (newBuiltValueToStringHelper(r'MatchStatSnapshotStruct')
           ..add('pointsL', pointsL)
           ..add('pointsR', pointsR)
           ..add('yellowCardsL', yellowCardsL)
@@ -637,14 +670,17 @@ class _$PeriodStatsStruct extends PeriodStatsStruct {
           ..add('pointInLineHitsR', pointInLineHitsR)
           ..add('pointInLineOffTarL', pointInLineOffTarL)
           ..add('pointInLineOffTarR', pointInLineOffTarR)
+          ..add('timestamp', timestamp)
+          ..add('periodstamp', periodstamp)
           ..add('firestoreUtilData', firestoreUtilData))
         .toString();
   }
 }
 
-class PeriodStatsStructBuilder
-    implements Builder<PeriodStatsStruct, PeriodStatsStructBuilder> {
-  _$PeriodStatsStruct? _$v;
+class MatchStatSnapshotStructBuilder
+    implements
+        Builder<MatchStatSnapshotStruct, MatchStatSnapshotStructBuilder> {
+  _$MatchStatSnapshotStruct? _$v;
 
   int? _pointsL;
   int? get pointsL => _$this._pointsL;
@@ -804,16 +840,24 @@ class PeriodStatsStructBuilder
   set pointInLineOffTarR(int? pointInLineOffTarR) =>
       _$this._pointInLineOffTarR = pointInLineOffTarR;
 
+  int? _timestamp;
+  int? get timestamp => _$this._timestamp;
+  set timestamp(int? timestamp) => _$this._timestamp = timestamp;
+
+  int? _periodstamp;
+  int? get periodstamp => _$this._periodstamp;
+  set periodstamp(int? periodstamp) => _$this._periodstamp = periodstamp;
+
   FirestoreUtilData? _firestoreUtilData;
   FirestoreUtilData? get firestoreUtilData => _$this._firestoreUtilData;
   set firestoreUtilData(FirestoreUtilData? firestoreUtilData) =>
       _$this._firestoreUtilData = firestoreUtilData;
 
-  PeriodStatsStructBuilder() {
-    PeriodStatsStruct._initializeBuilder(this);
+  MatchStatSnapshotStructBuilder() {
+    MatchStatSnapshotStruct._initializeBuilder(this);
   }
 
-  PeriodStatsStructBuilder get _$this {
+  MatchStatSnapshotStructBuilder get _$this {
     final $v = _$v;
     if ($v != null) {
       _pointsL = $v.pointsL;
@@ -850,6 +894,8 @@ class PeriodStatsStructBuilder
       _pointInLineHitsR = $v.pointInLineHitsR;
       _pointInLineOffTarL = $v.pointInLineOffTarL;
       _pointInLineOffTarR = $v.pointInLineOffTarR;
+      _timestamp = $v.timestamp;
+      _periodstamp = $v.periodstamp;
       _firestoreUtilData = $v.firestoreUtilData;
       _$v = null;
     }
@@ -857,22 +903,22 @@ class PeriodStatsStructBuilder
   }
 
   @override
-  void replace(PeriodStatsStruct other) {
+  void replace(MatchStatSnapshotStruct other) {
     ArgumentError.checkNotNull(other, 'other');
-    _$v = other as _$PeriodStatsStruct;
+    _$v = other as _$MatchStatSnapshotStruct;
   }
 
   @override
-  void update(void Function(PeriodStatsStructBuilder)? updates) {
+  void update(void Function(MatchStatSnapshotStructBuilder)? updates) {
     if (updates != null) updates(this);
   }
 
   @override
-  PeriodStatsStruct build() => _build();
+  MatchStatSnapshotStruct build() => _build();
 
-  _$PeriodStatsStruct _build() {
+  _$MatchStatSnapshotStruct _build() {
     final _$result = _$v ??
-        new _$PeriodStatsStruct._(
+        new _$MatchStatSnapshotStruct._(
             pointsL: pointsL,
             pointsR: pointsR,
             yellowCardsL: yellowCardsL,
@@ -907,8 +953,12 @@ class PeriodStatsStructBuilder
             pointInLineHitsR: pointInLineHitsR,
             pointInLineOffTarL: pointInLineOffTarL,
             pointInLineOffTarR: pointInLineOffTarR,
+            timestamp: timestamp,
+            periodstamp: periodstamp,
             firestoreUtilData: BuiltValueNullFieldError.checkNotNull(
-                firestoreUtilData, r'PeriodStatsStruct', 'firestoreUtilData'));
+                firestoreUtilData,
+                r'MatchStatSnapshotStruct',
+                'firestoreUtilData'));
     replace(_$result);
     return _$result;
   }

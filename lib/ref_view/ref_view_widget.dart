@@ -25,15 +25,17 @@ class RefViewWidget extends StatefulWidget {
   const RefViewWidget({
     Key? key,
     this.initStartTime,
-    this.currentMatchInProgress,
     this.startNumOfPeriods,
     this.startNumOfTouches,
+    this.currentMatchInProgress,
+    this.currentMatchDetails,
   }) : super(key: key);
 
   final int? initStartTime;
-  final MatchesRecord? currentMatchInProgress;
   final int? startNumOfPeriods;
   final int? startNumOfTouches;
+  final MatchesDevRecord? currentMatchInProgress;
+  final MatchdetailsDevRecord? currentMatchDetails;
 
   @override
   _RefViewWidgetState createState() => _RefViewWidgetState();
@@ -48,6 +50,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
   StopWatchTimer timerController =
   StopWatchTimer(mode: StopWatchMode.countDown);
 
+  List<StatlineStruct>? newMatchStatlines;
+  MatchStatSnapshotStruct? newStatsSnapshot;
+  int? currentActionID;
   String? actionText1;
   String? dropDownValue1;
   String? actionText2;
@@ -185,6 +190,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
   @override
   Widget build(BuildContext context) {
     context.watch<FFAppState>();
+
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
@@ -233,7 +239,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => RefMatchRecapEventsWidget(
-                          currentMatch: widget.currentMatchInProgress,
+                          currentMatch: widget.currentMatchDetails,
                         ),
                       ),
                     );
@@ -264,7 +270,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                   children: [
                     SelectionArea(
                         child: Text(
-                          'Undo Last Action',
+                      'Injured Fencer',
                           style: FlutterFlowTheme.of(context).subtitle1,
                         )),
                     Icon(
@@ -438,7 +444,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                       children: [
                                         Text(
                                           valueOrDefault<String>(
-                                            FFAppState().refLeftScore.toString(),
+                                            FFAppState()
+                                                .refLeftScore
+                                                .toString(),
                                             '0',
                                           ),
                                           style: FlutterFlowTheme.of(context)
@@ -451,7 +459,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                         ),
                                         Text(
                                           valueOrDefault<String>(
-                                            FFAppState().refRightScore.toString(),
+                                            FFAppState()
+                                                .refRightScore
+                                                .toString(),
                                             '0',
                                           ),
                                           style: FlutterFlowTheme.of(context)
@@ -478,8 +488,8 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                         FFAppState().refRightName,
                                         'Right Fencer',
                                       ),
-                                      style:
-                                      FlutterFlowTheme.of(context).bodyText1,
+                                      style: FlutterFlowTheme.of(context)
+                                          .bodyText1,
                                     ),
                                   ],
                                 ),
@@ -506,9 +516,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                     textStyle: FlutterFlowTheme.of(context)
                                         .subtitle2
                                         .override(
-                                      fontFamily: 'Poppins',
-                                      color: Colors.white,
-                                    ),
+                                          fontFamily: 'Poppins',
+                                          color: Colors.white,
+                                        ),
                                     borderSide: BorderSide(
                                       color: Colors.transparent,
                                       width: 1,
@@ -536,7 +546,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                             if (FFAppState().isTimerRunning == false)
                               Padding(
                                 padding:
-                                EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
+                                    EdgeInsetsDirectional.fromSTEB(5, 0, 0, 0),
                                 child: FFButtonWidget(
                                   onPressed: () async {
                                     FFAppState().update(() {
@@ -556,9 +566,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                     textStyle: FlutterFlowTheme.of(context)
                                         .subtitle2
                                         .override(
-                                      fontFamily: 'Poppins',
-                                      color: Colors.white,
-                                    ),
+                                          fontFamily: 'Poppins',
+                                          color: Colors.white,
+                                        ),
                                     borderSide: BorderSide(
                                       color: Colors.black,
                                       width: 1,
@@ -571,7 +581,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                             if (!FFAppState().showActions)
                               Padding(
                                 padding:
-                                EdgeInsetsDirectional.fromSTEB(0, 0, 0, 5),
+                                    EdgeInsetsDirectional.fromSTEB(0, 0, 0, 5),
                                 child: FFButtonWidget(
                                   onPressed: () async {
                                     if (FFAppState().endOfBout) {
@@ -598,7 +608,8 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                             .add(StopWatchExecute.start);
                                         FFAppState().update(() {
                                           FFAppState().showActions = false;
-                                          FFAppState().startStopText = 'ON BREAK';
+                                          FFAppState().startStopText =
+                                              'ON BREAK';
                                         });
                                       } else {
                                         if (!FFAppState().onBreak) {
@@ -615,9 +626,10 @@ class _RefViewWidgetState extends State<RefViewWidget> {
 
                                             FFAppState().update(() {
                                               FFAppState().startStopText =
-                                              'START';
+                                                  'START';
                                               FFAppState().currentPeriod =
-                                                  FFAppState().currentPeriod + 1;
+                                                  FFAppState().currentPeriod +
+                                                      1;
                                             });
                                           } else {
                                             if (FFAppState().isTimerRunning) {
@@ -629,9 +641,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
 
                                               FFAppState().update(() {
                                                 FFAppState().isTimerRunning =
-                                                false;
+                                                    false;
                                                 FFAppState().startStopText =
-                                                'START';
+                                                    'START';
                                               });
                                             } else {
                                               timerController.onExecute
@@ -641,9 +653,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
 
                                               FFAppState().update(() {
                                                 FFAppState().isTimerRunning =
-                                                true;
+                                                    true;
                                                 FFAppState().startStopText =
-                                                'STOP';
+                                                    'STOP';
                                               });
                                             }
                                           }
@@ -662,9 +674,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                     textStyle: FlutterFlowTheme.of(context)
                                         .subtitle2
                                         .override(
-                                      fontFamily: 'Poppins',
-                                      color: Colors.white,
-                                    ),
+                                          fontFamily: 'Poppins',
+                                          color: Colors.white,
+                                        ),
                                     borderSide: BorderSide(
                                       color: Colors.black,
                                       width: 1,
@@ -677,7 +689,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                             if (FFAppState().isTimerRunning == false)
                               Padding(
                                 padding:
-                                EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
+                                    EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
                                 child: FFButtonWidget(
                                   onPressed: () async {
                                     FFAppState().update(() {
@@ -697,9 +709,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                     textStyle: FlutterFlowTheme.of(context)
                                         .subtitle2
                                         .override(
-                                      fontFamily: 'Poppins',
-                                      color: Colors.white,
-                                    ),
+                                          fontFamily: 'Poppins',
+                                          color: Colors.white,
+                                        ),
                                     borderSide: BorderSide(
                                       color: Colors.black,
                                       width: 1,
@@ -731,7 +743,8 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(0, 5, 0, 20),
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(0, 5, 0, 20),
                             child: Row(
                               mainAxisSize: MainAxisSize.max,
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -741,9 +754,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                   style: FlutterFlowTheme.of(context)
                                       .bodyText1
                                       .override(
-                                    fontFamily: 'Poppins',
-                                    fontSize: 18,
-                                  ),
+                                        fontFamily: 'Poppins',
+                                        fontSize: 18,
+                                      ),
                                 ),
                                 if (!FFAppState().isSimultaneous)
                                   Text(
@@ -751,24 +764,25 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                     style: FlutterFlowTheme.of(context)
                                         .bodyText1
                                         .override(
-                                      fontFamily: 'Poppins',
-                                      fontSize: 18,
-                                    ),
+                                          fontFamily: 'Poppins',
+                                          fontSize: 18,
+                                        ),
                                   ),
                                 Text(
                                   FFAppState().refSecondTextAction,
                                   style: FlutterFlowTheme.of(context)
                                       .bodyText1
                                       .override(
-                                    fontFamily: 'Poppins',
-                                    fontSize: 18,
-                                  ),
+                                        fontFamily: 'Poppins',
+                                        fontSize: 18,
+                                      ),
                                 ),
                               ],
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
                             child: Row(
                               mainAxisSize: MainAxisSize.max,
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -786,13 +800,13 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                   onChanged: (val) async {
                                     setState(() => dropDownValue1 = val);
                                     actionText1 =
-                                    await actions.setActionFromDropdown(
+                                        await actions.setActionFromDropdown(
                                       dropDownValue1,
                                       dropDownValue2,
                                     );
                                     FFAppState().update(() {
                                       FFAppState().refSecondTextAction =
-                                      actionText1!;
+                                          actionText1!;
                                       FFAppState().isSimultaneous = false;
                                     });
 
@@ -803,9 +817,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                   textStyle: FlutterFlowTheme.of(context)
                                       .bodyText1
                                       .override(
-                                    fontFamily: 'Poppins',
-                                    color: Colors.black,
-                                  ),
+                                        fontFamily: 'Poppins',
+                                        color: Colors.black,
+                                      ),
                                   hintText: 'Type of Attack?',
                                   fillColor: Colors.white,
                                   elevation: 2,
@@ -821,13 +835,13 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                   onChanged: (val) async {
                                     setState(() => dropDownValue2 = val);
                                     actionText2 =
-                                    await actions.setActionFromDropdown(
+                                        await actions.setActionFromDropdown(
                                       dropDownValue1,
                                       dropDownValue2,
                                     );
                                     FFAppState().update(() {
                                       FFAppState().refSecondTextAction =
-                                      actionText2!;
+                                          actionText2!;
                                     });
 
                                     setState(() {});
@@ -837,9 +851,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                   textStyle: FlutterFlowTheme.of(context)
                                       .bodyText1
                                       .override(
-                                    fontFamily: 'Poppins',
-                                    color: Colors.black,
-                                  ),
+                                        fontFamily: 'Poppins',
+                                        color: Colors.black,
+                                      ),
                                   hintText: 'Hits/Off Target?',
                                   fillColor: Colors.white,
                                   elevation: 2,
@@ -855,7 +869,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                           ),
                           Padding(
                             padding:
-                            EdgeInsetsDirectional.fromSTEB(10, 20, 10, 0),
+                                EdgeInsetsDirectional.fromSTEB(10, 20, 10, 0),
                             child: Row(
                               mainAxisSize: MainAxisSize.max,
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -865,11 +879,11 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                     FFAppState().update(() {
                                       FFAppState().isSimultaneous = true;
                                       FFAppState().nonAttackLabel =
-                                      'Simultaneous';
+                                          'Simultaneous';
                                     });
                                     FFAppState().update(() {
                                       FFAppState().refSecondTextAction =
-                                      'Attacks are Simultaneous';
+                                          'Attacks are Simultaneous';
                                       FFAppState().refIsHit = false;
                                     });
                                   },
@@ -881,10 +895,10 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                     textStyle: FlutterFlowTheme.of(context)
                                         .subtitle2
                                         .override(
-                                      fontFamily: 'Poppins',
-                                      color: Colors.white,
-                                      fontSize: 14,
-                                    ),
+                                          fontFamily: 'Poppins',
+                                          color: Colors.white,
+                                          fontSize: 14,
+                                        ),
                                     borderSide: BorderSide(
                                       color: Colors.black,
                                       width: 1,
@@ -897,7 +911,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                     FFAppState().update(() {
                                       FFAppState().nonAttackLabel = 'Pause';
                                       FFAppState().refSecondTextAction =
-                                      ' called halt';
+                                          ' called halt';
                                     });
                                     FFAppState().update(() {
                                       FFAppState().isSimultaneous = false;
@@ -912,10 +926,10 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                     textStyle: FlutterFlowTheme.of(context)
                                         .subtitle2
                                         .override(
-                                      fontFamily: 'Poppins',
-                                      color: Colors.white,
-                                      fontSize: 14,
-                                    ),
+                                          fontFamily: 'Poppins',
+                                          color: Colors.white,
+                                          fontSize: 14,
+                                        ),
                                     borderSide: BorderSide(
                                       color: Colors.black,
                                       width: 1,
@@ -927,8 +941,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                   onPressed: () async {
                                     FFAppState().update(() {
                                       FFAppState().refSecondTextAction =
-                                      'is awarded a Yellow Card';
-                                      FFAppState().nonAttackLabel = 'Yellow Card';
+                                          'is awarded a Yellow Card';
+                                      FFAppState().nonAttackLabel =
+                                          'Yellow Card';
                                     });
                                     FFAppState().update(() {
                                       FFAppState().isSimultaneous = false;
@@ -943,10 +958,10 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                     textStyle: FlutterFlowTheme.of(context)
                                         .subtitle2
                                         .override(
-                                      fontFamily: 'Poppins',
-                                      color: Colors.white,
-                                      fontSize: 14,
-                                    ),
+                                          fontFamily: 'Poppins',
+                                          color: Colors.white,
+                                          fontSize: 14,
+                                        ),
                                     borderSide: BorderSide(
                                       color: Colors.black,
                                       width: 1,
@@ -958,7 +973,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                   onPressed: () async {
                                     FFAppState().update(() {
                                       FFAppState().refSecondTextAction =
-                                      'is awarded a Red Card';
+                                          'is awarded a Red Card';
                                       FFAppState().nonAttackLabel = 'Red Card';
                                     });
                                     FFAppState().update(() {
@@ -974,9 +989,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                     textStyle: FlutterFlowTheme.of(context)
                                         .subtitle2
                                         .override(
-                                      fontFamily: 'Poppins',
-                                      color: Colors.white,
-                                    ),
+                                          fontFamily: 'Poppins',
+                                          color: Colors.white,
+                                        ),
                                     borderSide: BorderSide(
                                       color: Colors.black,
                                       width: 1,
@@ -988,83 +1003,164 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsetsDirectional.fromSTEB(0, 40, 0, 0),
+                            padding:
+                                EdgeInsetsDirectional.fromSTEB(0, 40, 0, 0),
                             child: Row(
                               mainAxisSize: MainAxisSize.max,
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 Padding(
-                                  padding:
-                                  EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
-                                  child: FFButtonWidget(
-                                    onPressed: () async {
-                                      await actions.awardPointIfApplicable(
-                                        FFAppState().isLeftFencerAction,
-                                        FFAppState().nonAttackLabel,
-                                        FFAppState().refereeweaponselect,
-                                        FFAppState().refIsHit,
-                                      );
-
-                                      final matchesUpdateData = {
-                                        'MatchEvents': FieldValue.arrayUnion([
-                                          getMatchEventFirestoreData(
-                                            createMatchEventStruct(
-                                              actionableFencer: FFAppState()
-                                                  .isLeftFencerAction
-                                                  ? FFAppState().leftFencerRef
-                                                  : FFAppState().rightFencerRef,
-                                              scoreLeft:
-                                              FFAppState().refLeftScore,
-                                              scoreRight:
-                                              FFAppState().refRightScore,
-                                              timeOfAction: timerMilliseconds,
-                                              periodOfAction:
-                                              FFAppState().currentPeriod,
-                                              actionID: functions
-                                                  .getActionIDfromRefState(
-                                                  FFAppState()
-                                                      .isLeftFencerAction,
-                                                  dropDownValue1,
-                                                  !FFAppState().refIsHit,
-                                                  FFAppState()
-                                                      .nonAttackLabel),
-                                              videoURL: uploadURL,
-                                              clearUnsetFields: false,
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0, 0, 5, 0),
+                                  child: StreamBuilder<MatchstatslogDevRecord>(
+                                    stream: MatchstatslogDevRecord.getDocument(
+                                        widget.currentMatchInProgress!
+                                            .matchStatsLog!),
+                                    builder: (context, snapshot) {
+                                      // Customize what your widget looks like when it's loading.
+                                      if (!snapshot.hasData) {
+                                        return Center(
+                                          child: SizedBox(
+                                            width: 50,
+                                            height: 50,
+                                            child: CircularProgressIndicator(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .primaryColor,
                                             ),
-                                            true,
-                                          )
-                                        ]),
-                                      };
-                                      await widget
-                                          .currentMatchInProgress!.reference
-                                          .update(matchesUpdateData);
-                                      await actions.flushMatchActionState();
-                                      FFAppState().update(() {
-                                        FFAppState().showActions = false;
-                                      });
-                                    },
-                                    text: 'OK',
-                                    options: FFButtonOptions(
-                                      width: 100,
-                                      height: 40,
-                                      color: Color(0xFF00FF00),
-                                      textStyle: FlutterFlowTheme.of(context)
+                                          ),
+                                        );
+                                      }
+                                      final buttonMatchstatslogDevRecord =
+                                          snapshot.data!;
+                                      return FFButtonWidget(
+                                        onPressed: () async {
+                                          await actions.awardPointIfApplicable(
+                                            FFAppState().isLeftFencerAction,
+                                            FFAppState().nonAttackLabel,
+                                            FFAppState().refereeweaponselect,
+                                            FFAppState().refIsHit,
+                                          );
+                                          currentActionID =
+                                              await actions.generateActionID(
+                                            FFAppState().isLeftFencerAction,
+                                            dropDownValue1,
+                                            !FFAppState().refIsHit,
+                                            FFAppState().nonAttackLabel,
+                                          );
+                                          newStatsSnapshot =
+                                              await actions.updateStats(
+                                            currentActionID!,
+                                            timerMilliseconds,
+                                            buttonMatchstatslogDevRecord
+                                                .matchStats!
+                                                .toList()
+                                                .last,
+                                            FFAppState().currentPeriod,
+                                          );
+
+                                          final matchstatslogDevUpdateData = {
+                                            'MatchStats':
+                                                FieldValue.arrayUnion([
+                                              getMatchStatSnapshotFirestoreData(
+                                                updateMatchStatSnapshotStruct(
+                                                  newStatsSnapshot,
+                                                  clearUnsetFields: false,
+                                                ),
+                                                true,
+                                              )
+                                            ]),
+                                          };
+                                          await buttonMatchstatslogDevRecord
+                                              .reference
+                                              .update(
+                                                  matchstatslogDevUpdateData);
+                                          newMatchStatlines =
+                                              await actions.generateStatlines(
+                                            buttonMatchstatslogDevRecord
+                                                .matchStats!
+                                                .toList()
+                                                .last,
+                                          );
+
+                                          final matchdetailsDevUpdateData = {
+                                            ...createMatchdetailsDevRecordData(
+                                              overallStats:
+                                                  updateMatchStatSnapshotStruct(
+                                                newStatsSnapshot,
+                                                clearUnsetFields: false,
+                                              ),
+                                            ),
+                                            'MatchEvents':
+                                                FieldValue.arrayUnion([
+                                              getMatchEventFirestoreData(
+                                                createMatchEventStruct(
+                                                  actionableFencer: FFAppState()
+                                                          .isLeftFencerAction
+                                                      ? FFAppState()
+                                                          .leftFencerRef
+                                                      : FFAppState()
+                                                          .rightFencerRef,
+                                                  scoreLeft:
+                                                      FFAppState().refLeftScore,
+                                                  scoreRight: FFAppState()
+                                                      .refRightScore,
+                                                  timeOfAction:
+                                                      timerMilliseconds,
+                                                  periodOfAction: FFAppState()
+                                                      .currentPeriod,
+                                                  actionID: currentActionID,
+                                                  videoURL: uploadURL,
+                                                  clearUnsetFields: false,
+                                                ),
+                                                true,
+                                              )
+                                            ]),
+                                            'Statlines':
+                                                getStatlineListFirestoreData(
+                                              newMatchStatlines,
+                                            ),
+                                          };
+                                          await widget
+                                              .currentMatchDetails!.reference
+                                              .update(
+                                                  matchdetailsDevUpdateData);
+                                          await actions.flushMatchActionState();
+                                          FFAppState().update(() {
+                                            FFAppState().showActions = false;
+                                            FFAppState().snapshotCounter =
+                                                FFAppState().snapshotCounter +
+                                                    1;
+                                          });
+
+                                          setState(() {});
+                                        },
+                                        text: 'OK',
+                                        options: FFButtonOptions(
+                                          width: 100,
+                                          height: 40,
+                                          color: Color(0xFF00FF00),
+                                          textStyle:
+                                              FlutterFlowTheme.of(context)
                                           .subtitle2
                                           .override(
-                                        fontFamily: 'Poppins',
-                                        color: Colors.white,
-                                      ),
+                                            fontFamily: 'Poppins',
+                                            color: Colors.white,
+                                          ),
                                       borderSide: BorderSide(
                                         color: Colors.black,
                                         width: 1,
                                       ),
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
+                                      );
+                                    },
                                   ),
                                 ),
                                 Padding(
-                                  padding:
-                                  EdgeInsetsDirectional.fromSTEB(0, 0, 5, 0),
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      0, 0, 5, 0),
                                   child: FFButtonWidget(
                                     onPressed: () async {
                                       await actions.flushMatchActionState();
@@ -1080,9 +1176,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                       textStyle: FlutterFlowTheme.of(context)
                                           .subtitle2
                                           .override(
-                                        fontFamily: 'Poppins',
-                                        color: Colors.white,
-                                      ),
+                                            fontFamily: 'Poppins',
+                                            color: Colors.white,
+                                          ),
                                       borderSide: BorderSide(
                                         color: Colors.black,
                                         width: 1,
@@ -1142,9 +1238,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                   textStyle: FlutterFlowTheme.of(context)
                                       .subtitle2
                                       .override(
-                                    fontFamily: 'Poppins',
-                                    color: Colors.white,
-                                  ),
+                                        fontFamily: 'Poppins',
+                                        color: Colors.white,
+                                      ),
                                   borderSide: BorderSide(
                                     color: Colors.transparent,
                                     width: 1,
@@ -1164,6 +1260,8 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                               FFButtonWidget(
                                 onPressed: () async {
                                   await actions.flushLocalState();
+                                  await widget.currentMatchDetails!.reference
+                                      .delete();
                                   await widget.currentMatchInProgress!.reference
                                       .delete();
                                   Navigator.pop(context);
@@ -1176,9 +1274,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                   textStyle: FlutterFlowTheme.of(context)
                                       .subtitle2
                                       .override(
-                                    fontFamily: 'Poppins',
-                                    color: Colors.white,
-                                  ),
+                                        fontFamily: 'Poppins',
+                                        color: Colors.white,
+                                      ),
                                   borderSide: BorderSide(
                                     color: Colors.transparent,
                                     width: 1,
@@ -1195,53 +1293,93 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              FFButtonWidget(
-                                onPressed: () async {
-                                  final matchesUpdateData = {
-                                    ...createMatchesRecordData(
-                                      scoreLeft: FFAppState().refLeftScore,
-                                      scoreRight: FFAppState().refRightScore,
-                                      noOfPeriods: FFAppState().currentPeriod,
-                                    ),
-                                    'MatchEvents': FieldValue.arrayUnion([
-                                      getMatchEventFirestoreData(
-                                        createMatchEventStruct(
-                                          actionableFencer:
-                                          FFAppState().refereeReference,
-                                          scoreLeft: FFAppState().refLeftScore,
-                                          scoreRight: FFAppState().refRightScore,
-                                          timeOfAction: timerMilliseconds,
-                                          periodOfAction:
-                                          FFAppState().currentPeriod,
-                                          actionID: -2,
-                                          clearUnsetFields: false,
+                              StreamBuilder<MatchstatslogDevRecord>(
+                                stream: MatchstatslogDevRecord.getDocument(
+                                    widget.currentMatchInProgress!
+                                        .matchStatsLog!),
+                                builder: (context, snapshot) {
+                                  // Customize what your widget looks like when it's loading.
+                                  if (!snapshot.hasData) {
+                                    return Center(
+                                      child: SizedBox(
+                                        width: 50,
+                                        height: 50,
+                                        child: CircularProgressIndicator(
+                                          color: FlutterFlowTheme.of(context)
+                                              .primaryColor,
                                         ),
-                                        true,
-                                      )
-                                    ]),
-                                  };
-                                  await widget.currentMatchInProgress!.reference
-                                      .update(matchesUpdateData);
-                                  await actions.flushLocalState();
-                                  Navigator.pop(context);
+                                      ),
+                                    );
+                                  }
+                                  final buttonMatchstatslogDevRecord =
+                                      snapshot.data!;
+                                  return FFButtonWidget(
+                                    onPressed: () async {
+                                      final matchesDevUpdateData =
+                                          createMatchesDevRecordData(
+                                        scoreLeft: FFAppState().refLeftScore,
+                                        scoreRight: FFAppState().refRightScore,
+                                        noOfPeriods: FFAppState().currentPeriod,
+                                      );
+                                      await widget
+                                          .currentMatchInProgress!.reference
+                                          .update(matchesDevUpdateData);
+
+                                      final matchdetailsDevUpdateData = {
+                                        ...createMatchdetailsDevRecordData(
+                                          overallStats:
+                                              updateMatchStatSnapshotStruct(
+                                            buttonMatchstatslogDevRecord
+                                                .matchStats!
+                                                .toList()
+                                                .last,
+                                            clearUnsetFields: false,
+                                          ),
+                                        ),
+                                        'MatchEvents': FieldValue.arrayUnion([
+                                          getMatchEventFirestoreData(
+                                            createMatchEventStruct(
+                                              actionableFencer:
+                                                  FFAppState().refereeReference,
+                                              scoreLeft:
+                                                  FFAppState().refLeftScore,
+                                              scoreRight:
+                                                  FFAppState().refRightScore,
+                                              timeOfAction: timerMilliseconds,
+                                              periodOfAction:
+                                                  FFAppState().currentPeriod,
+                                              actionID: -2,
+                                              clearUnsetFields: false,
+                                            ),
+                                            true,
+                                          )
+                                        ]),
+                                      };
+                                      await widget
+                                          .currentMatchDetails!.reference
+                                          .update(matchdetailsDevUpdateData);
+                                      await actions.flushLocalState();
+                                      Navigator.pop(context);
+                                    },
+                                    text: 'Save and Continue',
+                                    options: FFButtonOptions(
+                                      width: 250,
+                                      height: 40,
+                                      color: Color(0xFF00FF00),
+                                      textStyle: FlutterFlowTheme.of(context)
+                                          .subtitle2
+                                          .override(
+                                            fontFamily: 'Poppins',
+                                            color: Colors.white,
+                                          ),
+                                      borderSide: BorderSide(
+                                        color: Colors.transparent,
+                                        width: 1,
+                                      ),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                  );
                                 },
-                                text: 'Save and Continue',
-                                options: FFButtonOptions(
-                                  width: 250,
-                                  height: 40,
-                                  color: Color(0xFF00FF00),
-                                  textStyle: FlutterFlowTheme.of(context)
-                                      .subtitle2
-                                      .override(
-                                    fontFamily: 'Poppins',
-                                    color: Colors.white,
-                                  ),
-                                  borderSide: BorderSide(
-                                    color: Colors.transparent,
-                                    width: 1,
-                                  ),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
                               ),
                             ],
                           ),

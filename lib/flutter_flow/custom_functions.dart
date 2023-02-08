@@ -193,77 +193,6 @@ String getActionStringFromID(int actionID) {
   }
 }
 
-int getActionIDfromRefState(
-  bool isLeftFencer,
-  String? drop1,
-  bool isOffTarget,
-  String? nonAttackLabel,
-) {
-  int code = 0;
-  switch (nonAttackLabel) {
-    case "Simultaneous":
-      {
-        return 2;
-      }
-    case "Yellow Card":
-      {
-        code = 190;
-        break;
-      }
-    case "Red Card":
-      {
-        code = 191;
-        break;
-      }
-    case "Pause":
-      {
-        code = 180;
-        break;
-      }
-    default:
-      {
-        if (isOffTarget) {
-          code = code + 40;
-        }
-        switch (drop1) {
-          case "Simple Attack":
-            {
-              code = code + 100;
-              break;
-            }
-          case "Compound":
-            {
-              code = code + 101;
-              break;
-            }
-          case "Parry/Riposte":
-            {
-              code = code + 102;
-              break;
-            }
-          case "Remise":
-            {
-              code = code + 103;
-              break;
-            }
-          case "Counterattack":
-            {
-              code = code + 104;
-              break;
-            }
-          case "Point in Line":
-            {
-              code = code + 105;
-            }
-        }
-      }
-  }
-  if (!isLeftFencer) {
-    code = code + 100;
-  }
-  return code;
-}
-
 dynamic makeMatchEventJSON(
   int actionID,
   DocumentReference actionableFencer,
@@ -302,4 +231,20 @@ String msToMinSecFormat(int inputMS) {
     secStr = '0' + sec.toString();
   }
   return '$minStr:$secStr';
+}
+
+String nameToAbbreviation(String fullname) {
+  // Get the first letter of the first word and the first 3 letters of the last word and concatenate them
+  final allnames = fullname.split(' ');
+  var firstinitial = fullname[0].toUpperCase();
+  var secondinitials;
+
+  if (allnames.last.length > 3) {
+    secondinitials = allnames.last.substring(0, 3);
+    secondinitials = secondinitials.toUpperCase();
+  } else {
+    secondinitials = allnames.last.toUpperCase();
+  }
+
+  return firstinitial + '. ' + secondinitials;
 }

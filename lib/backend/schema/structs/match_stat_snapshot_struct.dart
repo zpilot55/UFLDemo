@@ -4,12 +4,12 @@ import '../index.dart';
 import '../serializers.dart';
 import 'package:built_value/built_value.dart';
 
-part 'period_stats_struct.g.dart';
+part 'match_stat_snapshot_struct.g.dart';
 
-abstract class PeriodStatsStruct
-    implements Built<PeriodStatsStruct, PeriodStatsStructBuilder> {
-  static Serializer<PeriodStatsStruct> get serializer =>
-      _$periodStatsStructSerializer;
+abstract class MatchStatSnapshotStruct
+    implements Built<MatchStatSnapshotStruct, MatchStatSnapshotStructBuilder> {
+  static Serializer<MatchStatSnapshotStruct> get serializer =>
+      _$matchStatSnapshotStructSerializer;
 
   @BuiltValueField(wireName: 'PointsL')
   int? get pointsL;
@@ -113,52 +113,60 @@ abstract class PeriodStatsStruct
   @BuiltValueField(wireName: 'PointInLineOffTarR')
   int? get pointInLineOffTarR;
 
+  int? get timestamp;
+
+  int? get periodstamp;
+
   /// Utility class for Firestore updates
   FirestoreUtilData get firestoreUtilData;
 
-  static void _initializeBuilder(PeriodStatsStructBuilder builder) => builder
-    ..pointsL = 0
-    ..pointsR = 0
-    ..yellowCardsL = 0
-    ..yellowCardsR = 0
-    ..redCardsL = 0
-    ..redCardsR = 0
-    ..simultaneous = 0
-    ..haltsRef = 0
-    ..haltsL = 0
-    ..haltsR = 0
-    ..simpleAttackHitsL = 0
-    ..simpleAttackHitsR = 0
-    ..simpleAttackOffTarL = 0
-    ..simpleAttackOffTarR = 0
-    ..compoundAttackHitsL = 0
-    ..compoundAttackHitsR = 0
-    ..compoundAttackOffTarL = 0
-    ..compoundAttackOffTarR = 0
-    ..parryRiposteHitsL = 0
-    ..parryRiposteHitsR = 0
-    ..parryRiposteOffTargetL = 0
-    ..parryRiposteOffTargetR = 0
-    ..remiseHitsL = 0
-    ..remiseHitsR = 0
-    ..remiseOffTarL = 0
-    ..remiseOffTarR = 0
-    ..counterattackHitsL = 0
-    ..counterattackHitsR = 0
-    ..counterattackOffTarL = 0
-    ..counterattackOffTarR = 0
-    ..pointInLineHitsL = 0
-    ..pointInLineHitsR = 0
-    ..pointInLineOffTarL = 0
-    ..pointInLineOffTarR = 0
-    ..firestoreUtilData = FirestoreUtilData();
+  static void _initializeBuilder(MatchStatSnapshotStructBuilder builder) =>
+      builder
+        ..pointsL = 0
+        ..pointsR = 0
+        ..yellowCardsL = 0
+        ..yellowCardsR = 0
+        ..redCardsL = 0
+        ..redCardsR = 0
+        ..simultaneous = 0
+        ..haltsRef = 0
+        ..haltsL = 0
+        ..haltsR = 0
+        ..simpleAttackHitsL = 0
+        ..simpleAttackHitsR = 0
+        ..simpleAttackOffTarL = 0
+        ..simpleAttackOffTarR = 0
+        ..compoundAttackHitsL = 0
+        ..compoundAttackHitsR = 0
+        ..compoundAttackOffTarL = 0
+        ..compoundAttackOffTarR = 0
+        ..parryRiposteHitsL = 0
+        ..parryRiposteHitsR = 0
+        ..parryRiposteOffTargetL = 0
+        ..parryRiposteOffTargetR = 0
+        ..remiseHitsL = 0
+        ..remiseHitsR = 0
+        ..remiseOffTarL = 0
+        ..remiseOffTarR = 0
+        ..counterattackHitsL = 0
+        ..counterattackHitsR = 0
+        ..counterattackOffTarL = 0
+        ..counterattackOffTarR = 0
+        ..pointInLineHitsL = 0
+        ..pointInLineHitsR = 0
+        ..pointInLineOffTarL = 0
+        ..pointInLineOffTarR = 0
+        ..timestamp = 0
+        ..periodstamp = 0
+        ..firestoreUtilData = FirestoreUtilData();
 
-  PeriodStatsStruct._();
-  factory PeriodStatsStruct([void Function(PeriodStatsStructBuilder) updates]) =
-      _$PeriodStatsStruct;
+  MatchStatSnapshotStruct._();
+  factory MatchStatSnapshotStruct(
+          [void Function(MatchStatSnapshotStructBuilder) updates]) =
+      _$MatchStatSnapshotStruct;
 }
 
-PeriodStatsStruct createPeriodStatsStruct({
+MatchStatSnapshotStruct createMatchStatSnapshotStruct({
   int? pointsL,
   int? pointsR,
   int? yellowCardsL,
@@ -193,13 +201,15 @@ PeriodStatsStruct createPeriodStatsStruct({
   int? pointInLineHitsR,
   int? pointInLineOffTarL,
   int? pointInLineOffTarR,
+  int? timestamp,
+  int? periodstamp,
   Map<String, dynamic> fieldValues = const {},
   bool clearUnsetFields = true,
   bool create = false,
   bool delete = false,
 }) =>
-    PeriodStatsStruct(
-      (p) => p
+    MatchStatSnapshotStruct(
+      (m) => m
         ..pointsL = pointsL
         ..pointsR = pointsR
         ..yellowCardsL = yellowCardsL
@@ -234,6 +244,8 @@ PeriodStatsStruct createPeriodStatsStruct({
         ..pointInLineHitsR = pointInLineHitsR
         ..pointInLineOffTarL = pointInLineOffTarL
         ..pointInLineOffTarR = pointInLineOffTarR
+        ..timestamp = timestamp
+        ..periodstamp = periodstamp
         ..firestoreUtilData = FirestoreUtilData(
           clearUnsetFields: clearUnsetFields,
           create: create,
@@ -242,64 +254,66 @@ PeriodStatsStruct createPeriodStatsStruct({
         ),
     );
 
-PeriodStatsStruct? updatePeriodStatsStruct(
-  PeriodStatsStruct? periodStats, {
+MatchStatSnapshotStruct? updateMatchStatSnapshotStruct(
+  MatchStatSnapshotStruct? matchStatSnapshot, {
   bool clearUnsetFields = true,
 }) =>
-    periodStats != null
-        ? (periodStats.toBuilder()
+    matchStatSnapshot != null
+        ? (matchStatSnapshot.toBuilder()
               ..firestoreUtilData =
                   FirestoreUtilData(clearUnsetFields: clearUnsetFields))
             .build()
         : null;
 
-void addPeriodStatsStructData(
+void addMatchStatSnapshotStructData(
   Map<String, dynamic> firestoreData,
-  PeriodStatsStruct? periodStats,
+  MatchStatSnapshotStruct? matchStatSnapshot,
   String fieldName, [
   bool forFieldValue = false,
 ]) {
   firestoreData.remove(fieldName);
-  if (periodStats == null) {
+  if (matchStatSnapshot == null) {
     return;
   }
-  if (periodStats.firestoreUtilData.delete) {
+  if (matchStatSnapshot.firestoreUtilData.delete) {
     firestoreData[fieldName] = FieldValue.delete();
     return;
   }
-  if (!forFieldValue && periodStats.firestoreUtilData.clearUnsetFields) {
+  if (!forFieldValue && matchStatSnapshot.firestoreUtilData.clearUnsetFields) {
     firestoreData[fieldName] = <String, dynamic>{};
   }
-  final periodStatsData =
-      getPeriodStatsFirestoreData(periodStats, forFieldValue);
+  final matchStatSnapshotData =
+      getMatchStatSnapshotFirestoreData(matchStatSnapshot, forFieldValue);
   final nestedData =
-      periodStatsData.map((k, v) => MapEntry('$fieldName.$k', v));
+      matchStatSnapshotData.map((k, v) => MapEntry('$fieldName.$k', v));
 
-  final create = periodStats.firestoreUtilData.create;
+  final create = matchStatSnapshot.firestoreUtilData.create;
   firestoreData.addAll(create ? mergeNestedFields(nestedData) : nestedData);
 
   return;
 }
 
-Map<String, dynamic> getPeriodStatsFirestoreData(
-  PeriodStatsStruct? periodStats, [
+Map<String, dynamic> getMatchStatSnapshotFirestoreData(
+  MatchStatSnapshotStruct? matchStatSnapshot, [
   bool forFieldValue = false,
 ]) {
-  if (periodStats == null) {
+  if (matchStatSnapshot == null) {
     return {};
   }
-  final firestoreData =
-      serializers.toFirestore(PeriodStatsStruct.serializer, periodStats);
+  final firestoreData = serializers.toFirestore(
+      MatchStatSnapshotStruct.serializer, matchStatSnapshot);
 
   // Add any Firestore field values
-  periodStats.firestoreUtilData.fieldValues
+  matchStatSnapshot.firestoreUtilData.fieldValues
       .forEach((k, v) => firestoreData[k] = v);
 
   return forFieldValue ? mergeNestedFields(firestoreData) : firestoreData;
 }
 
-List<Map<String, dynamic>> getPeriodStatsListFirestoreData(
-  List<PeriodStatsStruct>? periodStatss,
+List<Map<String, dynamic>> getMatchStatSnapshotListFirestoreData(
+  List<MatchStatSnapshotStruct>? matchStatSnapshots,
 ) =>
-    periodStatss?.map((p) => getPeriodStatsFirestoreData(p, true)).toList() ??
+    matchStatSnapshots
+        ?.map((m) => getMatchStatSnapshotFirestoreData(m, true))
+        .toList() ??
     [];
