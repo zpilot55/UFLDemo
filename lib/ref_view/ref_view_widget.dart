@@ -952,8 +952,10 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                                   matchstatslogDevUpdateData);
                                           newMatchStatlines =
                                               await actions.generateStatlines(
-                                            widget.currentMatchDetails!
-                                                .overallStats,
+                                            buttonMatchstatslogDevRecord
+                                                .matchStats!
+                                                .toList()
+                                                .last,
                                           );
 
                                           final matchdetailsDevUpdateData = {
