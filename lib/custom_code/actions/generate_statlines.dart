@@ -89,8 +89,8 @@ Future<List<StatlineStruct>> generateStatlines(
   List<double> leftValues = [
     overallStats.yellowCardsL!.toDouble(),
     overallStats.redCardsL!.toDouble(),
-    percentFinalActionsL,
-    percentSimultaneous,
+    percentFinalActionsL * 100,
+    percentSimultaneous * 100,
     hotRatioL,
     rowRatioL,
     aggroRatioL
@@ -98,8 +98,8 @@ Future<List<StatlineStruct>> generateStatlines(
   List<double> rightValues = [
     overallStats.yellowCardsR!.toDouble(),
     overallStats.redCardsR!.toDouble(),
-    percentFinalActionsR,
-    percentSimultaneous,
+    percentFinalActionsR * 100,
+    percentSimultaneous * 100,
     hotRatioR,
     rowRatioR,
     aggroRatioR
