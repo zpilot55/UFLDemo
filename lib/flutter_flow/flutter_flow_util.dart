@@ -17,8 +17,9 @@ import 'lat_lng.dart';
 export 'keep_alive_wrapper.dart';
 export 'lat_lng.dart';
 export 'place.dart';
-export 'local_file.dart';
+export 'uploaded_file.dart';
 export '../app_state.dart';
+export 'flutter_flow_model.dart';
 export 'dart:math' show min, max;
 export 'dart:typed_data' show Uint8List;
 export 'dart:convert' show jsonEncode, jsonDecode;
@@ -33,6 +34,7 @@ T valueOrDefault<T>(T? value, T defaultValue) =>
 
 void _setTimeagoLocales() {
   timeago.setLocaleMessages('en', timeago.EnMessages());
+  timeago.setLocaleMessages('en_short', timeago.EnShortMessages());
 }
 
 String dateTimeFormat(String format, DateTime? dateTime, {String? locale}) {
@@ -247,8 +249,9 @@ Future<LatLng?> queryCurrentUserLocation() async {
       : null;
 }
 
-extension StringDocRef on String {
-  DocumentReference get ref => FirebaseFirestore.instance.doc(this);
+extension FFTextEditingControllerExt on TextEditingController? {
+  String get text => this == null ? '' : this!.text;
+  set text(String newText) => this?.text = newText;
 }
 
 extension IterableExt<T> on Iterable<T> {
@@ -257,6 +260,10 @@ extension IterableExt<T> on Iterable<T> {
       .map((index, value) => MapEntry(index, func(index, value)))
       .values
       .toList();
+}
+
+extension StringDocRef on String {
+  DocumentReference get ref => FirebaseFirestore.instance.doc(this);
 }
 
 void setAppLanguage(BuildContext context, String language) =>

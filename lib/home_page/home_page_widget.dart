@@ -8,6 +8,8 @@ import '../flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'home_page_model.dart';
+export 'home_page_model.dart';
 
 class HomePageWidget extends StatefulWidget {
   const HomePageWidget({Key? key}) : super(key: key);
@@ -17,11 +19,21 @@ class HomePageWidget extends StatefulWidget {
 }
 
 class _HomePageWidgetState extends State<HomePageWidget> {
-  final _unfocusNode = FocusNode();
+  late HomePageModel _model;
+
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  final _unfocusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    _model = createModel(context, () => HomePageModel());
+  }
 
   @override
   void dispose() {
+    _model.dispose();
+
     _unfocusNode.dispose();
     super.dispose();
   }
@@ -35,7 +47,11 @@ class _HomePageWidgetState extends State<HomePageWidget> {
       backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
       drawer: Drawer(
         elevation: 16,
-        child: ColMainDrawerWidget(),
+        child: wrapWithModel(
+          model: _model.colMainDrawerModel,
+          updateCallback: () => setState(() {}),
+          child: ColMainDrawerWidget(),
+        ),
       ),
       appBar: AppBar(
         backgroundColor: FlutterFlowTheme.of(context).primaryColor,

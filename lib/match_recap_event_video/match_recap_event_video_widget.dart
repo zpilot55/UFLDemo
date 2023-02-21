@@ -5,6 +5,8 @@ import '../flutter_flow/flutter_flow_video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'match_recap_event_video_model.dart';
+export 'match_recap_event_video_model.dart';
 
 class MatchRecapEventVideoWidget extends StatefulWidget {
   const MatchRecapEventVideoWidget({
@@ -21,7 +23,22 @@ class MatchRecapEventVideoWidget extends StatefulWidget {
 
 class _MatchRecapEventVideoWidgetState
     extends State<MatchRecapEventVideoWidget> {
+  late MatchRecapEventVideoModel _model;
+
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() {
+    super.initState();
+    _model = createModel(context, () => MatchRecapEventVideoModel());
+  }
+
+  @override
+  void dispose() {
+    _model.dispose();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

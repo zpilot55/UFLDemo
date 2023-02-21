@@ -10,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'profile_model.dart';
+export 'profile_model.dart';
 
 class ProfileWidget extends StatefulWidget {
   const ProfileWidget({Key? key}) : super(key: key);
@@ -19,7 +21,22 @@ class ProfileWidget extends StatefulWidget {
 }
 
 class _ProfileWidgetState extends State<ProfileWidget> {
+  late ProfileModel _model;
+
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() {
+    super.initState();
+    _model = createModel(context, () => ProfileModel());
+  }
+
+  @override
+  void dispose() {
+    _model.dispose();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +47,11 @@ class _ProfileWidgetState extends State<ProfileWidget> {
       backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
       drawer: Drawer(
         elevation: 16,
-        child: ColMainDrawerWidget(),
+        child: wrapWithModel(
+          model: _model.colMainDrawerModel,
+          updateCallback: () => setState(() {}),
+          child: ColMainDrawerWidget(),
+        ),
       ),
       appBar: AppBar(
         backgroundColor: FlutterFlowTheme.of(context).primaryColor,

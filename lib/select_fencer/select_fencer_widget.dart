@@ -8,6 +8,8 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:text_search/text_search.dart';
+import 'select_fencer_model.dart';
+export 'select_fencer_model.dart';
 
 class SelectFencerWidget extends StatefulWidget {
   const SelectFencerWidget({Key? key}) : super(key: key);
@@ -17,14 +19,21 @@ class SelectFencerWidget extends StatefulWidget {
 }
 
 class _SelectFencerWidgetState extends State<SelectFencerWidget> {
-  List<UsersRecord> simpleSearchResults = [];
-  var currentFencerID = '';
-  UsersRecord? currentUserRecord;
-  final _unfocusNode = FocusNode();
+  late SelectFencerModel _model;
+
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  final _unfocusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    _model = createModel(context, () => SelectFencerModel());
+  }
 
   @override
   void dispose() {
+    _model.dispose();
+
     _unfocusNode.dispose();
     super.dispose();
   }
@@ -80,7 +89,7 @@ class _SelectFencerWidgetState extends State<SelectFencerWidget> {
                     children: [
                       FFButtonWidget(
                         onPressed: () async {
-                          currentFencerID =
+                          _model.currentFencerID =
                               await FlutterBarcodeScanner.scanBarcode(
                             '#C62828', // scanning line color
                             'Cancel', // cancel button text
@@ -89,7 +98,7 @@ class _SelectFencerWidgetState extends State<SelectFencerWidget> {
                           );
 
                           setState(() {
-                            simpleSearchResults = TextSearch(
+                            _model.simpleSearchResults = TextSearch(
                               selectFencerUsersRecordList
                                   .map(
                                     (record) =>
@@ -97,24 +106,24 @@ class _SelectFencerWidgetState extends State<SelectFencerWidget> {
                                   )
                                   .toList(),
                             )
-                                .search(currentFencerID!)
+                                .search(_model.currentFencerID!)
                                 .map((r) => r.object)
                                 .take(1)
                                 .toList();
                           });
-                          currentUserRecord =
+                          _model.currentUserRecord =
                               await actions.getCurrentUserDocument(
-                            simpleSearchResults.toList(),
+                            _model.simpleSearchResults.toList(),
                           );
                           FFAppState().update(() {
                             FFAppState().scannedFencerRef =
-                                currentUserRecord!.reference;
+                                _model.currentUserRecord!.reference;
                             FFAppState().currentFencerName =
-                                currentUserRecord!.displayName!;
+                                _model.currentUserRecord!.displayName!;
                           });
                           FFAppState().update(() {
                             FFAppState().currentFencerPicURL =
-                                currentUserRecord!.photoUrl!;
+                                _model.currentUserRecord!.photoUrl!;
                           });
 
                           setState(() {});

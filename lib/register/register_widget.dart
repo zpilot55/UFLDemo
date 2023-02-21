@@ -7,6 +7,8 @@ import '../main.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'register_model.dart';
+export 'register_model.dart';
 
 class RegisterWidget extends StatefulWidget {
   const RegisterWidget({Key? key}) : super(key: key);
@@ -16,39 +18,29 @@ class RegisterWidget extends StatefulWidget {
 }
 
 class _RegisterWidgetState extends State<RegisterWidget> {
-  TextEditingController? dobController;
-  TextEditingController? firstNameController;
-  TextEditingController? lastNameController;
-  TextEditingController? emailController;
-  TextEditingController? passwordController;
-  late bool passwordVisibility;
-  TextEditingController? retypedController;
-  late bool retypedVisibility;
-  final _unfocusNode = FocusNode();
+  late RegisterModel _model;
+
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  final _unfocusNode = FocusNode();
 
   @override
   void initState() {
     super.initState();
-    dobController = TextEditingController();
-    firstNameController = TextEditingController();
-    lastNameController = TextEditingController();
-    emailController = TextEditingController();
-    passwordController = TextEditingController();
-    passwordVisibility = false;
-    retypedController = TextEditingController();
-    retypedVisibility = false;
+    _model = createModel(context, () => RegisterModel());
+
+    _model.firstNameController ??= TextEditingController();
+    _model.lastNameController ??= TextEditingController();
+    _model.dobController ??= TextEditingController();
+    _model.emailController ??= TextEditingController();
+    _model.passwordController ??= TextEditingController();
+    _model.retypedController ??= TextEditingController();
   }
 
   @override
   void dispose() {
+    _model.dispose();
+
     _unfocusNode.dispose();
-    dobController?.dispose();
-    firstNameController?.dispose();
-    lastNameController?.dispose();
-    emailController?.dispose();
-    passwordController?.dispose();
-    retypedController?.dispose();
     super.dispose();
   }
 
@@ -104,7 +96,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                       children: [
                         Expanded(
                           child: TextFormField(
-                            controller: firstNameController,
+                            controller: _model.firstNameController,
                             obscureText: false,
                             decoration: InputDecoration(
                               labelText: 'First Name',
@@ -134,7 +126,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                  color: Color(0xFFDBE2E7),
+                                  color: Color(0x00000000),
                                   width: 2,
                                 ),
                                 borderRadius: BorderRadius.circular(8),
@@ -165,6 +157,8 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                       fontSize: 14,
                                       fontWeight: FontWeight.normal,
                                     ),
+                            validator: _model.firstNameControllerValidator
+                                .asValidator(context),
                           ),
                         ),
                       ],
@@ -178,7 +172,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                       children: [
                         Expanded(
                           child: TextFormField(
-                            controller: lastNameController,
+                            controller: _model.lastNameController,
                             obscureText: false,
                             decoration: InputDecoration(
                               labelText: 'Last Name',
@@ -208,7 +202,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                  color: Color(0xFFDBE2E7),
+                                  color: Color(0x00000000),
                                   width: 2,
                                 ),
                                 borderRadius: BorderRadius.circular(8),
@@ -239,6 +233,8 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                       fontSize: 14,
                                       fontWeight: FontWeight.normal,
                                     ),
+                            validator: _model.lastNameControllerValidator
+                                .asValidator(context),
                           ),
                         ),
                       ],
@@ -252,7 +248,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                       children: [
                         Expanded(
                           child: TextFormField(
-                            controller: dobController,
+                            controller: _model.dobController,
                             obscureText: false,
                             decoration: InputDecoration(
                               labelText: 'Date of Birth',
@@ -282,7 +278,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                  color: Color(0xFFDBE2E7),
+                                  color: Color(0x00000000),
                                   width: 2,
                                 ),
                                 borderRadius: BorderRadius.circular(8),
@@ -314,6 +310,8 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                       fontWeight: FontWeight.normal,
                                     ),
                             keyboardType: TextInputType.datetime,
+                            validator: _model.dobControllerValidator
+                                .asValidator(context),
                           ),
                         ),
                       ],
@@ -327,7 +325,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                       children: [
                         Expanded(
                           child: TextFormField(
-                            controller: emailController,
+                            controller: _model.emailController,
                             obscureText: false,
                             decoration: InputDecoration(
                               labelText: 'Email Address',
@@ -357,7 +355,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                  color: Color(0xFFDBE2E7),
+                                  color: Color(0x00000000),
                                   width: 2,
                                 ),
                                 borderRadius: BorderRadius.circular(8),
@@ -388,6 +386,8 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                       fontSize: 14,
                                       fontWeight: FontWeight.normal,
                                     ),
+                            validator: _model.emailControllerValidator
+                                .asValidator(context),
                           ),
                         ),
                       ],
@@ -401,8 +401,8 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                       children: [
                         Expanded(
                           child: TextFormField(
-                            controller: passwordController,
-                            obscureText: !passwordVisibility,
+                            controller: _model.passwordController,
+                            obscureText: !_model.passwordVisibility,
                             decoration: InputDecoration(
                               labelText: 'Password',
                               labelStyle: FlutterFlowTheme.of(context)
@@ -431,7 +431,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                  color: Color(0xFFDBE2E7),
+                                  color: Color(0x00000000),
                                   width: 2,
                                 ),
                                 borderRadius: BorderRadius.circular(8),
@@ -456,12 +456,12 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                   16, 24, 24, 24),
                               suffixIcon: InkWell(
                                 onTap: () => setState(
-                                  () =>
-                                      passwordVisibility = !passwordVisibility,
+                                  () => _model.passwordVisibility =
+                                      !_model.passwordVisibility,
                                 ),
                                 focusNode: FocusNode(skipTraversal: true),
                                 child: Icon(
-                                  passwordVisibility
+                                  _model.passwordVisibility
                                       ? Icons.visibility_outlined
                                       : Icons.visibility_off_outlined,
                                   color: Color(0xFF95A1AC),
@@ -476,6 +476,8 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                       fontSize: 14,
                                       fontWeight: FontWeight.normal,
                                     ),
+                            validator: _model.passwordControllerValidator
+                                .asValidator(context),
                           ),
                         ),
                       ],
@@ -489,8 +491,8 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                       children: [
                         Expanded(
                           child: TextFormField(
-                            controller: retypedController,
-                            obscureText: !retypedVisibility,
+                            controller: _model.retypedController,
+                            obscureText: !_model.retypedVisibility,
                             decoration: InputDecoration(
                               labelText: 'Retype Password',
                               labelStyle: FlutterFlowTheme.of(context)
@@ -519,7 +521,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                  color: Color(0xFFDBE2E7),
+                                  color: Color(0x00000000),
                                   width: 2,
                                 ),
                                 borderRadius: BorderRadius.circular(8),
@@ -544,11 +546,12 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                   16, 24, 24, 24),
                               suffixIcon: InkWell(
                                 onTap: () => setState(
-                                  () => retypedVisibility = !retypedVisibility,
+                                  () => _model.retypedVisibility =
+                                      !_model.retypedVisibility,
                                 ),
                                 focusNode: FocusNode(skipTraversal: true),
                                 child: Icon(
-                                  retypedVisibility
+                                  _model.retypedVisibility
                                       ? Icons.visibility_outlined
                                       : Icons.visibility_off_outlined,
                                   color: Color(0xFF95A1AC),
@@ -563,6 +566,8 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                       fontSize: 14,
                                       fontWeight: FontWeight.normal,
                                     ),
+                            validator: _model.retypedControllerValidator
+                                .asValidator(context),
                           ),
                         ),
                       ],
@@ -576,8 +581,8 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                       children: [
                         FFButtonWidget(
                           onPressed: () async {
-                            if (passwordController?.text !=
-                                retypedController?.text) {
+                            if (_model.passwordController.text !=
+                                _model.retypedController.text) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text(
@@ -590,17 +595,17 @@ class _RegisterWidgetState extends State<RegisterWidget> {
 
                             final user = await createAccountWithEmail(
                               context,
-                              emailController!.text,
-                              passwordController!.text,
+                              _model.emailController.text,
+                              _model.passwordController.text,
                             );
                             if (user == null) {
                               return;
                             }
 
                             final usersCreateData = createUsersRecordData(
-                              email: emailController!.text,
+                              email: _model.emailController.text,
                               displayName:
-                                  '${firstNameController!.text} ${lastNameController!.text}',
+                                  '${_model.firstNameController.text} ${_model.lastNameController.text}',
                               photoUrl:
                                   'https://firebasestorage.googleapis.com/v0/b/universalfencingleague.appspot.com/o/Fencer_silhouette.png?alt=media&token=7ae87fd2-6264-446f-abbf-c4a7d8d5b642',
                               eloAdult: 1000,

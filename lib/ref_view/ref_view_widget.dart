@@ -13,6 +13,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'ref_view_model.dart';
+export 'ref_view_model.dart';
 
 class RefViewWidget extends StatefulWidget {
   const RefViewWidget({
@@ -35,35 +37,24 @@ class RefViewWidget extends StatefulWidget {
 }
 
 class _RefViewWidgetState extends State<RefViewWidget> {
-  int timerMilliseconds = 0;
-  String timerValue = StopWatchTimer.getDisplayTime(
-    0,
-    hours: false,
-  );
-  StopWatchTimer timerController =
-      StopWatchTimer(mode: StopWatchMode.countDown);
+  late RefViewModel _model;
 
-  List<StatlineStruct>? newMatchStatlines;
-  MatchStatSnapshotStruct? newStatsSnapshot;
-  int? currentActionID;
-  String? actionText1;
-  String? dropDownValue1;
-  String? actionText2;
-  String? dropDownValue2;
-  final _unfocusNode = FocusNode();
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  final _unfocusNode = FocusNode();
 
   @override
   void initState() {
     super.initState();
+    _model = createModel(context, () => RefViewModel());
 
     WidgetsBinding.instance.addPostFrameCallback((_) => setState(() {}));
   }
 
   @override
   void dispose() {
+    _model.dispose();
+
     _unfocusNode.dispose();
-    timerController.dispose();
     super.dispose();
   }
 
@@ -222,10 +213,10 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                   value,
                                   hours: false,
                                 ),
-                                timer: timerController,
+                                timer: _model.timerController,
                                 onChanged: (value, displayTime, shouldUpdate) {
-                                  timerMilliseconds = value;
-                                  timerValue = displayTime;
+                                  _model.timerMilliseconds = value;
+                                  _model.timerValue = displayTime;
                                   if (shouldUpdate) setState(() {});
                                 },
                                 onEnded: () async {
@@ -483,10 +474,10 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                         });
                                         await Future.delayed(
                                             const Duration(milliseconds: 100));
-                                        timerController.onExecute
+                                        _model.timerController.onExecute
                                             .add(StopWatchExecute.reset);
 
-                                        timerController.onExecute
+                                        _model.timerController.onExecute
                                             .add(StopWatchExecute.start);
                                         FFAppState().update(() {
                                           FFAppState().showActions = false;
@@ -503,7 +494,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                             });
                                             await Future.delayed(const Duration(
                                                 milliseconds: 100));
-                                            timerController.onExecute
+                                            _model.timerController.onExecute
                                                 .add(StopWatchExecute.reset);
 
                                             FFAppState().update(() {
@@ -515,7 +506,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                             });
                                           } else {
                                             if (FFAppState().isTimerRunning) {
-                                              timerController.onExecute
+                                              _model.timerController.onExecute
                                                   .add(StopWatchExecute.stop);
                                               FFAppState().update(() {
                                                 FFAppState().isTimerRunning =
@@ -524,7 +515,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                                     'START';
                                               });
                                             } else {
-                                              timerController.onExecute
+                                              _model.timerController.onExecute
                                                   .add(StopWatchExecute.start);
                                               FFAppState().update(() {
                                                 FFAppState().isTimerRunning =
@@ -673,15 +664,15 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                     'Point in Line'
                                   ],
                                   onChanged: (val) async {
-                                    setState(() => dropDownValue1 = val);
-                                    actionText1 =
+                                    setState(() => _model.dropDownValue1 = val);
+                                    _model.actionText1 =
                                         await actions.setActionFromDropdown(
-                                      dropDownValue1,
-                                      dropDownValue2,
+                                      _model.dropDownValue1,
+                                      _model.dropDownValue2,
                                     );
                                     FFAppState().update(() {
                                       FFAppState().refSecondTextAction =
-                                          actionText1!;
+                                          _model.actionText1!;
                                       FFAppState().isSimultaneous = false;
                                     });
 
@@ -708,15 +699,15 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                 FlutterFlowDropDown<String>(
                                   options: ['HITS', 'OFF TARGET'],
                                   onChanged: (val) async {
-                                    setState(() => dropDownValue2 = val);
-                                    actionText2 =
+                                    setState(() => _model.dropDownValue2 = val);
+                                    _model.actionText2 =
                                         await actions.setActionFromDropdown(
-                                      dropDownValue1,
-                                      dropDownValue2,
+                                      _model.dropDownValue1,
+                                      _model.dropDownValue2,
                                     );
                                     FFAppState().update(() {
                                       FFAppState().refSecondTextAction =
-                                          actionText2!;
+                                          _model.actionText2!;
                                     });
 
                                     setState(() {});
@@ -916,17 +907,17 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                             FFAppState().refereeweaponselect,
                                             FFAppState().refIsHit,
                                           );
-                                          currentActionID =
+                                          _model.currentActionID =
                                               await actions.generateActionID(
                                             FFAppState().isLeftFencerAction,
-                                            dropDownValue1,
+                                            _model.dropDownValue1,
                                             !FFAppState().refIsHit,
                                             FFAppState().nonAttackLabel,
                                           );
-                                          newStatsSnapshot =
+                                          _model.newStatsSnapshot =
                                               await actions.updateStats(
-                                            currentActionID!,
-                                            timerMilliseconds,
+                                            _model.currentActionID!,
+                                            _model.timerMilliseconds,
                                             buttonMatchstatslogDevRecord
                                                 .matchStats!
                                                 .toList()
@@ -939,7 +930,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                                 FieldValue.arrayUnion([
                                               getMatchStatSnapshotFirestoreData(
                                                 updateMatchStatSnapshotStruct(
-                                                  newStatsSnapshot,
+                                                  _model.newStatsSnapshot,
                                                   clearUnsetFields: false,
                                                 ),
                                                 true,
@@ -950,19 +941,16 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                               .reference
                                               .update(
                                                   matchstatslogDevUpdateData);
-                                          newMatchStatlines =
+                                          _model.newMatchStatlines =
                                               await actions.generateStatlines(
-                                            buttonMatchstatslogDevRecord
-                                                .matchStats!
-                                                .toList()
-                                                .last,
+                                            _model.newStatsSnapshot!,
                                           );
 
                                           final matchdetailsDevUpdateData = {
                                             ...createMatchdetailsDevRecordData(
                                               overallStats:
                                                   updateMatchStatSnapshotStruct(
-                                                newStatsSnapshot,
+                                                _model.newStatsSnapshot,
                                                 clearUnsetFields: false,
                                               ),
                                             ),
@@ -981,10 +969,11 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                                   scoreRight: FFAppState()
                                                       .refRightScore,
                                                   timeOfAction:
-                                                      timerMilliseconds,
+                                                      _model.timerMilliseconds,
                                                   periodOfAction: FFAppState()
                                                       .currentPeriod,
-                                                  actionID: currentActionID,
+                                                  actionID:
+                                                      _model.currentActionID,
                                                   clearUnsetFields: false,
                                                 ),
                                                 true,
@@ -992,7 +981,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                             ]),
                                             'Statlines':
                                                 getStatlineListFirestoreData(
-                                              newMatchStatlines,
+                                              _model.newMatchStatlines,
                                             ),
                                           };
                                           await widget
@@ -1219,7 +1208,8 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                                   FFAppState().refLeftScore,
                                               scoreRight:
                                                   FFAppState().refRightScore,
-                                              timeOfAction: timerMilliseconds,
+                                              timeOfAction:
+                                                  _model.timerMilliseconds,
                                               periodOfAction:
                                                   FFAppState().currentPeriod,
                                               actionID: -2,

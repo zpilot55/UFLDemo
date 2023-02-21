@@ -57,9 +57,12 @@ Future<List<StatlineStruct>> generateStatlines(
       totalOffTarR +
       overallStats.simultaneous!;
 
-  double percentFinalActionsL = (totalHitsL + totalOffTarL) / totalActions;
-  double percentFinalActionsR = (totalHitsR + totalOffTarR) / totalActions;
-  double percentSimultaneous = overallStats.simultaneous! / totalActions;
+  double percentFinalActionsL =
+      ((totalHitsL + totalOffTarL) / totalActions) * 100;
+  double percentFinalActionsR =
+      ((totalHitsR + totalOffTarR) / totalActions) * 100;
+  double percentSimultaneous =
+      (overallStats.simultaneous! / totalActions) * 100;
   double hotRatioL = totalHitsL / totalOffTarL;
   double hotRatioR = totalHitsR / totalOffTarR;
 
