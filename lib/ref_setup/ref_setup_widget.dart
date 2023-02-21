@@ -12,6 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'ref_setup_model.dart';
+export 'ref_setup_model.dart';
 
 class RefSetupWidget extends StatefulWidget {
   const RefSetupWidget({Key? key}) : super(key: key);
@@ -21,18 +23,22 @@ class RefSetupWidget extends StatefulWidget {
 }
 
 class _RefSetupWidgetState extends State<RefSetupWidget> {
-  LatLng? currentUserLocationValue;
-  final _unfocusNode = FocusNode();
+  late RefSetupModel _model;
+
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  MatchdetailsDevRecord? currentMatchDetails;
-  MatchstatslogDevRecord? currentMatchStatsLog;
-  MatchesDevRecord? currentMatchInProgress;
-  int? periodCountValue;
-  int? timeCountValue;
-  int? touchesCountValue;
+  final _unfocusNode = FocusNode();
+  LatLng? currentUserLocationValue;
+
+  @override
+  void initState() {
+    super.initState();
+    _model = createModel(context, () => RefSetupModel());
+  }
 
   @override
   void dispose() {
+    _model.dispose();
+
     _unfocusNode.dispose();
     super.dispose();
   }
@@ -476,9 +482,9 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                             fontSize: 16,
                                           ),
                                         ),
-                                        count: periodCountValue ??= 1,
-                                        updateCount: (count) => setState(
-                                            () => periodCountValue = count),
+                                        count: _model.periodCountValue ??= 1,
+                                        updateCount: (count) => setState(() =>
+                                            _model.periodCountValue = count),
                                         stepSize: 1,
                                         minimum: 1,
                                       ),
@@ -552,9 +558,9 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                             fontSize: 16,
                                           ),
                                         ),
-                                        count: timeCountValue ??= 3,
-                                        updateCount: (count) => setState(
-                                            () => timeCountValue = count),
+                                        count: _model.timeCountValue ??= 3,
+                                        updateCount: (count) => setState(() =>
+                                            _model.timeCountValue = count),
                                         stepSize: 1,
                                         minimum: 1,
                                       ),
@@ -628,9 +634,9 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                             fontSize: 16,
                                           ),
                                         ),
-                                        count: touchesCountValue ??= 5,
-                                        updateCount: (count) => setState(
-                                            () => touchesCountValue = count),
+                                        count: _model.touchesCountValue ??= 5,
+                                        updateCount: (count) => setState(() =>
+                                            _model.touchesCountValue = count),
                                         stepSize: 1,
                                         minimum: 1,
                                       ),
@@ -723,7 +729,7 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                                 scoreRight: 0,
                                                 timeOfAction:
                                                     functions.minutesToMS(
-                                                        timeCountValue!),
+                                                        _model.timeCountValue!),
                                                 periodOfAction: 1,
                                                 actionID: -1,
                                                 clearUnsetFields: false,
@@ -738,10 +744,11 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                                 .doc();
                                         await matchdetailsDevRecordReference
                                             .set(matchdetailsDevCreateData);
-                                        currentMatchDetails = MatchdetailsDevRecord
-                                            .getDocumentFromData(
-                                                matchdetailsDevCreateData,
-                                                matchdetailsDevRecordReference);
+                                        _model.currentMatchDetails =
+                                            MatchdetailsDevRecord
+                                                .getDocumentFromData(
+                                                    matchdetailsDevCreateData,
+                                                    matchdetailsDevRecordReference);
 
                                         final matchstatslogDevCreateData = {
                                           'MatchStats': [
@@ -795,7 +802,7 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                                 .doc();
                                         await matchstatslogDevRecordReference
                                             .set(matchstatslogDevCreateData);
-                                        currentMatchStatsLog =
+                                        _model.currentMatchStatsLog =
                                             MatchstatslogDevRecord
                                                 .getDocumentFromData(
                                                     matchstatslogDevCreateData,
@@ -808,16 +815,18 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                             user2: FFAppState().rightFencerRef,
                                             weapon: FFAppState()
                                                 .refereeweaponselect,
-                                            noOfPeriods: periodCountValue,
+                                            noOfPeriods:
+                                                _model.periodCountValue,
                                             scoreLeft: 0,
                                             scoreRight: 0,
                                             location: currentUserLocationValue,
-                                            matchDetails:
-                                                currentMatchDetails!.reference,
+                                            matchDetails: _model
+                                                .currentMatchDetails!.reference,
                                             matchRanking: 'U',
                                             scheduledTime: getCurrentTimestamp,
-                                            matchStatsLog:
-                                                currentMatchStatsLog!.reference,
+                                            matchStatsLog: _model
+                                                .currentMatchStatsLog!
+                                                .reference,
                                           ),
                                           'fencers': FFAppState().refFencers,
                                         };
@@ -825,7 +834,7 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                             MatchesDevRecord.collection.doc();
                                         await matchesDevRecordReference
                                             .set(matchesDevCreateData);
-                                        currentMatchInProgress =
+                                        _model.currentMatchInProgress =
                                             MatchesDevRecord
                                                 .getDocumentFromData(
                                                     matchesDevCreateData,
@@ -834,15 +843,16 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) => RefViewWidget(
-                                              initStartTime: timeCountValue,
+                                              initStartTime:
+                                                  _model.timeCountValue,
                                               startNumOfPeriods:
-                                                  periodCountValue,
+                                                  _model.periodCountValue,
                                               startNumOfTouches:
-                                                  touchesCountValue,
+                                                  _model.touchesCountValue,
                                               currentMatchInProgress:
-                                                  currentMatchInProgress,
+                                                  _model.currentMatchInProgress,
                                               currentMatchDetails:
-                                                  currentMatchDetails,
+                                                  _model.currentMatchDetails,
                                             ),
                                           ),
                                         );
@@ -1448,7 +1458,8 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                               MaterialPageRoute(
                                                 builder: (context) =>
                                                     RefViewWidget(
-                                                  initStartTime: timeCountValue,
+                                                  initStartTime:
+                                                      _model.timeCountValue,
                                                   startNumOfPeriods: 3,
                                                   startNumOfTouches: 15,
                                                 ),
@@ -1460,7 +1471,8 @@ class _RefSetupWidgetState extends State<RefSetupWidget> {
                                               MaterialPageRoute(
                                                 builder: (context) =>
                                                     RefViewWidget(
-                                                  initStartTime: timeCountValue,
+                                                  initStartTime:
+                                                      _model.timeCountValue,
                                                   startNumOfPeriods: 2,
                                                   startNumOfTouches: 10,
                                                 ),

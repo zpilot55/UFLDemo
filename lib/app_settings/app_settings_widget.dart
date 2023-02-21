@@ -5,6 +5,8 @@ import '../flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'app_settings_model.dart';
+export 'app_settings_model.dart';
 
 class AppSettingsWidget extends StatefulWidget {
   const AppSettingsWidget({Key? key}) : super(key: key);
@@ -14,9 +16,22 @@ class AppSettingsWidget extends StatefulWidget {
 }
 
 class _AppSettingsWidgetState extends State<AppSettingsWidget> {
-  bool? switchListTileValue1;
-  bool? switchListTileValue2;
+  late AppSettingsModel _model;
+
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() {
+    super.initState();
+    _model = createModel(context, () => AppSettingsModel());
+  }
+
+  @override
+  void dispose() {
+    _model.dispose();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,9 +94,9 @@ class _AppSettingsWidgetState extends State<AppSettingsWidget> {
           Padding(
             padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
             child: SwitchListTile.adaptive(
-              value: switchListTileValue1 ??= true,
+              value: _model.switchListTileValue1 ??= true,
               onChanged: (newValue) async {
-                setState(() => switchListTileValue1 = newValue!);
+                setState(() => _model.switchListTileValue1 = newValue!);
               },
               title: Text(
                 'Push Notifications',
@@ -109,9 +124,9 @@ class _AppSettingsWidgetState extends State<AppSettingsWidget> {
             ),
           ),
           SwitchListTile.adaptive(
-            value: switchListTileValue2 ??= true,
+            value: _model.switchListTileValue2 ??= true,
             onChanged: (newValue) async {
-              setState(() => switchListTileValue2 = newValue!);
+              setState(() => _model.switchListTileValue2 = newValue!);
             },
             title: Text(
               'Email Notifications',

@@ -7,6 +7,8 @@ import '../flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'ref_match_recap_events_model.dart';
+export 'ref_match_recap_events_model.dart';
 
 class RefMatchRecapEventsWidget extends StatefulWidget {
   const RefMatchRecapEventsWidget({
@@ -22,7 +24,22 @@ class RefMatchRecapEventsWidget extends StatefulWidget {
 }
 
 class _RefMatchRecapEventsWidgetState extends State<RefMatchRecapEventsWidget> {
+  late RefMatchRecapEventsModel _model;
+
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() {
+    super.initState();
+    _model = createModel(context, () => RefMatchRecapEventsModel());
+  }
+
+  @override
+  void dispose() {
+    _model.dispose();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

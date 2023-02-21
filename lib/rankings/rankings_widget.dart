@@ -4,6 +4,8 @@ import '../flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'rankings_model.dart';
+export 'rankings_model.dart';
 
 class RankingsWidget extends StatefulWidget {
   const RankingsWidget({Key? key}) : super(key: key);
@@ -13,11 +15,21 @@ class RankingsWidget extends StatefulWidget {
 }
 
 class _RankingsWidgetState extends State<RankingsWidget> {
-  final _unfocusNode = FocusNode();
+  late RankingsModel _model;
+
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  final _unfocusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    _model = createModel(context, () => RankingsModel());
+  }
 
   @override
   void dispose() {
+    _model.dispose();
+
     _unfocusNode.dispose();
     super.dispose();
   }
@@ -31,7 +43,11 @@ class _RankingsWidgetState extends State<RankingsWidget> {
       backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
       drawer: Drawer(
         elevation: 16,
-        child: ColMainDrawerWidget(),
+        child: wrapWithModel(
+          model: _model.colMainDrawerModel,
+          updateCallback: () => setState(() {}),
+          child: ColMainDrawerWidget(),
+        ),
       ),
       appBar: AppBar(
         backgroundColor: FlutterFlowTheme.of(context).primaryColor,

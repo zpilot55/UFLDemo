@@ -5,6 +5,8 @@ import '../flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'notification_settings_model.dart';
+export 'notification_settings_model.dart';
 
 class NotificationSettingsWidget extends StatefulWidget {
   const NotificationSettingsWidget({Key? key}) : super(key: key);
@@ -16,9 +18,22 @@ class NotificationSettingsWidget extends StatefulWidget {
 
 class _NotificationSettingsWidgetState
     extends State<NotificationSettingsWidget> {
-  bool? switchListTileValue1;
-  bool? switchListTileValue2;
+  late NotificationSettingsModel _model;
+
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() {
+    super.initState();
+    _model = createModel(context, () => NotificationSettingsModel());
+  }
+
+  @override
+  void dispose() {
+    _model.dispose();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,9 +96,9 @@ class _NotificationSettingsWidgetState
           Padding(
             padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
             child: SwitchListTile.adaptive(
-              value: switchListTileValue1 ??= true,
+              value: _model.switchListTileValue1 ??= true,
               onChanged: (newValue) async {
-                setState(() => switchListTileValue1 = newValue!);
+                setState(() => _model.switchListTileValue1 = newValue!);
               },
               title: Text(
                 'Push Notifications',
@@ -111,9 +126,9 @@ class _NotificationSettingsWidgetState
             ),
           ),
           SwitchListTile.adaptive(
-            value: switchListTileValue2 ??= true,
+            value: _model.switchListTileValue2 ??= true,
             onChanged: (newValue) async {
-              setState(() => switchListTileValue2 = newValue!);
+              setState(() => _model.switchListTileValue2 = newValue!);
             },
             title: Text(
               'Email Notifications',

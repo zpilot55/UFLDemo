@@ -9,6 +9,8 @@ import '../ref_setup/ref_setup_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'col_main_drawer_model.dart';
+export 'col_main_drawer_model.dart';
 
 class ColMainDrawerWidget extends StatefulWidget {
   const ColMainDrawerWidget({Key? key}) : super(key: key);
@@ -18,6 +20,27 @@ class ColMainDrawerWidget extends StatefulWidget {
 }
 
 class _ColMainDrawerWidgetState extends State<ColMainDrawerWidget> {
+  late ColMainDrawerModel _model;
+
+  @override
+  void setState(VoidCallback callback) {
+    super.setState(callback);
+    _model.onUpdate();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _model = createModel(context, () => ColMainDrawerModel());
+  }
+
+  @override
+  void dispose() {
+    _model.maybeDispose();
+
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     context.watch<FFAppState>();

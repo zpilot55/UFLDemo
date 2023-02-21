@@ -8,6 +8,8 @@ import '../flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'match_recap_model.dart';
+export 'match_recap_model.dart';
 
 class MatchRecapWidget extends StatefulWidget {
   const MatchRecapWidget({
@@ -22,7 +24,22 @@ class MatchRecapWidget extends StatefulWidget {
 }
 
 class _MatchRecapWidgetState extends State<MatchRecapWidget> {
+  late MatchRecapModel _model;
+
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() {
+    super.initState();
+    _model = createModel(context, () => MatchRecapModel());
+  }
+
+  @override
+  void dispose() {
+    _model.dispose();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

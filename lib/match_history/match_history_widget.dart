@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
+import 'match_history_model.dart';
+export 'match_history_model.dart';
 
 class MatchHistoryWidget extends StatefulWidget {
   const MatchHistoryWidget({Key? key}) : super(key: key);
@@ -18,20 +20,21 @@ class MatchHistoryWidget extends StatefulWidget {
 }
 
 class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
-  PagingController<DocumentSnapshot?, MatchesDevRecord>? _pagingController;
-  Query? _pagingQuery;
-  List<StreamSubscription?> _streamSubscriptions = [];
+  late MatchHistoryModel _model;
 
-  String? dropDownValue1;
-  String? dropDownValue2;
-  String? dropDownValue3;
-  String? dropDownValue4;
-  final _unfocusNode = FocusNode();
   final scaffoldKey = GlobalKey<ScaffoldState>();
+  final _unfocusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    _model = createModel(context, () => MatchHistoryModel());
+  }
 
   @override
   void dispose() {
-    _streamSubscriptions.forEach((s) => s?.cancel());
+    _model.dispose();
+
     _unfocusNode.dispose();
     super.dispose();
   }
@@ -45,7 +48,11 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
       backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
       drawer: Drawer(
         elevation: 16,
-        child: ColMainDrawerWidget(),
+        child: wrapWithModel(
+          model: _model.colMainDrawerModel,
+          updateCallback: () => setState(() {}),
+          child: ColMainDrawerWidget(),
+        ),
       ),
       appBar: AppBar(
         backgroundColor: FlutterFlowTheme.of(context).primaryColor,
@@ -81,7 +88,8 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                   children: [
                     FlutterFlowDropDown<String>(
                       options: ['Option 1'],
-                      onChanged: (val) => setState(() => dropDownValue1 = val),
+                      onChanged: (val) =>
+                          setState(() => _model.dropDownValue1 = val),
                       width: 180,
                       height: 50,
                       textStyle:
@@ -100,7 +108,8 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                     ),
                     FlutterFlowDropDown<String>(
                       options: ['Option 1'],
-                      onChanged: (val) => setState(() => dropDownValue2 = val),
+                      onChanged: (val) =>
+                          setState(() => _model.dropDownValue2 = val),
                       width: 180,
                       height: 50,
                       textStyle:
@@ -119,7 +128,8 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                     ),
                     FlutterFlowDropDown<String>(
                       options: ['Option 1'],
-                      onChanged: (val) => setState(() => dropDownValue3 = val),
+                      onChanged: (val) =>
+                          setState(() => _model.dropDownValue3 = val),
                       width: 180,
                       height: 50,
                       textStyle:
@@ -138,7 +148,8 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                     ),
                     FlutterFlowDropDown<String>(
                       options: ['Option 1'],
-                      onChanged: (val) => setState(() => dropDownValue4 = val),
+                      onChanged: (val) =>
+                          setState(() => _model.dropDownValue4 = val),
                       width: 180,
                       height: 50,
                       textStyle:
@@ -179,24 +190,25 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                                   .where('fencers',
                                       arrayContains: currentUserReference)
                                   .orderBy('scheduled_time', descending: true);
-                          if (_pagingController != null) {
+                          if (_model.pagingController != null) {
                             final query =
                                 queryBuilder(MatchesDevRecord.collection);
-                            if (query != _pagingQuery) {
+                            if (query != _model.pagingQuery) {
                               // The query has changed
-                              _pagingQuery = query;
-                              _streamSubscriptions.forEach((s) => s?.cancel());
-                              _streamSubscriptions.clear();
-                              _pagingController!.refresh();
+                              _model.pagingQuery = query;
+                              _model.streamSubscriptions
+                                  .forEach((s) => s?.cancel());
+                              _model.streamSubscriptions.clear();
+                              _model.pagingController!.refresh();
                             }
-                            return _pagingController!;
+                            return _model.pagingController!;
                           }
 
-                          _pagingController =
+                          _model.pagingController =
                               PagingController(firstPageKey: null);
-                          _pagingQuery =
+                          _model.pagingQuery =
                               queryBuilder(MatchesDevRecord.collection);
-                          _pagingController!
+                          _model.pagingController!
                               .addPageRequestListener((nextPageMarker) {
                             queryMatchesDevRecordPage(
                               queryBuilder: (matchesDevRecord) =>
@@ -209,24 +221,25 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                               pageSize: 25,
                               isStream: true,
                             ).then((page) {
-                              _pagingController!.appendPage(
+                              _model.pagingController!.appendPage(
                                 page.data,
                                 page.nextPageMarker,
                               );
                               final streamSubscription =
                                   page.dataStream?.listen((data) {
                                 data.forEach((item) {
-                                  final itemIndexes = _pagingController!
-                                      .itemList!
+                                  final itemIndexes = _model
+                                      .pagingController!.itemList!
                                       .asMap()
                                       .map((k, v) =>
                                           MapEntry(v.reference.id, k));
                                   final index = itemIndexes[item.reference.id];
-                                  final items = _pagingController!.itemList!;
+                                  final items =
+                                      _model.pagingController!.itemList!;
                                   if (index != null) {
                                     items
                                         .replaceRange(index, index + 1, [item]);
-                                    _pagingController!.itemList = {
+                                    _model.pagingController!.itemList = {
                                       for (var item in items)
                                         item.reference: item
                                     }.values.toList();
@@ -234,10 +247,11 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                                 });
                                 setState(() {});
                               });
-                              _streamSubscriptions.add(streamSubscription);
+                              _model.streamSubscriptions
+                                  .add(streamSubscription);
                             });
                           });
-                          return _pagingController!;
+                          return _model.pagingController!;
                         }(),
                         padding: EdgeInsets.zero,
                         scrollDirection: Axis.vertical,
@@ -256,8 +270,8 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                           ),
 
                           itemBuilder: (context, _, listViewIndex) {
-                            final listViewMatchesDevRecord =
-                                _pagingController!.itemList![listViewIndex];
+                            final listViewMatchesDevRecord = _model
+                                .pagingController!.itemList![listViewIndex];
                             return Padding(
                               padding:
                                   EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),

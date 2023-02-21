@@ -188,6 +188,10 @@ class FFAppState extends ChangeNotifier {
     _refFencers.remove(_value);
   }
 
+  void removeAtIndexFromRefFencers(int _index) {
+    _refFencers.removeAt(_index);
+  }
+
   bool _endOfBoutPopup = false;
   bool get endOfBoutPopup => _endOfBoutPopup;
   set endOfBoutPopup(bool _value) {
@@ -213,6 +217,10 @@ class FFAppState extends ChangeNotifier {
 
   void removeFromCurrentMatchEvents(dynamic _value) {
     _currentMatchEvents.remove(_value);
+  }
+
+  void removeAtIndexFromCurrentMatchEvents(int _index) {
+    _currentMatchEvents.removeAt(_index);
   }
 
   String _nonAttackLabel = '';
