@@ -37,9 +37,6 @@ Future<int> generateActionID(
       }
     default:
       {
-        if (isOffTarget) {
-          code = code + 40;
-        }
         switch (drop1) {
           case "Simple Attack":
             {
@@ -70,6 +67,9 @@ Future<int> generateActionID(
             {
               code = 105;
             }
+        }
+        if (isOffTarget) {
+          code = code + 40;
         }
       }
   }
