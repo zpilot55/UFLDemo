@@ -8,6 +8,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'edit_profile_model.dart';
+export 'edit_profile_model.dart';
 
 class EditProfileWidget extends StatefulWidget {
   const EditProfileWidget({Key? key}) : super(key: key);
@@ -17,21 +19,24 @@ class EditProfileWidget extends StatefulWidget {
 }
 
 class _EditProfileWidgetState extends State<EditProfileWidget> {
-  TextEditingController? textController1;
-  TextEditingController? textController2;
+  late EditProfileModel _model;
+
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
-    textController1 = TextEditingController(text: currentUserEmail);
-    textController2 = TextEditingController(text: currentUserDisplayName);
+    _model = createModel(context, () => EditProfileModel());
+
+    _model.textController1 ??= TextEditingController(text: currentUserEmail);
+    _model.textController2 ??=
+        TextEditingController(text: currentUserDisplayName);
   }
 
   @override
   void dispose() {
-    textController1?.dispose();
-    textController2?.dispose();
+    _model.dispose();
+
     super.dispose();
   }
 
@@ -207,7 +212,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                           children: [
                             Expanded(
                               child: TextFormField(
-                                controller: textController1,
+                                controller: _model.textController1,
                                 obscureText: false,
                                 decoration: InputDecoration(
                                   labelText: 'Email Address',
@@ -223,8 +228,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                      color: FlutterFlowTheme.of(context)
-                                          .primaryBackground,
+                                      color: Color(0x00000000),
                                       width: 2,
                                     ),
                                     borderRadius: BorderRadius.circular(8),
@@ -245,6 +249,8 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                                   ),
                                 ),
                                 style: FlutterFlowTheme.of(context).bodyText1,
+                                validator: _model.textController1Validator
+                                    .asValidator(context),
                               ),
                             ),
                           ],
@@ -258,7 +264,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                             Expanded(
                               child: AuthUserStreamWidget(
                                 builder: (context) => TextFormField(
-                                  controller: textController2,
+                                  controller: _model.textController2,
                                   obscureText: false,
                                   decoration: InputDecoration(
                                     labelText: 'Your Name',
@@ -274,8 +280,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
-                                        color: FlutterFlowTheme.of(context)
-                                            .primaryBackground,
+                                        color: Color(0x00000000),
                                         width: 2,
                                       ),
                                       borderRadius: BorderRadius.circular(8),
@@ -296,6 +301,8 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                                     ),
                                   ),
                                   style: FlutterFlowTheme.of(context).bodyText1,
+                                  validator: _model.textController2Validator
+                                      .asValidator(context),
                                 ),
                               ),
                             ),
@@ -307,7 +314,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                         child: FFButtonWidget(
                           onPressed: () async {
                             final usersUpdateData = createUsersRecordData(
-                              email: textController1!.text,
+                              email: _model.textController1.text,
                               displayName: currentUserDisplayName,
                             );
                             await currentUserReference!.update(usersUpdateData);

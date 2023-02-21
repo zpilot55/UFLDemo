@@ -57,9 +57,12 @@ Future<List<StatlineStruct>> generateStatlines(
       totalOffTarR +
       overallStats.simultaneous!;
 
-  double percentFinalActionsL = (totalHitsL + totalOffTarL) / totalActions;
-  double percentFinalActionsR = (totalHitsR + totalOffTarR) / totalActions;
-  double percentSimultaneous = overallStats.simultaneous! / totalActions;
+  double percentFinalActionsL =
+      ((totalHitsL + totalOffTarL) / totalActions) * 100;
+  double percentFinalActionsR =
+      ((totalHitsR + totalOffTarR) / totalActions) * 100;
+  double percentSimultaneous =
+      (overallStats.simultaneous! / totalActions) * 100;
   double hotRatioL = totalHitsL / totalOffTarL;
   double hotRatioR = totalHitsR / totalOffTarR;
 
@@ -89,8 +92,8 @@ Future<List<StatlineStruct>> generateStatlines(
   List<double> leftValues = [
     overallStats.yellowCardsL!.toDouble(),
     overallStats.redCardsL!.toDouble(),
-    percentFinalActionsL * 100,
-    percentSimultaneous * 100,
+    percentFinalActionsL,
+    percentSimultaneous,
     hotRatioL,
     rowRatioL,
     aggroRatioL
@@ -98,8 +101,8 @@ Future<List<StatlineStruct>> generateStatlines(
   List<double> rightValues = [
     overallStats.yellowCardsR!.toDouble(),
     overallStats.redCardsR!.toDouble(),
-    percentFinalActionsR * 100,
-    percentSimultaneous * 100,
+    percentFinalActionsR,
+    percentSimultaneous,
     hotRatioR,
     rowRatioR,
     aggroRatioR

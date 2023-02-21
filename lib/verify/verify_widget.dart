@@ -6,6 +6,8 @@ import '../main.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'verify_model.dart';
+export 'verify_model.dart';
 
 class VerifyWidget extends StatefulWidget {
   const VerifyWidget({Key? key}) : super(key: key);
@@ -15,18 +17,22 @@ class VerifyWidget extends StatefulWidget {
 }
 
 class _VerifyWidgetState extends State<VerifyWidget> {
-  TextEditingController? phoneNumberController;
+  late VerifyModel _model;
+
   final scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
-    phoneNumberController = TextEditingController();
+    _model = createModel(context, () => VerifyModel());
+
+    _model.phoneNumberController ??= TextEditingController();
   }
 
   @override
   void dispose() {
-    phoneNumberController?.dispose();
+    _model.dispose();
+
     super.dispose();
   }
 
@@ -76,7 +82,7 @@ class _VerifyWidgetState extends State<VerifyWidget> {
             Padding(
               padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 0),
               child: TextFormField(
-                controller: phoneNumberController,
+                controller: _model.phoneNumberController,
                 obscureText: false,
                 decoration: InputDecoration(
                   labelText: 'Enter the 6 digit code',
@@ -132,13 +138,15 @@ class _VerifyWidgetState extends State<VerifyWidget> {
                       fontSize: 14,
                       fontWeight: FontWeight.normal,
                     ),
+                validator:
+                    _model.phoneNumberControllerValidator.asValidator(context),
               ),
             ),
             Padding(
               padding: EdgeInsetsDirectional.fromSTEB(0, 24, 0, 0),
               child: FFButtonWidget(
                 onPressed: () async {
-                  final smsCodeVal = phoneNumberController!.text;
+                  final smsCodeVal = _model.phoneNumberController.text;
                   if (smsCodeVal == null || smsCodeVal.isEmpty) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
