@@ -110,6 +110,15 @@ class _SecondaryDetailsWidgetState extends State<SecondaryDetailsWidget> {
                                 ),
                           ),
                         ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
                         Container(
                           width: 150,
                           height: 50,
@@ -166,13 +175,25 @@ class _SecondaryDetailsWidgetState extends State<SecondaryDetailsWidget> {
                           height: 50,
                           decoration: BoxDecoration(),
                           child: Text(
-                            'Country: ',
+                            valueOrDefault<String>(
+                              'Country: ${_model.dropDownValue}',
+                              'Country: ',
+                            ),
                             style: FlutterFlowTheme.of(context).title2.override(
                                   fontFamily: 'Poppins',
                                   color: Colors.white,
                                 ),
                           ),
                         ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
                         Container(
                           width: 150,
                           height: 50,
