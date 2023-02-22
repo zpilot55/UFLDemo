@@ -387,8 +387,8 @@ class _LoginWidgetState extends State<LoginWidget> {
                                   }
                                   if (valueOrDefault<bool>(
                                           currentUserDocument?.existingUser,
-                                          false) !=
-                                      null) {
+                                          false) ==
+                                      true) {
                                     await Navigator.pushAndRemoveUntil(
                                       context,
                                       MaterialPageRoute(
