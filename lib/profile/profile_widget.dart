@@ -385,11 +385,12 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                   FFButtonWidget(
                     onPressed: () async {
                       await signOut();
-                      await Navigator.push(
+                      await Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
                           builder: (context) => LoginWidget(),
                         ),
+                        (r) => false,
                       );
                     },
                     text: 'Log Out',

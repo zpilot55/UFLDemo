@@ -3,7 +3,7 @@ import '../backend/backend.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
-import '../main.dart';
+import '../secondary_details/secondary_details_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -17,9 +17,6 @@ class RegisterModel extends FlutterFlowModel {
   // State field(s) for lastName widget.
   TextEditingController? lastNameController;
   String? Function(BuildContext, String?)? lastNameControllerValidator;
-  // State field(s) for dob widget.
-  TextEditingController? dobController;
-  String? Function(BuildContext, String?)? dobControllerValidator;
   // State field(s) for email widget.
   TextEditingController? emailController;
   String? Function(BuildContext, String?)? emailControllerValidator;
@@ -42,7 +39,6 @@ class RegisterModel extends FlutterFlowModel {
   void dispose() {
     firstNameController?.dispose();
     lastNameController?.dispose();
-    dobController?.dispose();
     emailController?.dispose();
     passwordController?.dispose();
     retypedController?.dispose();

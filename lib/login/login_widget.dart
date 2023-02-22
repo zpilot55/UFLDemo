@@ -4,6 +4,7 @@ import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
 import '../main.dart';
 import '../register/register_widget.dart';
+import '../secondary_details/secondary_details_widget.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -269,14 +270,17 @@ class _LoginWidgetState extends State<LoginWidget> {
                               return;
                             }
 
-                            await Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    NavBarPage(initialPage: 'HomePage'),
-                              ),
-                              (r) => false,
-                            );
+                            if (currentUserReference.id != null &&
+                                currentUserReference.id != '') {
+                              await Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      NavBarPage(initialPage: 'HomePage'),
+                                ),
+                                (r) => false,
+                              );
+                            }
                           },
                           text: 'Login',
                           options: FFButtonOptions(
@@ -299,8 +303,21 @@ class _LoginWidgetState extends State<LoginWidget> {
                           ),
                         ),
                         FFButtonWidget(
-                          onPressed: () {
-                            print('Button-ForgotPassword pressed ...');
+                          onPressed: () async {
+                            if (_model.emailAddressController.text.isEmpty) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    'Email required!',
+                                  ),
+                                ),
+                              );
+                              return;
+                            }
+                            await resetPassword(
+                              email: _model.emailAddressController.text,
+                              context: context,
+                            );
                           },
                           text: 'Forgot Password?',
                           options: FFButtonOptions(
@@ -368,14 +385,28 @@ class _LoginWidgetState extends State<LoginWidget> {
                                   if (user == null) {
                                     return;
                                   }
-                                  await Navigator.pushAndRemoveUntil(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          NavBarPage(initialPage: 'HomePage'),
-                                    ),
-                                    (r) => false,
-                                  );
+                                  if (valueOrDefault<bool>(
+                                          currentUserDocument?.existingUser,
+                                          false) !=
+                                      null) {
+                                    await Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            NavBarPage(initialPage: 'HomePage'),
+                                      ),
+                                      (r) => false,
+                                    );
+                                  } else {
+                                    await Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            SecondaryDetailsWidget(),
+                                      ),
+                                      (r) => false,
+                                    );
+                                  }
                                 },
                                 child: Container(
                                   width: 50,
@@ -406,14 +437,28 @@ class _LoginWidgetState extends State<LoginWidget> {
                                 if (user == null) {
                                   return;
                                 }
-                                await Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        NavBarPage(initialPage: 'HomePage'),
-                                  ),
-                                  (r) => false,
-                                );
+                                if (valueOrDefault<bool>(
+                                        currentUserDocument?.existingUser,
+                                        false) !=
+                                    null) {
+                                  await Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          NavBarPage(initialPage: 'HomePage'),
+                                    ),
+                                    (r) => false,
+                                  );
+                                } else {
+                                  await Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          SecondaryDetailsWidget(),
+                                    ),
+                                    (r) => false,
+                                  );
+                                }
                               },
                               child: Container(
                                 width: 50,

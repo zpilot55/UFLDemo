@@ -61,43 +61,93 @@ class _$UsersRecordSerializer implements StructuredSerializer<UsersRecord> {
         ..add(serializers.serialize(value,
             specifiedType: const FullType(String)));
     }
-    value = object.eloAdult;
+    value = object.eloFA;
     if (value != null) {
       result
-        ..add('elo_adult')
+        ..add('elo_FA')
         ..add(serializers.serialize(value, specifiedType: const FullType(int)));
     }
-    value = object.eloYouth;
+    value = object.eloFY;
     if (value != null) {
       result
-        ..add('elo_youth')
+        ..add('elo_FY')
         ..add(serializers.serialize(value, specifiedType: const FullType(int)));
+    }
+    value = object.eloEA;
+    if (value != null) {
+      result
+        ..add('elo_EA')
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
+    }
+    value = object.eloEY;
+    if (value != null) {
+      result
+        ..add('elo_EY')
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
+    }
+    value = object.eloSA;
+    if (value != null) {
+      result
+        ..add('elo_SA')
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
+    }
+    value = object.eloSY;
+    if (value != null) {
+      result
+        ..add('elo_SY')
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
+    }
+    value = object.eloNA;
+    if (value != null) {
+      result
+        ..add('elo_NA')
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
+    }
+    value = object.eloNY;
+    if (value != null) {
+      result
+        ..add('elo_NY')
+        ..add(serializers.serialize(value, specifiedType: const FullType(int)));
+    }
+    value = object.isYouth;
+    if (value != null) {
+      result
+        ..add('isYouth')
+        ..add(
+            serializers.serialize(value, specifiedType: const FullType(bool)));
     }
     value = object.matchesUntilRankedAdult;
     if (value != null) {
       result
-        ..add('matchesUntilRanked_adult')
+        ..add('matchesUntilRankedAdult')
         ..add(serializers.serialize(value, specifiedType: const FullType(int)));
     }
     value = object.matchesUntilRankedYouth;
     if (value != null) {
       result
-        ..add('matchesUntilRanked_youth')
+        ..add('matchesUntilRankedYouth')
         ..add(serializers.serialize(value, specifiedType: const FullType(int)));
     }
-    value = object.isRankedAdult;
+    value = object.existingUser;
     if (value != null) {
       result
-        ..add('isRanked_adult')
+        ..add('existingUser')
         ..add(
             serializers.serialize(value, specifiedType: const FullType(bool)));
     }
-    value = object.isRankedYouth;
+    value = object.dob;
     if (value != null) {
       result
-        ..add('isRanked_youth')
-        ..add(
-            serializers.serialize(value, specifiedType: const FullType(bool)));
+        ..add('dob')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(DateTime)));
+    }
+    value = object.homecountry;
+    if (value != null) {
+      result
+        ..add('homecountry')
+        ..add(serializers.serialize(value,
+            specifiedType: const FullType(String)));
     }
     value = object.ffRef;
     if (value != null) {
@@ -145,29 +195,61 @@ class _$UsersRecordSerializer implements StructuredSerializer<UsersRecord> {
           result.phoneNumber = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String?;
           break;
-        case 'elo_adult':
-          result.eloAdult = serializers.deserialize(value,
+        case 'elo_FA':
+          result.eloFA = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int?;
           break;
-        case 'elo_youth':
-          result.eloYouth = serializers.deserialize(value,
+        case 'elo_FY':
+          result.eloFY = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int?;
           break;
-        case 'matchesUntilRanked_adult':
+        case 'elo_EA':
+          result.eloEA = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
+          break;
+        case 'elo_EY':
+          result.eloEY = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
+          break;
+        case 'elo_SA':
+          result.eloSA = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
+          break;
+        case 'elo_SY':
+          result.eloSY = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
+          break;
+        case 'elo_NA':
+          result.eloNA = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
+          break;
+        case 'elo_NY':
+          result.eloNY = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int?;
+          break;
+        case 'isYouth':
+          result.isYouth = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool?;
+          break;
+        case 'matchesUntilRankedAdult':
           result.matchesUntilRankedAdult = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int?;
           break;
-        case 'matchesUntilRanked_youth':
+        case 'matchesUntilRankedYouth':
           result.matchesUntilRankedYouth = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int?;
           break;
-        case 'isRanked_adult':
-          result.isRankedAdult = serializers.deserialize(value,
+        case 'existingUser':
+          result.existingUser = serializers.deserialize(value,
               specifiedType: const FullType(bool)) as bool?;
           break;
-        case 'isRanked_youth':
-          result.isRankedYouth = serializers.deserialize(value,
-              specifiedType: const FullType(bool)) as bool?;
+        case 'dob':
+          result.dob = serializers.deserialize(value,
+              specifiedType: const FullType(DateTime)) as DateTime?;
+          break;
+        case 'homecountry':
+          result.homecountry = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String?;
           break;
         case 'Document__Reference__Field':
           result.ffRef = serializers.deserialize(value,
@@ -196,17 +278,33 @@ class _$UsersRecord extends UsersRecord {
   @override
   final String? phoneNumber;
   @override
-  final int? eloAdult;
+  final int? eloFA;
   @override
-  final int? eloYouth;
+  final int? eloFY;
+  @override
+  final int? eloEA;
+  @override
+  final int? eloEY;
+  @override
+  final int? eloSA;
+  @override
+  final int? eloSY;
+  @override
+  final int? eloNA;
+  @override
+  final int? eloNY;
+  @override
+  final bool? isYouth;
   @override
   final int? matchesUntilRankedAdult;
   @override
   final int? matchesUntilRankedYouth;
   @override
-  final bool? isRankedAdult;
+  final bool? existingUser;
   @override
-  final bool? isRankedYouth;
+  final DateTime? dob;
+  @override
+  final String? homecountry;
   @override
   final DocumentReference<Object?>? ffRef;
 
@@ -220,12 +318,20 @@ class _$UsersRecord extends UsersRecord {
       this.uid,
       this.createdTime,
       this.phoneNumber,
-      this.eloAdult,
-      this.eloYouth,
+      this.eloFA,
+      this.eloFY,
+      this.eloEA,
+      this.eloEY,
+      this.eloSA,
+      this.eloSY,
+      this.eloNA,
+      this.eloNY,
+      this.isYouth,
       this.matchesUntilRankedAdult,
       this.matchesUntilRankedYouth,
-      this.isRankedAdult,
-      this.isRankedYouth,
+      this.existingUser,
+      this.dob,
+      this.homecountry,
       this.ffRef})
       : super._();
 
@@ -246,12 +352,20 @@ class _$UsersRecord extends UsersRecord {
         uid == other.uid &&
         createdTime == other.createdTime &&
         phoneNumber == other.phoneNumber &&
-        eloAdult == other.eloAdult &&
-        eloYouth == other.eloYouth &&
+        eloFA == other.eloFA &&
+        eloFY == other.eloFY &&
+        eloEA == other.eloEA &&
+        eloEY == other.eloEY &&
+        eloSA == other.eloSA &&
+        eloSY == other.eloSY &&
+        eloNA == other.eloNA &&
+        eloNY == other.eloNY &&
+        isYouth == other.isYouth &&
         matchesUntilRankedAdult == other.matchesUntilRankedAdult &&
         matchesUntilRankedYouth == other.matchesUntilRankedYouth &&
-        isRankedAdult == other.isRankedAdult &&
-        isRankedYouth == other.isRankedYouth &&
+        existingUser == other.existingUser &&
+        dob == other.dob &&
+        homecountry == other.homecountry &&
         ffRef == other.ffRef;
   }
 
@@ -268,18 +382,32 @@ class _$UsersRecord extends UsersRecord {
                                     $jc(
                                         $jc(
                                             $jc(
-                                                $jc($jc(0, email.hashCode),
-                                                    displayName.hashCode),
-                                                photoUrl.hashCode),
-                                            uid.hashCode),
-                                        createdTime.hashCode),
-                                    phoneNumber.hashCode),
-                                eloAdult.hashCode),
-                            eloYouth.hashCode),
-                        matchesUntilRankedAdult.hashCode),
-                    matchesUntilRankedYouth.hashCode),
-                isRankedAdult.hashCode),
-            isRankedYouth.hashCode),
+                                                $jc(
+                                                    $jc(
+                                                        $jc(
+                                                            $jc(
+                                                                $jc(
+                                                                    $jc(
+                                                                        $jc(
+                                                                            $jc($jc($jc(0, email.hashCode), displayName.hashCode),
+                                                                                photoUrl.hashCode),
+                                                                            uid.hashCode),
+                                                                        createdTime.hashCode),
+                                                                    phoneNumber.hashCode),
+                                                                eloFA.hashCode),
+                                                            eloFY.hashCode),
+                                                        eloEA.hashCode),
+                                                    eloEY.hashCode),
+                                                eloSA.hashCode),
+                                            eloSY.hashCode),
+                                        eloNA.hashCode),
+                                    eloNY.hashCode),
+                                isYouth.hashCode),
+                            matchesUntilRankedAdult.hashCode),
+                        matchesUntilRankedYouth.hashCode),
+                    existingUser.hashCode),
+                dob.hashCode),
+            homecountry.hashCode),
         ffRef.hashCode));
   }
 
@@ -292,12 +420,20 @@ class _$UsersRecord extends UsersRecord {
           ..add('uid', uid)
           ..add('createdTime', createdTime)
           ..add('phoneNumber', phoneNumber)
-          ..add('eloAdult', eloAdult)
-          ..add('eloYouth', eloYouth)
+          ..add('eloFA', eloFA)
+          ..add('eloFY', eloFY)
+          ..add('eloEA', eloEA)
+          ..add('eloEY', eloEY)
+          ..add('eloSA', eloSA)
+          ..add('eloSY', eloSY)
+          ..add('eloNA', eloNA)
+          ..add('eloNY', eloNY)
+          ..add('isYouth', isYouth)
           ..add('matchesUntilRankedAdult', matchesUntilRankedAdult)
           ..add('matchesUntilRankedYouth', matchesUntilRankedYouth)
-          ..add('isRankedAdult', isRankedAdult)
-          ..add('isRankedYouth', isRankedYouth)
+          ..add('existingUser', existingUser)
+          ..add('dob', dob)
+          ..add('homecountry', homecountry)
           ..add('ffRef', ffRef))
         .toString();
   }
@@ -330,13 +466,41 @@ class UsersRecordBuilder implements Builder<UsersRecord, UsersRecordBuilder> {
   String? get phoneNumber => _$this._phoneNumber;
   set phoneNumber(String? phoneNumber) => _$this._phoneNumber = phoneNumber;
 
-  int? _eloAdult;
-  int? get eloAdult => _$this._eloAdult;
-  set eloAdult(int? eloAdult) => _$this._eloAdult = eloAdult;
+  int? _eloFA;
+  int? get eloFA => _$this._eloFA;
+  set eloFA(int? eloFA) => _$this._eloFA = eloFA;
 
-  int? _eloYouth;
-  int? get eloYouth => _$this._eloYouth;
-  set eloYouth(int? eloYouth) => _$this._eloYouth = eloYouth;
+  int? _eloFY;
+  int? get eloFY => _$this._eloFY;
+  set eloFY(int? eloFY) => _$this._eloFY = eloFY;
+
+  int? _eloEA;
+  int? get eloEA => _$this._eloEA;
+  set eloEA(int? eloEA) => _$this._eloEA = eloEA;
+
+  int? _eloEY;
+  int? get eloEY => _$this._eloEY;
+  set eloEY(int? eloEY) => _$this._eloEY = eloEY;
+
+  int? _eloSA;
+  int? get eloSA => _$this._eloSA;
+  set eloSA(int? eloSA) => _$this._eloSA = eloSA;
+
+  int? _eloSY;
+  int? get eloSY => _$this._eloSY;
+  set eloSY(int? eloSY) => _$this._eloSY = eloSY;
+
+  int? _eloNA;
+  int? get eloNA => _$this._eloNA;
+  set eloNA(int? eloNA) => _$this._eloNA = eloNA;
+
+  int? _eloNY;
+  int? get eloNY => _$this._eloNY;
+  set eloNY(int? eloNY) => _$this._eloNY = eloNY;
+
+  bool? _isYouth;
+  bool? get isYouth => _$this._isYouth;
+  set isYouth(bool? isYouth) => _$this._isYouth = isYouth;
 
   int? _matchesUntilRankedAdult;
   int? get matchesUntilRankedAdult => _$this._matchesUntilRankedAdult;
@@ -348,15 +512,17 @@ class UsersRecordBuilder implements Builder<UsersRecord, UsersRecordBuilder> {
   set matchesUntilRankedYouth(int? matchesUntilRankedYouth) =>
       _$this._matchesUntilRankedYouth = matchesUntilRankedYouth;
 
-  bool? _isRankedAdult;
-  bool? get isRankedAdult => _$this._isRankedAdult;
-  set isRankedAdult(bool? isRankedAdult) =>
-      _$this._isRankedAdult = isRankedAdult;
+  bool? _existingUser;
+  bool? get existingUser => _$this._existingUser;
+  set existingUser(bool? existingUser) => _$this._existingUser = existingUser;
 
-  bool? _isRankedYouth;
-  bool? get isRankedYouth => _$this._isRankedYouth;
-  set isRankedYouth(bool? isRankedYouth) =>
-      _$this._isRankedYouth = isRankedYouth;
+  DateTime? _dob;
+  DateTime? get dob => _$this._dob;
+  set dob(DateTime? dob) => _$this._dob = dob;
+
+  String? _homecountry;
+  String? get homecountry => _$this._homecountry;
+  set homecountry(String? homecountry) => _$this._homecountry = homecountry;
 
   DocumentReference<Object?>? _ffRef;
   DocumentReference<Object?>? get ffRef => _$this._ffRef;
@@ -375,12 +541,20 @@ class UsersRecordBuilder implements Builder<UsersRecord, UsersRecordBuilder> {
       _uid = $v.uid;
       _createdTime = $v.createdTime;
       _phoneNumber = $v.phoneNumber;
-      _eloAdult = $v.eloAdult;
-      _eloYouth = $v.eloYouth;
+      _eloFA = $v.eloFA;
+      _eloFY = $v.eloFY;
+      _eloEA = $v.eloEA;
+      _eloEY = $v.eloEY;
+      _eloSA = $v.eloSA;
+      _eloSY = $v.eloSY;
+      _eloNA = $v.eloNA;
+      _eloNY = $v.eloNY;
+      _isYouth = $v.isYouth;
       _matchesUntilRankedAdult = $v.matchesUntilRankedAdult;
       _matchesUntilRankedYouth = $v.matchesUntilRankedYouth;
-      _isRankedAdult = $v.isRankedAdult;
-      _isRankedYouth = $v.isRankedYouth;
+      _existingUser = $v.existingUser;
+      _dob = $v.dob;
+      _homecountry = $v.homecountry;
       _ffRef = $v.ffRef;
       _$v = null;
     }
@@ -410,12 +584,20 @@ class UsersRecordBuilder implements Builder<UsersRecord, UsersRecordBuilder> {
             uid: uid,
             createdTime: createdTime,
             phoneNumber: phoneNumber,
-            eloAdult: eloAdult,
-            eloYouth: eloYouth,
+            eloFA: eloFA,
+            eloFY: eloFY,
+            eloEA: eloEA,
+            eloEY: eloEY,
+            eloSA: eloSA,
+            eloSY: eloSY,
+            eloNA: eloNA,
+            eloNY: eloNY,
+            isYouth: isYouth,
             matchesUntilRankedAdult: matchesUntilRankedAdult,
             matchesUntilRankedYouth: matchesUntilRankedYouth,
-            isRankedAdult: isRankedAdult,
-            isRankedYouth: isRankedYouth,
+            existingUser: existingUser,
+            dob: dob,
+            homecountry: homecountry,
             ffRef: ffRef);
     replace(_$result);
     return _$result;

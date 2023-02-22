@@ -1,7 +1,7 @@
 // Export pages
 export 'login/login_widget.dart' show LoginWidget;
-export 'register/register_widget.dart' show RegisterWidget;
 export 'verify/verify_widget.dart' show VerifyWidget;
+export 'register/register_widget.dart' show RegisterWidget;
 export 'home_page/home_page_widget.dart' show HomePageWidget;
 export 'match_history/match_history_widget.dart' show MatchHistoryWidget;
 export 'match_recap/match_recap_widget.dart' show MatchRecapWidget;
@@ -21,3 +21,5 @@ export 'ref_setup/ref_setup_widget.dart' show RefSetupWidget;
 export 'ref_view/ref_view_widget.dart' show RefViewWidget;
 export 'ref_match_recap_events/ref_match_recap_events_widget.dart'
     show RefMatchRecapEventsWidget;
+export 'secondary_details/secondary_details_widget.dart'
+    show SecondaryDetailsWidget;

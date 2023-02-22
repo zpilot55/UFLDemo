@@ -25,23 +25,41 @@ abstract class UsersRecord implements Built<UsersRecord, UsersRecordBuilder> {
   @BuiltValueField(wireName: 'phone_number')
   String? get phoneNumber;
 
-  @BuiltValueField(wireName: 'elo_adult')
-  int? get eloAdult;
+  @BuiltValueField(wireName: 'elo_FA')
+  int? get eloFA;
 
-  @BuiltValueField(wireName: 'elo_youth')
-  int? get eloYouth;
+  @BuiltValueField(wireName: 'elo_FY')
+  int? get eloFY;
 
-  @BuiltValueField(wireName: 'matchesUntilRanked_adult')
+  @BuiltValueField(wireName: 'elo_EA')
+  int? get eloEA;
+
+  @BuiltValueField(wireName: 'elo_EY')
+  int? get eloEY;
+
+  @BuiltValueField(wireName: 'elo_SA')
+  int? get eloSA;
+
+  @BuiltValueField(wireName: 'elo_SY')
+  int? get eloSY;
+
+  @BuiltValueField(wireName: 'elo_NA')
+  int? get eloNA;
+
+  @BuiltValueField(wireName: 'elo_NY')
+  int? get eloNY;
+
+  bool? get isYouth;
+
   int? get matchesUntilRankedAdult;
 
-  @BuiltValueField(wireName: 'matchesUntilRanked_youth')
   int? get matchesUntilRankedYouth;
 
-  @BuiltValueField(wireName: 'isRanked_adult')
-  bool? get isRankedAdult;
+  bool? get existingUser;
 
-  @BuiltValueField(wireName: 'isRanked_youth')
-  bool? get isRankedYouth;
+  DateTime? get dob;
+
+  String? get homecountry;
 
   @BuiltValueField(wireName: kDocumentReferenceField)
   DocumentReference? get ffRef;
@@ -53,12 +71,19 @@ abstract class UsersRecord implements Built<UsersRecord, UsersRecordBuilder> {
     ..photoUrl = ''
     ..uid = ''
     ..phoneNumber = ''
-    ..eloAdult = 0
-    ..eloYouth = 0
+    ..eloFA = 0
+    ..eloFY = 0
+    ..eloEA = 0
+    ..eloEY = 0
+    ..eloSA = 0
+    ..eloSY = 0
+    ..eloNA = 0
+    ..eloNY = 0
+    ..isYouth = false
     ..matchesUntilRankedAdult = 0
     ..matchesUntilRankedYouth = 0
-    ..isRankedAdult = false
-    ..isRankedYouth = false;
+    ..existingUser = false
+    ..homecountry = '';
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('users');
@@ -88,12 +113,20 @@ Map<String, dynamic> createUsersRecordData({
   String? uid,
   DateTime? createdTime,
   String? phoneNumber,
-  int? eloAdult,
-  int? eloYouth,
+  int? eloFA,
+  int? eloFY,
+  int? eloEA,
+  int? eloEY,
+  int? eloSA,
+  int? eloSY,
+  int? eloNA,
+  int? eloNY,
+  bool? isYouth,
   int? matchesUntilRankedAdult,
   int? matchesUntilRankedYouth,
-  bool? isRankedAdult,
-  bool? isRankedYouth,
+  bool? existingUser,
+  DateTime? dob,
+  String? homecountry,
 }) {
   final firestoreData = serializers.toFirestore(
     UsersRecord.serializer,
@@ -105,12 +138,20 @@ Map<String, dynamic> createUsersRecordData({
         ..uid = uid
         ..createdTime = createdTime
         ..phoneNumber = phoneNumber
-        ..eloAdult = eloAdult
-        ..eloYouth = eloYouth
+        ..eloFA = eloFA
+        ..eloFY = eloFY
+        ..eloEA = eloEA
+        ..eloEY = eloEY
+        ..eloSA = eloSA
+        ..eloSY = eloSY
+        ..eloNA = eloNA
+        ..eloNY = eloNY
+        ..isYouth = isYouth
         ..matchesUntilRankedAdult = matchesUntilRankedAdult
         ..matchesUntilRankedYouth = matchesUntilRankedYouth
-        ..isRankedAdult = isRankedAdult
-        ..isRankedYouth = isRankedYouth,
+        ..existingUser = existingUser
+        ..dob = dob
+        ..homecountry = homecountry,
     ),
   );
 

@@ -3,7 +3,7 @@ import '../backend/backend.dart';
 import '../flutter_flow/flutter_flow_theme.dart';
 import '../flutter_flow/flutter_flow_util.dart';
 import '../flutter_flow/flutter_flow_widgets.dart';
-import '../main.dart';
+import '../secondary_details/secondary_details_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -30,7 +30,6 @@ class _RegisterWidgetState extends State<RegisterWidget> {
 
     _model.firstNameController ??= TextEditingController();
     _model.lastNameController ??= TextEditingController();
-    _model.dobController ??= TextEditingController();
     _model.emailController ??= TextEditingController();
     _model.passwordController ??= TextEditingController();
     _model.retypedController ??= TextEditingController();
@@ -80,9 +79,9 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Image.asset(
-                          'assets/images/logoRobin@3x.png',
-                          width: 242,
-                          height: 60,
+                          'assets/images/S_Class_Logo_Orange.png',
+                          width: 120,
+                          height: 120,
                           fit: BoxFit.cover,
                         ),
                       ],
@@ -248,83 +247,6 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                       children: [
                         Expanded(
                           child: TextFormField(
-                            controller: _model.dobController,
-                            obscureText: false,
-                            decoration: InputDecoration(
-                              labelText: 'Date of Birth',
-                              labelStyle: FlutterFlowTheme.of(context)
-                                  .bodyText1
-                                  .override(
-                                    fontFamily: 'Lexend Deca',
-                                    color: Color(0xFF95A1AC),
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                              hintText: 'Enter your date of birth...',
-                              hintStyle: FlutterFlowTheme.of(context)
-                                  .bodyText1
-                                  .override(
-                                    fontFamily: 'Lexend Deca',
-                                    color: Color(0xFF95A1AC),
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.normal,
-                                  ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Color(0xFFDBE2E7),
-                                  width: 2,
-                                ),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Color(0x00000000),
-                                  width: 2,
-                                ),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              errorBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Color(0x00000000),
-                                  width: 2,
-                                ),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              focusedErrorBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Color(0x00000000),
-                                  width: 2,
-                                ),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              filled: true,
-                              fillColor: Colors.white,
-                              contentPadding:
-                                  EdgeInsetsDirectional.fromSTEB(16, 24, 0, 24),
-                            ),
-                            style:
-                                FlutterFlowTheme.of(context).bodyText1.override(
-                                      fontFamily: 'Lexend Deca',
-                                      color: Color(0xFF2B343A),
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.normal,
-                                    ),
-                            keyboardType: TextInputType.datetime,
-                            validator: _model.dobControllerValidator
-                                .asValidator(context),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: TextFormField(
                             controller: _model.emailController,
                             obscureText: false,
                             decoration: InputDecoration(
@@ -413,7 +335,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                     fontSize: 14,
                                     fontWeight: FontWeight.normal,
                                   ),
-                              hintText: 'Enter your email here...',
+                              hintText: 'Enter your password here...',
                               hintStyle: FlutterFlowTheme.of(context)
                                   .bodyText1
                                   .override(
@@ -503,7 +425,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                     fontSize: 14,
                                     fontWeight: FontWeight.normal,
                                   ),
-                              hintText: 'Enter your email here...',
+                              hintText: 'Retype your password here...',
                               hintStyle: FlutterFlowTheme.of(context)
                                   .bodyText1
                                   .override(
@@ -608,12 +530,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                   '${_model.firstNameController.text} ${_model.lastNameController.text}',
                               photoUrl:
                                   'https://firebasestorage.googleapis.com/v0/b/universalfencingleague.appspot.com/o/Fencer_silhouette.png?alt=media&token=7ae87fd2-6264-446f-abbf-c4a7d8d5b642',
-                              eloAdult: 1000,
-                              eloYouth: 1000,
-                              matchesUntilRankedAdult: 5,
-                              matchesUntilRankedYouth: 5,
-                              isRankedAdult: false,
-                              isRankedYouth: false,
+                              createdTime: getCurrentTimestamp,
                             );
                             await UsersRecord.collection
                                 .doc(user.uid)
@@ -622,13 +539,12 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                             await Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                    NavBarPage(initialPage: 'HomePage'),
+                                builder: (context) => SecondaryDetailsWidget(),
                               ),
                               (r) => false,
                             );
                           },
-                          text: 'Register',
+                          text: 'Continue',
                           options: FFButtonOptions(
                             width: 130,
                             height: 60,

@@ -16,13 +16,7 @@ class MatchHistoryModel extends FlutterFlowModel {
   // Model for Col_mainDrawer component.
   late ColMainDrawerModel colMainDrawerModel;
   // State field(s) for DropDown widget.
-  String? dropDownValue1;
-  // State field(s) for DropDown widget.
-  String? dropDownValue2;
-  // State field(s) for DropDown widget.
-  String? dropDownValue3;
-  // State field(s) for DropDown widget.
-  String? dropDownValue4;
+  String? dropDownValue;
   // State field(s) for ListView widget.
   PagingController<DocumentSnapshot?, MatchesDevRecord>? pagingController;
   Query? pagingQuery;

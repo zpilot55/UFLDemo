@@ -60,7 +60,7 @@ class _RankingsWidgetState extends State<RankingsWidget> {
         child: GestureDetector(
           onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
           child: DefaultTabController(
-            length: 3,
+            length: 4,
             initialIndex: 0,
             child: Column(
               children: [
@@ -70,61 +70,97 @@ class _RankingsWidgetState extends State<RankingsWidget> {
                   indicatorColor: FlutterFlowTheme.of(context).secondaryColor,
                   tabs: [
                     Tab(
-                      text: 'Club',
+                      text: 'Foil',
                     ),
                     Tab(
-                      text: 'Country',
+                      text: 'Epee',
                     ),
                     Tab(
-                      text: 'World',
+                      text: 'Sabre',
+                    ),
+                    Tab(
+                      text: 'Noodle',
                     ),
                   ],
                 ),
                 Expanded(
                   child: TabBarView(
                     children: [
-                      Column(
+                      Row(
                         mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Row(
+                          Column(
                             mainAxisSize: MainAxisSize.max,
                             children: [
-                              Text(
-                                'Your Club Ranking: ',
-                                style: FlutterFlowTheme.of(context).subtitle1,
+                              Row(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0, 0, 0, 10),
+                                    child: Text(
+                                      'Club Ranking:',
+                                      style: FlutterFlowTheme.of(context)
+                                          .subtitle1,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Container(
+                                width: MediaQuery.of(context).size.width * 0.3,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.7,
+                                decoration: BoxDecoration(
+                                  color: FlutterFlowTheme.of(context)
+                                      .secondaryBackground,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Row(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0, 0, 0, 10),
+                                    child: Text(
+                                      'Country Ranking:',
+                                      style: FlutterFlowTheme.of(context)
+                                          .subtitle1,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          Column(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Row(
+                                mainAxisSize: MainAxisSize.max,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0, 0, 0, 10),
+                                    child: Text(
+                                      'World Ranking:',
+                                      style: FlutterFlowTheme.of(context)
+                                          .subtitle1,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
                         ],
                       ),
-                      Column(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Text(
-                                'Your Country Ranking: ',
-                                style: FlutterFlowTheme.of(context).subtitle1,
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      Column(
-                        mainAxisSize: MainAxisSize.max,
-                        children: [
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Text(
-                                'Your World Ranking: ',
-                                style: FlutterFlowTheme.of(context).subtitle1,
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
+                      Container(),
+                      Container(),
+                      Container(),
                     ],
                   ),
                 ),
