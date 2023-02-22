@@ -270,8 +270,8 @@ class _LoginWidgetState extends State<LoginWidget> {
                               return;
                             }
 
-                            if (currentUserReference.id != null &&
-                                currentUserReference.id != '') {
+                            if (currentUserReference?.id != null &&
+                                currentUserReference?.id != '') {
                               await Navigator.pushAndRemoveUntil(
                                 context,
                                 MaterialPageRoute(
