@@ -84,12 +84,12 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                 padding: EdgeInsetsDirectional.fromSTEB(10, 10, 10, 0),
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     FlutterFlowDropDown<String>(
-                      options: ['Option 1'],
+                      options: ['Opponent', 'Weapon', 'Date', 'Ranking'],
                       onChanged: (val) =>
-                          setState(() => _model.dropDownValue1 = val),
+                          setState(() => _model.dropDownValue = val),
                       width: 180,
                       height: 50,
                       textStyle:
@@ -97,67 +97,7 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                                 fontFamily: 'Poppins',
                                 color: Colors.black,
                               ),
-                      hintText: 'Opponent',
-                      fillColor: Colors.white,
-                      elevation: 2,
-                      borderColor: FlutterFlowTheme.of(context).black600,
-                      borderWidth: 0,
-                      borderRadius: 0,
-                      margin: EdgeInsetsDirectional.fromSTEB(12, 4, 12, 4),
-                      hidesUnderline: true,
-                    ),
-                    FlutterFlowDropDown<String>(
-                      options: ['Option 1'],
-                      onChanged: (val) =>
-                          setState(() => _model.dropDownValue2 = val),
-                      width: 180,
-                      height: 50,
-                      textStyle:
-                          FlutterFlowTheme.of(context).bodyText1.override(
-                                fontFamily: 'Poppins',
-                                color: Colors.black,
-                              ),
-                      hintText: 'Weapon',
-                      fillColor: Colors.white,
-                      elevation: 2,
-                      borderColor: FlutterFlowTheme.of(context).black600,
-                      borderWidth: 0,
-                      borderRadius: 0,
-                      margin: EdgeInsetsDirectional.fromSTEB(12, 4, 12, 4),
-                      hidesUnderline: true,
-                    ),
-                    FlutterFlowDropDown<String>(
-                      options: ['Option 1'],
-                      onChanged: (val) =>
-                          setState(() => _model.dropDownValue3 = val),
-                      width: 180,
-                      height: 50,
-                      textStyle:
-                          FlutterFlowTheme.of(context).bodyText1.override(
-                                fontFamily: 'Poppins',
-                                color: Colors.black,
-                              ),
-                      hintText: 'Date',
-                      fillColor: Colors.white,
-                      elevation: 2,
-                      borderColor: FlutterFlowTheme.of(context).black600,
-                      borderWidth: 0,
-                      borderRadius: 0,
-                      margin: EdgeInsetsDirectional.fromSTEB(12, 4, 12, 4),
-                      hidesUnderline: true,
-                    ),
-                    FlutterFlowDropDown<String>(
-                      options: ['Option 1'],
-                      onChanged: (val) =>
-                          setState(() => _model.dropDownValue4 = val),
-                      width: 180,
-                      height: 50,
-                      textStyle:
-                          FlutterFlowTheme.of(context).bodyText1.override(
-                                fontFamily: 'Poppins',
-                                color: Colors.black,
-                              ),
-                      hintText: 'Ranking',
+                      hintText: 'Filters',
                       fillColor: Colors.white,
                       elevation: 2,
                       borderColor: FlutterFlowTheme.of(context).black600,

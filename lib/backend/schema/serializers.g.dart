@@ -13,7 +13,6 @@ Serializers _$serializers = (new Serializers().toBuilder()
       ..add(MatchdetailsDevRecord.serializer)
       ..add(MatchesDevRecord.serializer)
       ..add(MatchstatslogDevRecord.serializer)
-      ..add(PeriodStatsStruct.serializer)
       ..add(StatlineStruct.serializer)
       ..add(UsersRecord.serializer)
       ..addBuilderFactory(
