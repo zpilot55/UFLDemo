@@ -171,10 +171,17 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
                     children: [
-                      AuthUserStreamWidget(
-                        builder: (context) => Text(
-                          'You have fenced ${valueOrDefault(currentUserDocument?.eloFA, 0).toString()} ranked foil matches (10 needed for leaderboard)',
-                          style: FlutterFlowTheme.of(context).bodyText1,
+                      Container(
+                        width: MediaQuery.of(context).size.width * 1.0,
+                        height: 100.0,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                        ),
+                        child: AuthUserStreamWidget(
+                          builder: (context) => Text(
+                            'You have fenced ${valueOrDefault(currentUserDocument?.numRankedFA, 0).toString()} ranked foil matches (10 needed for leaderboard)',
+                            style: FlutterFlowTheme.of(context).bodyText1,
+                          ),
                         ),
                       ),
                     ],
