@@ -1,8 +1,8 @@
-import '../backend/backend.dart';
-import '../flutter_flow/flutter_flow_theme.dart';
-import '../flutter_flow/flutter_flow_util.dart';
-import '../flutter_flow/flutter_flow_widgets.dart';
-import '../custom_code/actions/index.dart' as actions;
+import '/backend/backend.dart';
+import '/flutter_flow/flutter_flow_theme.dart';
+import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_widgets.dart';
+import '/custom_code/actions/index.dart' as actions;
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -49,8 +49,8 @@ class _SelectFencerWidgetState extends State<SelectFencerWidget> {
         if (!snapshot.hasData) {
           return Center(
             child: SizedBox(
-              width: 50,
-              height: 50,
+              width: 50.0,
+              height: 50.0,
               child: CircularProgressIndicator(
                 color: FlutterFlowTheme.of(context).primaryColor,
               ),
@@ -66,7 +66,7 @@ class _SelectFencerWidgetState extends State<SelectFencerWidget> {
             automaticallyImplyLeading: true,
             actions: [],
             centerTitle: true,
-            elevation: 4,
+            elevation: 4.0,
           ),
           body: SafeArea(
             child: GestureDetector(
@@ -130,28 +130,33 @@ class _SelectFencerWidgetState extends State<SelectFencerWidget> {
                         },
                         text: 'Click to Scan QR Code',
                         options: FFButtonOptions(
-                          width: 300,
-                          height: 50,
+                          width: 300.0,
+                          height: 50.0,
+                          padding: EdgeInsetsDirectional.fromSTEB(
+                              0.0, 0.0, 0.0, 0.0),
+                          iconPadding: EdgeInsetsDirectional.fromSTEB(
+                              0.0, 0.0, 0.0, 0.0),
                           color: FlutterFlowTheme.of(context).primaryColor,
                           textStyle:
                               FlutterFlowTheme.of(context).subtitle1.override(
                                     fontFamily: 'Lexend Deca',
                                     color: Colors.white,
-                                    fontSize: 18,
+                                    fontSize: 18.0,
                                     fontWeight: FontWeight.bold,
                                   ),
-                          elevation: 3,
+                          elevation: 3.0,
                           borderSide: BorderSide(
                             color: Colors.transparent,
-                            width: 1,
+                            width: 1.0,
                           ),
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(8.0),
                         ),
                       ),
                     ],
                   ),
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 10),
+                    padding:
+                        EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       children: [
@@ -166,7 +171,8 @@ class _SelectFencerWidgetState extends State<SelectFencerWidget> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 10),
+                    padding:
+                        EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 10.0),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       children: [
@@ -185,14 +191,15 @@ class _SelectFencerWidgetState extends State<SelectFencerWidget> {
                           FFAppState().currentFencerPicURL,
                           'https://firebasestorage.googleapis.com/v0/b/universalfencingleague.appspot.com/o/Fencer_silhouette.png?alt=media&token=7ae87fd2-6264-446f-abbf-c4a7d8d5b642',
                         ),
-                        width: 200,
-                        height: 200,
+                        width: 200.0,
+                        height: 200.0,
                         fit: BoxFit.cover,
                       ),
                     ],
                   ),
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 200, 0, 0),
+                    padding:
+                        EdgeInsetsDirectional.fromSTEB(0.0, 200.0, 0.0, 0.0),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -240,8 +247,12 @@ class _SelectFencerWidgetState extends State<SelectFencerWidget> {
                               },
                               text: 'Confirm',
                               options: FFButtonOptions(
-                                width: 130,
-                                height: 40,
+                                width: 130.0,
+                                height: 40.0,
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 0.0, 0.0, 0.0),
+                                iconPadding: EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 0.0, 0.0, 0.0),
                                 color: Color(0xFF00FF00),
                                 textStyle: FlutterFlowTheme.of(context)
                                     .subtitle2
@@ -251,9 +262,9 @@ class _SelectFencerWidgetState extends State<SelectFencerWidget> {
                                     ),
                                 borderSide: BorderSide(
                                   color: Colors.black,
-                                  width: 3,
+                                  width: 3.0,
                                 ),
-                                borderRadius: BorderRadius.circular(8),
+                                borderRadius: BorderRadius.circular(8.0),
                               ),
                             ),
                           ],
@@ -267,8 +278,12 @@ class _SelectFencerWidgetState extends State<SelectFencerWidget> {
                               },
                               text: 'Cancel',
                               options: FFButtonOptions(
-                                width: 130,
-                                height: 40,
+                                width: 130.0,
+                                height: 40.0,
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 0.0, 0.0, 0.0),
+                                iconPadding: EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 0.0, 0.0, 0.0),
                                 color: Color(0xFFFF0000),
                                 textStyle: FlutterFlowTheme.of(context)
                                     .subtitle2
@@ -278,9 +293,9 @@ class _SelectFencerWidgetState extends State<SelectFencerWidget> {
                                     ),
                                 borderSide: BorderSide(
                                   color: Colors.black,
-                                  width: 3,
+                                  width: 3.0,
                                 ),
-                                borderRadius: BorderRadius.circular(8),
+                                borderRadius: BorderRadius.circular(8.0),
                               ),
                             ),
                           ],

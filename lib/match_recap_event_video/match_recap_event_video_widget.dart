@@ -1,7 +1,7 @@
-import '../flutter_flow/flutter_flow_icon_button.dart';
-import '../flutter_flow/flutter_flow_theme.dart';
-import '../flutter_flow/flutter_flow_util.dart';
-import '../flutter_flow/flutter_flow_video_player.dart';
+import '/flutter_flow/flutter_flow_icon_button.dart';
+import '/flutter_flow/flutter_flow_theme.dart';
+import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_video_player.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -52,13 +52,13 @@ class _MatchRecapEventVideoWidgetState
         automaticallyImplyLeading: false,
         leading: FlutterFlowIconButton(
           borderColor: Colors.transparent,
-          borderRadius: 30,
-          borderWidth: 1,
-          buttonSize: 60,
+          borderRadius: 30.0,
+          borderWidth: 1.0,
+          buttonSize: 60.0,
           icon: Icon(
             Icons.arrow_back_rounded,
             color: FlutterFlowTheme.of(context).primaryText,
-            size: 30,
+            size: 30.0,
           ),
           onPressed: () async {
             Navigator.pop(context);
@@ -69,12 +69,12 @@ class _MatchRecapEventVideoWidgetState
           style: FlutterFlowTheme.of(context).title2.override(
                 fontFamily: 'Poppins',
                 color: FlutterFlowTheme.of(context).primaryText,
-                fontSize: 22,
+                fontSize: 22.0,
               ),
         ),
         actions: [],
         centerTitle: false,
-        elevation: 0,
+        elevation: 0.0,
       ),
       body: FlutterFlowVideoPlayer(
         path: widget.videoURL!,

@@ -33,6 +33,7 @@ dependencies:
   cloud_firestore: 4.2.0
   cloud_firestore_platform_interface: 5.9.1
   cloud_firestore_web: 3.1.1
+  data_table_2: 2.3.10
   firebase_auth: 4.2.0
   firebase_auth_platform_interface: 6.11.4
   firebase_auth_web: 5.2.0

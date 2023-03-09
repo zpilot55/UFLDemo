@@ -92,8 +92,8 @@ class _MyAppState extends State<MyApp> {
           ? Builder(
               builder: (context) => Center(
                 child: SizedBox(
-                  width: 50,
-                  height: 50,
+                  width: 50.0,
+                  height: 50.0,
                   child: CircularProgressIndicator(
                     color: FlutterFlowTheme.of(context).primaryColor,
                   ),
@@ -156,7 +156,7 @@ class _NavBarPageState extends State<NavBarPage> {
           BottomNavigationBarItem(
             icon: Icon(
               Icons.home_outlined,
-              size: 24,
+              size: 24.0,
             ),
             label: 'Home',
             tooltip: '',
@@ -164,7 +164,7 @@ class _NavBarPageState extends State<NavBarPage> {
           BottomNavigationBarItem(
             icon: Icon(
               Icons.history,
-              size: 24,
+              size: 24.0,
             ),
             label: 'Match History',
             tooltip: '',
@@ -172,7 +172,7 @@ class _NavBarPageState extends State<NavBarPage> {
           BottomNavigationBarItem(
             icon: Icon(
               Icons.people,
-              size: 24,
+              size: 24.0,
             ),
             label: 'My Club',
             tooltip: '',
@@ -180,7 +180,7 @@ class _NavBarPageState extends State<NavBarPage> {
           BottomNavigationBarItem(
             icon: Icon(
               Icons.format_list_numbered,
-              size: 24,
+              size: 24.0,
             ),
             label: 'Rankings',
             tooltip: '',

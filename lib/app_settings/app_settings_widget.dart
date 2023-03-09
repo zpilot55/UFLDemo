@@ -1,7 +1,7 @@
-import '../flutter_flow/flutter_flow_icon_button.dart';
-import '../flutter_flow/flutter_flow_theme.dart';
-import '../flutter_flow/flutter_flow_util.dart';
-import '../flutter_flow/flutter_flow_widgets.dart';
+import '/flutter_flow/flutter_flow_icon_button.dart';
+import '/flutter_flow/flutter_flow_theme.dart';
+import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -45,12 +45,12 @@ class _AppSettingsWidgetState extends State<AppSettingsWidget> {
         automaticallyImplyLeading: false,
         leading: FlutterFlowIconButton(
           borderColor: Colors.transparent,
-          borderRadius: 30,
-          buttonSize: 46,
+          borderRadius: 30.0,
+          buttonSize: 46.0,
           icon: Icon(
             Icons.arrow_back_rounded,
             color: Colors.white,
-            size: 24,
+            size: 24.0,
           ),
           onPressed: () async {
             Navigator.pop(context);
@@ -61,19 +61,19 @@ class _AppSettingsWidgetState extends State<AppSettingsWidget> {
           style: FlutterFlowTheme.of(context).bodyText1.override(
                 fontFamily: 'Lexend Deca',
                 color: Colors.white,
-                fontSize: 20,
+                fontSize: 20.0,
                 fontWeight: FontWeight.normal,
               ),
         ),
         actions: [],
         centerTitle: false,
-        elevation: 0,
+        elevation: 0.0,
       ),
       body: Column(
         mainAxisSize: MainAxisSize.max,
         children: [
           Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(20, 0, 20, 0),
+            padding: EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 20.0, 0.0),
             child: Row(
               mainAxisSize: MainAxisSize.max,
               children: [
@@ -83,7 +83,7 @@ class _AppSettingsWidgetState extends State<AppSettingsWidget> {
                     style: FlutterFlowTheme.of(context).bodyText2.override(
                           fontFamily: 'Lexend Deca',
                           color: Color(0xFF8B97A2),
-                          fontSize: 14,
+                          fontSize: 14.0,
                           fontWeight: FontWeight.normal,
                         ),
                   ),
@@ -92,7 +92,7 @@ class _AppSettingsWidgetState extends State<AppSettingsWidget> {
             ),
           ),
           Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(0, 12, 0, 0),
+            padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
             child: SwitchListTile.adaptive(
               value: _model.switchListTileValue1 ??= true,
               onChanged: (newValue) async {
@@ -103,7 +103,7 @@ class _AppSettingsWidgetState extends State<AppSettingsWidget> {
                 style: FlutterFlowTheme.of(context).title3.override(
                       fontFamily: 'Lexend Deca',
                       color: FlutterFlowTheme.of(context).primaryText,
-                      fontSize: 20,
+                      fontSize: 20.0,
                       fontWeight: FontWeight.bold,
                     ),
               ),
@@ -112,7 +112,7 @@ class _AppSettingsWidgetState extends State<AppSettingsWidget> {
                 style: FlutterFlowTheme.of(context).bodyText1.override(
                       fontFamily: 'Lexend Deca',
                       color: Color(0xFF8B97A2),
-                      fontSize: 14,
+                      fontSize: 14.0,
                       fontWeight: FontWeight.normal,
                     ),
               ),
@@ -120,7 +120,8 @@ class _AppSettingsWidgetState extends State<AppSettingsWidget> {
               activeTrackColor: Color(0xFF3B2DB6),
               dense: false,
               controlAffinity: ListTileControlAffinity.trailing,
-              contentPadding: EdgeInsetsDirectional.fromSTEB(24, 12, 24, 12),
+              contentPadding:
+                  EdgeInsetsDirectional.fromSTEB(24.0, 12.0, 24.0, 12.0),
             ),
           ),
           SwitchListTile.adaptive(
@@ -133,7 +134,7 @@ class _AppSettingsWidgetState extends State<AppSettingsWidget> {
               style: FlutterFlowTheme.of(context).title3.override(
                     fontFamily: 'Lexend Deca',
                     color: FlutterFlowTheme.of(context).primaryText,
-                    fontSize: 20,
+                    fontSize: 20.0,
                     fontWeight: FontWeight.bold,
                   ),
             ),
@@ -142,7 +143,7 @@ class _AppSettingsWidgetState extends State<AppSettingsWidget> {
               style: FlutterFlowTheme.of(context).bodyText1.override(
                     fontFamily: 'Lexend Deca',
                     color: Color(0xFF8B97A2),
-                    fontSize: 14,
+                    fontSize: 14.0,
                     fontWeight: FontWeight.normal,
                   ),
             ),
@@ -150,31 +151,34 @@ class _AppSettingsWidgetState extends State<AppSettingsWidget> {
             activeTrackColor: Color(0xFF3B2DB6),
             dense: false,
             controlAffinity: ListTileControlAffinity.trailing,
-            contentPadding: EdgeInsetsDirectional.fromSTEB(24, 12, 24, 12),
+            contentPadding:
+                EdgeInsetsDirectional.fromSTEB(24.0, 12.0, 24.0, 12.0),
           ),
           Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(0, 24, 0, 0),
+            padding: EdgeInsetsDirectional.fromSTEB(0.0, 24.0, 0.0, 0.0),
             child: FFButtonWidget(
               onPressed: () async {
                 Navigator.pop(context);
               },
               text: 'Save Changes',
               options: FFButtonOptions(
-                width: 190,
-                height: 50,
+                width: 190.0,
+                height: 50.0,
+                padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                iconPadding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
                 color: Color(0xFF4B39EF),
                 textStyle: FlutterFlowTheme.of(context).subtitle2.override(
                       fontFamily: 'Lexend Deca',
                       color: Colors.white,
-                      fontSize: 16,
+                      fontSize: 16.0,
                       fontWeight: FontWeight.w500,
                     ),
-                elevation: 3,
+                elevation: 3.0,
                 borderSide: BorderSide(
                   color: Colors.transparent,
-                  width: 1,
+                  width: 1.0,
                 ),
-                borderRadius: BorderRadius.circular(30),
+                borderRadius: BorderRadius.circular(30.0),
               ),
             ),
           ),

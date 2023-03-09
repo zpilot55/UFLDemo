@@ -1,8 +1,8 @@
-import '../auth/auth_util.dart';
-import '../flutter_flow/flutter_flow_theme.dart';
-import '../flutter_flow/flutter_flow_util.dart';
-import '../flutter_flow/flutter_flow_widgets.dart';
-import '../main.dart';
+import '/auth/auth_util.dart';
+import '/flutter_flow/flutter_flow_theme.dart';
+import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_widgets.dart';
+import '/main.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -49,24 +49,24 @@ class _VerifyWidgetState extends State<VerifyWidget> {
         leading: Icon(
           Icons.chevron_left_rounded,
           color: Colors.white,
-          size: 32,
+          size: 32.0,
         ),
         title: Text(
           'Code Verification',
           style: FlutterFlowTheme.of(context).title2.override(
                 fontFamily: 'Lexend Deca',
                 color: Colors.white,
-                fontSize: 22,
+                fontSize: 22.0,
                 fontWeight: FontWeight.bold,
               ),
         ),
         actions: [],
         centerTitle: false,
-        elevation: 0,
+        elevation: 0.0,
       ),
       body: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height * 1,
+        width: MediaQuery.of(context).size.width * 1.0,
+        height: MediaQuery.of(context).size.height * 1.0,
         decoration: BoxDecoration(
           color: Color(0xFF4B39EF),
           image: DecorationImage(
@@ -80,7 +80,7 @@ class _VerifyWidgetState extends State<VerifyWidget> {
           mainAxisSize: MainAxisSize.max,
           children: [
             Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(20, 20, 20, 0),
+              padding: EdgeInsetsDirectional.fromSTEB(20.0, 20.0, 20.0, 0.0),
               child: TextFormField(
                 controller: _model.phoneNumberController,
                 obscureText: false,
@@ -89,53 +89,53 @@ class _VerifyWidgetState extends State<VerifyWidget> {
                   labelStyle: FlutterFlowTheme.of(context).bodyText1.override(
                         fontFamily: 'Lexend Deca',
                         color: Color(0x98FFFFFF),
-                        fontSize: 14,
+                        fontSize: 14.0,
                         fontWeight: FontWeight.normal,
                       ),
                   hintText: '000000',
                   hintStyle: FlutterFlowTheme.of(context).bodyText1.override(
                         fontFamily: 'Lexend Deca',
                         color: Color(0x98FFFFFF),
-                        fontSize: 14,
+                        fontSize: 14.0,
                         fontWeight: FontWeight.normal,
                       ),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
                       color: Color(0x00000000),
-                      width: 1,
+                      width: 1.0,
                     ),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(8.0),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(
                       color: Color(0x00000000),
-                      width: 1,
+                      width: 1.0,
                     ),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(8.0),
                   ),
                   errorBorder: OutlineInputBorder(
                     borderSide: BorderSide(
                       color: Color(0x00000000),
-                      width: 1,
+                      width: 1.0,
                     ),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(8.0),
                   ),
                   focusedErrorBorder: OutlineInputBorder(
                     borderSide: BorderSide(
                       color: Color(0x00000000),
-                      width: 1,
+                      width: 1.0,
                     ),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(8.0),
                   ),
                   filled: true,
                   fillColor: Color(0xFF3124A1),
                   contentPadding:
-                      EdgeInsetsDirectional.fromSTEB(20, 24, 20, 24),
+                      EdgeInsetsDirectional.fromSTEB(20.0, 24.0, 20.0, 24.0),
                 ),
                 style: FlutterFlowTheme.of(context).bodyText1.override(
                       fontFamily: 'Lexend Deca',
                       color: Colors.white,
-                      fontSize: 14,
+                      fontSize: 14.0,
                       fontWeight: FontWeight.normal,
                     ),
                 validator:
@@ -143,7 +143,7 @@ class _VerifyWidgetState extends State<VerifyWidget> {
               ),
             ),
             Padding(
-              padding: EdgeInsetsDirectional.fromSTEB(0, 24, 0, 0),
+              padding: EdgeInsetsDirectional.fromSTEB(0.0, 24.0, 0.0, 0.0),
               child: FFButtonWidget(
                 onPressed: () async {
                   final smsCodeVal = _model.phoneNumberController.text;
@@ -173,21 +173,24 @@ class _VerifyWidgetState extends State<VerifyWidget> {
                 },
                 text: 'Verify Code',
                 options: FFButtonOptions(
-                  width: 230,
-                  height: 60,
+                  width: 230.0,
+                  height: 60.0,
+                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
+                  iconPadding:
+                      EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
                   color: Colors.white,
                   textStyle: FlutterFlowTheme.of(context).subtitle2.override(
                         fontFamily: 'Lexend Deca',
                         color: Color(0xFF4B39EF),
-                        fontSize: 16,
+                        fontSize: 16.0,
                         fontWeight: FontWeight.w500,
                       ),
-                  elevation: 3,
+                  elevation: 3.0,
                   borderSide: BorderSide(
                     color: Colors.transparent,
-                    width: 1,
+                    width: 1.0,
                   ),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(8.0),
                 ),
               ),
             ),

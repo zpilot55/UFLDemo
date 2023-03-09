@@ -1,11 +1,11 @@
-import '../app_settings/app_settings_widget.dart';
-import '../auth/auth_util.dart';
-import '../flutter_flow/flutter_flow_icon_button.dart';
-import '../flutter_flow/flutter_flow_theme.dart';
-import '../flutter_flow/flutter_flow_util.dart';
-import '../main.dart';
-import '../profile/profile_widget.dart';
-import '../ref_setup/ref_setup_widget.dart';
+import '/app_settings/app_settings_widget.dart';
+import '/auth/auth_util.dart';
+import '/flutter_flow/flutter_flow_icon_button.dart';
+import '/flutter_flow/flutter_flow_theme.dart';
+import '/flutter_flow/flutter_flow_util.dart';
+import '/main.dart';
+import '/profile/profile_widget.dart';
+import '/ref_setup/ref_setup_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -52,27 +52,28 @@ class _ColMainDrawerWidgetState extends State<ColMainDrawerWidget> {
           mainAxisSize: MainAxisSize.max,
           children: [
             Container(
-              width: 304,
-              height: 180,
+              width: 304.0,
+              height: 180.0,
               decoration: BoxDecoration(
                 color: Color(0xFF4B39EF),
               ),
               child: Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(20, 0, 0, 0),
+                padding: EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 0.0, 0.0),
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
+                      padding:
+                          EdgeInsetsDirectional.fromSTEB(0.0, 20.0, 0.0, 0.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Align(
-                            alignment: AlignmentDirectional(-0.7, 0),
+                            alignment: AlignmentDirectional(-0.7, 0.0),
                             child: AuthUserStreamWidget(
                               builder: (context) => Container(
-                                width: 80,
-                                height: 80,
+                                width: 80.0,
+                                height: 80.0,
                                 clipBehavior: Clip.antiAlias,
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
@@ -85,11 +86,11 @@ class _ColMainDrawerWidgetState extends State<ColMainDrawerWidget> {
                           ),
                           Expanded(
                             child: Align(
-                              alignment: AlignmentDirectional(0.7, 0),
+                              alignment: AlignmentDirectional(0.7, 0.0),
                               child: Icon(
                                 Icons.edit_rounded,
                                 color: Colors.white,
-                                size: 24,
+                                size: 24.0,
                               ),
                             ),
                           ),
@@ -97,7 +98,8 @@ class _ColMainDrawerWidgetState extends State<ColMainDrawerWidget> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
+                      padding:
+                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 0.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
@@ -108,7 +110,7 @@ class _ColMainDrawerWidgetState extends State<ColMainDrawerWidget> {
                                   FlutterFlowTheme.of(context).title3.override(
                                         fontFamily: 'Lexend Deca',
                                         color: Colors.white,
-                                        fontSize: 20,
+                                        fontSize: 20.0,
                                         fontWeight: FontWeight.bold,
                                       ),
                             ),
@@ -117,7 +119,8 @@ class _ColMainDrawerWidgetState extends State<ColMainDrawerWidget> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
+                      padding:
+                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 0.0),
                       child: Row(
                         mainAxisSize: MainAxisSize.max,
                         children: [
@@ -127,7 +130,7 @@ class _ColMainDrawerWidgetState extends State<ColMainDrawerWidget> {
                                 FlutterFlowTheme.of(context).subtitle2.override(
                                       fontFamily: 'Lexend Deca',
                                       color: Color(0xFFEE8B60),
-                                      fontSize: 16,
+                                      fontSize: 16.0,
                                       fontWeight: FontWeight.w500,
                                     ),
                           ),
@@ -154,13 +157,13 @@ class _ColMainDrawerWidgetState extends State<ColMainDrawerWidget> {
             children: [
               FlutterFlowIconButton(
                 borderColor: Colors.transparent,
-                borderRadius: 30,
-                borderWidth: 1,
-                buttonSize: 60,
+                borderRadius: 30.0,
+                borderWidth: 1.0,
+                buttonSize: 60.0,
                 icon: Icon(
                   Icons.home,
                   color: Colors.black,
-                  size: 30,
+                  size: 30.0,
                 ),
                 onPressed: () async {
                   await Navigator.push(
@@ -192,13 +195,13 @@ class _ColMainDrawerWidgetState extends State<ColMainDrawerWidget> {
             children: [
               FlutterFlowIconButton(
                 borderColor: Colors.transparent,
-                borderRadius: 30,
-                borderWidth: 1,
-                buttonSize: 60,
+                borderRadius: 30.0,
+                borderWidth: 1.0,
+                buttonSize: 60.0,
                 icon: Icon(
                   Icons.person,
                   color: Colors.black,
-                  size: 30,
+                  size: 30.0,
                 ),
                 onPressed: () async {
                   await Navigator.push(
@@ -230,13 +233,13 @@ class _ColMainDrawerWidgetState extends State<ColMainDrawerWidget> {
             children: [
               FlutterFlowIconButton(
                 borderColor: Colors.transparent,
-                borderRadius: 30,
-                borderWidth: 1,
-                buttonSize: 60,
+                borderRadius: 30.0,
+                borderWidth: 1.0,
+                buttonSize: 60.0,
                 icon: Icon(
                   Icons.settings,
                   color: Colors.black,
-                  size: 30,
+                  size: 30.0,
                 ),
                 onPressed: () async {
                   await Navigator.push(
@@ -268,13 +271,13 @@ class _ColMainDrawerWidgetState extends State<ColMainDrawerWidget> {
             children: [
               FlutterFlowIconButton(
                 borderColor: Colors.transparent,
-                borderRadius: 30,
-                borderWidth: 1,
-                buttonSize: 60,
+                borderRadius: 30.0,
+                borderWidth: 1.0,
+                buttonSize: 60.0,
                 icon: Icon(
                   Icons.threesixty,
                   color: Colors.black,
-                  size: 30,
+                  size: 30.0,
                 ),
                 onPressed: () async {
                   await Navigator.push(

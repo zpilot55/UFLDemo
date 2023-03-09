@@ -1,13 +1,13 @@
-import '../auth/auth_util.dart';
-import '../backend/backend.dart';
-import '../flutter_flow/flutter_flow_drop_down.dart';
-import '../flutter_flow/flutter_flow_theme.dart';
-import '../flutter_flow/flutter_flow_timer.dart';
-import '../flutter_flow/flutter_flow_util.dart';
-import '../flutter_flow/flutter_flow_widgets.dart';
-import '../ref_match_recap_events/ref_match_recap_events_widget.dart';
-import '../custom_code/actions/index.dart' as actions;
-import '../flutter_flow/custom_functions.dart' as functions;
+import '/auth/auth_util.dart';
+import '/backend/backend.dart';
+import '/flutter_flow/flutter_flow_drop_down.dart';
+import '/flutter_flow/flutter_flow_theme.dart';
+import '/flutter_flow/flutter_flow_timer.dart';
+import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_widgets.dart';
+import '/ref_match_recap_events/ref_match_recap_events_widget.dart';
+import '/custom_code/actions/index.dart' as actions;
+import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +15,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class RefViewModel extends FlutterFlowModel {
+  ///  Local state fields for this page.
+
+  bool? didLeftWin;
+
   ///  State fields for stateful widgets in this page.
 
   // State field(s) for Timer widget.
@@ -40,6 +44,8 @@ class RefViewModel extends FlutterFlowModel {
   MatchStatSnapshotStruct? newStatsSnapshot;
   // Stores action output result for [Custom Action - generateStatlines] action in Button widget.
   List<StatlineStruct>? newMatchStatlines;
+  // Stores action output result for [Custom Action - getEloDifference] action in Button widget.
+  int? eloDiff;
 
   /// Initialization and disposal methods.
 

@@ -1,10 +1,10 @@
-import '../backend/backend.dart';
-import '../flutter_flow/flutter_flow_icon_button.dart';
-import '../flutter_flow/flutter_flow_theme.dart';
-import '../flutter_flow/flutter_flow_util.dart';
-import '../flutter_flow/flutter_flow_widgets.dart';
-import '../match_recap_events/match_recap_events_widget.dart';
-import '../flutter_flow/custom_functions.dart' as functions;
+import '/backend/backend.dart';
+import '/flutter_flow/flutter_flow_icon_button.dart';
+import '/flutter_flow/flutter_flow_theme.dart';
+import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_widgets.dart';
+import '/match_recap_events/match_recap_events_widget.dart';
+import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -53,8 +53,8 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
         if (!snapshot.hasData) {
           return Center(
             child: SizedBox(
-              width: 50,
-              height: 50,
+              width: 50.0,
+              height: 50.0,
               child: CircularProgressIndicator(
                 color: FlutterFlowTheme.of(context).primaryColor,
               ),
@@ -70,13 +70,13 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
             automaticallyImplyLeading: false,
             leading: FlutterFlowIconButton(
               borderColor: Colors.transparent,
-              borderRadius: 30,
-              borderWidth: 1,
-              buttonSize: 60,
+              borderRadius: 30.0,
+              borderWidth: 1.0,
+              buttonSize: 60.0,
               icon: Icon(
                 Icons.arrow_back_rounded,
                 color: FlutterFlowTheme.of(context).primaryText,
-                size: 30,
+                size: 30.0,
               ),
               onPressed: () async {
                 Navigator.pop(context);
@@ -87,12 +87,12 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
               style: FlutterFlowTheme.of(context).title2.override(
                     fontFamily: 'Poppins',
                     color: FlutterFlowTheme.of(context).primaryText,
-                    fontSize: 22,
+                    fontSize: 22.0,
                   ),
             ),
             actions: [],
             centerTitle: false,
-            elevation: 0,
+            elevation: 0.0,
           ),
           body: SingleChildScrollView(
             child: Column(
@@ -100,7 +100,8 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(10, 10, 10, 0),
+                  padding:
+                      EdgeInsetsDirectional.fromSTEB(10.0, 10.0, 10.0, 0.0),
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -117,8 +118,8 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                               if (!snapshot.hasData) {
                                 return Center(
                                   child: SizedBox(
-                                    width: 50,
-                                    height: 50,
+                                    width: 50.0,
+                                    height: 50.0,
                                     child: CircularProgressIndicator(
                                       color: FlutterFlowTheme.of(context)
                                           .primaryColor,
@@ -132,8 +133,8 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                                   imageUsersRecord.photoUrl,
                                   'https://firebasestorage.googleapis.com/v0/b/universalfencingleague.appspot.com/o/Fencer_silhouette.png?alt=media&token=7ae87fd2-6264-446f-abbf-c4a7d8d5b642',
                                 ),
-                                width: 100,
-                                height: 100,
+                                width: 100.0,
+                                height: 100.0,
                                 fit: BoxFit.cover,
                               );
                             },
@@ -146,8 +147,8 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                               if (!snapshot.hasData) {
                                 return Center(
                                   child: SizedBox(
-                                    width: 50,
-                                    height: 50,
+                                    width: 50.0,
+                                    height: 50.0,
                                     child: CircularProgressIndicator(
                                       color: FlutterFlowTheme.of(context)
                                           .primaryColor,
@@ -206,8 +207,8 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                               if (!snapshot.hasData) {
                                 return Center(
                                   child: SizedBox(
-                                    width: 50,
-                                    height: 50,
+                                    width: 50.0,
+                                    height: 50.0,
                                     child: CircularProgressIndicator(
                                       color: FlutterFlowTheme.of(context)
                                           .primaryColor,
@@ -221,8 +222,8 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                                   imageUsersRecord.photoUrl,
                                   'https://firebasestorage.googleapis.com/v0/b/universalfencingleague.appspot.com/o/Fencer_silhouette.png?alt=media&token=7ae87fd2-6264-446f-abbf-c4a7d8d5b642',
                                 ),
-                                width: 100,
-                                height: 100,
+                                width: 100.0,
+                                height: 100.0,
                                 fit: BoxFit.cover,
                               );
                             },
@@ -235,8 +236,8 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                               if (!snapshot.hasData) {
                                 return Center(
                                   child: SizedBox(
-                                    width: 50,
-                                    height: 50,
+                                    width: 50.0,
+                                    height: 50.0,
                                     child: CircularProgressIndicator(
                                       color: FlutterFlowTheme.of(context)
                                           .primaryColor,
@@ -260,7 +261,7 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
+                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -277,8 +278,8 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      width: 250,
-                      height: 110,
+                      width: 250.0,
+                      height: 110.0,
                       decoration: BoxDecoration(
                         color: Colors.white,
                       ),
@@ -355,7 +356,7 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                   ],
                 ),
                 Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
+                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -374,8 +375,12 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                         },
                         text: 'Detailed Match Events',
                         options: FFButtonOptions(
-                          width: 250,
-                          height: 40,
+                          width: 250.0,
+                          height: 40.0,
+                          padding: EdgeInsetsDirectional.fromSTEB(
+                              0.0, 0.0, 0.0, 0.0),
+                          iconPadding: EdgeInsetsDirectional.fromSTEB(
+                              0.0, 0.0, 0.0, 0.0),
                           color: FlutterFlowTheme.of(context).primaryColor,
                           textStyle:
                               FlutterFlowTheme.of(context).subtitle2.override(
@@ -384,16 +389,16 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                                   ),
                           borderSide: BorderSide(
                             color: Colors.transparent,
-                            width: 1,
+                            width: 1.0,
                           ),
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(8.0),
                         ),
                       ),
                     ],
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
+                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -406,7 +411,7 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
+                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -419,8 +424,8 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                           if (!snapshot.hasData) {
                             return Center(
                               child: SizedBox(
-                                width: 50,
-                                height: 50,
+                                width: 50.0,
+                                height: 50.0,
                                 child: CircularProgressIndicator(
                                   color:
                                       FlutterFlowTheme.of(context).primaryColor,
@@ -447,8 +452,8 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                           if (!snapshot.hasData) {
                             return Center(
                               child: SizedBox(
-                                width: 50,
-                                height: 50,
+                                width: 50.0,
+                                height: 50.0,
                                 child: CircularProgressIndicator(
                                   color:
                                       FlutterFlowTheme.of(context).primaryColor,
@@ -486,8 +491,8 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                             mainAxisSize: MainAxisSize.max,
                             children: [
                               Container(
-                                width: MediaQuery.of(context).size.width,
-                                height: 50,
+                                width: MediaQuery.of(context).size.width * 1.0,
+                                height: 50.0,
                                 decoration: BoxDecoration(
                                   color: FlutterFlowTheme.of(context)
                                       .secondaryBackground,
@@ -498,10 +503,10 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                                   children: [
                                     Padding(
                                       padding: EdgeInsetsDirectional.fromSTEB(
-                                          10, 0, 0, 0),
+                                          10.0, 0.0, 0.0, 0.0),
                                       child: Container(
-                                        width: 100,
-                                        height: 50,
+                                        width: 100.0,
+                                        height: 50.0,
                                         decoration: BoxDecoration(
                                           color: FlutterFlowTheme.of(context)
                                               .secondaryBackground,
@@ -521,7 +526,7 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                                                       .bodyText1
                                                       .override(
                                                         fontFamily: 'Poppins',
-                                                        fontSize: 11,
+                                                        fontSize: 11.0,
                                                       ),
                                             ),
                                           ],
@@ -530,8 +535,8 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                                     ),
                                     Spacer(),
                                     Container(
-                                      width: 100,
-                                      height: 50,
+                                      width: 100.0,
+                                      height: 50.0,
                                       decoration: BoxDecoration(
                                         color: FlutterFlowTheme.of(context)
                                             .secondaryBackground,
@@ -551,7 +556,7 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                                                 .bodyText1
                                                 .override(
                                                   fontFamily: 'Poppins',
-                                                  fontSize: 11,
+                                                  fontSize: 11.0,
                                                 ),
                                           ),
                                         ],
@@ -559,8 +564,8 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                                     ),
                                     Spacer(),
                                     Container(
-                                      width: 100,
-                                      height: 50,
+                                      width: 100.0,
+                                      height: 50.0,
                                       decoration: BoxDecoration(
                                         color: FlutterFlowTheme.of(context)
                                             .secondaryBackground,
@@ -578,7 +583,7 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                                                 .bodyText1
                                                 .override(
                                                   fontFamily: 'Poppins',
-                                                  fontSize: 11,
+                                                  fontSize: 11.0,
                                                 ),
                                           ),
                                         ],
