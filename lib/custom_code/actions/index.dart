@@ -6,3 +6,4 @@ export 'set_action_from_dropdown.dart' show setActionFromDropdown;
 export 'update_stats.dart' show updateStats;
 export 'generate_statlines.dart' show generateStatlines;
 export 'generate_action_i_d.dart' show generateActionID;
+export 'get_elo_difference.dart' show getEloDifference;

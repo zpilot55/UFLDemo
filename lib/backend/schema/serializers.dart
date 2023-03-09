@@ -6,6 +6,7 @@ import 'clubs_record.dart';
 import 'matchdetails_dev_record.dart';
 import 'matchstatslog_dev_record.dart';
 import 'matches_dev_record.dart';
+import 'rankings_record.dart';
 
 import 'index.dart';
 
@@ -21,9 +22,11 @@ const kDocumentReferenceField = 'Document__Reference__Field';
   MatchdetailsDevRecord,
   MatchstatslogDevRecord,
   MatchesDevRecord,
+  RankingsRecord,
   MatchEventStruct,
   MatchStatSnapshotStruct,
   StatlineStruct,
+  RankingStructStruct,
 ])
 final Serializers serializers = (_$serializers.toBuilder()
       ..add(DocumentReferenceSerializer())

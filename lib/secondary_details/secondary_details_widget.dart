@@ -1,10 +1,10 @@
-import '../auth/auth_util.dart';
-import '../backend/backend.dart';
-import '../flutter_flow/flutter_flow_drop_down.dart';
-import '../flutter_flow/flutter_flow_theme.dart';
-import '../flutter_flow/flutter_flow_util.dart';
-import '../flutter_flow/flutter_flow_widgets.dart';
-import '../main.dart';
+import '/auth/auth_util.dart';
+import '/backend/backend.dart';
+import '/flutter_flow/flutter_flow_drop_down.dart';
+import '/flutter_flow/flutter_flow_theme.dart';
+import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_widgets.dart';
+import '/main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -50,8 +50,8 @@ class _SecondaryDetailsWidgetState extends State<SecondaryDetailsWidget> {
       body: GestureDetector(
         onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
         child: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height * 1,
+          width: MediaQuery.of(context).size.width * 1.0,
+          height: MediaQuery.of(context).size.height * 1.0,
           decoration: BoxDecoration(
             color: Color(0xFFEEEEEE),
             image: DecorationImage(
@@ -62,7 +62,7 @@ class _SecondaryDetailsWidgetState extends State<SecondaryDetailsWidget> {
             ),
           ),
           child: Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(20, 0, 20, 0),
+            padding: EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 20.0, 0.0),
             child: SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.max,
@@ -70,29 +70,31 @@ class _SecondaryDetailsWidgetState extends State<SecondaryDetailsWidget> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 70, 0, 90),
+                    padding:
+                        EdgeInsetsDirectional.fromSTEB(0.0, 70.0, 0.0, 90.0),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Image.asset(
                           'assets/images/S_Class_Logo_Orange.png',
-                          width: 120,
-                          height: 120,
+                          width: 120.0,
+                          height: 120.0,
                           fit: BoxFit.cover,
                         ),
                       ],
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
+                    padding:
+                        EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 0.0),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Container(
-                          width: 300,
-                          height: 50,
+                          width: 300.0,
+                          height: 50.0,
                           decoration: BoxDecoration(),
                           child: Text(
                             valueOrDefault<String>(
@@ -114,14 +116,15 @@ class _SecondaryDetailsWidgetState extends State<SecondaryDetailsWidget> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
+                    padding:
+                        EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 0.0),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Container(
-                          width: 150,
-                          height: 50,
+                          width: 150.0,
+                          height: 50.0,
                           decoration: BoxDecoration(),
                           child: FFButtonWidget(
                             onPressed: () async {
@@ -144,8 +147,12 @@ class _SecondaryDetailsWidgetState extends State<SecondaryDetailsWidget> {
                             },
                             text: 'Select Date',
                             options: FFButtonOptions(
-                              width: 130,
-                              height: 40,
+                              width: 130.0,
+                              height: 40.0,
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 0.0, 0.0, 0.0),
+                              iconPadding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 0.0, 0.0, 0.0),
                               color: Colors.black,
                               textStyle: FlutterFlowTheme.of(context)
                                   .subtitle2
@@ -155,9 +162,9 @@ class _SecondaryDetailsWidgetState extends State<SecondaryDetailsWidget> {
                                   ),
                               borderSide: BorderSide(
                                 color: Colors.transparent,
-                                width: 1,
+                                width: 1.0,
                               ),
-                              borderRadius: BorderRadius.circular(8),
+                              borderRadius: BorderRadius.circular(8.0),
                             ),
                           ),
                         ),
@@ -165,14 +172,15 @@ class _SecondaryDetailsWidgetState extends State<SecondaryDetailsWidget> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
+                    padding:
+                        EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 0.0),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Container(
-                          width: 300,
-                          height: 50,
+                          width: 300.0,
+                          height: 50.0,
                           decoration: BoxDecoration(),
                           child: Text(
                             valueOrDefault<String>(
@@ -189,21 +197,22 @@ class _SecondaryDetailsWidgetState extends State<SecondaryDetailsWidget> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
+                    padding:
+                        EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 0.0),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Container(
-                          width: 150,
-                          height: 50,
+                          width: 150.0,
+                          height: 50.0,
                           decoration: BoxDecoration(),
                           child: FlutterFlowDropDown<String>(
                             options: ['Canada'],
                             onChanged: (val) =>
                                 setState(() => _model.dropDownValue = val),
-                            width: 180,
-                            height: 50,
+                            width: 180.0,
+                            height: 50.0,
                             textStyle:
                                 FlutterFlowTheme.of(context).bodyText1.override(
                                       fontFamily: 'Poppins',
@@ -211,12 +220,12 @@ class _SecondaryDetailsWidgetState extends State<SecondaryDetailsWidget> {
                                     ),
                             hintText: 'Please select...',
                             fillColor: Colors.white,
-                            elevation: 2,
+                            elevation: 2.0,
                             borderColor: Colors.transparent,
-                            borderWidth: 0,
-                            borderRadius: 0,
-                            margin:
-                                EdgeInsetsDirectional.fromSTEB(12, 4, 12, 4),
+                            borderWidth: 0.0,
+                            borderRadius: 0.0,
+                            margin: EdgeInsetsDirectional.fromSTEB(
+                                12.0, 4.0, 12.0, 4.0),
                             hidesUnderline: true,
                           ),
                         ),
@@ -224,7 +233,8 @@ class _SecondaryDetailsWidgetState extends State<SecondaryDetailsWidget> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 24, 0, 0),
+                    padding:
+                        EdgeInsetsDirectional.fromSTEB(0.0, 24.0, 0.0, 0.0),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -245,8 +255,14 @@ class _SecondaryDetailsWidgetState extends State<SecondaryDetailsWidget> {
                                 eloSY: 1000,
                                 eloNA: 1000,
                                 eloNY: 1000,
-                                matchesUntilRankedAdult: 10,
-                                matchesUntilRankedYouth: 10,
+                                numRankedFA: 0,
+                                numRankedFY: 0,
+                                numRankedEA: 0,
+                                numRankedEY: 0,
+                                numRankedSA: 0,
+                                numRankedSY: 0,
+                                numRankedNA: 0,
+                                numRankedNY: 0,
                               );
                               await currentUserReference!
                                   .update(usersUpdateData);
@@ -261,22 +277,26 @@ class _SecondaryDetailsWidgetState extends State<SecondaryDetailsWidget> {
                           },
                           text: 'Register',
                           options: FFButtonOptions(
-                            width: 130,
-                            height: 60,
+                            width: 130.0,
+                            height: 60.0,
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                0.0, 0.0, 0.0, 0.0),
+                            iconPadding: EdgeInsetsDirectional.fromSTEB(
+                                0.0, 0.0, 0.0, 0.0),
                             color: Color(0xFF090F13),
                             textStyle:
                                 FlutterFlowTheme.of(context).subtitle1.override(
                                       fontFamily: 'Lexend Deca',
                                       color: Colors.white,
-                                      fontSize: 18,
+                                      fontSize: 18.0,
                                       fontWeight: FontWeight.bold,
                                     ),
-                            elevation: 3,
+                            elevation: 3.0,
                             borderSide: BorderSide(
                               color: Colors.transparent,
-                              width: 1,
+                              width: 1.0,
                             ),
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(8.0),
                           ),
                         ),
                       ],

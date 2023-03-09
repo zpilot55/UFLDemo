@@ -1,9 +1,9 @@
-import '../backend/backend.dart';
-import '../flutter_flow/flutter_flow_icon_button.dart';
-import '../flutter_flow/flutter_flow_theme.dart';
-import '../flutter_flow/flutter_flow_util.dart';
-import '../match_recap_event_video/match_recap_event_video_widget.dart';
-import '../flutter_flow/custom_functions.dart' as functions;
+import '/backend/backend.dart';
+import '/flutter_flow/flutter_flow_icon_button.dart';
+import '/flutter_flow/flutter_flow_theme.dart';
+import '/flutter_flow/flutter_flow_util.dart';
+import '/match_recap_event_video/match_recap_event_video_widget.dart';
+import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -52,13 +52,13 @@ class _MatchRecapEventsWidgetState extends State<MatchRecapEventsWidget> {
         automaticallyImplyLeading: false,
         leading: FlutterFlowIconButton(
           borderColor: Colors.transparent,
-          borderRadius: 30,
-          borderWidth: 1,
-          buttonSize: 60,
+          borderRadius: 30.0,
+          borderWidth: 1.0,
+          buttonSize: 60.0,
           icon: Icon(
             Icons.arrow_back_rounded,
             color: FlutterFlowTheme.of(context).primaryText,
-            size: 30,
+            size: 30.0,
           ),
           onPressed: () async {
             Navigator.pop(context);
@@ -69,12 +69,12 @@ class _MatchRecapEventsWidgetState extends State<MatchRecapEventsWidget> {
           style: FlutterFlowTheme.of(context).title2.override(
                 fontFamily: 'Poppins',
                 color: FlutterFlowTheme.of(context).primaryText,
-                fontSize: 22,
+                fontSize: 22.0,
               ),
         ),
         actions: [],
         centerTitle: false,
-        elevation: 0,
+        elevation: 0.0,
       ),
       body: Builder(
         builder: (context) {
@@ -92,8 +92,8 @@ class _MatchRecapEventsWidgetState extends State<MatchRecapEventsWidget> {
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: 100,
+                      width: MediaQuery.of(context).size.width * 1.0,
+                      height: 100.0,
                       decoration: BoxDecoration(
                         color: FlutterFlowTheme.of(context).secondaryBackground,
                       ),
@@ -118,11 +118,11 @@ class _MatchRecapEventsWidgetState extends State<MatchRecapEventsWidget> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(10, 0, 0, 0),
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  10.0, 0.0, 0.0, 0.0),
                               child: Container(
-                                width: 100,
-                                height: 50,
+                                width: 100.0,
+                                height: 50.0,
                                 decoration: BoxDecoration(
                                   color: FlutterFlowTheme.of(context)
                                       .secondaryBackground,
@@ -137,7 +137,7 @@ class _MatchRecapEventsWidgetState extends State<MatchRecapEventsWidget> {
                                           .bodyText1
                                           .override(
                                             fontFamily: 'Poppins',
-                                            fontSize: 11,
+                                            fontSize: 11.0,
                                           ),
                                     ),
                                     StreamBuilder<UsersRecord>(
@@ -149,8 +149,8 @@ class _MatchRecapEventsWidgetState extends State<MatchRecapEventsWidget> {
                                         if (!snapshot.hasData) {
                                           return Center(
                                             child: SizedBox(
-                                              width: 50,
-                                              height: 50,
+                                              width: 50.0,
+                                              height: 50.0,
                                               child: CircularProgressIndicator(
                                                 color:
                                                     FlutterFlowTheme.of(context)
@@ -169,7 +169,7 @@ class _MatchRecapEventsWidgetState extends State<MatchRecapEventsWidget> {
                                               .bodyText1
                                               .override(
                                                 fontFamily: 'Poppins',
-                                                fontSize: 11,
+                                                fontSize: 11.0,
                                               ),
                                         );
                                       },
@@ -180,8 +180,8 @@ class _MatchRecapEventsWidgetState extends State<MatchRecapEventsWidget> {
                             ),
                             Spacer(),
                             Container(
-                              width: 100,
-                              height: 50,
+                              width: 100.0,
+                              height: 50.0,
                               decoration: BoxDecoration(
                                 color: FlutterFlowTheme.of(context)
                                     .secondaryBackground,
@@ -196,7 +196,7 @@ class _MatchRecapEventsWidgetState extends State<MatchRecapEventsWidget> {
                                         .bodyText1
                                         .override(
                                           fontFamily: 'Poppins',
-                                          fontSize: 11,
+                                          fontSize: 11.0,
                                         ),
                                   ),
                                   Text(
@@ -206,7 +206,7 @@ class _MatchRecapEventsWidgetState extends State<MatchRecapEventsWidget> {
                                         .bodyText1
                                         .override(
                                           fontFamily: 'Poppins',
-                                          fontSize: 11,
+                                          fontSize: 11.0,
                                         ),
                                   ),
                                 ],
@@ -214,8 +214,8 @@ class _MatchRecapEventsWidgetState extends State<MatchRecapEventsWidget> {
                             ),
                             Spacer(),
                             Container(
-                              width: 70,
-                              height: 50,
+                              width: 70.0,
+                              height: 50.0,
                               decoration: BoxDecoration(
                                 color: FlutterFlowTheme.of(context)
                                     .secondaryBackground,
@@ -229,7 +229,7 @@ class _MatchRecapEventsWidgetState extends State<MatchRecapEventsWidget> {
                                         .bodyText1
                                         .override(
                                           fontFamily: 'Poppins',
-                                          fontSize: 11,
+                                          fontSize: 11.0,
                                         ),
                                   ),
                                   Text(
@@ -239,7 +239,7 @@ class _MatchRecapEventsWidgetState extends State<MatchRecapEventsWidget> {
                                         .bodyText1
                                         .override(
                                           fontFamily: 'Poppins',
-                                          fontSize: 11,
+                                          fontSize: 11.0,
                                         ),
                                   ),
                                 ],
@@ -247,11 +247,11 @@ class _MatchRecapEventsWidgetState extends State<MatchRecapEventsWidget> {
                             ),
                             Spacer(),
                             Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(0, 0, 10, 0),
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 0.0, 10.0, 0.0),
                               child: Container(
-                                width: 70,
-                                height: 50,
+                                width: 70.0,
+                                height: 50.0,
                                 decoration: BoxDecoration(
                                   color: FlutterFlowTheme.of(context)
                                       .secondaryBackground,
@@ -265,7 +265,7 @@ class _MatchRecapEventsWidgetState extends State<MatchRecapEventsWidget> {
                                           .bodyText1
                                           .override(
                                             fontFamily: 'Poppins',
-                                            fontSize: 11,
+                                            fontSize: 11.0,
                                           ),
                                     ),
                                     Text(
@@ -274,7 +274,7 @@ class _MatchRecapEventsWidgetState extends State<MatchRecapEventsWidget> {
                                           .bodyText1
                                           .override(
                                             fontFamily: 'Poppins',
-                                            fontSize: 11,
+                                            fontSize: 11.0,
                                           ),
                                     ),
                                   ],

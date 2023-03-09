@@ -8,10 +8,22 @@ import 'package:flutter/material.dart';
 // Begin custom action code
 // DO NOT REMOVE OR MODIFY THE CODE ABOVE!
 
-import 'package:collection/collection.dart';
+import 'dart:math';
 
-Future<UsersRecord> getCurrentUserDocument(List<UsersRecord>? inputList) async {
-  // Add your function code here!
-  final record = inputList!.firstOrNull!;
-  return record;
+Future<int> getEloDifference(
+  int leftFencerElo,
+  int rightFencerElo,
+  bool didLeftWin,
+) async {
+  double eloDiff = 0;
+
+  if (didLeftWin) {
+    eloDiff =
+        30 * (1 / (pow(10, ((leftFencerElo - rightFencerElo) / 400)) + 1));
+  } else {
+    eloDiff =
+        30 * (1 / (pow(10, ((rightFencerElo - leftFencerElo) / 400)) + 1));
+  }
+
+  return eloDiff.round();
 }
