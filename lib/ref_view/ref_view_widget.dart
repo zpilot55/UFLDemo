@@ -599,6 +599,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                                             FFAppState()
                                                                     .currentPeriod +
                                                                 1;
+                                                        FFAppState()
+                                                                .beginNextPer =
+                                                            false;
                                                       });
                                                     } else {
                                                       if (FFAppState()
