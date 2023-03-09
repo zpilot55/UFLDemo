@@ -51,15 +51,29 @@ abstract class UsersRecord implements Built<UsersRecord, UsersRecordBuilder> {
 
   bool? get isYouth;
 
-  int? get matchesUntilRankedAdult;
-
-  int? get matchesUntilRankedYouth;
-
   bool? get existingUser;
 
   DateTime? get dob;
 
   String? get homecountry;
+
+  int? get numRankedFA;
+
+  int? get numRankedFY;
+
+  int? get numRankedEA;
+
+  int? get numRankedEY;
+
+  int? get numRankedSA;
+
+  int? get numRankedSY;
+
+  int? get numRankedNA;
+
+  int? get numRankedNY;
+
+  DocumentReference? get rankingsPage;
 
   @BuiltValueField(wireName: kDocumentReferenceField)
   DocumentReference? get ffRef;
@@ -80,10 +94,16 @@ abstract class UsersRecord implements Built<UsersRecord, UsersRecordBuilder> {
     ..eloNA = 0
     ..eloNY = 0
     ..isYouth = false
-    ..matchesUntilRankedAdult = 0
-    ..matchesUntilRankedYouth = 0
     ..existingUser = false
-    ..homecountry = '';
+    ..homecountry = ''
+    ..numRankedFA = 0
+    ..numRankedFY = 0
+    ..numRankedEA = 0
+    ..numRankedEY = 0
+    ..numRankedSA = 0
+    ..numRankedSY = 0
+    ..numRankedNA = 0
+    ..numRankedNY = 0;
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('users');
@@ -122,11 +142,18 @@ Map<String, dynamic> createUsersRecordData({
   int? eloNA,
   int? eloNY,
   bool? isYouth,
-  int? matchesUntilRankedAdult,
-  int? matchesUntilRankedYouth,
   bool? existingUser,
   DateTime? dob,
   String? homecountry,
+  int? numRankedFA,
+  int? numRankedFY,
+  int? numRankedEA,
+  int? numRankedEY,
+  int? numRankedSA,
+  int? numRankedSY,
+  int? numRankedNA,
+  int? numRankedNY,
+  DocumentReference? rankingsPage,
 }) {
   final firestoreData = serializers.toFirestore(
     UsersRecord.serializer,
@@ -147,11 +174,18 @@ Map<String, dynamic> createUsersRecordData({
         ..eloNA = eloNA
         ..eloNY = eloNY
         ..isYouth = isYouth
-        ..matchesUntilRankedAdult = matchesUntilRankedAdult
-        ..matchesUntilRankedYouth = matchesUntilRankedYouth
         ..existingUser = existingUser
         ..dob = dob
-        ..homecountry = homecountry,
+        ..homecountry = homecountry
+        ..numRankedFA = numRankedFA
+        ..numRankedFY = numRankedFY
+        ..numRankedEA = numRankedEA
+        ..numRankedEY = numRankedEY
+        ..numRankedSA = numRankedSA
+        ..numRankedSY = numRankedSY
+        ..numRankedNA = numRankedNA
+        ..numRankedNY = numRankedNY
+        ..rankingsPage = rankingsPage,
     ),
   );
 

@@ -1,6 +1,6 @@
-import '../components/col_main_drawer_widget.dart';
-import '../flutter_flow/flutter_flow_theme.dart';
-import '../flutter_flow/flutter_flow_util.dart';
+import '/components/col_main_drawer_widget.dart';
+import '/flutter_flow/flutter_flow_theme.dart';
+import '/flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -42,7 +42,7 @@ class _MyClubWidgetState extends State<MyClubWidget> {
       key: scaffoldKey,
       backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
       drawer: Drawer(
-        elevation: 16,
+        elevation: 16.0,
         child: wrapWithModel(
           model: _model.colMainDrawerModel,
           updateCallback: () => setState(() {}),
@@ -54,7 +54,7 @@ class _MyClubWidgetState extends State<MyClubWidget> {
         automaticallyImplyLeading: true,
         actions: [],
         centerTitle: true,
-        elevation: 4,
+        elevation: 4.0,
       ),
       body: SafeArea(
         child: GestureDetector(

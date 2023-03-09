@@ -1,10 +1,10 @@
-import '../auth/auth_util.dart';
-import '../backend/backend.dart';
-import '../components/col_main_drawer_widget.dart';
-import '../flutter_flow/flutter_flow_drop_down.dart';
-import '../flutter_flow/flutter_flow_theme.dart';
-import '../flutter_flow/flutter_flow_util.dart';
-import '../match_recap/match_recap_widget.dart';
+import '/auth/auth_util.dart';
+import '/backend/backend.dart';
+import '/components/col_main_drawer_widget.dart';
+import '/flutter_flow/flutter_flow_drop_down.dart';
+import '/flutter_flow/flutter_flow_theme.dart';
+import '/flutter_flow/flutter_flow_util.dart';
+import '/match_recap/match_recap_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -47,7 +47,7 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
       key: scaffoldKey,
       backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
       drawer: Drawer(
-        elevation: 16,
+        elevation: 16.0,
         child: wrapWithModel(
           model: _model.colMainDrawerModel,
           updateCallback: () => setState(() {}),
@@ -59,7 +59,7 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
         automaticallyImplyLeading: true,
         actions: [],
         centerTitle: true,
-        elevation: 4,
+        elevation: 4.0,
       ),
       body: SafeArea(
         child: GestureDetector(
@@ -68,7 +68,7 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
             mainAxisSize: MainAxisSize.max,
             children: [
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0, 20, 0, 0),
+                padding: EdgeInsetsDirectional.fromSTEB(0.0, 20.0, 0.0, 0.0),
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -81,7 +81,7 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(10, 10, 10, 0),
+                padding: EdgeInsetsDirectional.fromSTEB(10.0, 10.0, 10.0, 0.0),
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -90,8 +90,8 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                       options: ['Opponent', 'Weapon', 'Date', 'Ranking'],
                       onChanged: (val) =>
                           setState(() => _model.dropDownValue = val),
-                      width: 180,
-                      height: 50,
+                      width: 180.0,
+                      height: 50.0,
                       textStyle:
                           FlutterFlowTheme.of(context).bodyText1.override(
                                 fontFamily: 'Poppins',
@@ -99,24 +99,25 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                               ),
                       hintText: 'Filters',
                       fillColor: Colors.white,
-                      elevation: 2,
+                      elevation: 2.0,
                       borderColor: FlutterFlowTheme.of(context).black600,
-                      borderWidth: 0,
-                      borderRadius: 0,
-                      margin: EdgeInsetsDirectional.fromSTEB(12, 4, 12, 4),
+                      borderWidth: 0.0,
+                      borderRadius: 0.0,
+                      margin:
+                          EdgeInsetsDirectional.fromSTEB(12.0, 4.0, 12.0, 4.0),
                       hidesUnderline: true,
                     ),
                   ],
                 ),
               ),
               Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0, 10, 0, 0),
+                padding: EdgeInsetsDirectional.fromSTEB(0.0, 10.0, 0.0, 0.0),
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Container(
-                      width: MediaQuery.of(context).size.width,
+                      width: MediaQuery.of(context).size.width * 1.0,
                       height: MediaQuery.of(context).size.height * 0.6,
                       decoration: BoxDecoration(
                         color: FlutterFlowTheme.of(context).secondaryBackground,
@@ -200,8 +201,8 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                           // Customize what your widget looks like when it's loading the first page.
                           firstPageProgressIndicatorBuilder: (_) => Center(
                             child: SizedBox(
-                              width: 50,
-                              height: 50,
+                              width: 50.0,
+                              height: 50.0,
                               child: CircularProgressIndicator(
                                 color:
                                     FlutterFlowTheme.of(context).primaryColor,
@@ -213,8 +214,8 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                             final listViewMatchesDevRecord = _model
                                 .pagingController!.itemList![listViewIndex];
                             return Padding(
-                              padding:
-                                  EdgeInsetsDirectional.fromSTEB(10, 0, 10, 0),
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  10.0, 0.0, 10.0, 0.0),
                               child: InkWell(
                                 onTap: () async {
                                   await Navigator.push(
@@ -230,8 +231,9 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                                   clipBehavior: Clip.antiAliasWithSaveLayer,
                                   color: Color(0xFFF5F5F5),
                                   child: Container(
-                                    width: MediaQuery.of(context).size.width,
-                                    height: 220,
+                                    width:
+                                        MediaQuery.of(context).size.width * 1.0,
+                                    height: 220.0,
                                     decoration: BoxDecoration(
                                       color: Color(0xFFEEEEEE),
                                     ),
@@ -257,8 +259,8 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                                                     if (!snapshot.hasData) {
                                                       return Center(
                                                         child: SizedBox(
-                                                          width: 50,
-                                                          height: 50,
+                                                          width: 50.0,
+                                                          height: 50.0,
                                                           child:
                                                               CircularProgressIndicator(
                                                             color: FlutterFlowTheme
@@ -276,8 +278,8 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                                                             .photoUrl,
                                                         'https://firebasestorage.googleapis.com/v0/b/universalfencingleague.appspot.com/o/Fencer_silhouette.png?alt=media&token=7ae87fd2-6264-446f-abbf-c4a7d8d5b642',
                                                       ),
-                                                      width: 100,
-                                                      height: 100,
+                                                      width: 100.0,
+                                                      height: 100.0,
                                                       fit: BoxFit.cover,
                                                     );
                                                   },
@@ -291,8 +293,8 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                                                     if (!snapshot.hasData) {
                                                       return Center(
                                                         child: SizedBox(
-                                                          width: 50,
-                                                          height: 50,
+                                                          width: 50.0,
+                                                          height: 50.0,
                                                           child:
                                                               CircularProgressIndicator(
                                                             color: FlutterFlowTheme
@@ -339,8 +341,8 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                                                     if (!snapshot.hasData) {
                                                       return Center(
                                                         child: SizedBox(
-                                                          width: 50,
-                                                          height: 50,
+                                                          width: 50.0,
+                                                          height: 50.0,
                                                           child:
                                                               CircularProgressIndicator(
                                                             color: FlutterFlowTheme
@@ -358,8 +360,8 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                                                             .photoUrl,
                                                         'https://firebasestorage.googleapis.com/v0/b/universalfencingleague.appspot.com/o/Fencer_silhouette.png?alt=media&token=7ae87fd2-6264-446f-abbf-c4a7d8d5b642',
                                                       ),
-                                                      width: 100,
-                                                      height: 100,
+                                                      width: 100.0,
+                                                      height: 100.0,
                                                       fit: BoxFit.cover,
                                                     );
                                                   },
@@ -373,8 +375,8 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                                                     if (!snapshot.hasData) {
                                                       return Center(
                                                         child: SizedBox(
-                                                          width: 50,
-                                                          height: 50,
+                                                          width: 50.0,
+                                                          height: 50.0,
                                                           child:
                                                               CircularProgressIndicator(
                                                             color: FlutterFlowTheme

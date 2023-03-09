@@ -1,9 +1,9 @@
-import '../auth/auth_util.dart';
-import '../backend/backend.dart';
-import '../flutter_flow/flutter_flow_theme.dart';
-import '../flutter_flow/flutter_flow_util.dart';
-import '../flutter_flow/flutter_flow_widgets.dart';
-import '../secondary_details/secondary_details_widget.dart';
+import '/auth/auth_util.dart';
+import '/backend/backend.dart';
+import '/flutter_flow/flutter_flow_theme.dart';
+import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_widgets.dart';
+import '/secondary_details/secondary_details_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -53,8 +53,8 @@ class _RegisterWidgetState extends State<RegisterWidget> {
       body: GestureDetector(
         onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
         child: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height * 1,
+          width: MediaQuery.of(context).size.width * 1.0,
+          height: MediaQuery.of(context).size.height * 1.0,
           decoration: BoxDecoration(
             color: Color(0xFFEEEEEE),
             image: DecorationImage(
@@ -65,7 +65,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
             ),
           ),
           child: Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(20, 0, 20, 0),
+            padding: EdgeInsetsDirectional.fromSTEB(20.0, 0.0, 20.0, 0.0),
             child: SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.max,
@@ -73,22 +73,24 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 70, 0, 90),
+                    padding:
+                        EdgeInsetsDirectional.fromSTEB(0.0, 70.0, 0.0, 90.0),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Image.asset(
                           'assets/images/S_Class_Logo_Orange.png',
-                          width: 120,
-                          height: 120,
+                          width: 120.0,
+                          height: 120.0,
                           fit: BoxFit.cover,
                         ),
                       ],
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
+                    padding:
+                        EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 0.0),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -104,7 +106,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                   .override(
                                     fontFamily: 'Lexend Deca',
                                     color: Color(0xFF95A1AC),
-                                    fontSize: 14,
+                                    fontSize: 14.0,
                                     fontWeight: FontWeight.normal,
                                   ),
                               hintText: 'Enter your first name here...',
@@ -113,47 +115,47 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                   .override(
                                     fontFamily: 'Lexend Deca',
                                     color: Color(0xFF95A1AC),
-                                    fontSize: 14,
+                                    fontSize: 14.0,
                                     fontWeight: FontWeight.normal,
                                   ),
                               enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                   color: Color(0xFFDBE2E7),
-                                  width: 2,
+                                  width: 2.0,
                                 ),
-                                borderRadius: BorderRadius.circular(8),
+                                borderRadius: BorderRadius.circular(8.0),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                   color: Color(0x00000000),
-                                  width: 2,
+                                  width: 2.0,
                                 ),
-                                borderRadius: BorderRadius.circular(8),
+                                borderRadius: BorderRadius.circular(8.0),
                               ),
                               errorBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                   color: Color(0x00000000),
-                                  width: 2,
+                                  width: 2.0,
                                 ),
-                                borderRadius: BorderRadius.circular(8),
+                                borderRadius: BorderRadius.circular(8.0),
                               ),
                               focusedErrorBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                   color: Color(0x00000000),
-                                  width: 2,
+                                  width: 2.0,
                                 ),
-                                borderRadius: BorderRadius.circular(8),
+                                borderRadius: BorderRadius.circular(8.0),
                               ),
                               filled: true,
                               fillColor: Colors.white,
-                              contentPadding:
-                                  EdgeInsetsDirectional.fromSTEB(16, 24, 0, 24),
+                              contentPadding: EdgeInsetsDirectional.fromSTEB(
+                                  16.0, 24.0, 0.0, 24.0),
                             ),
                             style:
                                 FlutterFlowTheme.of(context).bodyText1.override(
                                       fontFamily: 'Lexend Deca',
                                       color: Color(0xFF2B343A),
-                                      fontSize: 14,
+                                      fontSize: 14.0,
                                       fontWeight: FontWeight.normal,
                                     ),
                             validator: _model.firstNameControllerValidator
@@ -164,7 +166,8 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
+                    padding:
+                        EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 0.0),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -180,7 +183,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                   .override(
                                     fontFamily: 'Lexend Deca',
                                     color: Color(0xFF95A1AC),
-                                    fontSize: 14,
+                                    fontSize: 14.0,
                                     fontWeight: FontWeight.normal,
                                   ),
                               hintText: 'Enter your last name here...',
@@ -189,47 +192,47 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                   .override(
                                     fontFamily: 'Lexend Deca',
                                     color: Color(0xFF95A1AC),
-                                    fontSize: 14,
+                                    fontSize: 14.0,
                                     fontWeight: FontWeight.normal,
                                   ),
                               enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                   color: Color(0xFFDBE2E7),
-                                  width: 2,
+                                  width: 2.0,
                                 ),
-                                borderRadius: BorderRadius.circular(8),
+                                borderRadius: BorderRadius.circular(8.0),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                   color: Color(0x00000000),
-                                  width: 2,
+                                  width: 2.0,
                                 ),
-                                borderRadius: BorderRadius.circular(8),
+                                borderRadius: BorderRadius.circular(8.0),
                               ),
                               errorBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                   color: Color(0x00000000),
-                                  width: 2,
+                                  width: 2.0,
                                 ),
-                                borderRadius: BorderRadius.circular(8),
+                                borderRadius: BorderRadius.circular(8.0),
                               ),
                               focusedErrorBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                   color: Color(0x00000000),
-                                  width: 2,
+                                  width: 2.0,
                                 ),
-                                borderRadius: BorderRadius.circular(8),
+                                borderRadius: BorderRadius.circular(8.0),
                               ),
                               filled: true,
                               fillColor: Colors.white,
-                              contentPadding:
-                                  EdgeInsetsDirectional.fromSTEB(16, 24, 0, 24),
+                              contentPadding: EdgeInsetsDirectional.fromSTEB(
+                                  16.0, 24.0, 0.0, 24.0),
                             ),
                             style:
                                 FlutterFlowTheme.of(context).bodyText1.override(
                                       fontFamily: 'Lexend Deca',
                                       color: Color(0xFF2B343A),
-                                      fontSize: 14,
+                                      fontSize: 14.0,
                                       fontWeight: FontWeight.normal,
                                     ),
                             validator: _model.lastNameControllerValidator
@@ -240,7 +243,8 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
+                    padding:
+                        EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 0.0),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -256,7 +260,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                   .override(
                                     fontFamily: 'Lexend Deca',
                                     color: Color(0xFF95A1AC),
-                                    fontSize: 14,
+                                    fontSize: 14.0,
                                     fontWeight: FontWeight.normal,
                                   ),
                               hintText: 'Enter your email here...',
@@ -265,47 +269,47 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                   .override(
                                     fontFamily: 'Lexend Deca',
                                     color: Color(0xFF95A1AC),
-                                    fontSize: 14,
+                                    fontSize: 14.0,
                                     fontWeight: FontWeight.normal,
                                   ),
                               enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                   color: Color(0xFFDBE2E7),
-                                  width: 2,
+                                  width: 2.0,
                                 ),
-                                borderRadius: BorderRadius.circular(8),
+                                borderRadius: BorderRadius.circular(8.0),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                   color: Color(0x00000000),
-                                  width: 2,
+                                  width: 2.0,
                                 ),
-                                borderRadius: BorderRadius.circular(8),
+                                borderRadius: BorderRadius.circular(8.0),
                               ),
                               errorBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                   color: Color(0x00000000),
-                                  width: 2,
+                                  width: 2.0,
                                 ),
-                                borderRadius: BorderRadius.circular(8),
+                                borderRadius: BorderRadius.circular(8.0),
                               ),
                               focusedErrorBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                   color: Color(0x00000000),
-                                  width: 2,
+                                  width: 2.0,
                                 ),
-                                borderRadius: BorderRadius.circular(8),
+                                borderRadius: BorderRadius.circular(8.0),
                               ),
                               filled: true,
                               fillColor: Colors.white,
-                              contentPadding:
-                                  EdgeInsetsDirectional.fromSTEB(16, 24, 0, 24),
+                              contentPadding: EdgeInsetsDirectional.fromSTEB(
+                                  16.0, 24.0, 0.0, 24.0),
                             ),
                             style:
                                 FlutterFlowTheme.of(context).bodyText1.override(
                                       fontFamily: 'Lexend Deca',
                                       color: Color(0xFF2B343A),
-                                      fontSize: 14,
+                                      fontSize: 14.0,
                                       fontWeight: FontWeight.normal,
                                     ),
                             validator: _model.emailControllerValidator
@@ -316,7 +320,8 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
+                    padding:
+                        EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 0.0),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -332,7 +337,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                   .override(
                                     fontFamily: 'Lexend Deca',
                                     color: Color(0xFF95A1AC),
-                                    fontSize: 14,
+                                    fontSize: 14.0,
                                     fontWeight: FontWeight.normal,
                                   ),
                               hintText: 'Enter your password here...',
@@ -341,41 +346,41 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                   .override(
                                     fontFamily: 'Lexend Deca',
                                     color: Color(0xFF95A1AC),
-                                    fontSize: 14,
+                                    fontSize: 14.0,
                                     fontWeight: FontWeight.normal,
                                   ),
                               enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                   color: Color(0xFFDBE2E7),
-                                  width: 2,
+                                  width: 2.0,
                                 ),
-                                borderRadius: BorderRadius.circular(8),
+                                borderRadius: BorderRadius.circular(8.0),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                   color: Color(0x00000000),
-                                  width: 2,
+                                  width: 2.0,
                                 ),
-                                borderRadius: BorderRadius.circular(8),
+                                borderRadius: BorderRadius.circular(8.0),
                               ),
                               errorBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                   color: Color(0x00000000),
-                                  width: 2,
+                                  width: 2.0,
                                 ),
-                                borderRadius: BorderRadius.circular(8),
+                                borderRadius: BorderRadius.circular(8.0),
                               ),
                               focusedErrorBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                   color: Color(0x00000000),
-                                  width: 2,
+                                  width: 2.0,
                                 ),
-                                borderRadius: BorderRadius.circular(8),
+                                borderRadius: BorderRadius.circular(8.0),
                               ),
                               filled: true,
                               fillColor: Colors.white,
                               contentPadding: EdgeInsetsDirectional.fromSTEB(
-                                  16, 24, 24, 24),
+                                  16.0, 24.0, 24.0, 24.0),
                               suffixIcon: InkWell(
                                 onTap: () => setState(
                                   () => _model.passwordVisibility =
@@ -387,7 +392,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                       ? Icons.visibility_outlined
                                       : Icons.visibility_off_outlined,
                                   color: Color(0xFF95A1AC),
-                                  size: 22,
+                                  size: 22.0,
                                 ),
                               ),
                             ),
@@ -395,7 +400,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                 FlutterFlowTheme.of(context).bodyText1.override(
                                       fontFamily: 'Lexend Deca',
                                       color: Color(0xFF2B343A),
-                                      fontSize: 14,
+                                      fontSize: 14.0,
                                       fontWeight: FontWeight.normal,
                                     ),
                             validator: _model.passwordControllerValidator
@@ -406,7 +411,8 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 16, 0, 0),
+                    padding:
+                        EdgeInsetsDirectional.fromSTEB(0.0, 16.0, 0.0, 0.0),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -422,7 +428,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                   .override(
                                     fontFamily: 'Lexend Deca',
                                     color: Color(0xFF95A1AC),
-                                    fontSize: 14,
+                                    fontSize: 14.0,
                                     fontWeight: FontWeight.normal,
                                   ),
                               hintText: 'Retype your password here...',
@@ -431,41 +437,41 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                   .override(
                                     fontFamily: 'Lexend Deca',
                                     color: Color(0xFF95A1AC),
-                                    fontSize: 14,
+                                    fontSize: 14.0,
                                     fontWeight: FontWeight.normal,
                                   ),
                               enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                   color: Color(0xFFDBE2E7),
-                                  width: 2,
+                                  width: 2.0,
                                 ),
-                                borderRadius: BorderRadius.circular(8),
+                                borderRadius: BorderRadius.circular(8.0),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                   color: Color(0x00000000),
-                                  width: 2,
+                                  width: 2.0,
                                 ),
-                                borderRadius: BorderRadius.circular(8),
+                                borderRadius: BorderRadius.circular(8.0),
                               ),
                               errorBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                   color: Color(0x00000000),
-                                  width: 2,
+                                  width: 2.0,
                                 ),
-                                borderRadius: BorderRadius.circular(8),
+                                borderRadius: BorderRadius.circular(8.0),
                               ),
                               focusedErrorBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                   color: Color(0x00000000),
-                                  width: 2,
+                                  width: 2.0,
                                 ),
-                                borderRadius: BorderRadius.circular(8),
+                                borderRadius: BorderRadius.circular(8.0),
                               ),
                               filled: true,
                               fillColor: Colors.white,
                               contentPadding: EdgeInsetsDirectional.fromSTEB(
-                                  16, 24, 24, 24),
+                                  16.0, 24.0, 24.0, 24.0),
                               suffixIcon: InkWell(
                                 onTap: () => setState(
                                   () => _model.retypedVisibility =
@@ -477,7 +483,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                       ? Icons.visibility_outlined
                                       : Icons.visibility_off_outlined,
                                   color: Color(0xFF95A1AC),
-                                  size: 22,
+                                  size: 22.0,
                                 ),
                               ),
                             ),
@@ -485,7 +491,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                 FlutterFlowTheme.of(context).bodyText1.override(
                                       fontFamily: 'Lexend Deca',
                                       color: Color(0xFF2B343A),
-                                      fontSize: 14,
+                                      fontSize: 14.0,
                                       fontWeight: FontWeight.normal,
                                     ),
                             validator: _model.retypedControllerValidator
@@ -496,7 +502,8 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsetsDirectional.fromSTEB(0, 24, 0, 0),
+                    padding:
+                        EdgeInsetsDirectional.fromSTEB(0.0, 24.0, 0.0, 0.0),
                     child: Row(
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -546,22 +553,26 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                           },
                           text: 'Continue',
                           options: FFButtonOptions(
-                            width: 130,
-                            height: 60,
+                            width: 130.0,
+                            height: 60.0,
+                            padding: EdgeInsetsDirectional.fromSTEB(
+                                0.0, 0.0, 0.0, 0.0),
+                            iconPadding: EdgeInsetsDirectional.fromSTEB(
+                                0.0, 0.0, 0.0, 0.0),
                             color: Color(0xFF090F13),
                             textStyle:
                                 FlutterFlowTheme.of(context).subtitle1.override(
                                       fontFamily: 'Lexend Deca',
                                       color: Colors.white,
-                                      fontSize: 18,
+                                      fontSize: 18.0,
                                       fontWeight: FontWeight.bold,
                                     ),
-                            elevation: 3,
+                            elevation: 3.0,
                             borderSide: BorderSide(
                               color: Colors.transparent,
-                              width: 1,
+                              width: 1.0,
                             ),
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(8.0),
                           ),
                         ),
                       ],

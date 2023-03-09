@@ -248,3 +248,7 @@ String nameToAbbreviation(String fullname) {
 
   return firstinitial + '. ' + secondinitials;
 }
+
+int addOne(int inputNumber) {
+  return inputNumber + 1;
+}

@@ -10,6 +10,7 @@ import 'schema/clubs_record.dart';
 import 'schema/matchdetails_dev_record.dart';
 import 'schema/matchstatslog_dev_record.dart';
 import 'schema/matches_dev_record.dart';
+import 'schema/rankings_record.dart';
 import 'schema/serializers.dart';
 
 export 'dart:async' show StreamSubscription;
@@ -22,6 +23,7 @@ export 'schema/clubs_record.dart';
 export 'schema/matchdetails_dev_record.dart';
 export 'schema/matchstatslog_dev_record.dart';
 export 'schema/matches_dev_record.dart';
+export 'schema/rankings_record.dart';
 
 /// Functions to query UsersRecords (as a Stream and as a Future).
 Future<int> queryUsersRecordCount({
@@ -278,6 +280,58 @@ Future<FFFirestorePage<MatchesDevRecord>> queryMatchesDevRecordPage({
     queryCollectionPage(
       MatchesDevRecord.collection,
       MatchesDevRecord.serializer,
+      queryBuilder: queryBuilder,
+      nextPageMarker: nextPageMarker,
+      pageSize: pageSize,
+      isStream: isStream,
+    );
+
+/// Functions to query RankingsRecords (as a Stream and as a Future).
+Future<int> queryRankingsRecordCount({
+  Query Function(Query)? queryBuilder,
+  int limit = -1,
+}) =>
+    queryCollectionCount(
+      RankingsRecord.collection,
+      queryBuilder: queryBuilder,
+      limit: limit,
+    );
+
+Stream<List<RankingsRecord>> queryRankingsRecord({
+  Query Function(Query)? queryBuilder,
+  int limit = -1,
+  bool singleRecord = false,
+}) =>
+    queryCollection(
+      RankingsRecord.collection,
+      RankingsRecord.serializer,
+      queryBuilder: queryBuilder,
+      limit: limit,
+      singleRecord: singleRecord,
+    );
+
+Future<List<RankingsRecord>> queryRankingsRecordOnce({
+  Query Function(Query)? queryBuilder,
+  int limit = -1,
+  bool singleRecord = false,
+}) =>
+    queryCollectionOnce(
+      RankingsRecord.collection,
+      RankingsRecord.serializer,
+      queryBuilder: queryBuilder,
+      limit: limit,
+      singleRecord: singleRecord,
+    );
+
+Future<FFFirestorePage<RankingsRecord>> queryRankingsRecordPage({
+  Query Function(Query)? queryBuilder,
+  DocumentSnapshot? nextPageMarker,
+  required int pageSize,
+  required bool isStream,
+}) =>
+    queryCollectionPage(
+      RankingsRecord.collection,
+      RankingsRecord.serializer,
       queryBuilder: queryBuilder,
       nextPageMarker: nextPageMarker,
       pageSize: pageSize,

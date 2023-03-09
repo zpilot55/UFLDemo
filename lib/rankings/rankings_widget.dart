@@ -1,6 +1,9 @@
-import '../components/col_main_drawer_widget.dart';
-import '../flutter_flow/flutter_flow_theme.dart';
-import '../flutter_flow/flutter_flow_util.dart';
+import '/backend/backend.dart';
+import '/components/col_main_drawer_widget.dart';
+import '/flutter_flow/flutter_flow_theme.dart';
+import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/custom_functions.dart' as functions;
+import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -42,7 +45,7 @@ class _RankingsWidgetState extends State<RankingsWidget> {
       key: scaffoldKey,
       backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
       drawer: Drawer(
-        elevation: 16,
+        elevation: 16.0,
         child: wrapWithModel(
           model: _model.colMainDrawerModel,
           updateCallback: () => setState(() {}),
@@ -54,7 +57,7 @@ class _RankingsWidgetState extends State<RankingsWidget> {
         automaticallyImplyLeading: true,
         actions: [],
         centerTitle: true,
-        elevation: 4,
+        elevation: 4.0,
       ),
       body: SafeArea(
         child: GestureDetector(
@@ -90,71 +93,204 @@ class _RankingsWidgetState extends State<RankingsWidget> {
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Column(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Row(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        0, 0, 0, 10),
-                                    child: Text(
-                                      'Club Ranking:',
-                                      style: FlutterFlowTheme.of(context)
-                                          .subtitle1,
+                          Expanded(
+                            child: StreamBuilder<List<RankingsRecord>>(
+                              stream: queryRankingsRecord(
+                                queryBuilder: (rankingsRecord) => rankingsRecord
+                                    .orderBy('fencerRankings.elo_FA',
+                                        descending: true),
+                              ),
+                              builder: (context, snapshot) {
+                                // Customize what your widget looks like when it's loading.
+                                if (!snapshot.hasData) {
+                                  return Center(
+                                    child: SizedBox(
+                                      width: 50.0,
+                                      height: 50.0,
+                                      child: CircularProgressIndicator(
+                                        color: FlutterFlowTheme.of(context)
+                                            .primaryColor,
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                              Container(
-                                width: MediaQuery.of(context).size.width * 0.3,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.7,
-                                decoration: BoxDecoration(
-                                  color: FlutterFlowTheme.of(context)
-                                      .secondaryBackground,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Column(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Row(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        0, 0, 0, 10),
-                                    child: Text(
-                                      'Country Ranking:',
-                                      style: FlutterFlowTheme.of(context)
-                                          .subtitle1,
+                                  );
+                                }
+                                List<RankingsRecord>
+                                    dataTableRankingsRecordList =
+                                    snapshot.data!;
+                                return DataTable2(
+                                  columns: [
+                                    DataColumn2(
+                                      label: DefaultTextStyle.merge(
+                                        softWrap: true,
+                                        child: Text(
+                                          'Rank',
+                                          style: FlutterFlowTheme.of(context)
+                                              .title3
+                                              .override(
+                                                fontFamily: 'Poppins',
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .primaryText,
+                                              ),
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          Column(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Row(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        0, 0, 0, 10),
-                                    child: Text(
-                                      'World Ranking:',
-                                      style: FlutterFlowTheme.of(context)
-                                          .subtitle1,
+                                    DataColumn2(
+                                      label: DefaultTextStyle.merge(
+                                        softWrap: true,
+                                        child: Text(
+                                          'Name',
+                                          style: FlutterFlowTheme.of(context)
+                                              .title3
+                                              .override(
+                                                fontFamily: 'Poppins',
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .primaryText,
+                                              ),
+                                        ),
+                                      ),
                                     ),
+                                    DataColumn2(
+                                      label: DefaultTextStyle.merge(
+                                        softWrap: true,
+                                        child: Text(
+                                          'Club',
+                                          style: FlutterFlowTheme.of(context)
+                                              .title3
+                                              .override(
+                                                fontFamily: 'Poppins',
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .primaryText,
+                                              ),
+                                        ),
+                                      ),
+                                    ),
+                                    DataColumn2(
+                                      label: DefaultTextStyle.merge(
+                                        softWrap: true,
+                                        child: Text(
+                                          'Elo',
+                                          style: FlutterFlowTheme.of(context)
+                                              .title3
+                                              .override(
+                                                fontFamily: 'Poppins',
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .primaryText,
+                                              ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                  rows: dataTableRankingsRecordList
+                                      .mapIndexed((dataTableIndex,
+                                              dataTableRankingsRecord) =>
+                                          [
+                                            Text(
+                                              functions
+                                                  .addOne(dataTableIndex)
+                                                  .toString(),
+                                              style:
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyText1
+                                                      .override(
+                                                        fontFamily: 'Poppins',
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .secondaryText,
+                                                      ),
+                                            ),
+                                            StreamBuilder<UsersRecord>(
+                                              stream: UsersRecord.getDocument(
+                                                  dataTableRankingsRecord
+                                                      .fencerRankings.fencer!),
+                                              builder: (context, snapshot) {
+                                                // Customize what your widget looks like when it's loading.
+                                                if (!snapshot.hasData) {
+                                                  return Center(
+                                                    child: SizedBox(
+                                                      width: 50.0,
+                                                      height: 50.0,
+                                                      child:
+                                                          CircularProgressIndicator(
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .primaryColor,
+                                                      ),
+                                                    ),
+                                                  );
+                                                }
+                                                final textUsersRecord =
+                                                    snapshot.data!;
+                                                return Text(
+                                                  textUsersRecord.displayName!,
+                                                  style: FlutterFlowTheme.of(
+                                                          context)
+                                                      .bodyText1
+                                                      .override(
+                                                        fontFamily: 'Poppins',
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .secondaryText,
+                                                      ),
+                                                );
+                                              },
+                                            ),
+                                            Text(
+                                              'A Club',
+                                              style:
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyText1
+                                                      .override(
+                                                        fontFamily: 'Poppins',
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .secondaryText,
+                                                      ),
+                                            ),
+                                            Text(
+                                              dataTableRankingsRecord
+                                                  .fencerRankings.eloFA!
+                                                  .toString(),
+                                              style:
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyText1
+                                                      .override(
+                                                        fontFamily: 'Poppins',
+                                                        color:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .secondaryText,
+                                                      ),
+                                            ),
+                                          ].map((c) => DataCell(c)).toList())
+                                      .map((e) => DataRow(cells: e))
+                                      .toList(),
+                                  headingRowColor: MaterialStateProperty.all(
+                                    FlutterFlowTheme.of(context)
+                                        .primaryBackground,
                                   ),
-                                ],
-                              ),
-                            ],
+                                  headingRowHeight: 56.0,
+                                  dataRowColor: MaterialStateProperty.all(
+                                    FlutterFlowTheme.of(context)
+                                        .secondaryBackground,
+                                  ),
+                                  dataRowHeight: 56.0,
+                                  border: TableBorder(
+                                    borderRadius: BorderRadius.circular(0.0),
+                                  ),
+                                  dividerThickness: 1.0,
+                                  showBottomBorder: false,
+                                  minWidth: 49.0,
+                                );
+                              },
+                            ),
                           ),
                         ],
                       ),
