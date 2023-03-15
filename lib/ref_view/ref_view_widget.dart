@@ -268,27 +268,22 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                             });
                                             if (FFAppState().currentPeriod ==
                                                 widget.startNumOfPeriods) {
-                                              FFAppState().update(() {
+                                              setState(() {
                                                 FFAppState().endOfBout = true;
                                                 FFAppState().startStopText =
                                                     'END OF BOUT';
                                               });
                                             } else {
                                               if (FFAppState().onBreak) {
-                                                FFAppState().update(() {
+                                                setState(() {
                                                   FFAppState().onBreak = false;
-                                                });
-                                                await Future.delayed(
-                                                    const Duration(
-                                                        milliseconds: 100));
-                                                FFAppState().update(() {
                                                   FFAppState().beginNextPer =
                                                       true;
                                                   FFAppState().startStopText =
                                                       'NEXT PER';
                                                 });
                                               } else {
-                                                FFAppState().update(() {
+                                                setState(() {
                                                   FFAppState().beginBreak =
                                                       true;
                                                   FFAppState().startStopText =
@@ -483,7 +478,12 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      if (FFAppState().isTimerRunning == false)
+                                      if (valueOrDefault<bool>(
+                                        FFAppState().isTimerRunning ||
+                                            FFAppState().showActions ||
+                                            FFAppState().endOfBoutPopup,
+                                        true,
+                                      ))
                                         Padding(
                                           padding:
                                               EdgeInsetsDirectional.fromSTEB(
@@ -526,7 +526,8 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                           ),
                                         ),
                                       Spacer(),
-                                      if (!FFAppState().showActions)
+                                      if (!(FFAppState().showActions ||
+                                          FFAppState().endOfBoutPopup))
                                         Padding(
                                           padding:
                                               EdgeInsetsDirectional.fromSTEB(
@@ -545,16 +546,13 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                                         false;
                                                     FFAppState().onBreak = true;
                                                   });
-                                                  FFAppState().update(() {
-                                                    FFAppState()
-                                                            .timerStartTime =
-                                                        functions.minutesToMS(
-                                                            FFAppState()
-                                                                .breakDuration);
-                                                  });
-                                                  await Future.delayed(
-                                                      const Duration(
-                                                          milliseconds: 100));
+                                                  _model.timerController
+                                                      .setPresetTime(
+                                                    mSec: functions.minutesToMS(
+                                                        FFAppState()
+                                                            .breakDuration),
+                                                    add: false,
+                                                  );
                                                   _model
                                                       .timerController.onExecute
                                                       .add(StopWatchExecute
@@ -574,17 +572,13 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                                   if (!FFAppState().onBreak) {
                                                     if (FFAppState()
                                                         .beginNextPer) {
-                                                      FFAppState().update(() {
-                                                        FFAppState()
-                                                                .timerStartTime =
-                                                            functions.minutesToMS(
-                                                                widget
-                                                                    .initStartTime!);
-                                                      });
-                                                      await Future.delayed(
-                                                          const Duration(
-                                                              milliseconds:
-                                                                  100));
+                                                      _model.timerController
+                                                          .setPresetTime(
+                                                        mSec: functions
+                                                            .minutesToMS(widget
+                                                                .initStartTime!),
+                                                        add: false,
+                                                      );
                                                       _model.timerController
                                                           .onExecute
                                                           .add(StopWatchExecute
@@ -668,7 +662,12 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                           ),
                                         ),
                                       Spacer(),
-                                      if (FFAppState().isTimerRunning == false)
+                                      if (valueOrDefault<bool>(
+                                        FFAppState().isTimerRunning ||
+                                            FFAppState().showActions ||
+                                            FFAppState().endOfBoutPopup,
+                                        true,
+                                      ))
                                         Padding(
                                           padding:
                                               EdgeInsetsDirectional.fromSTEB(
