@@ -1,4 +1,4 @@
-import '/auth/auth_util.dart';
+import '/auth/firebase_auth/auth_util.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
@@ -24,7 +24,6 @@ class _LoginWidgetState extends State<LoginWidget> {
   late LoginModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final _unfocusNode = FocusNode();
 
   @override
   void initState() {
@@ -39,7 +38,6 @@ class _LoginWidgetState extends State<LoginWidget> {
   void dispose() {
     _model.dispose();
 
-    _unfocusNode.dispose();
     super.dispose();
   }
 
@@ -47,14 +45,14 @@ class _LoginWidgetState extends State<LoginWidget> {
   Widget build(BuildContext context) {
     context.watch<FFAppState>();
 
-    return Scaffold(
-      key: scaffoldKey,
-      backgroundColor: Color(0xFF4B39EF),
-      body: GestureDetector(
-        onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
-        child: Container(
-          width: MediaQuery.of(context).size.width * 1.0,
-          height: MediaQuery.of(context).size.height * 1.0,
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
+      child: Scaffold(
+        key: scaffoldKey,
+        backgroundColor: Color(0xFF4B39EF),
+        body: Container(
+          width: MediaQuery.sizeOf(context).width * 1.0,
+          height: MediaQuery.sizeOf(context).height * 1.0,
           decoration: BoxDecoration(
             color: Color(0xFFEEEEEE),
             image: DecorationImage(
@@ -102,7 +100,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                             decoration: InputDecoration(
                               labelText: 'Email Address',
                               labelStyle: FlutterFlowTheme.of(context)
-                                  .bodyText1
+                                  .bodyMedium
                                   .override(
                                     fontFamily: 'Lexend Deca',
                                     color: Color(0xFF95A1AC),
@@ -111,7 +109,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                   ),
                               hintText: 'Enter your email here...',
                               hintStyle: FlutterFlowTheme.of(context)
-                                  .bodyText1
+                                  .bodyMedium
                                   .override(
                                     fontFamily: 'Lexend Deca',
                                     color: Color(0xFF95A1AC),
@@ -151,13 +149,14 @@ class _LoginWidgetState extends State<LoginWidget> {
                               contentPadding: EdgeInsetsDirectional.fromSTEB(
                                   16.0, 24.0, 0.0, 24.0),
                             ),
-                            style:
-                                FlutterFlowTheme.of(context).bodyText1.override(
-                                      fontFamily: 'Lexend Deca',
-                                      color: Color(0xFF2B343A),
-                                      fontSize: 14.0,
-                                      fontWeight: FontWeight.normal,
-                                    ),
+                            style: FlutterFlowTheme.of(context)
+                                .bodyMedium
+                                .override(
+                                  fontFamily: 'Lexend Deca',
+                                  color: Color(0xFF2B343A),
+                                  fontSize: 14.0,
+                                  fontWeight: FontWeight.normal,
+                                ),
                             validator: _model.emailAddressControllerValidator
                                 .asValidator(context),
                           ),
@@ -179,7 +178,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                             decoration: InputDecoration(
                               labelText: 'Password',
                               labelStyle: FlutterFlowTheme.of(context)
-                                  .bodyText1
+                                  .bodyMedium
                                   .override(
                                     fontFamily: 'Lexend Deca',
                                     color: Color(0xFF95A1AC),
@@ -188,7 +187,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                   ),
                               hintText: 'Enter your password here...',
                               hintStyle: FlutterFlowTheme.of(context)
-                                  .bodyText1
+                                  .bodyMedium
                                   .override(
                                     fontFamily: 'Lexend Deca',
                                     color: Color(0xFF95A1AC),
@@ -242,13 +241,14 @@ class _LoginWidgetState extends State<LoginWidget> {
                                 ),
                               ),
                             ),
-                            style:
-                                FlutterFlowTheme.of(context).bodyText1.override(
-                                      fontFamily: 'Lexend Deca',
-                                      color: Color(0xFF2B343A),
-                                      fontSize: 14.0,
-                                      fontWeight: FontWeight.normal,
-                                    ),
+                            style: FlutterFlowTheme.of(context)
+                                .bodyMedium
+                                .override(
+                                  fontFamily: 'Lexend Deca',
+                                  color: Color(0xFF2B343A),
+                                  fontSize: 14.0,
+                                  fontWeight: FontWeight.normal,
+                                ),
                             validator: _model.passwordControllerValidator
                                 .asValidator(context),
                           ),
@@ -265,7 +265,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                       children: [
                         FFButtonWidget(
                           onPressed: () async {
-                            final user = await signInWithEmail(
+                            final user = await authManager.signInWithEmail(
                               context,
                               _model.emailAddressController.text,
                               _model.passwordController.text,
@@ -274,9 +274,9 @@ class _LoginWidgetState extends State<LoginWidget> {
                               return;
                             }
 
-                            if (currentUserReference.id != null &&
-                                currentUserReference.id != '') {
-                              await Navigator.pushAndRemoveUntil(
+                            if (currentUserReference?.id != null &&
+                                currentUserReference?.id != '') {
+                              Navigator.pushAndRemoveUntil(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) =>
@@ -295,13 +295,14 @@ class _LoginWidgetState extends State<LoginWidget> {
                             iconPadding: EdgeInsetsDirectional.fromSTEB(
                                 0.0, 0.0, 0.0, 0.0),
                             color: Color(0xFF090F13),
-                            textStyle:
-                                FlutterFlowTheme.of(context).subtitle1.override(
-                                      fontFamily: 'Lexend Deca',
-                                      color: Colors.white,
-                                      fontSize: 18.0,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                            textStyle: FlutterFlowTheme.of(context)
+                                .titleMedium
+                                .override(
+                                  fontFamily: 'Lexend Deca',
+                                  color: Colors.white,
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
                             elevation: 3.0,
                             borderSide: BorderSide(
                               color: Colors.transparent,
@@ -322,7 +323,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                               );
                               return;
                             }
-                            await resetPassword(
+                            await authManager.resetPassword(
                               email: _model.emailAddressController.text,
                               context: context,
                             );
@@ -336,13 +337,14 @@ class _LoginWidgetState extends State<LoginWidget> {
                             iconPadding: EdgeInsetsDirectional.fromSTEB(
                                 0.0, 0.0, 0.0, 0.0),
                             color: Color(0x00FFFFFF),
-                            textStyle:
-                                FlutterFlowTheme.of(context).subtitle2.override(
-                                      fontFamily: 'Lexend Deca',
-                                      color: Colors.white,
-                                      fontSize: 14.0,
-                                      fontWeight: FontWeight.w500,
-                                    ),
+                            textStyle: FlutterFlowTheme.of(context)
+                                .titleSmall
+                                .override(
+                                  fontFamily: 'Lexend Deca',
+                                  color: Colors.white,
+                                  fontSize: 14.0,
+                                  fontWeight: FontWeight.w500,
+                                ),
                             elevation: 0.0,
                             borderSide: BorderSide(
                               color: Colors.transparent,
@@ -365,7 +367,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                           'Use a Social Platform to Login',
                           textAlign: TextAlign.center,
                           style:
-                              FlutterFlowTheme.of(context).bodyText2.override(
+                              FlutterFlowTheme.of(context).bodySmall.override(
                                     fontFamily: 'Lexend Deca',
                                     color: Colors.white,
                                     fontSize: 14.0,
@@ -395,8 +397,13 @@ class _LoginWidgetState extends State<LoginWidget> {
                               padding: EdgeInsetsDirectional.fromSTEB(
                                   2.0, 2.0, 2.0, 2.0),
                               child: InkWell(
+                                splashColor: Colors.transparent,
+                                focusColor: Colors.transparent,
+                                hoverColor: Colors.transparent,
+                                highlightColor: Colors.transparent,
                                 onTap: () async {
-                                  final user = await signInWithGoogle(context);
+                                  final user = await authManager
+                                      .signInWithGoogle(context);
                                   if (user == null) {
                                     return;
                                   }
@@ -404,7 +411,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                           currentUserDocument?.existingUser,
                                           false) ==
                                       true) {
-                                    await Navigator.pushAndRemoveUntil(
+                                    Navigator.pushAndRemoveUntil(
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) =>
@@ -413,7 +420,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                       (r) => false,
                                     );
                                   } else {
-                                    await Navigator.pushAndRemoveUntil(
+                                    Navigator.pushAndRemoveUntil(
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) =>
@@ -448,8 +455,13 @@ class _LoginWidgetState extends State<LoginWidget> {
                             padding: EdgeInsetsDirectional.fromSTEB(
                                 2.0, 2.0, 2.0, 2.0),
                             child: InkWell(
+                              splashColor: Colors.transparent,
+                              focusColor: Colors.transparent,
+                              hoverColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
                               onTap: () async {
-                                final user = await signInWithApple(context);
+                                final user =
+                                    await authManager.signInWithApple(context);
                                 if (user == null) {
                                   return;
                                 }
@@ -457,7 +469,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                         currentUserDocument?.existingUser,
                                         false) !=
                                     null) {
-                                  await Navigator.pushAndRemoveUntil(
+                                  Navigator.pushAndRemoveUntil(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) =>
@@ -466,7 +478,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                                     (r) => false,
                                   );
                                 } else {
-                                  await Navigator.pushAndRemoveUntil(
+                                  Navigator.pushAndRemoveUntil(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) =>
@@ -503,7 +515,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                         Text(
                           'Don\'t have an account?',
                           style:
-                              FlutterFlowTheme.of(context).bodyText1.override(
+                              FlutterFlowTheme.of(context).bodyMedium.override(
                                     fontFamily: 'Lexend Deca',
                                     color: Colors.white,
                                     fontSize: 14.0,
@@ -512,7 +524,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                         ),
                         FFButtonWidget(
                           onPressed: () async {
-                            await Navigator.push(
+                            Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => RegisterWidget(),
@@ -528,13 +540,14 @@ class _LoginWidgetState extends State<LoginWidget> {
                             iconPadding: EdgeInsetsDirectional.fromSTEB(
                                 0.0, 0.0, 0.0, 0.0),
                             color: Color(0x00FFFFFF),
-                            textStyle:
-                                FlutterFlowTheme.of(context).subtitle2.override(
-                                      fontFamily: 'Lexend Deca',
-                                      color: Color(0xFF39D2C0),
-                                      fontSize: 14.0,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                            textStyle: FlutterFlowTheme.of(context)
+                                .titleSmall
+                                .override(
+                                  fontFamily: 'Lexend Deca',
+                                  color: Color(0xFF39D2C0),
+                                  fontSize: 14.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
                             elevation: 0.0,
                             borderSide: BorderSide(
                               color: Colors.transparent,

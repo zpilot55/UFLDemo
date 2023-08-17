@@ -1,9 +1,10 @@
-import '/auth/auth_util.dart';
+import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/components/col_main_drawer_widget.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/form_field_controller.dart';
 import '/match_recap/match_recap_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -23,7 +24,6 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
   late MatchHistoryModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final _unfocusNode = FocusNode();
 
   @override
   void initState() {
@@ -35,7 +35,6 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
   void dispose() {
     _model.dispose();
 
-    _unfocusNode.dispose();
     super.dispose();
   }
 
@@ -43,27 +42,28 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
   Widget build(BuildContext context) {
     context.watch<FFAppState>();
 
-    return Scaffold(
-      key: scaffoldKey,
-      backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-      drawer: Drawer(
-        elevation: 16.0,
-        child: wrapWithModel(
-          model: _model.colMainDrawerModel,
-          updateCallback: () => setState(() {}),
-          child: ColMainDrawerWidget(),
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
+      child: Scaffold(
+        key: scaffoldKey,
+        backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+        drawer: Drawer(
+          elevation: 16.0,
+          child: wrapWithModel(
+            model: _model.colMainDrawerModel,
+            updateCallback: () => setState(() {}),
+            child: ColMainDrawerWidget(),
+          ),
         ),
-      ),
-      appBar: AppBar(
-        backgroundColor: FlutterFlowTheme.of(context).primaryColor,
-        automaticallyImplyLeading: true,
-        actions: [],
-        centerTitle: true,
-        elevation: 4.0,
-      ),
-      body: SafeArea(
-        child: GestureDetector(
-          onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+        appBar: AppBar(
+          backgroundColor: FlutterFlowTheme.of(context).primary,
+          automaticallyImplyLeading: true,
+          actions: [],
+          centerTitle: true,
+          elevation: 4.0,
+        ),
+        body: SafeArea(
+          top: true,
           child: Column(
             mainAxisSize: MainAxisSize.max,
             children: [
@@ -75,7 +75,7 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                   children: [
                     Text(
                       'Match History',
-                      style: FlutterFlowTheme.of(context).title3,
+                      style: FlutterFlowTheme.of(context).headlineSmall,
                     ),
                   ],
                 ),
@@ -87,13 +87,15 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     FlutterFlowDropDown<String>(
+                      controller: _model.dropDownValueController ??=
+                          FormFieldController<String>(null),
                       options: ['Opponent', 'Weapon', 'Date', 'Ranking'],
                       onChanged: (val) =>
                           setState(() => _model.dropDownValue = val),
                       width: 180.0,
                       height: 50.0,
                       textStyle:
-                          FlutterFlowTheme.of(context).bodyText1.override(
+                          FlutterFlowTheme.of(context).bodyMedium.override(
                                 fontFamily: 'Poppins',
                                 color: Colors.black,
                               ),
@@ -106,6 +108,8 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                       margin:
                           EdgeInsetsDirectional.fromSTEB(12.0, 4.0, 12.0, 4.0),
                       hidesUnderline: true,
+                      isSearchable: false,
+                      isMultiSelect: false,
                     ),
                   ],
                 ),
@@ -117,84 +121,21 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Container(
-                      width: MediaQuery.of(context).size.width * 1.0,
-                      height: MediaQuery.of(context).size.height * 0.6,
+                      width: MediaQuery.sizeOf(context).width * 1.0,
+                      height: MediaQuery.sizeOf(context).height * 0.6,
                       decoration: BoxDecoration(
                         color: FlutterFlowTheme.of(context).secondaryBackground,
                       ),
                       child: PagedListView<DocumentSnapshot<Object?>?,
                           MatchesDevRecord>(
-                        pagingController: () {
-                          final Query<Object?> Function(Query<Object?>)
-                              queryBuilder =
-                              (matchesDevRecord) => matchesDevRecord
-                                  .where('fencers',
-                                      arrayContains: currentUserReference)
-                                  .orderBy('scheduled_time', descending: true);
-                          if (_model.pagingController != null) {
-                            final query =
-                                queryBuilder(MatchesDevRecord.collection);
-                            if (query != _model.pagingQuery) {
-                              // The query has changed
-                              _model.pagingQuery = query;
-                              _model.streamSubscriptions
-                                  .forEach((s) => s?.cancel());
-                              _model.streamSubscriptions.clear();
-                              _model.pagingController!.refresh();
-                            }
-                            return _model.pagingController!;
-                          }
-
-                          _model.pagingController =
-                              PagingController(firstPageKey: null);
-                          _model.pagingQuery =
-                              queryBuilder(MatchesDevRecord.collection);
-                          _model.pagingController!
-                              .addPageRequestListener((nextPageMarker) {
-                            queryMatchesDevRecordPage(
-                              queryBuilder: (matchesDevRecord) =>
-                                  matchesDevRecord
-                                      .where('fencers',
-                                          arrayContains: currentUserReference)
-                                      .orderBy('scheduled_time',
-                                          descending: true),
-                              nextPageMarker: nextPageMarker,
-                              pageSize: 25,
-                              isStream: true,
-                            ).then((page) {
-                              _model.pagingController!.appendPage(
-                                page.data,
-                                page.nextPageMarker,
-                              );
-                              final streamSubscription =
-                                  page.dataStream?.listen((data) {
-                                data.forEach((item) {
-                                  final itemIndexes = _model
-                                      .pagingController!.itemList!
-                                      .asMap()
-                                      .map((k, v) =>
-                                          MapEntry(v.reference.id, k));
-                                  final index = itemIndexes[item.reference.id];
-                                  final items =
-                                      _model.pagingController!.itemList!;
-                                  if (index != null) {
-                                    items
-                                        .replaceRange(index, index + 1, [item]);
-                                    _model.pagingController!.itemList = {
-                                      for (var item in items)
-                                        item.reference: item
-                                    }.values.toList();
-                                  }
-                                });
-                                setState(() {});
-                              });
-                              _model.streamSubscriptions
-                                  .add(streamSubscription);
-                            });
-                          });
-                          return _model.pagingController!;
-                        }(),
+                        pagingController: _model.setListViewController(
+                          MatchesDevRecord.collection
+                              .where('fencers',
+                                  arrayContains: currentUserReference)
+                              .orderBy('scheduled_time', descending: true),
+                        ),
                         padding: EdgeInsets.zero,
+                        reverse: false,
                         scrollDirection: Axis.vertical,
                         builderDelegate:
                             PagedChildBuilderDelegate<MatchesDevRecord>(
@@ -204,21 +145,39 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                               width: 50.0,
                               height: 50.0,
                               child: CircularProgressIndicator(
-                                color:
-                                    FlutterFlowTheme.of(context).primaryColor,
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                  FlutterFlowTheme.of(context).primary,
+                                ),
+                              ),
+                            ),
+                          ),
+                          // Customize what your widget looks like when it's loading another page.
+                          newPageProgressIndicatorBuilder: (_) => Center(
+                            child: SizedBox(
+                              width: 50.0,
+                              height: 50.0,
+                              child: CircularProgressIndicator(
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                  FlutterFlowTheme.of(context).primary,
+                                ),
                               ),
                             ),
                           ),
 
                           itemBuilder: (context, _, listViewIndex) {
                             final listViewMatchesDevRecord = _model
-                                .pagingController!.itemList![listViewIndex];
+                                .listViewPagingController!
+                                .itemList![listViewIndex];
                             return Padding(
                               padding: EdgeInsetsDirectional.fromSTEB(
                                   10.0, 0.0, 10.0, 0.0),
                               child: InkWell(
+                                splashColor: Colors.transparent,
+                                focusColor: Colors.transparent,
+                                hoverColor: Colors.transparent,
+                                highlightColor: Colors.transparent,
                                 onTap: () async {
-                                  await Navigator.push(
+                                  Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => MatchRecapWidget(
@@ -232,7 +191,7 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                                   color: Color(0xFFF5F5F5),
                                   child: Container(
                                     width:
-                                        MediaQuery.of(context).size.width * 1.0,
+                                        MediaQuery.sizeOf(context).width * 1.0,
                                     height: 220.0,
                                     decoration: BoxDecoration(
                                       color: Color(0xFFEEEEEE),
@@ -263,9 +222,13 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                                                           height: 50.0,
                                                           child:
                                                               CircularProgressIndicator(
-                                                            color: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .primaryColor,
+                                                            valueColor:
+                                                                AlwaysStoppedAnimation<
+                                                                    Color>(
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .primary,
+                                                            ),
                                                           ),
                                                         ),
                                                       );
@@ -297,9 +260,13 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                                                           height: 50.0,
                                                           child:
                                                               CircularProgressIndicator(
-                                                            color: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .primaryColor,
+                                                            valueColor:
+                                                                AlwaysStoppedAnimation<
+                                                                    Color>(
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .primary,
+                                                            ),
                                                           ),
                                                         ),
                                                       );
@@ -315,7 +282,7 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                                                       style:
                                                           FlutterFlowTheme.of(
                                                                   context)
-                                                              .subtitle1,
+                                                              .titleMedium,
                                                     );
                                                   },
                                                 ),
@@ -325,7 +292,7 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                                               'vs',
                                               style:
                                                   FlutterFlowTheme.of(context)
-                                                      .subtitle1,
+                                                      .titleMedium,
                                             ),
                                             Column(
                                               mainAxisSize: MainAxisSize.max,
@@ -345,9 +312,13 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                                                           height: 50.0,
                                                           child:
                                                               CircularProgressIndicator(
-                                                            color: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .primaryColor,
+                                                            valueColor:
+                                                                AlwaysStoppedAnimation<
+                                                                    Color>(
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .primary,
+                                                            ),
                                                           ),
                                                         ),
                                                       );
@@ -379,9 +350,13 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                                                           height: 50.0,
                                                           child:
                                                               CircularProgressIndicator(
-                                                            color: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .primaryColor,
+                                                            valueColor:
+                                                                AlwaysStoppedAnimation<
+                                                                    Color>(
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .primary,
+                                                            ),
                                                           ),
                                                         ),
                                                       );
@@ -397,7 +372,7 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                                                       style:
                                                           FlutterFlowTheme.of(
                                                                   context)
-                                                              .subtitle1,
+                                                              .titleMedium,
                                                     );
                                                   },
                                                 ),
@@ -417,7 +392,7 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                                               ),
                                               style:
                                                   FlutterFlowTheme.of(context)
-                                                      .bodyText2,
+                                                      .bodySmall,
                                             ),
                                           ],
                                         ),
@@ -442,7 +417,7 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                                               }(),
                                               style:
                                                   FlutterFlowTheme.of(context)
-                                                      .bodyText2,
+                                                      .bodySmall,
                                             ),
                                           ],
                                         ),
@@ -462,7 +437,7 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                                               ),
                                               style:
                                                   FlutterFlowTheme.of(context)
-                                                      .bodyText2,
+                                                      .bodySmall,
                                             ),
                                           ],
                                         ),
@@ -476,7 +451,7 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                                                   .toString(),
                                               style:
                                                   FlutterFlowTheme.of(context)
-                                                      .bodyText2,
+                                                      .bodySmall,
                                             ),
                                           ],
                                         ),

@@ -1,9 +1,10 @@
-import '/auth/auth_util.dart';
+import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
+import '/flutter_flow/form_field_controller.dart';
 import '/main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
@@ -24,7 +25,6 @@ class _SecondaryDetailsWidgetState extends State<SecondaryDetailsWidget> {
   late SecondaryDetailsModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final _unfocusNode = FocusNode();
 
   @override
   void initState() {
@@ -36,7 +36,6 @@ class _SecondaryDetailsWidgetState extends State<SecondaryDetailsWidget> {
   void dispose() {
     _model.dispose();
 
-    _unfocusNode.dispose();
     super.dispose();
   }
 
@@ -44,14 +43,14 @@ class _SecondaryDetailsWidgetState extends State<SecondaryDetailsWidget> {
   Widget build(BuildContext context) {
     context.watch<FFAppState>();
 
-    return Scaffold(
-      key: scaffoldKey,
-      backgroundColor: Color(0xFF4B39EF),
-      body: GestureDetector(
-        onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
-        child: Container(
-          width: MediaQuery.of(context).size.width * 1.0,
-          height: MediaQuery.of(context).size.height * 1.0,
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
+      child: Scaffold(
+        key: scaffoldKey,
+        backgroundColor: Color(0xFF4B39EF),
+        body: Container(
+          width: MediaQuery.sizeOf(context).width * 1.0,
+          height: MediaQuery.sizeOf(context).height * 1.0,
           decoration: BoxDecoration(
             color: Color(0xFFEEEEEE),
             image: DecorationImage(
@@ -106,7 +105,9 @@ class _SecondaryDetailsWidgetState extends State<SecondaryDetailsWidget> {
                               )}',
                               'Date of Birth: ',
                             ),
-                            style: FlutterFlowTheme.of(context).title2.override(
+                            style: FlutterFlowTheme.of(context)
+                                .headlineMedium
+                                .override(
                                   fontFamily: 'Poppins',
                                   color: Colors.white,
                                 ),
@@ -132,7 +133,7 @@ class _SecondaryDetailsWidgetState extends State<SecondaryDetailsWidget> {
                                 context: context,
                                 initialDate: getCurrentTimestamp,
                                 firstDate: DateTime(1900),
-                                lastDate: DateTime(2050),
+                                lastDate: getCurrentTimestamp,
                               );
 
                               if (_datePickedDate != null) {
@@ -155,11 +156,12 @@ class _SecondaryDetailsWidgetState extends State<SecondaryDetailsWidget> {
                                   0.0, 0.0, 0.0, 0.0),
                               color: Colors.black,
                               textStyle: FlutterFlowTheme.of(context)
-                                  .subtitle2
+                                  .titleSmall
                                   .override(
                                     fontFamily: 'Poppins',
                                     color: Colors.white,
                                   ),
+                              elevation: 2.0,
                               borderSide: BorderSide(
                                 color: Colors.transparent,
                                 width: 1.0,
@@ -187,7 +189,9 @@ class _SecondaryDetailsWidgetState extends State<SecondaryDetailsWidget> {
                               'Country: ${_model.dropDownValue}',
                               'Country: ',
                             ),
-                            style: FlutterFlowTheme.of(context).title2.override(
+                            style: FlutterFlowTheme.of(context)
+                                .headlineMedium
+                                .override(
                                   fontFamily: 'Poppins',
                                   color: Colors.white,
                                 ),
@@ -208,16 +212,19 @@ class _SecondaryDetailsWidgetState extends State<SecondaryDetailsWidget> {
                           height: 50.0,
                           decoration: BoxDecoration(),
                           child: FlutterFlowDropDown<String>(
+                            controller: _model.dropDownValueController ??=
+                                FormFieldController<String>(null),
                             options: ['Canada'],
                             onChanged: (val) =>
                                 setState(() => _model.dropDownValue = val),
                             width: 180.0,
                             height: 50.0,
-                            textStyle:
-                                FlutterFlowTheme.of(context).bodyText1.override(
-                                      fontFamily: 'Poppins',
-                                      color: Colors.black,
-                                    ),
+                            textStyle: FlutterFlowTheme.of(context)
+                                .bodyMedium
+                                .override(
+                                  fontFamily: 'Poppins',
+                                  color: Colors.black,
+                                ),
                             hintText: 'Please select...',
                             fillColor: Colors.white,
                             elevation: 2.0,
@@ -227,6 +234,8 @@ class _SecondaryDetailsWidgetState extends State<SecondaryDetailsWidget> {
                             margin: EdgeInsetsDirectional.fromSTEB(
                                 12.0, 4.0, 12.0, 4.0),
                             hidesUnderline: true,
+                            isSearchable: false,
+                            isMultiSelect: false,
                           ),
                         ),
                       ],
@@ -243,7 +252,8 @@ class _SecondaryDetailsWidgetState extends State<SecondaryDetailsWidget> {
                           onPressed: () async {
                             if (_model.dropDownValue != null &&
                                 _model.dropDownValue != '') {
-                              final usersUpdateData = createUsersRecordData(
+                              await currentUserReference!
+                                  .update(createUsersRecordData(
                                 dob: _model.datePicked,
                                 homecountry: _model.dropDownValue,
                                 existingUser: true,
@@ -263,10 +273,8 @@ class _SecondaryDetailsWidgetState extends State<SecondaryDetailsWidget> {
                                 numRankedSY: 0,
                                 numRankedNA: 0,
                                 numRankedNY: 0,
-                              );
-                              await currentUserReference!
-                                  .update(usersUpdateData);
-                              await Navigator.push(
+                              ));
+                              Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) =>
@@ -284,13 +292,14 @@ class _SecondaryDetailsWidgetState extends State<SecondaryDetailsWidget> {
                             iconPadding: EdgeInsetsDirectional.fromSTEB(
                                 0.0, 0.0, 0.0, 0.0),
                             color: Color(0xFF090F13),
-                            textStyle:
-                                FlutterFlowTheme.of(context).subtitle1.override(
-                                      fontFamily: 'Lexend Deca',
-                                      color: Colors.white,
-                                      fontSize: 18.0,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                            textStyle: FlutterFlowTheme.of(context)
+                                .titleMedium
+                                .override(
+                                  fontFamily: 'Lexend Deca',
+                                  color: Colors.white,
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
                             elevation: 3.0,
                             borderSide: BorderSide(
                               color: Colors.transparent,

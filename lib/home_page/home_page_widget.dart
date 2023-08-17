@@ -1,4 +1,4 @@
-import '/auth/auth_util.dart';
+import '/auth/firebase_auth/auth_util.dart';
 import '/components/col_main_drawer_widget.dart';
 import '/edit_profile/edit_profile_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -22,7 +22,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   late HomePageModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final _unfocusNode = FocusNode();
 
   @override
   void initState() {
@@ -34,7 +33,6 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   void dispose() {
     _model.dispose();
 
-    _unfocusNode.dispose();
     super.dispose();
   }
 
@@ -42,27 +40,28 @@ class _HomePageWidgetState extends State<HomePageWidget> {
   Widget build(BuildContext context) {
     context.watch<FFAppState>();
 
-    return Scaffold(
-      key: scaffoldKey,
-      backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-      drawer: Drawer(
-        elevation: 16.0,
-        child: wrapWithModel(
-          model: _model.colMainDrawerModel,
-          updateCallback: () => setState(() {}),
-          child: ColMainDrawerWidget(),
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
+      child: Scaffold(
+        key: scaffoldKey,
+        backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+        drawer: Drawer(
+          elevation: 16.0,
+          child: wrapWithModel(
+            model: _model.colMainDrawerModel,
+            updateCallback: () => setState(() {}),
+            child: ColMainDrawerWidget(),
+          ),
         ),
-      ),
-      appBar: AppBar(
-        backgroundColor: FlutterFlowTheme.of(context).primaryColor,
-        automaticallyImplyLeading: true,
-        actions: [],
-        centerTitle: true,
-        elevation: 4.0,
-      ),
-      body: SafeArea(
-        child: GestureDetector(
-          onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+        appBar: AppBar(
+          backgroundColor: FlutterFlowTheme.of(context).primary,
+          automaticallyImplyLeading: true,
+          actions: [],
+          centerTitle: true,
+          elevation: 4.0,
+        ),
+        body: SafeArea(
+          top: true,
           child: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.max,
@@ -76,7 +75,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                           'Welcome, ${functions.getfirstname(currentUserDisplayName)}!',
                           'Welcome, user!',
                         ),
-                        style: FlutterFlowTheme.of(context).title1,
+                        style: FlutterFlowTheme.of(context).displaySmall,
                       ),
                     ),
                   ],
@@ -105,8 +104,12 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     InkWell(
+                      splashColor: Colors.transparent,
+                      focusColor: Colors.transparent,
+                      hoverColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
                       onTap: () async {
-                        await Navigator.push(
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => EditProfileWidget(),
@@ -115,7 +118,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                       },
                       child: Text(
                         'Edit Profile',
-                        style: FlutterFlowTheme.of(context).subtitle1,
+                        style: FlutterFlowTheme.of(context).titleMedium,
                       ),
                     ),
                   ],
@@ -125,7 +128,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                   children: [
                     Text(
                       'Your QR Code:',
-                      style: FlutterFlowTheme.of(context).title3,
+                      style: FlutterFlowTheme.of(context).headlineSmall,
                     ),
                   ],
                 ),
@@ -172,7 +175,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                     mainAxisSize: MainAxisSize.max,
                     children: [
                       Container(
-                        width: MediaQuery.of(context).size.width * 1.0,
+                        width: MediaQuery.sizeOf(context).width * 1.0,
                         height: 100.0,
                         decoration: BoxDecoration(
                           color: Colors.white,
@@ -180,7 +183,7 @@ class _HomePageWidgetState extends State<HomePageWidget> {
                         child: AuthUserStreamWidget(
                           builder: (context) => Text(
                             'You have fenced ${valueOrDefault(currentUserDocument?.numRankedFA, 0).toString()} ranked foil matches (10 needed for leaderboard)',
-                            style: FlutterFlowTheme.of(context).bodyText1,
+                            style: FlutterFlowTheme.of(context).bodyMedium,
                           ),
                         ),
                       ),

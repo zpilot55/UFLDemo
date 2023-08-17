@@ -1,4 +1,4 @@
-import '/auth/auth_util.dart';
+import '/auth/firebase_auth/auth_util.dart';
 import '/components/col_main_drawer_widget.dart';
 import '/edit_profile/edit_profile_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 class HomePageModel extends FlutterFlowModel {
   ///  State fields for stateful widgets in this page.
 
+  final unfocusNode = FocusNode();
   // Model for Col_mainDrawer component.
   late ColMainDrawerModel colMainDrawerModel;
 
@@ -22,9 +23,11 @@ class HomePageModel extends FlutterFlowModel {
   }
 
   void dispose() {
+    unfocusNode.dispose();
     colMainDrawerModel.dispose();
   }
 
-  /// Additional helper methods are added here.
+  /// Action blocks are added here.
 
+  /// Additional helper methods are added here.
 }

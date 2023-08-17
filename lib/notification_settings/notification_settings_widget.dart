@@ -43,7 +43,7 @@ class _NotificationSettingsWidgetState
       key: scaffoldKey,
       backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
       appBar: AppBar(
-        backgroundColor: FlutterFlowTheme.of(context).primaryColor,
+        backgroundColor: FlutterFlowTheme.of(context).primary,
         automaticallyImplyLeading: false,
         leading: FlutterFlowIconButton(
           borderColor: Colors.transparent,
@@ -60,7 +60,7 @@ class _NotificationSettingsWidgetState
         ),
         title: Text(
           'App Settings',
-          style: FlutterFlowTheme.of(context).bodyText1.override(
+          style: FlutterFlowTheme.of(context).bodyMedium.override(
                 fontFamily: 'Lexend Deca',
                 color: Colors.white,
                 fontSize: 20.0,
@@ -82,7 +82,7 @@ class _NotificationSettingsWidgetState
                 Expanded(
                   child: Text(
                     'Choose what notifcations you want to recieve below and we will update the settings.',
-                    style: FlutterFlowTheme.of(context).bodyText2.override(
+                    style: FlutterFlowTheme.of(context).bodySmall.override(
                           fontFamily: 'Lexend Deca',
                           color: Color(0xFF8B97A2),
                           fontSize: 14.0,
@@ -102,7 +102,7 @@ class _NotificationSettingsWidgetState
               },
               title: Text(
                 'Push Notifications',
-                style: FlutterFlowTheme.of(context).title3.override(
+                style: FlutterFlowTheme.of(context).headlineSmall.override(
                       fontFamily: 'Lexend Deca',
                       color: FlutterFlowTheme.of(context).primaryText,
                       fontSize: 20.0,
@@ -111,7 +111,7 @@ class _NotificationSettingsWidgetState
               ),
               subtitle: Text(
                 'Receive Push notifications from our application on a semi regular basis.',
-                style: FlutterFlowTheme.of(context).bodyText1.override(
+                style: FlutterFlowTheme.of(context).bodyMedium.override(
                       fontFamily: 'Lexend Deca',
                       color: Color(0xFF8B97A2),
                       fontSize: 14.0,
@@ -133,7 +133,7 @@ class _NotificationSettingsWidgetState
             },
             title: Text(
               'Email Notifications',
-              style: FlutterFlowTheme.of(context).title3.override(
+              style: FlutterFlowTheme.of(context).headlineSmall.override(
                     fontFamily: 'Lexend Deca',
                     color: FlutterFlowTheme.of(context).primaryText,
                     fontSize: 20.0,
@@ -142,7 +142,7 @@ class _NotificationSettingsWidgetState
             ),
             subtitle: Text(
               'Receive email notifications from our marketing team about new features.',
-              style: FlutterFlowTheme.of(context).bodyText1.override(
+              style: FlutterFlowTheme.of(context).bodyMedium.override(
                     fontFamily: 'Lexend Deca',
                     color: Color(0xFF8B97A2),
                     fontSize: 14.0,
@@ -169,7 +169,7 @@ class _NotificationSettingsWidgetState
                 padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
                 iconPadding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
                 color: Color(0xFF4B39EF),
-                textStyle: FlutterFlowTheme.of(context).subtitle2.override(
+                textStyle: FlutterFlowTheme.of(context).titleSmall.override(
                       fontFamily: 'Lexend Deca',
                       color: Colors.white,
                       fontSize: 16.0,

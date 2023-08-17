@@ -1,4 +1,4 @@
-import '/auth/auth_util.dart';
+import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -66,7 +66,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
         ),
         title: Text(
           'Edit Profile',
-          style: FlutterFlowTheme.of(context).title2.override(
+          style: FlutterFlowTheme.of(context).headlineMedium.override(
                 fontFamily: 'Poppins',
                 color: FlutterFlowTheme.of(context).primaryText,
                 fontSize: 22.0,
@@ -84,7 +84,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
             Padding(
               padding: EdgeInsetsDirectional.fromSTEB(0.0, 1.0, 0.0, 0.0),
               child: Container(
-                width: MediaQuery.of(context).size.width * 1.0,
+                width: MediaQuery.sizeOf(context).width * 1.0,
                 decoration: BoxDecoration(
                   color: FlutterFlowTheme.of(context).secondaryBackground,
                   boxShadow: [
@@ -118,7 +118,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                                   child: Image.network(
                                     'https://images.unsplash.com/photo-1626544827763-d516dce335e2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTc1fHxwcm9kdWN0fGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=800&q=60',
                                     width:
-                                        MediaQuery.of(context).size.width * 1.0,
+                                        MediaQuery.sizeOf(context).width * 1.0,
                                     height: 130.0,
                                     fit: BoxFit.cover,
                                   ),
@@ -127,7 +127,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                                   alignment: AlignmentDirectional(0.0, 0.0),
                                   child: Container(
                                     width:
-                                        MediaQuery.of(context).size.width * 1.0,
+                                        MediaQuery.sizeOf(context).width * 1.0,
                                     height: 130.0,
                                     decoration: BoxDecoration(
                                       color: Color(0x77090F13),
@@ -205,7 +205,8 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                                 0.0, 0.0, 0.0, 0.0),
                             color:
                                 FlutterFlowTheme.of(context).primaryBackground,
-                            textStyle: FlutterFlowTheme.of(context).bodyText1,
+                            textStyle: FlutterFlowTheme.of(context).bodyMedium,
+                            elevation: 2.0,
                             borderSide: BorderSide(
                               color: Colors.transparent,
                               width: 1.0,
@@ -226,7 +227,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                                 decoration: InputDecoration(
                                   labelText: 'Email Address',
                                   hintStyle:
-                                      FlutterFlowTheme.of(context).bodyText2,
+                                      FlutterFlowTheme.of(context).bodySmall,
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
                                       color: FlutterFlowTheme.of(context)
@@ -257,7 +258,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                                     borderRadius: BorderRadius.circular(8.0),
                                   ),
                                 ),
-                                style: FlutterFlowTheme.of(context).bodyText1,
+                                style: FlutterFlowTheme.of(context).bodyMedium,
                                 validator: _model.textController1Validator
                                     .asValidator(context),
                               ),
@@ -279,7 +280,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                                   decoration: InputDecoration(
                                     labelText: 'Your Name',
                                     hintStyle:
-                                        FlutterFlowTheme.of(context).bodyText2,
+                                        FlutterFlowTheme.of(context).bodySmall,
                                     enabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
                                         color: FlutterFlowTheme.of(context)
@@ -310,7 +311,8 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                                       borderRadius: BorderRadius.circular(8.0),
                                     ),
                                   ),
-                                  style: FlutterFlowTheme.of(context).bodyText1,
+                                  style:
+                                      FlutterFlowTheme.of(context).bodyMedium,
                                   validator: _model.textController2Validator
                                       .asValidator(context),
                                 ),
@@ -324,11 +326,11 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                             0.0, 12.0, 0.0, 12.0),
                         child: FFButtonWidget(
                           onPressed: () async {
-                            final usersUpdateData = createUsersRecordData(
+                            await currentUserReference!
+                                .update(createUsersRecordData(
                               email: _model.textController1.text,
                               displayName: currentUserDisplayName,
-                            );
-                            await currentUserReference!.update(usersUpdateData);
+                            ));
                             Navigator.pop(context);
                           },
                           text: 'Save Changes',
@@ -341,7 +343,7 @@ class _EditProfileWidgetState extends State<EditProfileWidget> {
                                 0.0, 0.0, 0.0, 0.0),
                             color: Color(0xFF4B39EF),
                             textStyle:
-                                FlutterFlowTheme.of(context).bodyText2.override(
+                                FlutterFlowTheme.of(context).bodySmall.override(
                                       fontFamily: 'Lexend Deca',
                                       color: Colors.white,
                                       fontSize: 14.0,

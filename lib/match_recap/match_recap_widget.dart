@@ -51,12 +51,17 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
       builder: (context, snapshot) {
         // Customize what your widget looks like when it's loading.
         if (!snapshot.hasData) {
-          return Center(
-            child: SizedBox(
-              width: 50.0,
-              height: 50.0,
-              child: CircularProgressIndicator(
-                color: FlutterFlowTheme.of(context).primaryColor,
+          return Scaffold(
+            backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+            body: Center(
+              child: SizedBox(
+                width: 50.0,
+                height: 50.0,
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    FlutterFlowTheme.of(context).primary,
+                  ),
+                ),
               ),
             ),
           );
@@ -84,7 +89,7 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
             ),
             title: Text(
               'Match Recap',
-              style: FlutterFlowTheme.of(context).title2.override(
+              style: FlutterFlowTheme.of(context).headlineMedium.override(
                     fontFamily: 'Poppins',
                     color: FlutterFlowTheme.of(context).primaryText,
                     fontSize: 22.0,
@@ -121,8 +126,9 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                                     width: 50.0,
                                     height: 50.0,
                                     child: CircularProgressIndicator(
-                                      color: FlutterFlowTheme.of(context)
-                                          .primaryColor,
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                        FlutterFlowTheme.of(context).primary,
+                                      ),
                                     ),
                                   ),
                                 );
@@ -150,8 +156,9 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                                     width: 50.0,
                                     height: 50.0,
                                     child: CircularProgressIndicator(
-                                      color: FlutterFlowTheme.of(context)
-                                          .primaryColor,
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                        FlutterFlowTheme.of(context).primary,
+                                      ),
                                     ),
                                   ),
                                 );
@@ -162,7 +169,7 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                                   textUsersRecord.displayName,
                                   'Left Fencer',
                                 ),
-                                style: FlutterFlowTheme.of(context).subtitle1,
+                                style: FlutterFlowTheme.of(context).titleMedium,
                               );
                             },
                           ),
@@ -176,21 +183,24 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                             children: [
                               Text(
                                 valueOrDefault<String>(
-                                  widget.currentMatch!.scoreLeft?.toString(),
+                                  widget.currentMatch?.scoreLeft?.toString(),
                                   '0',
                                 ),
-                                style: FlutterFlowTheme.of(context).title3,
+                                style:
+                                    FlutterFlowTheme.of(context).headlineSmall,
                               ),
                               Text(
                                 '-',
-                                style: FlutterFlowTheme.of(context).title3,
+                                style:
+                                    FlutterFlowTheme.of(context).headlineSmall,
                               ),
                               Text(
                                 valueOrDefault<String>(
-                                  widget.currentMatch!.scoreRight?.toString(),
+                                  widget.currentMatch?.scoreRight?.toString(),
                                   '0',
                                 ),
-                                style: FlutterFlowTheme.of(context).title3,
+                                style:
+                                    FlutterFlowTheme.of(context).headlineSmall,
                               ),
                             ],
                           ),
@@ -210,8 +220,9 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                                     width: 50.0,
                                     height: 50.0,
                                     child: CircularProgressIndicator(
-                                      color: FlutterFlowTheme.of(context)
-                                          .primaryColor,
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                        FlutterFlowTheme.of(context).primary,
+                                      ),
                                     ),
                                   ),
                                 );
@@ -239,8 +250,9 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                                     width: 50.0,
                                     height: 50.0,
                                     child: CircularProgressIndicator(
-                                      color: FlutterFlowTheme.of(context)
-                                          .primaryColor,
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                        FlutterFlowTheme.of(context).primary,
+                                      ),
                                     ),
                                   ),
                                 );
@@ -251,7 +263,7 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                                   textUsersRecord.displayName,
                                   'Right Fencer',
                                 ),
-                                style: FlutterFlowTheme.of(context).subtitle1,
+                                style: FlutterFlowTheme.of(context).titleMedium,
                               );
                             },
                           ),
@@ -268,7 +280,7 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                     children: [
                       Text(
                         'Match Details:',
-                        style: FlutterFlowTheme.of(context).subtitle1,
+                        style: FlutterFlowTheme.of(context).titleMedium,
                       ),
                     ],
                   ),
@@ -290,8 +302,8 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                             mainAxisSize: MainAxisSize.max,
                             children: [
                               Text(
-                                'Weapon: ${widget.currentMatch!.weapon}',
-                                style: FlutterFlowTheme.of(context).bodyText1,
+                                'Weapon: ${widget.currentMatch?.weapon}',
+                                style: FlutterFlowTheme.of(context).bodyMedium,
                               ),
                             ],
                           ),
@@ -300,18 +312,18 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                             children: [
                               Text(
                                 () {
-                                  if (widget.currentMatch!.matchRanking ==
+                                  if (widget.currentMatch?.matchRanking ==
                                       'A') {
                                     return 'Ranked - Adult';
                                   } else if (widget
-                                          .currentMatch!.matchRanking ==
+                                          .currentMatch?.matchRanking ==
                                       'Y') {
                                     return 'Ranked - Youth';
                                   } else {
                                     return 'Unranked';
                                   }
                                 }(),
-                                style: FlutterFlowTheme.of(context).bodyText1,
+                                style: FlutterFlowTheme.of(context).bodyMedium,
                               ),
                             ],
                           ),
@@ -319,8 +331,8 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                             mainAxisSize: MainAxisSize.max,
                             children: [
                               Text(
-                                'Number of Periods: ${widget.currentMatch!.noOfPeriods?.toString()}',
-                                style: FlutterFlowTheme.of(context).bodyText1,
+                                'Number of Periods: ${widget.currentMatch?.noOfPeriods?.toString()}',
+                                style: FlutterFlowTheme.of(context).bodyMedium,
                               ),
                             ],
                           ),
@@ -330,11 +342,11 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                               Text(
                                 'Start Time: ${dateTimeFormat(
                                   'MMMEd',
-                                  widget.currentMatch!.scheduledTime,
+                                  widget.currentMatch?.scheduledTime,
                                   locale:
                                       FFLocalizations.of(context).languageCode,
                                 )}',
-                                style: FlutterFlowTheme.of(context).bodyText1,
+                                style: FlutterFlowTheme.of(context).bodyMedium,
                               ),
                             ],
                           ),
@@ -343,10 +355,10 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                             children: [
                               Text(
                                 'Location: ${valueOrDefault<String>(
-                                  widget.currentMatch!.location?.toString(),
+                                  widget.currentMatch?.location?.toString(),
                                   'Not Defined',
                                 )}',
-                                style: FlutterFlowTheme.of(context).bodyText1,
+                                style: FlutterFlowTheme.of(context).bodyMedium,
                               ),
                             ],
                           ),
@@ -363,7 +375,7 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                     children: [
                       FFButtonWidget(
                         onPressed: () async {
-                          await Navigator.push(
+                          Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => MatchRecapEventsWidget(
@@ -381,12 +393,13 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                               0.0, 0.0, 0.0, 0.0),
                           iconPadding: EdgeInsetsDirectional.fromSTEB(
                               0.0, 0.0, 0.0, 0.0),
-                          color: FlutterFlowTheme.of(context).primaryColor,
+                          color: FlutterFlowTheme.of(context).primary,
                           textStyle:
-                              FlutterFlowTheme.of(context).subtitle2.override(
+                              FlutterFlowTheme.of(context).titleSmall.override(
                                     fontFamily: 'Poppins',
                                     color: Colors.white,
                                   ),
+                          elevation: 2.0,
                           borderSide: BorderSide(
                             color: Colors.transparent,
                             width: 1.0,
@@ -405,7 +418,7 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                     children: [
                       Text(
                         'Match Statistics:',
-                        style: FlutterFlowTheme.of(context).title3,
+                        style: FlutterFlowTheme.of(context).headlineSmall,
                       ),
                     ],
                   ),
@@ -427,8 +440,9 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                                 width: 50.0,
                                 height: 50.0,
                                 child: CircularProgressIndicator(
-                                  color:
-                                      FlutterFlowTheme.of(context).primaryColor,
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    FlutterFlowTheme.of(context).primary,
+                                  ),
                                 ),
                               ),
                             );
@@ -437,10 +451,10 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                           return Text(
                             valueOrDefault<String>(
                               functions.nameToAbbreviation(
-                                  textUsersRecord.displayName!),
+                                  textUsersRecord.displayName),
                               'L. FEN',
                             ),
-                            style: FlutterFlowTheme.of(context).subtitle2,
+                            style: FlutterFlowTheme.of(context).titleSmall,
                           );
                         },
                       ),
@@ -455,8 +469,9 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                                 width: 50.0,
                                 height: 50.0,
                                 child: CircularProgressIndicator(
-                                  color:
-                                      FlutterFlowTheme.of(context).primaryColor,
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    FlutterFlowTheme.of(context).primary,
+                                  ),
                                 ),
                               ),
                             );
@@ -465,10 +480,10 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                           return Text(
                             valueOrDefault<String>(
                               functions.nameToAbbreviation(
-                                  textUsersRecord.displayName!),
+                                  textUsersRecord.displayName),
                               'R. FEN',
                             ),
-                            style: FlutterFlowTheme.of(context).subtitle2,
+                            style: FlutterFlowTheme.of(context).titleSmall,
                           );
                         },
                       ),
@@ -478,7 +493,7 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                 Builder(
                   builder: (context) {
                     final currentStatome =
-                        matchRecapMatchdetailsDevRecord.statlines!.toList();
+                        matchRecapMatchdetailsDevRecord.statlines.toList();
                     return SingleChildScrollView(
                       child: Column(
                         mainAxisSize: MainAxisSize.max,
@@ -491,7 +506,7 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                             mainAxisSize: MainAxisSize.max,
                             children: [
                               Container(
-                                width: MediaQuery.of(context).size.width * 1.0,
+                                width: MediaQuery.sizeOf(context).width * 1.0,
                                 height: 50.0,
                                 decoration: BoxDecoration(
                                   color: FlutterFlowTheme.of(context)
@@ -523,7 +538,7 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                                               ),
                                               style:
                                                   FlutterFlowTheme.of(context)
-                                                      .bodyText1
+                                                      .bodyMedium
                                                       .override(
                                                         fontFamily: 'Poppins',
                                                         fontSize: 11.0,
@@ -549,11 +564,11 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                                           Text(
                                             valueOrDefault<String>(
                                               currentStatomeItem.leftStat
-                                                  ?.toString(),
+                                                  .toString(),
                                               '-1',
                                             ),
                                             style: FlutterFlowTheme.of(context)
-                                                .bodyText1
+                                                .bodyMedium
                                                 .override(
                                                   fontFamily: 'Poppins',
                                                   fontSize: 11.0,
@@ -576,11 +591,11 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                                           Text(
                                             valueOrDefault<String>(
                                               currentStatomeItem.rightStat
-                                                  ?.toString(),
+                                                  .toString(),
                                               '-1',
                                             ),
                                             style: FlutterFlowTheme.of(context)
-                                                .bodyText1
+                                                .bodyMedium
                                                 .override(
                                                   fontFamily: 'Poppins',
                                                   fontSize: 11.0,

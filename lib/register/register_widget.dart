@@ -1,4 +1,4 @@
-import '/auth/auth_util.dart';
+import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -21,7 +21,6 @@ class _RegisterWidgetState extends State<RegisterWidget> {
   late RegisterModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final _unfocusNode = FocusNode();
 
   @override
   void initState() {
@@ -39,7 +38,6 @@ class _RegisterWidgetState extends State<RegisterWidget> {
   void dispose() {
     _model.dispose();
 
-    _unfocusNode.dispose();
     super.dispose();
   }
 
@@ -47,14 +45,14 @@ class _RegisterWidgetState extends State<RegisterWidget> {
   Widget build(BuildContext context) {
     context.watch<FFAppState>();
 
-    return Scaffold(
-      key: scaffoldKey,
-      backgroundColor: Color(0xFF4B39EF),
-      body: GestureDetector(
-        onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
-        child: Container(
-          width: MediaQuery.of(context).size.width * 1.0,
-          height: MediaQuery.of(context).size.height * 1.0,
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
+      child: Scaffold(
+        key: scaffoldKey,
+        backgroundColor: Color(0xFF4B39EF),
+        body: Container(
+          width: MediaQuery.sizeOf(context).width * 1.0,
+          height: MediaQuery.sizeOf(context).height * 1.0,
           decoration: BoxDecoration(
             color: Color(0xFFEEEEEE),
             image: DecorationImage(
@@ -102,7 +100,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                             decoration: InputDecoration(
                               labelText: 'First Name',
                               labelStyle: FlutterFlowTheme.of(context)
-                                  .bodyText1
+                                  .bodyMedium
                                   .override(
                                     fontFamily: 'Lexend Deca',
                                     color: Color(0xFF95A1AC),
@@ -111,7 +109,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                   ),
                               hintText: 'Enter your first name here...',
                               hintStyle: FlutterFlowTheme.of(context)
-                                  .bodyText1
+                                  .bodyMedium
                                   .override(
                                     fontFamily: 'Lexend Deca',
                                     color: Color(0xFF95A1AC),
@@ -151,13 +149,14 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                               contentPadding: EdgeInsetsDirectional.fromSTEB(
                                   16.0, 24.0, 0.0, 24.0),
                             ),
-                            style:
-                                FlutterFlowTheme.of(context).bodyText1.override(
-                                      fontFamily: 'Lexend Deca',
-                                      color: Color(0xFF2B343A),
-                                      fontSize: 14.0,
-                                      fontWeight: FontWeight.normal,
-                                    ),
+                            style: FlutterFlowTheme.of(context)
+                                .bodyMedium
+                                .override(
+                                  fontFamily: 'Lexend Deca',
+                                  color: Color(0xFF2B343A),
+                                  fontSize: 14.0,
+                                  fontWeight: FontWeight.normal,
+                                ),
                             validator: _model.firstNameControllerValidator
                                 .asValidator(context),
                           ),
@@ -179,7 +178,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                             decoration: InputDecoration(
                               labelText: 'Last Name',
                               labelStyle: FlutterFlowTheme.of(context)
-                                  .bodyText1
+                                  .bodyMedium
                                   .override(
                                     fontFamily: 'Lexend Deca',
                                     color: Color(0xFF95A1AC),
@@ -188,7 +187,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                   ),
                               hintText: 'Enter your last name here...',
                               hintStyle: FlutterFlowTheme.of(context)
-                                  .bodyText1
+                                  .bodyMedium
                                   .override(
                                     fontFamily: 'Lexend Deca',
                                     color: Color(0xFF95A1AC),
@@ -228,13 +227,14 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                               contentPadding: EdgeInsetsDirectional.fromSTEB(
                                   16.0, 24.0, 0.0, 24.0),
                             ),
-                            style:
-                                FlutterFlowTheme.of(context).bodyText1.override(
-                                      fontFamily: 'Lexend Deca',
-                                      color: Color(0xFF2B343A),
-                                      fontSize: 14.0,
-                                      fontWeight: FontWeight.normal,
-                                    ),
+                            style: FlutterFlowTheme.of(context)
+                                .bodyMedium
+                                .override(
+                                  fontFamily: 'Lexend Deca',
+                                  color: Color(0xFF2B343A),
+                                  fontSize: 14.0,
+                                  fontWeight: FontWeight.normal,
+                                ),
                             validator: _model.lastNameControllerValidator
                                 .asValidator(context),
                           ),
@@ -256,7 +256,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                             decoration: InputDecoration(
                               labelText: 'Email Address',
                               labelStyle: FlutterFlowTheme.of(context)
-                                  .bodyText1
+                                  .bodyMedium
                                   .override(
                                     fontFamily: 'Lexend Deca',
                                     color: Color(0xFF95A1AC),
@@ -265,7 +265,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                   ),
                               hintText: 'Enter your email here...',
                               hintStyle: FlutterFlowTheme.of(context)
-                                  .bodyText1
+                                  .bodyMedium
                                   .override(
                                     fontFamily: 'Lexend Deca',
                                     color: Color(0xFF95A1AC),
@@ -305,13 +305,14 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                               contentPadding: EdgeInsetsDirectional.fromSTEB(
                                   16.0, 24.0, 0.0, 24.0),
                             ),
-                            style:
-                                FlutterFlowTheme.of(context).bodyText1.override(
-                                      fontFamily: 'Lexend Deca',
-                                      color: Color(0xFF2B343A),
-                                      fontSize: 14.0,
-                                      fontWeight: FontWeight.normal,
-                                    ),
+                            style: FlutterFlowTheme.of(context)
+                                .bodyMedium
+                                .override(
+                                  fontFamily: 'Lexend Deca',
+                                  color: Color(0xFF2B343A),
+                                  fontSize: 14.0,
+                                  fontWeight: FontWeight.normal,
+                                ),
                             validator: _model.emailControllerValidator
                                 .asValidator(context),
                           ),
@@ -333,7 +334,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                             decoration: InputDecoration(
                               labelText: 'Password',
                               labelStyle: FlutterFlowTheme.of(context)
-                                  .bodyText1
+                                  .bodyMedium
                                   .override(
                                     fontFamily: 'Lexend Deca',
                                     color: Color(0xFF95A1AC),
@@ -342,7 +343,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                   ),
                               hintText: 'Enter your password here...',
                               hintStyle: FlutterFlowTheme.of(context)
-                                  .bodyText1
+                                  .bodyMedium
                                   .override(
                                     fontFamily: 'Lexend Deca',
                                     color: Color(0xFF95A1AC),
@@ -396,13 +397,14 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                 ),
                               ),
                             ),
-                            style:
-                                FlutterFlowTheme.of(context).bodyText1.override(
-                                      fontFamily: 'Lexend Deca',
-                                      color: Color(0xFF2B343A),
-                                      fontSize: 14.0,
-                                      fontWeight: FontWeight.normal,
-                                    ),
+                            style: FlutterFlowTheme.of(context)
+                                .bodyMedium
+                                .override(
+                                  fontFamily: 'Lexend Deca',
+                                  color: Color(0xFF2B343A),
+                                  fontSize: 14.0,
+                                  fontWeight: FontWeight.normal,
+                                ),
                             validator: _model.passwordControllerValidator
                                 .asValidator(context),
                           ),
@@ -424,7 +426,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                             decoration: InputDecoration(
                               labelText: 'Retype Password',
                               labelStyle: FlutterFlowTheme.of(context)
-                                  .bodyText1
+                                  .bodyMedium
                                   .override(
                                     fontFamily: 'Lexend Deca',
                                     color: Color(0xFF95A1AC),
@@ -433,7 +435,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                   ),
                               hintText: 'Retype your password here...',
                               hintStyle: FlutterFlowTheme.of(context)
-                                  .bodyText1
+                                  .bodyMedium
                                   .override(
                                     fontFamily: 'Lexend Deca',
                                     color: Color(0xFF95A1AC),
@@ -487,13 +489,14 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                                 ),
                               ),
                             ),
-                            style:
-                                FlutterFlowTheme.of(context).bodyText1.override(
-                                      fontFamily: 'Lexend Deca',
-                                      color: Color(0xFF2B343A),
-                                      fontSize: 14.0,
-                                      fontWeight: FontWeight.normal,
-                                    ),
+                            style: FlutterFlowTheme.of(context)
+                                .bodyMedium
+                                .override(
+                                  fontFamily: 'Lexend Deca',
+                                  color: Color(0xFF2B343A),
+                                  fontSize: 14.0,
+                                  fontWeight: FontWeight.normal,
+                                ),
                             validator: _model.retypedControllerValidator
                                 .asValidator(context),
                           ),
@@ -522,7 +525,8 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                               return;
                             }
 
-                            final user = await createAccountWithEmail(
+                            final user =
+                                await authManager.createAccountWithEmail(
                               context,
                               _model.emailController.text,
                               _model.passwordController.text,
@@ -531,19 +535,18 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                               return;
                             }
 
-                            final usersCreateData = createUsersRecordData(
-                              email: _model.emailController.text,
-                              displayName:
-                                  '${_model.firstNameController.text} ${_model.lastNameController.text}',
-                              photoUrl:
-                                  'https://firebasestorage.googleapis.com/v0/b/universalfencingleague.appspot.com/o/Fencer_silhouette.png?alt=media&token=7ae87fd2-6264-446f-abbf-c4a7d8d5b642',
-                              createdTime: getCurrentTimestamp,
-                            );
                             await UsersRecord.collection
                                 .doc(user.uid)
-                                .update(usersCreateData);
+                                .update(createUsersRecordData(
+                                  email: _model.emailController.text,
+                                  displayName:
+                                      '${_model.firstNameController.text} ${_model.lastNameController.text}',
+                                  photoUrl:
+                                      'https://firebasestorage.googleapis.com/v0/b/universalfencingleague.appspot.com/o/Fencer_silhouette.png?alt=media&token=7ae87fd2-6264-446f-abbf-c4a7d8d5b642',
+                                  createdTime: getCurrentTimestamp,
+                                ));
 
-                            await Navigator.pushAndRemoveUntil(
+                            Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => SecondaryDetailsWidget(),
@@ -560,13 +563,14 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                             iconPadding: EdgeInsetsDirectional.fromSTEB(
                                 0.0, 0.0, 0.0, 0.0),
                             color: Color(0xFF090F13),
-                            textStyle:
-                                FlutterFlowTheme.of(context).subtitle1.override(
-                                      fontFamily: 'Lexend Deca',
-                                      color: Colors.white,
-                                      fontSize: 18.0,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                            textStyle: FlutterFlowTheme.of(context)
+                                .titleMedium
+                                .override(
+                                  fontFamily: 'Lexend Deca',
+                                  color: Colors.white,
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
                             elevation: 3.0,
                             borderSide: BorderSide(
                               color: Colors.transparent,

@@ -1,37 +1,76 @@
-import 'dart:async';
+// ignore_for_file: unnecessary_getters_setters
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../index.dart';
-import '../serializers.dart';
-import 'package:built_value/built_value.dart';
+import '/backend/schema/util/firestore_util.dart';
+import '/backend/schema/util/schema_util.dart';
 
-part 'statline_struct.g.dart';
+import 'index.dart';
+import '/flutter_flow/flutter_flow_util.dart';
 
-abstract class StatlineStruct
-    implements Built<StatlineStruct, StatlineStructBuilder> {
-  static Serializer<StatlineStruct> get serializer =>
-      _$statlineStructSerializer;
+class StatlineStruct extends FFFirebaseStruct {
+  StatlineStruct({
+    String? label,
+    double? leftStat,
+    double? rightStat,
+    FirestoreUtilData firestoreUtilData = const FirestoreUtilData(),
+  })  : _label = label,
+        _leftStat = leftStat,
+        _rightStat = rightStat,
+        super(firestoreUtilData);
 
-  @BuiltValueField(wireName: 'Label')
-  String? get label;
+  // "Label" field.
+  String? _label;
+  String get label => _label ?? '';
+  set label(String? val) => _label = val;
+  bool hasLabel() => _label != null;
 
-  @BuiltValueField(wireName: 'LeftStat')
-  double? get leftStat;
+  // "LeftStat" field.
+  double? _leftStat;
+  double get leftStat => _leftStat ?? 0.0;
+  set leftStat(double? val) => _leftStat = val;
+  void incrementLeftStat(double amount) => _leftStat = leftStat + amount;
+  bool hasLeftStat() => _leftStat != null;
 
-  @BuiltValueField(wireName: 'RightStat')
-  double? get rightStat;
+  // "RightStat" field.
+  double? _rightStat;
+  double get rightStat => _rightStat ?? 0.0;
+  set rightStat(double? val) => _rightStat = val;
+  void incrementRightStat(double amount) => _rightStat = rightStat + amount;
+  bool hasRightStat() => _rightStat != null;
 
-  /// Utility class for Firestore updates
-  FirestoreUtilData get firestoreUtilData;
+  static StatlineStruct fromMap(Map<String, dynamic> data) => StatlineStruct(
+        label: data['Label'] as String?,
+        leftStat: castToType<double>(data['LeftStat']),
+        rightStat: castToType<double>(data['RightStat']),
+      );
 
-  static void _initializeBuilder(StatlineStructBuilder builder) => builder
-    ..label = ''
-    ..leftStat = 0.0
-    ..rightStat = 0.0
-    ..firestoreUtilData = FirestoreUtilData();
+  static StatlineStruct? maybeFromMap(dynamic data) =>
+      data is Map<String, dynamic> ? StatlineStruct.fromMap(data) : null;
 
-  StatlineStruct._();
-  factory StatlineStruct([void Function(StatlineStructBuilder) updates]) =
-      _$StatlineStruct;
+  Map<String, dynamic> toMap() => {
+        'Label': _label,
+        'LeftStat': _leftStat,
+        'RightStat': _rightStat,
+      }.withoutNulls;
+
+  @override
+  Map<String, dynamic> toSerializableMap() => toMap();
+  static StatlineStruct fromSerializableMap(Map<String, dynamic> data) =>
+      fromMap(data);
+
+  @override
+  String toString() => 'StatlineStruct(${toMap()})';
+
+  @override
+  bool operator ==(Object other) {
+    return other is StatlineStruct &&
+        label == other.label &&
+        leftStat == other.leftStat &&
+        rightStat == other.rightStat;
+  }
+
+  @override
+  int get hashCode => const ListEquality().hash([label, leftStat, rightStat]);
 }
 
 StatlineStruct createStatlineStruct({
@@ -44,28 +83,27 @@ StatlineStruct createStatlineStruct({
   bool delete = false,
 }) =>
     StatlineStruct(
-      (s) => s
-        ..label = label
-        ..leftStat = leftStat
-        ..rightStat = rightStat
-        ..firestoreUtilData = FirestoreUtilData(
-          clearUnsetFields: clearUnsetFields,
-          create: create,
-          delete: delete,
-          fieldValues: fieldValues,
-        ),
+      label: label,
+      leftStat: leftStat,
+      rightStat: rightStat,
+      firestoreUtilData: FirestoreUtilData(
+        clearUnsetFields: clearUnsetFields,
+        create: create,
+        delete: delete,
+        fieldValues: fieldValues,
+      ),
     );
 
 StatlineStruct? updateStatlineStruct(
   StatlineStruct? statline, {
   bool clearUnsetFields = true,
+  bool create = false,
 }) =>
-    statline != null
-        ? (statline.toBuilder()
-              ..firestoreUtilData =
-                  FirestoreUtilData(clearUnsetFields: clearUnsetFields))
-            .build()
-        : null;
+    statline
+      ?..firestoreUtilData = FirestoreUtilData(
+        clearUnsetFields: clearUnsetFields,
+        create: create,
+      );
 
 void addStatlineStructData(
   Map<String, dynamic> firestoreData,
@@ -81,16 +119,17 @@ void addStatlineStructData(
     firestoreData[fieldName] = FieldValue.delete();
     return;
   }
-  if (!forFieldValue && statline.firestoreUtilData.clearUnsetFields) {
+  final clearFields =
+      !forFieldValue && statline.firestoreUtilData.clearUnsetFields;
+  if (clearFields) {
     firestoreData[fieldName] = <String, dynamic>{};
   }
   final statlineData = getStatlineFirestoreData(statline, forFieldValue);
   final nestedData = statlineData.map((k, v) => MapEntry('$fieldName.$k', v));
 
-  final create = statline.firestoreUtilData.create;
-  firestoreData.addAll(create ? mergeNestedFields(nestedData) : nestedData);
-
-  return;
+  final mergeFields = statline.firestoreUtilData.create || clearFields;
+  firestoreData
+      .addAll(mergeFields ? mergeNestedFields(nestedData) : nestedData);
 }
 
 Map<String, dynamic> getStatlineFirestoreData(
@@ -100,8 +139,7 @@ Map<String, dynamic> getStatlineFirestoreData(
   if (statline == null) {
     return {};
   }
-  final firestoreData =
-      serializers.toFirestore(StatlineStruct.serializer, statline);
+  final firestoreData = mapToFirestore(statline.toMap());
 
   // Add any Firestore field values
   statline.firestoreUtilData.fieldValues
@@ -113,4 +151,4 @@ Map<String, dynamic> getStatlineFirestoreData(
 List<Map<String, dynamic>> getStatlineListFirestoreData(
   List<StatlineStruct>? statlines,
 ) =>
-    statlines?.map((s) => getStatlineFirestoreData(s, true)).toList() ?? [];
+    statlines?.map((e) => getStatlineFirestoreData(e, true)).toList() ?? [];

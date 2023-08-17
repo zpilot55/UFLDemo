@@ -12,6 +12,7 @@ import 'package:text_search/text_search.dart';
 class SelectFencerModel extends FlutterFlowModel {
   ///  State fields for stateful widgets in this page.
 
+  final unfocusNode = FocusNode();
   var currentFencerID = '';
   List<UsersRecord> simpleSearchResults = [];
   // Stores action output result for [Custom Action - getCurrentUserDocument] action in ButtonScanQR widget.
@@ -21,8 +22,11 @@ class SelectFencerModel extends FlutterFlowModel {
 
   void initState(BuildContext context) {}
 
-  void dispose() {}
+  void dispose() {
+    unfocusNode.dispose();
+  }
+
+  /// Action blocks are added here.
 
   /// Additional helper methods are added here.
-
 }

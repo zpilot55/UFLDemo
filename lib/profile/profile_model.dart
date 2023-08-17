@@ -1,4 +1,4 @@
-import '/auth/auth_util.dart';
+import '/auth/firebase_auth/auth_util.dart';
 import '/components/col_main_drawer_widget.dart';
 import '/edit_profile/edit_profile_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -27,6 +27,7 @@ class ProfileModel extends FlutterFlowModel {
     colMainDrawerModel.dispose();
   }
 
-  /// Additional helper methods are added here.
+  /// Action blocks are added here.
 
+  /// Additional helper methods are added here.
 }

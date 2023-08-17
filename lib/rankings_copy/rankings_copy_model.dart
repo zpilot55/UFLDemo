@@ -9,8 +9,13 @@ import 'package:provider/provider.dart';
 class RankingsCopyModel extends FlutterFlowModel {
   ///  State fields for stateful widgets in this page.
 
+  final unfocusNode = FocusNode();
   // Model for Col_mainDrawer component.
   late ColMainDrawerModel colMainDrawerModel;
+  // State field(s) for TabBar widget.
+  TabController? tabBarController;
+  int get tabBarCurrentIndex =>
+      tabBarController != null ? tabBarController!.index : 0;
 
   /// Initialization and disposal methods.
 
@@ -19,9 +24,12 @@ class RankingsCopyModel extends FlutterFlowModel {
   }
 
   void dispose() {
+    unfocusNode.dispose();
     colMainDrawerModel.dispose();
+    tabBarController?.dispose();
   }
 
-  /// Additional helper methods are added here.
+  /// Action blocks are added here.
 
+  /// Additional helper methods are added here.
 }

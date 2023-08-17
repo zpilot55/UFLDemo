@@ -22,7 +22,6 @@ class _SelectFencerWidgetState extends State<SelectFencerWidget> {
   late SelectFencerModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final _unfocusNode = FocusNode();
 
   @override
   void initState() {
@@ -34,7 +33,6 @@ class _SelectFencerWidgetState extends State<SelectFencerWidget> {
   void dispose() {
     _model.dispose();
 
-    _unfocusNode.dispose();
     super.dispose();
   }
 
@@ -47,30 +45,36 @@ class _SelectFencerWidgetState extends State<SelectFencerWidget> {
       builder: (context, snapshot) {
         // Customize what your widget looks like when it's loading.
         if (!snapshot.hasData) {
-          return Center(
-            child: SizedBox(
-              width: 50.0,
-              height: 50.0,
-              child: CircularProgressIndicator(
-                color: FlutterFlowTheme.of(context).primaryColor,
+          return Scaffold(
+            backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+            body: Center(
+              child: SizedBox(
+                width: 50.0,
+                height: 50.0,
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    FlutterFlowTheme.of(context).primary,
+                  ),
+                ),
               ),
             ),
           );
         }
         List<UsersRecord> selectFencerUsersRecordList = snapshot.data!;
-        return Scaffold(
-          key: scaffoldKey,
-          backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-          appBar: AppBar(
-            backgroundColor: FlutterFlowTheme.of(context).primaryColor,
-            automaticallyImplyLeading: true,
-            actions: [],
-            centerTitle: true,
-            elevation: 4.0,
-          ),
-          body: SafeArea(
-            child: GestureDetector(
-              onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
+        return GestureDetector(
+          onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
+          child: Scaffold(
+            key: scaffoldKey,
+            backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+            appBar: AppBar(
+              backgroundColor: FlutterFlowTheme.of(context).primary,
+              automaticallyImplyLeading: true,
+              actions: [],
+              centerTitle: true,
+              elevation: 4.0,
+            ),
+            body: SafeArea(
+              top: true,
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
@@ -79,7 +83,7 @@ class _SelectFencerWidgetState extends State<SelectFencerWidget> {
                     children: [
                       Text(
                         'Fencer Select',
-                        style: FlutterFlowTheme.of(context).title1,
+                        style: FlutterFlowTheme.of(context).displaySmall,
                       ),
                     ],
                   ),
@@ -110,6 +114,7 @@ class _SelectFencerWidgetState extends State<SelectFencerWidget> {
                                 .map((r) => r.object)
                                 .take(1)
                                 .toList();
+                            ;
                           });
                           _model.currentUserRecord =
                               await actions.getCurrentUserDocument(
@@ -117,13 +122,13 @@ class _SelectFencerWidgetState extends State<SelectFencerWidget> {
                           );
                           FFAppState().update(() {
                             FFAppState().scannedFencerRef =
-                                _model.currentUserRecord!.reference;
+                                _model.currentUserRecord?.reference;
                             FFAppState().currentFencerName =
-                                _model.currentUserRecord!.displayName!;
+                                _model.currentUserRecord!.displayName;
                           });
                           FFAppState().update(() {
                             FFAppState().currentFencerPicURL =
-                                _model.currentUserRecord!.photoUrl!;
+                                _model.currentUserRecord!.photoUrl;
                           });
 
                           setState(() {});
@@ -136,9 +141,9 @@ class _SelectFencerWidgetState extends State<SelectFencerWidget> {
                               0.0, 0.0, 0.0, 0.0),
                           iconPadding: EdgeInsetsDirectional.fromSTEB(
                               0.0, 0.0, 0.0, 0.0),
-                          color: FlutterFlowTheme.of(context).primaryColor,
+                          color: FlutterFlowTheme.of(context).primary,
                           textStyle:
-                              FlutterFlowTheme.of(context).subtitle1.override(
+                              FlutterFlowTheme.of(context).titleMedium.override(
                                     fontFamily: 'Lexend Deca',
                                     color: Colors.white,
                                     fontSize: 18.0,
@@ -165,7 +170,7 @@ class _SelectFencerWidgetState extends State<SelectFencerWidget> {
                             'Name: ${FFAppState().currentFencerName}',
                             'Name: <Select Fencer>',
                           ),
-                          style: FlutterFlowTheme.of(context).title3,
+                          style: FlutterFlowTheme.of(context).headlineSmall,
                         ),
                       ],
                     ),
@@ -178,7 +183,7 @@ class _SelectFencerWidgetState extends State<SelectFencerWidget> {
                       children: [
                         Text(
                           'Profile Picture:',
-                          style: FlutterFlowTheme.of(context).title3,
+                          style: FlutterFlowTheme.of(context).headlineSmall,
                         ),
                       ],
                     ),
@@ -255,11 +260,12 @@ class _SelectFencerWidgetState extends State<SelectFencerWidget> {
                                     0.0, 0.0, 0.0, 0.0),
                                 color: Color(0xFF00FF00),
                                 textStyle: FlutterFlowTheme.of(context)
-                                    .subtitle2
+                                    .titleSmall
                                     .override(
                                       fontFamily: 'Poppins',
                                       color: Colors.white,
                                     ),
+                                elevation: 2.0,
                                 borderSide: BorderSide(
                                   color: Colors.black,
                                   width: 3.0,
@@ -286,11 +292,12 @@ class _SelectFencerWidgetState extends State<SelectFencerWidget> {
                                     0.0, 0.0, 0.0, 0.0),
                                 color: Color(0xFFFF0000),
                                 textStyle: FlutterFlowTheme.of(context)
-                                    .subtitle2
+                                    .titleSmall
                                     .override(
                                       fontFamily: 'Poppins',
                                       color: Colors.white,
                                     ),
+                                elevation: 2.0,
                                 borderSide: BorderSide(
                                   color: Colors.black,
                                   width: 3.0,

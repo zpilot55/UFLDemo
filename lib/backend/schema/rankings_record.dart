@@ -1,58 +1,92 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
+
+import '/backend/schema/util/firestore_util.dart';
+import '/backend/schema/util/schema_util.dart';
+
 import 'index.dart';
-import 'serializers.dart';
-import 'package:built_value/built_value.dart';
+import '/flutter_flow/flutter_flow_util.dart';
 
-part 'rankings_record.g.dart';
+class RankingsRecord extends FirestoreRecord {
+  RankingsRecord._(
+    DocumentReference reference,
+    Map<String, dynamic> data,
+  ) : super(reference, data) {
+    _initializeFields();
+  }
 
-abstract class RankingsRecord
-    implements Built<RankingsRecord, RankingsRecordBuilder> {
-  static Serializer<RankingsRecord> get serializer =>
-      _$rankingsRecordSerializer;
+  // "fencerRankings" field.
+  RankingStructStruct? _fencerRankings;
+  RankingStructStruct get fencerRankings =>
+      _fencerRankings ?? RankingStructStruct();
+  bool hasFencerRankings() => _fencerRankings != null;
 
-  RankingStructStruct get fencerRankings;
-
-  @BuiltValueField(wireName: kDocumentReferenceField)
-  DocumentReference? get ffRef;
-  DocumentReference get reference => ffRef!;
-
-  static void _initializeBuilder(RankingsRecordBuilder builder) =>
-      builder..fencerRankings = RankingStructStructBuilder();
+  void _initializeFields() {
+    _fencerRankings =
+        RankingStructStruct.maybeFromMap(snapshotData['fencerRankings']);
+  }
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('rankings');
 
-  static Stream<RankingsRecord> getDocument(DocumentReference ref) => ref
-      .snapshots()
-      .map((s) => serializers.deserializeWith(serializer, serializedData(s))!);
+  static Stream<RankingsRecord> getDocument(DocumentReference ref) =>
+      ref.snapshots().map((s) => RankingsRecord.fromSnapshot(s));
 
-  static Future<RankingsRecord> getDocumentOnce(DocumentReference ref) => ref
-      .get()
-      .then((s) => serializers.deserializeWith(serializer, serializedData(s))!);
+  static Future<RankingsRecord> getDocumentOnce(DocumentReference ref) =>
+      ref.get().then((s) => RankingsRecord.fromSnapshot(s));
 
-  RankingsRecord._();
-  factory RankingsRecord([void Function(RankingsRecordBuilder) updates]) =
-      _$RankingsRecord;
+  static RankingsRecord fromSnapshot(DocumentSnapshot snapshot) =>
+      RankingsRecord._(
+        snapshot.reference,
+        mapFromFirestore(snapshot.data() as Map<String, dynamic>),
+      );
 
   static RankingsRecord getDocumentFromData(
-          Map<String, dynamic> data, DocumentReference reference) =>
-      serializers.deserializeWith(serializer,
-          {...mapFromFirestore(data), kDocumentReferenceField: reference})!;
+    Map<String, dynamic> data,
+    DocumentReference reference,
+  ) =>
+      RankingsRecord._(reference, mapFromFirestore(data));
+
+  @override
+  String toString() =>
+      'RankingsRecord(reference: ${reference.path}, data: $snapshotData)';
+
+  @override
+  int get hashCode => reference.path.hashCode;
+
+  @override
+  bool operator ==(other) =>
+      other is RankingsRecord &&
+      reference.path.hashCode == other.reference.path.hashCode;
 }
 
 Map<String, dynamic> createRankingsRecordData({
   RankingStructStruct? fencerRankings,
 }) {
-  final firestoreData = serializers.toFirestore(
-    RankingsRecord.serializer,
-    RankingsRecord(
-      (r) => r..fencerRankings = RankingStructStructBuilder(),
-    ),
+  final firestoreData = mapToFirestore(
+    <String, dynamic>{
+      'fencerRankings': RankingStructStruct().toMap(),
+    }.withoutNulls,
   );
 
   // Handle nested data for "fencerRankings" field.
   addRankingStructStructData(firestoreData, fencerRankings, 'fencerRankings');
 
   return firestoreData;
+}
+
+class RankingsRecordDocumentEquality implements Equality<RankingsRecord> {
+  const RankingsRecordDocumentEquality();
+
+  @override
+  bool equals(RankingsRecord? e1, RankingsRecord? e2) {
+    return e1?.fencerRankings == e2?.fencerRankings;
+  }
+
+  @override
+  int hash(RankingsRecord? e) => const ListEquality().hash([e?.fencerRankings]);
+
+  @override
+  bool isValidKey(Object? o) => o is RankingsRecord;
 }
