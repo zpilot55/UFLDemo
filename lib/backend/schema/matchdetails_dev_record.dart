@@ -1,77 +1,125 @@
 import 'dart:async';
 
+import 'package:collection/collection.dart';
+
+import '/backend/schema/util/firestore_util.dart';
+import '/backend/schema/util/schema_util.dart';
+
 import 'index.dart';
-import 'serializers.dart';
-import 'package:built_value/built_value.dart';
+import '/flutter_flow/flutter_flow_util.dart';
 
-part 'matchdetails_dev_record.g.dart';
+class MatchdetailsDevRecord extends FirestoreRecord {
+  MatchdetailsDevRecord._(
+    DocumentReference reference,
+    Map<String, dynamic> data,
+  ) : super(reference, data) {
+    _initializeFields();
+  }
 
-abstract class MatchdetailsDevRecord
-    implements Built<MatchdetailsDevRecord, MatchdetailsDevRecordBuilder> {
-  static Serializer<MatchdetailsDevRecord> get serializer =>
-      _$matchdetailsDevRecordSerializer;
+  // "MatchEvents" field.
+  List<MatchEventStruct>? _matchEvents;
+  List<MatchEventStruct> get matchEvents => _matchEvents ?? const [];
+  bool hasMatchEvents() => _matchEvents != null;
 
-  @BuiltValueField(wireName: 'MatchEvents')
-  BuiltList<MatchEventStruct>? get matchEvents;
+  // "Statlines" field.
+  List<StatlineStruct>? _statlines;
+  List<StatlineStruct> get statlines => _statlines ?? const [];
+  bool hasStatlines() => _statlines != null;
 
-  @BuiltValueField(wireName: 'Statlines')
-  BuiltList<StatlineStruct>? get statlines;
+  // "OverallStats" field.
+  MatchStatSnapshotStruct? _overallStats;
+  MatchStatSnapshotStruct get overallStats =>
+      _overallStats ?? MatchStatSnapshotStruct();
+  bool hasOverallStats() => _overallStats != null;
 
-  @BuiltValueField(wireName: 'OverallStats')
-  MatchStatSnapshotStruct get overallStats;
+  // "PeriodStats" field.
+  List<MatchStatSnapshotStruct>? _periodStats;
+  List<MatchStatSnapshotStruct> get periodStats => _periodStats ?? const [];
+  bool hasPeriodStats() => _periodStats != null;
 
-  @BuiltValueField(wireName: 'PeriodStats')
-  BuiltList<MatchStatSnapshotStruct>? get periodStats;
-
-  @BuiltValueField(wireName: kDocumentReferenceField)
-  DocumentReference? get ffRef;
-  DocumentReference get reference => ffRef!;
-
-  static void _initializeBuilder(MatchdetailsDevRecordBuilder builder) =>
-      builder
-        ..matchEvents = ListBuilder()
-        ..statlines = ListBuilder()
-        ..overallStats = MatchStatSnapshotStructBuilder()
-        ..periodStats = ListBuilder();
+  void _initializeFields() {
+    _matchEvents = getStructList(
+      snapshotData['MatchEvents'],
+      MatchEventStruct.fromMap,
+    );
+    _statlines = getStructList(
+      snapshotData['Statlines'],
+      StatlineStruct.fromMap,
+    );
+    _overallStats =
+        MatchStatSnapshotStruct.maybeFromMap(snapshotData['OverallStats']);
+    _periodStats = getStructList(
+      snapshotData['PeriodStats'],
+      MatchStatSnapshotStruct.fromMap,
+    );
+  }
 
   static CollectionReference get collection =>
       FirebaseFirestore.instance.collection('matchdetails_dev');
 
-  static Stream<MatchdetailsDevRecord> getDocument(DocumentReference ref) => ref
-      .snapshots()
-      .map((s) => serializers.deserializeWith(serializer, serializedData(s))!);
+  static Stream<MatchdetailsDevRecord> getDocument(DocumentReference ref) =>
+      ref.snapshots().map((s) => MatchdetailsDevRecord.fromSnapshot(s));
 
   static Future<MatchdetailsDevRecord> getDocumentOnce(DocumentReference ref) =>
-      ref.get().then(
-          (s) => serializers.deserializeWith(serializer, serializedData(s))!);
+      ref.get().then((s) => MatchdetailsDevRecord.fromSnapshot(s));
 
-  MatchdetailsDevRecord._();
-  factory MatchdetailsDevRecord(
-          [void Function(MatchdetailsDevRecordBuilder) updates]) =
-      _$MatchdetailsDevRecord;
+  static MatchdetailsDevRecord fromSnapshot(DocumentSnapshot snapshot) =>
+      MatchdetailsDevRecord._(
+        snapshot.reference,
+        mapFromFirestore(snapshot.data() as Map<String, dynamic>),
+      );
 
   static MatchdetailsDevRecord getDocumentFromData(
-          Map<String, dynamic> data, DocumentReference reference) =>
-      serializers.deserializeWith(serializer,
-          {...mapFromFirestore(data), kDocumentReferenceField: reference})!;
+    Map<String, dynamic> data,
+    DocumentReference reference,
+  ) =>
+      MatchdetailsDevRecord._(reference, mapFromFirestore(data));
+
+  @override
+  String toString() =>
+      'MatchdetailsDevRecord(reference: ${reference.path}, data: $snapshotData)';
+
+  @override
+  int get hashCode => reference.path.hashCode;
+
+  @override
+  bool operator ==(other) =>
+      other is MatchdetailsDevRecord &&
+      reference.path.hashCode == other.reference.path.hashCode;
 }
 
 Map<String, dynamic> createMatchdetailsDevRecordData({
   MatchStatSnapshotStruct? overallStats,
 }) {
-  final firestoreData = serializers.toFirestore(
-    MatchdetailsDevRecord.serializer,
-    MatchdetailsDevRecord(
-      (m) => m
-        ..matchEvents = null
-        ..statlines = null
-        ..overallStats = MatchStatSnapshotStructBuilder()
-        ..periodStats = null,
-    ),
+  final firestoreData = mapToFirestore(
+    <String, dynamic>{
+      'OverallStats': MatchStatSnapshotStruct().toMap(),
+    }.withoutNulls,
   );
 
   // Handle nested data for "OverallStats" field.
   addMatchStatSnapshotStructData(firestoreData, overallStats, 'OverallStats');
 
   return firestoreData;
+}
+
+class MatchdetailsDevRecordDocumentEquality
+    implements Equality<MatchdetailsDevRecord> {
+  const MatchdetailsDevRecordDocumentEquality();
+
+  @override
+  bool equals(MatchdetailsDevRecord? e1, MatchdetailsDevRecord? e2) {
+    const listEquality = ListEquality();
+    return listEquality.equals(e1?.matchEvents, e2?.matchEvents) &&
+        listEquality.equals(e1?.statlines, e2?.statlines) &&
+        e1?.overallStats == e2?.overallStats &&
+        listEquality.equals(e1?.periodStats, e2?.periodStats);
+  }
+
+  @override
+  int hash(MatchdetailsDevRecord? e) => const ListEquality()
+      .hash([e?.matchEvents, e?.statlines, e?.overallStats, e?.periodStats]);
+
+  @override
+  bool isValidKey(Object? o) => o is MatchdetailsDevRecord;
 }

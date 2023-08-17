@@ -66,7 +66,7 @@ class _MatchRecapEventsWidgetState extends State<MatchRecapEventsWidget> {
         ),
         title: Text(
           'Match Recap (Press Action for Replay)',
-          style: FlutterFlowTheme.of(context).title2.override(
+          style: FlutterFlowTheme.of(context).headlineMedium.override(
                 fontFamily: 'Poppins',
                 color: FlutterFlowTheme.of(context).primaryText,
                 fontSize: 22.0,
@@ -79,7 +79,7 @@ class _MatchRecapEventsWidgetState extends State<MatchRecapEventsWidget> {
       body: Builder(
         builder: (context) {
           final currentMatchEvent =
-              widget.currentMatchDetails!.matchEvents!.toList();
+              widget.currentMatchDetails?.matchEvents?.toList() ?? [];
           return SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.max,
@@ -92,17 +92,21 @@ class _MatchRecapEventsWidgetState extends State<MatchRecapEventsWidget> {
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     Container(
-                      width: MediaQuery.of(context).size.width * 1.0,
+                      width: MediaQuery.sizeOf(context).width * 1.0,
                       height: 100.0,
                       decoration: BoxDecoration(
                         color: FlutterFlowTheme.of(context).secondaryBackground,
                       ),
                       child: InkWell(
+                        splashColor: Colors.transparent,
+                        focusColor: Colors.transparent,
+                        hoverColor: Colors.transparent,
+                        highlightColor: Colors.transparent,
                         onTap: () async {
                           if ((currentMatchEventItem.videoURL != null &&
                                   currentMatchEventItem.videoURL != '') &&
                               (currentMatchEventItem.videoURL != '')) {
-                            await Navigator.push(
+                            Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) =>
@@ -134,7 +138,7 @@ class _MatchRecapEventsWidgetState extends State<MatchRecapEventsWidget> {
                                     Text(
                                       'Fencer:',
                                       style: FlutterFlowTheme.of(context)
-                                          .bodyText1
+                                          .bodyMedium
                                           .override(
                                             fontFamily: 'Poppins',
                                             fontSize: 11.0,
@@ -152,9 +156,12 @@ class _MatchRecapEventsWidgetState extends State<MatchRecapEventsWidget> {
                                               width: 50.0,
                                               height: 50.0,
                                               child: CircularProgressIndicator(
-                                                color:
-                                                    FlutterFlowTheme.of(context)
-                                                        .primaryColor,
+                                                valueColor:
+                                                    AlwaysStoppedAnimation<
+                                                        Color>(
+                                                  FlutterFlowTheme.of(context)
+                                                      .primary,
+                                                ),
                                               ),
                                             ),
                                           );
@@ -166,7 +173,7 @@ class _MatchRecapEventsWidgetState extends State<MatchRecapEventsWidget> {
                                             'Referee',
                                           ),
                                           style: FlutterFlowTheme.of(context)
-                                              .bodyText1
+                                              .bodyMedium
                                               .override(
                                                 fontFamily: 'Poppins',
                                                 fontSize: 11.0,
@@ -193,7 +200,7 @@ class _MatchRecapEventsWidgetState extends State<MatchRecapEventsWidget> {
                                   Text(
                                     'Action:',
                                     style: FlutterFlowTheme.of(context)
-                                        .bodyText1
+                                        .bodyMedium
                                         .override(
                                           fontFamily: 'Poppins',
                                           fontSize: 11.0,
@@ -201,9 +208,9 @@ class _MatchRecapEventsWidgetState extends State<MatchRecapEventsWidget> {
                                   ),
                                   Text(
                                     functions.getActionStringFromID(
-                                        currentMatchEventItem.actionID!),
+                                        currentMatchEventItem.actionID),
                                     style: FlutterFlowTheme.of(context)
-                                        .bodyText1
+                                        .bodyMedium
                                         .override(
                                           fontFamily: 'Poppins',
                                           fontSize: 11.0,
@@ -226,7 +233,7 @@ class _MatchRecapEventsWidgetState extends State<MatchRecapEventsWidget> {
                                   Text(
                                     'Time:',
                                     style: FlutterFlowTheme.of(context)
-                                        .bodyText1
+                                        .bodyMedium
                                         .override(
                                           fontFamily: 'Poppins',
                                           fontSize: 11.0,
@@ -234,9 +241,9 @@ class _MatchRecapEventsWidgetState extends State<MatchRecapEventsWidget> {
                                   ),
                                   Text(
                                     functions.msToMinSecFormat(
-                                        currentMatchEventItem.timeOfAction!),
+                                        currentMatchEventItem.timeOfAction),
                                     style: FlutterFlowTheme.of(context)
-                                        .bodyText1
+                                        .bodyMedium
                                         .override(
                                           fontFamily: 'Poppins',
                                           fontSize: 11.0,
@@ -262,16 +269,16 @@ class _MatchRecapEventsWidgetState extends State<MatchRecapEventsWidget> {
                                     Text(
                                       'Score:',
                                       style: FlutterFlowTheme.of(context)
-                                          .bodyText1
+                                          .bodyMedium
                                           .override(
                                             fontFamily: 'Poppins',
                                             fontSize: 11.0,
                                           ),
                                     ),
                                     Text(
-                                      '${currentMatchEventItem.scoreLeft?.toString()} - ${currentMatchEventItem.scoreRight?.toString()}',
+                                      '${currentMatchEventItem.scoreLeft.toString()} - ${currentMatchEventItem.scoreRight.toString()}',
                                       style: FlutterFlowTheme.of(context)
-                                          .bodyText1
+                                          .bodyMedium
                                           .override(
                                             fontFamily: 'Poppins',
                                             fontSize: 11.0,

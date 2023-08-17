@@ -66,7 +66,7 @@ class _MatchRecapEventVideoWidgetState
         ),
         title: Text(
           'Video Replay',
-          style: FlutterFlowTheme.of(context).title2.override(
+          style: FlutterFlowTheme.of(context).headlineMedium.override(
                 fontFamily: 'Poppins',
                 color: FlutterFlowTheme.of(context).primaryText,
                 fontSize: 22.0,

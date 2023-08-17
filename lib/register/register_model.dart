@@ -1,4 +1,4 @@
-import '/auth/auth_util.dart';
+import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 class RegisterModel extends FlutterFlowModel {
   ///  State fields for stateful widgets in this page.
 
+  final unfocusNode = FocusNode();
   // State field(s) for firstName widget.
   TextEditingController? firstNameController;
   String? Function(BuildContext, String?)? firstNameControllerValidator;
@@ -37,6 +38,7 @@ class RegisterModel extends FlutterFlowModel {
   }
 
   void dispose() {
+    unfocusNode.dispose();
     firstNameController?.dispose();
     lastNameController?.dispose();
     emailController?.dispose();
@@ -44,6 +46,7 @@ class RegisterModel extends FlutterFlowModel {
     retypedController?.dispose();
   }
 
-  /// Additional helper methods are added here.
+  /// Action blocks are added here.
 
+  /// Additional helper methods are added here.
 }

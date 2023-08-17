@@ -1,5 +1,5 @@
 import '/app_settings/app_settings_widget.dart';
-import '/auth/auth_util.dart';
+import '/auth/firebase_auth/auth_util.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -106,13 +106,14 @@ class _ColMainDrawerWidgetState extends State<ColMainDrawerWidget> {
                           AuthUserStreamWidget(
                             builder: (context) => Text(
                               currentUserDisplayName,
-                              style:
-                                  FlutterFlowTheme.of(context).title3.override(
-                                        fontFamily: 'Lexend Deca',
-                                        color: Colors.white,
-                                        fontSize: 20.0,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                              style: FlutterFlowTheme.of(context)
+                                  .headlineSmall
+                                  .override(
+                                    fontFamily: 'Lexend Deca',
+                                    color: Colors.white,
+                                    fontSize: 20.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                             ),
                           ),
                         ],
@@ -126,13 +127,14 @@ class _ColMainDrawerWidgetState extends State<ColMainDrawerWidget> {
                         children: [
                           Text(
                             currentUserEmail,
-                            style:
-                                FlutterFlowTheme.of(context).subtitle2.override(
-                                      fontFamily: 'Lexend Deca',
-                                      color: Color(0xFFEE8B60),
-                                      fontSize: 16.0,
-                                      fontWeight: FontWeight.w500,
-                                    ),
+                            style: FlutterFlowTheme.of(context)
+                                .titleSmall
+                                .override(
+                                  fontFamily: 'Lexend Deca',
+                                  color: Color(0xFFEE8B60),
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.w500,
+                                ),
                           ),
                         ],
                       ),
@@ -144,8 +146,12 @@ class _ColMainDrawerWidgetState extends State<ColMainDrawerWidget> {
           ],
         ),
         InkWell(
+          splashColor: Colors.transparent,
+          focusColor: Colors.transparent,
+          hoverColor: Colors.transparent,
+          highlightColor: Colors.transparent,
           onTap: () async {
-            await Navigator.push(
+            Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => NavBarPage(initialPage: 'HomePage'),
@@ -166,7 +172,7 @@ class _ColMainDrawerWidgetState extends State<ColMainDrawerWidget> {
                   size: 30.0,
                 ),
                 onPressed: () async {
-                  await Navigator.push(
+                  Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => NavBarPage(initialPage: 'HomePage'),
@@ -176,14 +182,18 @@ class _ColMainDrawerWidgetState extends State<ColMainDrawerWidget> {
               ),
               Text(
                 'Home',
-                style: FlutterFlowTheme.of(context).bodyText1,
+                style: FlutterFlowTheme.of(context).bodyMedium,
               ),
             ],
           ),
         ),
         InkWell(
+          splashColor: Colors.transparent,
+          focusColor: Colors.transparent,
+          hoverColor: Colors.transparent,
+          highlightColor: Colors.transparent,
           onTap: () async {
-            await Navigator.push(
+            Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => ProfileWidget(),
@@ -204,7 +214,7 @@ class _ColMainDrawerWidgetState extends State<ColMainDrawerWidget> {
                   size: 30.0,
                 ),
                 onPressed: () async {
-                  await Navigator.push(
+                  Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => ProfileWidget(),
@@ -214,14 +224,18 @@ class _ColMainDrawerWidgetState extends State<ColMainDrawerWidget> {
               ),
               Text(
                 'Profile',
-                style: FlutterFlowTheme.of(context).bodyText1,
+                style: FlutterFlowTheme.of(context).bodyMedium,
               ),
             ],
           ),
         ),
         InkWell(
+          splashColor: Colors.transparent,
+          focusColor: Colors.transparent,
+          hoverColor: Colors.transparent,
+          highlightColor: Colors.transparent,
           onTap: () async {
-            await Navigator.push(
+            Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => AppSettingsWidget(),
@@ -242,7 +256,7 @@ class _ColMainDrawerWidgetState extends State<ColMainDrawerWidget> {
                   size: 30.0,
                 ),
                 onPressed: () async {
-                  await Navigator.push(
+                  Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => AppSettingsWidget(),
@@ -252,14 +266,18 @@ class _ColMainDrawerWidgetState extends State<ColMainDrawerWidget> {
               ),
               Text(
                 'App Settings',
-                style: FlutterFlowTheme.of(context).bodyText1,
+                style: FlutterFlowTheme.of(context).bodyMedium,
               ),
             ],
           ),
         ),
         InkWell(
+          splashColor: Colors.transparent,
+          focusColor: Colors.transparent,
+          hoverColor: Colors.transparent,
+          highlightColor: Colors.transparent,
           onTap: () async {
-            await Navigator.push(
+            Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => RefSetupWidget(),
@@ -280,7 +298,7 @@ class _ColMainDrawerWidgetState extends State<ColMainDrawerWidget> {
                   size: 30.0,
                 ),
                 onPressed: () async {
-                  await Navigator.push(
+                  Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => RefSetupWidget(),
@@ -290,7 +308,7 @@ class _ColMainDrawerWidgetState extends State<ColMainDrawerWidget> {
               ),
               Text(
                 'Referee Mode',
-                style: FlutterFlowTheme.of(context).bodyText1,
+                style: FlutterFlowTheme.of(context).bodyMedium,
               ),
             ],
           ),

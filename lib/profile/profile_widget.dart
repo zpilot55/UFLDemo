@@ -1,4 +1,4 @@
-import '/auth/auth_util.dart';
+import '/auth/firebase_auth/auth_util.dart';
 import '/components/col_main_drawer_widget.dart';
 import '/edit_profile/edit_profile_widget.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -54,7 +54,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
         ),
       ),
       appBar: AppBar(
-        backgroundColor: FlutterFlowTheme.of(context).primaryColor,
+        backgroundColor: FlutterFlowTheme.of(context).primary,
         automaticallyImplyLeading: true,
         actions: [],
         centerTitle: true,
@@ -68,7 +68,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
               mainAxisSize: MainAxisSize.max,
               children: [
                 Container(
-                  width: MediaQuery.of(context).size.width * 1.0,
+                  width: MediaQuery.sizeOf(context).width * 1.0,
                   height: 270.0,
                   decoration: BoxDecoration(
                     color: Color(0xFF4B39EF),
@@ -87,7 +87,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                                   child: Image.asset(
                                     'assets/images/card_header@2x.png',
                                     width:
-                                        MediaQuery.of(context).size.width * 1.0,
+                                        MediaQuery.sizeOf(context).width * 1.0,
                                     height: 150.0,
                                     fit: BoxFit.cover,
                                   ),
@@ -128,7 +128,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                               builder: (context) => Text(
                                 currentUserDisplayName,
                                 style: FlutterFlowTheme.of(context)
-                                    .title1
+                                    .displaySmall
                                     .override(
                                       fontFamily: 'Lexend Deca',
                                       color: Colors.white,
@@ -150,7 +150,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                             child: Text(
                               currentUserEmail,
                               style: FlutterFlowTheme.of(context)
-                                  .bodyText1
+                                  .bodyMedium
                                   .override(
                                     fontFamily: 'Lexend Deca',
                                     color: Color(0xFFEE8B60),
@@ -174,7 +174,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                       EdgeInsetsDirectional.fromSTEB(24.0, 12.0, 0.0, 12.0),
                   child: Text(
                     'Account Settings',
-                    style: FlutterFlowTheme.of(context).bodyText1.override(
+                    style: FlutterFlowTheme.of(context).bodyMedium.override(
                           fontFamily: 'Lexend Deca',
                           color: Color(0xFF090F13),
                           fontSize: 14.0,
@@ -193,7 +193,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     Container(
-                      width: MediaQuery.of(context).size.width * 1.0,
+                      width: MediaQuery.sizeOf(context).width * 1.0,
                       height: 50.0,
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -204,8 +204,12 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                         ),
                       ),
                       child: InkWell(
+                        splashColor: Colors.transparent,
+                        focusColor: Colors.transparent,
+                        hoverColor: Colors.transparent,
+                        highlightColor: Colors.transparent,
                         onTap: () async {
-                          await Navigator.push(
+                          Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => EditProfileWidget(),
@@ -230,7 +234,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                               child: Text(
                                 'Edit Profile',
                                 style: FlutterFlowTheme.of(context)
-                                    .bodyText1
+                                    .bodyMedium
                                     .override(
                                       fontFamily: 'Lexend Deca',
                                       color: Color(0xFF090F13),
@@ -259,7 +263,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     Container(
-                      width: MediaQuery.of(context).size.width * 1.0,
+                      width: MediaQuery.sizeOf(context).width * 1.0,
                       height: 50.0,
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -270,8 +274,12 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                         ),
                       ),
                       child: InkWell(
+                        splashColor: Colors.transparent,
+                        focusColor: Colors.transparent,
+                        hoverColor: Colors.transparent,
+                        highlightColor: Colors.transparent,
                         onTap: () async {
-                          await Navigator.push(
+                          Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
@@ -297,7 +305,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                               child: Text(
                                 'Notification Settings',
                                 style: FlutterFlowTheme.of(context)
-                                    .bodyText1
+                                    .bodyMedium
                                     .override(
                                       fontFamily: 'Lexend Deca',
                                       color: Colors.black,
@@ -326,7 +334,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                   mainAxisSize: MainAxisSize.max,
                   children: [
                     Container(
-                      width: MediaQuery.of(context).size.width * 1.0,
+                      width: MediaQuery.sizeOf(context).width * 1.0,
                       height: 50.0,
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -354,7 +362,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                             child: Text(
                               'Terms of Service',
                               style: FlutterFlowTheme.of(context)
-                                  .bodyText1
+                                  .bodyMedium
                                   .override(
                                     fontFamily: 'Lexend Deca',
                                     color: Color(0xFF090F13),
@@ -388,8 +396,8 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                 children: [
                   FFButtonWidget(
                     onPressed: () async {
-                      await signOut();
-                      await Navigator.pushAndRemoveUntil(
+                      await authManager.signOut();
+                      Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
                           builder: (context) => LoginWidget(),
@@ -407,7 +415,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                           EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
                       color: Colors.white,
                       textStyle:
-                          FlutterFlowTheme.of(context).bodyText2.override(
+                          FlutterFlowTheme.of(context).bodySmall.override(
                                 fontFamily: 'Lexend Deca',
                                 color: Color(0xFF4B39EF),
                                 fontSize: 14.0,

@@ -1,4 +1,4 @@
-import '/auth/auth_util.dart';
+import '/auth/firebase_auth/auth_util.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
@@ -53,7 +53,7 @@ class _VerifyWidgetState extends State<VerifyWidget> {
         ),
         title: Text(
           'Code Verification',
-          style: FlutterFlowTheme.of(context).title2.override(
+          style: FlutterFlowTheme.of(context).headlineMedium.override(
                 fontFamily: 'Lexend Deca',
                 color: Colors.white,
                 fontSize: 22.0,
@@ -65,8 +65,8 @@ class _VerifyWidgetState extends State<VerifyWidget> {
         elevation: 0.0,
       ),
       body: Container(
-        width: MediaQuery.of(context).size.width * 1.0,
-        height: MediaQuery.of(context).size.height * 1.0,
+        width: MediaQuery.sizeOf(context).width * 1.0,
+        height: MediaQuery.sizeOf(context).height * 1.0,
         decoration: BoxDecoration(
           color: Color(0xFF4B39EF),
           image: DecorationImage(
@@ -86,14 +86,14 @@ class _VerifyWidgetState extends State<VerifyWidget> {
                 obscureText: false,
                 decoration: InputDecoration(
                   labelText: 'Enter the 6 digit code',
-                  labelStyle: FlutterFlowTheme.of(context).bodyText1.override(
+                  labelStyle: FlutterFlowTheme.of(context).bodyMedium.override(
                         fontFamily: 'Lexend Deca',
                         color: Color(0x98FFFFFF),
                         fontSize: 14.0,
                         fontWeight: FontWeight.normal,
                       ),
                   hintText: '000000',
-                  hintStyle: FlutterFlowTheme.of(context).bodyText1.override(
+                  hintStyle: FlutterFlowTheme.of(context).bodyMedium.override(
                         fontFamily: 'Lexend Deca',
                         color: Color(0x98FFFFFF),
                         fontSize: 14.0,
@@ -132,7 +132,7 @@ class _VerifyWidgetState extends State<VerifyWidget> {
                   contentPadding:
                       EdgeInsetsDirectional.fromSTEB(20.0, 24.0, 20.0, 24.0),
                 ),
-                style: FlutterFlowTheme.of(context).bodyText1.override(
+                style: FlutterFlowTheme.of(context).bodyMedium.override(
                       fontFamily: 'Lexend Deca',
                       color: Colors.white,
                       fontSize: 14.0,
@@ -155,7 +155,7 @@ class _VerifyWidgetState extends State<VerifyWidget> {
                     );
                     return;
                   }
-                  final phoneVerifiedUser = await verifySmsCode(
+                  final phoneVerifiedUser = await authManager.verifySmsCode(
                     context: context,
                     smsCode: smsCodeVal,
                   );
@@ -163,7 +163,7 @@ class _VerifyWidgetState extends State<VerifyWidget> {
                     return;
                   }
 
-                  await Navigator.pushAndRemoveUntil(
+                  Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(
                       builder: (context) => NavBarPage(initialPage: 'HomePage'),
@@ -179,7 +179,7 @@ class _VerifyWidgetState extends State<VerifyWidget> {
                   iconPadding:
                       EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
                   color: Colors.white,
-                  textStyle: FlutterFlowTheme.of(context).subtitle2.override(
+                  textStyle: FlutterFlowTheme.of(context).titleSmall.override(
                         fontFamily: 'Lexend Deca',
                         color: Color(0xFF4B39EF),
                         fontSize: 16.0,

@@ -4,10 +4,7 @@ import 'dart:math';
 import 'package:crypto/crypto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
-
-import 'auth_util.dart';
 
 /// Generates a cryptographically secure random nonce, to be included in a
 /// credential request.
@@ -59,8 +56,17 @@ Future<UserCredential> appleSignIn() async {
 
   // Sign in the user with Firebase. If the nonce we generated earlier does
   // not match the nonce in `appleCredential.identityToken`, sign in will fail.
-  return await FirebaseAuth.instance.signInWithCredential(oauthCredential);
-}
+  final user =
+      await FirebaseAuth.instance.signInWithCredential(oauthCredential);
 
-Future<User?> signInWithApple(BuildContext context) =>
-    signInOrCreateAccount(context, appleSignIn, 'APPLE');
+  final displayName = [appleCredential.givenName, appleCredential.familyName]
+      .where((name) => name != null)
+      .join(' ');
+
+  // The display name does not automatically come with the user.
+  if (displayName.isNotEmpty) {
+    await user.user?.updateDisplayName(displayName);
+  }
+
+  return user;
+}

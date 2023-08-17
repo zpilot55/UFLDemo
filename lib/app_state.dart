@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import '/backend/backend.dart';
+import '/backend/schema/structs/index.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'flutter_flow/flutter_flow_util.dart';
-import 'flutter_flow/lat_lng.dart';
 import 'dart:convert';
 
 class FFAppState extends ChangeNotifier {
@@ -12,20 +12,14 @@ class FFAppState extends ChangeNotifier {
     return _instance;
   }
 
-  FFAppState._internal() {
-    initializePersistedState();
-  }
+  FFAppState._internal();
 
-  Future initializePersistedState() async {
-    prefs = await SharedPreferences.getInstance();
-  }
+  Future initializePersistedState() async {}
 
   void update(VoidCallback callback) {
     callback();
     notifyListeners();
   }
-
-  late SharedPreferences prefs;
 
   String _refereeweaponselect = '';
   String get refereeweaponselect => _refereeweaponselect;
@@ -156,7 +150,7 @@ class FFAppState extends ChangeNotifier {
     _timerStartTime = _value;
   }
 
-  int _breakDuration = 10000;
+  int _breakDuration = 1;
   int get breakDuration => _breakDuration;
   set breakDuration(int _value) {
     _breakDuration = _value;
@@ -192,6 +186,13 @@ class FFAppState extends ChangeNotifier {
     _refFencers.removeAt(_index);
   }
 
+  void updateRefFencersAtIndex(
+    int _index,
+    DocumentReference Function(DocumentReference) updateFn,
+  ) {
+    _refFencers[_index] = updateFn(_refFencers[_index]);
+  }
+
   bool _endOfBoutPopup = false;
   bool get endOfBoutPopup => _endOfBoutPopup;
   set endOfBoutPopup(bool _value) {
@@ -221,6 +222,13 @@ class FFAppState extends ChangeNotifier {
 
   void removeAtIndexFromCurrentMatchEvents(int _index) {
     _currentMatchEvents.removeAt(_index);
+  }
+
+  void updateCurrentMatchEventsAtIndex(
+    int _index,
+    dynamic Function(dynamic) updateFn,
+  ) {
+    _currentMatchEvents[_index] = updateFn(_currentMatchEvents[_index]);
   }
 
   String _nonAttackLabel = '';
@@ -287,4 +295,16 @@ LatLng? _latLngFromString(String? val) {
   final lat = double.parse(split.first);
   final lng = double.parse(split.last);
   return LatLng(lat, lng);
+}
+
+void _safeInit(Function() initializeField) {
+  try {
+    initializeField();
+  } catch (_) {}
+}
+
+Future _safeInitAsync(Function() initializeField) async {
+  try {
+    await initializeField();
+  } catch (_) {}
 }

@@ -15,23 +15,28 @@ class RankingsCopyWidget extends StatefulWidget {
   _RankingsCopyWidgetState createState() => _RankingsCopyWidgetState();
 }
 
-class _RankingsCopyWidgetState extends State<RankingsCopyWidget> {
+class _RankingsCopyWidgetState extends State<RankingsCopyWidget>
+    with TickerProviderStateMixin {
   late RankingsCopyModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
-  final _unfocusNode = FocusNode();
 
   @override
   void initState() {
     super.initState();
     _model = createModel(context, () => RankingsCopyModel());
+
+    _model.tabBarController = TabController(
+      vsync: this,
+      length: 4,
+      initialIndex: 0,
+    );
   }
 
   @override
   void dispose() {
     _model.dispose();
 
-    _unfocusNode.dispose();
     super.dispose();
   }
 
@@ -39,36 +44,37 @@ class _RankingsCopyWidgetState extends State<RankingsCopyWidget> {
   Widget build(BuildContext context) {
     context.watch<FFAppState>();
 
-    return Scaffold(
-      key: scaffoldKey,
-      backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
-      drawer: Drawer(
-        elevation: 16.0,
-        child: wrapWithModel(
-          model: _model.colMainDrawerModel,
-          updateCallback: () => setState(() {}),
-          child: ColMainDrawerWidget(),
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
+      child: Scaffold(
+        key: scaffoldKey,
+        backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
+        drawer: Drawer(
+          elevation: 16.0,
+          child: wrapWithModel(
+            model: _model.colMainDrawerModel,
+            updateCallback: () => setState(() {}),
+            child: ColMainDrawerWidget(),
+          ),
         ),
-      ),
-      appBar: AppBar(
-        backgroundColor: FlutterFlowTheme.of(context).primaryColor,
-        automaticallyImplyLeading: true,
-        actions: [],
-        centerTitle: true,
-        elevation: 4.0,
-      ),
-      body: SafeArea(
-        child: GestureDetector(
-          onTap: () => FocusScope.of(context).requestFocus(_unfocusNode),
-          child: DefaultTabController(
-            length: 4,
-            initialIndex: 0,
-            child: Column(
-              children: [
-                TabBar(
-                  labelColor: FlutterFlowTheme.of(context).primaryColor,
-                  labelStyle: FlutterFlowTheme.of(context).bodyText1,
-                  indicatorColor: FlutterFlowTheme.of(context).secondaryColor,
+        appBar: AppBar(
+          backgroundColor: FlutterFlowTheme.of(context).primary,
+          automaticallyImplyLeading: true,
+          actions: [],
+          centerTitle: true,
+          elevation: 4.0,
+        ),
+        body: SafeArea(
+          top: true,
+          child: Column(
+            children: [
+              Align(
+                alignment: Alignment(0.0, 0),
+                child: TabBar(
+                  labelColor: FlutterFlowTheme.of(context).primary,
+                  labelStyle: FlutterFlowTheme.of(context).bodyMedium,
+                  unselectedLabelStyle: TextStyle(),
+                  indicatorColor: FlutterFlowTheme.of(context).secondary,
                   tabs: [
                     Tab(
                       text: 'Foil',
@@ -83,83 +89,85 @@ class _RankingsCopyWidgetState extends State<RankingsCopyWidget> {
                       text: 'Noodle',
                     ),
                   ],
+                  controller: _model.tabBarController,
+                  onTap: (value) => setState(() {}),
                 ),
-                Expanded(
-                  child: TabBarView(
-                    children: [
-                      StreamBuilder<List<UsersRecord>>(
-                        stream: queryUsersRecord(
-                          queryBuilder: (usersRecord) => usersRecord
-                              .where('numRankedFA', isGreaterThanOrEqualTo: 10),
-                        ),
-                        builder: (context, snapshot) {
-                          // Customize what your widget looks like when it's loading.
-                          if (!snapshot.hasData) {
-                            return Center(
-                              child: SizedBox(
-                                width: 50.0,
-                                height: 50.0,
-                                child: CircularProgressIndicator(
-                                  color:
-                                      FlutterFlowTheme.of(context).primaryColor,
+              ),
+              Expanded(
+                child: TabBarView(
+                  controller: _model.tabBarController,
+                  children: [
+                    StreamBuilder<List<UsersRecord>>(
+                      stream: queryUsersRecord(
+                        queryBuilder: (usersRecord) => usersRecord
+                            .where('numRankedFA', isGreaterThanOrEqualTo: 10),
+                      ),
+                      builder: (context, snapshot) {
+                        // Customize what your widget looks like when it's loading.
+                        if (!snapshot.hasData) {
+                          return Center(
+                            child: SizedBox(
+                              width: 50.0,
+                              height: 50.0,
+                              child: CircularProgressIndicator(
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                  FlutterFlowTheme.of(context).primary,
                                 ),
                               ),
-                            );
-                          }
-                          List<UsersRecord> rowUsersRecordList = snapshot.data!;
-                          return Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: List.generate(rowUsersRecordList.length,
-                                (rowIndex) {
-                              final rowUsersRecord =
-                                  rowUsersRecordList[rowIndex];
-                              return Column(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Row(
-                                    mainAxisSize: MainAxisSize.max,
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsetsDirectional.fromSTEB(
-                                            0.0, 0.0, 0.0, 10.0),
-                                        child: Text(
-                                          'Club Ranking:',
-                                          style: FlutterFlowTheme.of(context)
-                                              .subtitle1,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Container(
-                                    width:
-                                        MediaQuery.of(context).size.width * 0.3,
-                                    height: MediaQuery.of(context).size.height *
-                                        0.7,
-                                    decoration: BoxDecoration(
-                                      color: FlutterFlowTheme.of(context)
-                                          .secondaryBackground,
-                                    ),
-                                    child: ListView(
-                                      padding: EdgeInsets.zero,
-                                      scrollDirection: Axis.vertical,
-                                      children: [],
-                                    ),
-                                  ),
-                                ],
-                              );
-                            }),
+                            ),
                           );
-                        },
-                      ),
-                      Container(),
-                      Container(),
-                      Container(),
-                    ],
-                  ),
+                        }
+                        List<UsersRecord> rowUsersRecordList = snapshot.data!;
+                        return Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: List.generate(rowUsersRecordList.length,
+                              (rowIndex) {
+                            final rowUsersRecord = rowUsersRecordList[rowIndex];
+                            return Column(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          0.0, 0.0, 0.0, 10.0),
+                                      child: Text(
+                                        'Club Ranking:',
+                                        style: FlutterFlowTheme.of(context)
+                                            .titleMedium,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Container(
+                                  width: MediaQuery.sizeOf(context).width * 0.3,
+                                  height:
+                                      MediaQuery.sizeOf(context).height * 0.7,
+                                  decoration: BoxDecoration(
+                                    color: FlutterFlowTheme.of(context)
+                                        .secondaryBackground,
+                                  ),
+                                  child: ListView(
+                                    padding: EdgeInsets.zero,
+                                    scrollDirection: Axis.vertical,
+                                    children: [],
+                                  ),
+                                ),
+                              ],
+                            );
+                          }),
+                        );
+                      },
+                    ),
+                    Container(),
+                    Container(),
+                    Container(),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
