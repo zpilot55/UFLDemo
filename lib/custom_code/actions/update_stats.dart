@@ -17,10 +17,7 @@ Future<MatchStatSnapshotStruct> updateStats(
 ) async {
   // Add your function code here!
 
-  MatchStatSnapshotStructBuilder newSnapshot =
-      new MatchStatSnapshotStructBuilder();
-
-  newSnapshot.replace(statsSnapshot);
+  MatchStatSnapshotStruct newSnapshot = new MatchStatSnapshotStruct();
 
   switch (actionID) {
     case 1:
@@ -219,7 +216,6 @@ Future<MatchStatSnapshotStruct> updateStats(
 
   newSnapshot.timestamp = timestamp;
   newSnapshot.periodstamp = period;
-  MatchStatSnapshotStruct newStruct = newSnapshot.build();
 
-  return newStruct;
+  return newSnapshot;
 }
