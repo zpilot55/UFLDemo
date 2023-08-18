@@ -18,7 +18,7 @@ class QRCode extends StatelessWidget {
     this.width,
     this.height,
     this.qrSize,
-    this.qrData,
+    required this.qrData,
     this.gapLess,
     this.qrVersion,
     this.qrPadding,
@@ -34,7 +34,7 @@ class QRCode extends StatelessWidget {
   // The (square) size of the image
   final double? qrSize;
   // Text data to the encoded
-  final String? qrData;
+  final String qrData;
   // Adds an extra pixel in size to prevent gaps (default is true).
   final bool? gapLess;
   // `QrVersions.auto` or a value between 1 and 40.
@@ -55,13 +55,13 @@ class QRCode extends StatelessWidget {
   Widget build(BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(qrBorderRadius ?? 0),
-      child: QrImage(
+      child: QrImageView(
         size: qrSize,
-        data: qrData!,
+        data: qrData,
         gapless: gapLess ?? true,
         version: qrVersion ?? QrVersions.auto,
         padding: EdgeInsets.all(qrPadding ?? 10),
-        semanticsLabel: semanticsLabel!,
+        semanticsLabel: semanticsLabel ?? '',
         backgroundColor: qrBackgroundColor ?? Colors.transparent,
         foregroundColor: qrForegroundColor ?? Colors.black,
       ),

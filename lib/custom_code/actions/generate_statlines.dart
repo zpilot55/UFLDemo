@@ -109,14 +109,12 @@ Future<List<StatlineStruct>> generateStatlines(
     aggroRatioR
   ];
 
-  StatlineStructBuilder tempstatlinebuilder = new StatlineStructBuilder();
   StatlineStruct tempstatline = new StatlineStruct();
 
   for (int i = 0; i < labels.length; i++) {
-    tempstatlinebuilder.label = labels[i];
-    tempstatlinebuilder.leftStat = leftValues[i];
-    tempstatlinebuilder.rightStat = rightValues[i];
-    tempstatline = tempstatlinebuilder.build();
+    tempstatline.label = labels[i];
+    tempstatline.leftStat = leftValues[i];
+    tempstatline.rightStat = rightValues[i];
     statlines.add(tempstatline);
   }
 
