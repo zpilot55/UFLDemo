@@ -13,6 +13,7 @@ import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'ref_view_model.dart';
@@ -62,6 +63,15 @@ class _RefViewWidgetState extends State<RefViewWidget> {
 
   @override
   Widget build(BuildContext context) {
+    if (isiOS) {
+      SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(
+          statusBarBrightness: Theme.of(context).brightness,
+          systemStatusBarContrastEnforced: true,
+        ),
+      );
+    }
+
     context.watch<FFAppState>();
 
     return StreamBuilder<UsersRecord>(
@@ -86,7 +96,9 @@ class _RefViewWidgetState extends State<RefViewWidget> {
         }
         final refViewUsersRecord = snapshot.data!;
         return GestureDetector(
-          onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
+          onTap: () => _model.unfocusNode.canRequestFocus
+              ? FocusScope.of(context).requestFocus(_model.unfocusNode)
+              : FocusScope.of(context).unfocus(),
           child: WillPopScope(
             onWillPop: () async => false,
             child: Scaffold(
@@ -230,7 +242,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                     return Stack(
                       children: [
                         Align(
-                          alignment: AlignmentDirectional(0.0, 0.0),
+                          alignment: AlignmentDirectional(0.00, 0.00),
                           child: Column(
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -266,7 +278,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                             value,
                                             hours: false,
                                           ),
-                                          timer: _model.timerController,
+                                          controller: _model.timerController,
                                           onChanged: (value, displayTime,
                                               shouldUpdate) {
                                             _model.timerMilliseconds = value;
@@ -560,22 +572,18 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                                         false;
                                                     FFAppState().onBreak = true;
                                                   });
-                                                  _model.timerController
+                                                  _model.timerController.timer
                                                       .setPresetTime(
                                                     mSec: functions.minutesToMS(
                                                         FFAppState()
                                                             .breakDuration),
                                                     add: false,
                                                   );
-                                                  _model
-                                                      .timerController.onExecute
-                                                      .add(StopWatchExecute
-                                                          .reset);
+                                                  _model.timerController
+                                                      .onResetTimer();
 
-                                                  _model
-                                                      .timerController.onExecute
-                                                      .add(StopWatchExecute
-                                                          .start);
+                                                  _model.timerController
+                                                      .onStartTimer();
                                                   FFAppState().update(() {
                                                     FFAppState().showActions =
                                                         false;
@@ -586,7 +594,8 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                                   if (!FFAppState().onBreak) {
                                                     if (FFAppState()
                                                         .beginNextPer) {
-                                                      _model.timerController
+                                                      _model
+                                                          .timerController.timer
                                                           .setPresetTime(
                                                         mSec: functions
                                                             .minutesToMS(widget
@@ -594,9 +603,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                                         add: false,
                                                       );
                                                       _model.timerController
-                                                          .onExecute
-                                                          .add(StopWatchExecute
-                                                              .reset);
+                                                          .onResetTimer();
 
                                                       FFAppState().update(() {
                                                         FFAppState()
@@ -615,10 +622,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                                       if (FFAppState()
                                                           .isTimerRunning) {
                                                         _model.timerController
-                                                            .onExecute
-                                                            .add(
-                                                                StopWatchExecute
-                                                                    .stop);
+                                                            .onStopTimer();
                                                         FFAppState().update(() {
                                                           FFAppState()
                                                                   .isTimerRunning =
@@ -629,10 +633,7 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                                         });
                                                       } else {
                                                         _model.timerController
-                                                            .onExecute
-                                                            .add(
-                                                                StopWatchExecute
-                                                                    .start);
+                                                            .onStartTimer();
                                                         FFAppState().update(() {
                                                           FFAppState()
                                                                   .isTimerRunning =
@@ -1144,18 +1145,22 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                                   await buttonMatchstatslogDevRecord
                                                       .reference
                                                       .update({
-                                                    'MatchStats':
-                                                        FieldValue.arrayUnion([
-                                                      getMatchStatSnapshotFirestoreData(
-                                                        updateMatchStatSnapshotStruct(
-                                                          _model
-                                                              .newStatsSnapshot,
-                                                          clearUnsetFields:
-                                                              false,
-                                                        ),
-                                                        true,
-                                                      )
-                                                    ]),
+                                                    ...mapToFirestore(
+                                                      {
+                                                        'MatchStats': FieldValue
+                                                            .arrayUnion([
+                                                          getMatchStatSnapshotFirestoreData(
+                                                            updateMatchStatSnapshotStruct(
+                                                              _model
+                                                                  .newStatsSnapshot,
+                                                              clearUnsetFields:
+                                                                  false,
+                                                            ),
+                                                            true,
+                                                          )
+                                                        ]),
+                                                      },
+                                                    ),
                                                   });
                                                   _model.newMatchStatlines =
                                                       await actions
@@ -1174,38 +1179,45 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                                         clearUnsetFields: false,
                                                       ),
                                                     ),
-                                                    'MatchEvents':
-                                                        FieldValue.arrayUnion([
-                                                      getMatchEventFirestoreData(
-                                                        createMatchEventStruct(
-                                                          actionableFencer: FFAppState()
-                                                                  .isLeftFencerAction
-                                                              ? FFAppState()
-                                                                  .leftFencerRef
-                                                              : FFAppState()
-                                                                  .rightFencerRef,
-                                                          scoreLeft:
-                                                              FFAppState()
-                                                                  .refLeftScore,
-                                                          scoreRight:
-                                                              FFAppState()
-                                                                  .refRightScore,
-                                                          timeOfAction: _model
-                                                              .timerMilliseconds,
-                                                          periodOfAction:
-                                                              FFAppState()
-                                                                  .currentPeriod,
-                                                          actionID: _model
-                                                              .currentActionID,
-                                                          clearUnsetFields:
-                                                              false,
+                                                    ...mapToFirestore(
+                                                      {
+                                                        'MatchEvents':
+                                                            FieldValue
+                                                                .arrayUnion([
+                                                          getMatchEventFirestoreData(
+                                                            createMatchEventStruct(
+                                                              actionableFencer:
+                                                                  FFAppState()
+                                                                          .isLeftFencerAction
+                                                                      ? FFAppState()
+                                                                          .leftFencerRef
+                                                                      : FFAppState()
+                                                                          .rightFencerRef,
+                                                              scoreLeft:
+                                                                  FFAppState()
+                                                                      .refLeftScore,
+                                                              scoreRight:
+                                                                  FFAppState()
+                                                                      .refRightScore,
+                                                              timeOfAction: _model
+                                                                  .timerMilliseconds,
+                                                              periodOfAction:
+                                                                  FFAppState()
+                                                                      .currentPeriod,
+                                                              actionID: _model
+                                                                  .currentActionID,
+                                                              clearUnsetFields:
+                                                                  false,
+                                                            ),
+                                                            true,
+                                                          )
+                                                        ]),
+                                                        'Statlines':
+                                                            getStatlineListFirestoreData(
+                                                          _model
+                                                              .newMatchStatlines,
                                                         ),
-                                                        true,
-                                                      )
-                                                    ]),
-                                                    'Statlines':
-                                                        getStatlineListFirestoreData(
-                                                      _model.newMatchStatlines,
+                                                      },
                                                     ),
                                                   });
                                                   await actions
@@ -1488,28 +1500,35 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                                     clearUnsetFields: false,
                                                   ),
                                                 ),
-                                                'MatchEvents':
-                                                    FieldValue.arrayUnion([
-                                                  getMatchEventFirestoreData(
-                                                    createMatchEventStruct(
-                                                      actionableFencer:
-                                                          FFAppState()
-                                                              .refereeReference,
-                                                      scoreLeft: FFAppState()
-                                                          .refLeftScore,
-                                                      scoreRight: FFAppState()
-                                                          .refRightScore,
-                                                      timeOfAction: _model
-                                                          .timerMilliseconds,
-                                                      periodOfAction:
-                                                          FFAppState()
-                                                              .currentPeriod,
-                                                      actionID: -2,
-                                                      clearUnsetFields: false,
-                                                    ),
-                                                    true,
-                                                  )
-                                                ]),
+                                                ...mapToFirestore(
+                                                  {
+                                                    'MatchEvents':
+                                                        FieldValue.arrayUnion([
+                                                      getMatchEventFirestoreData(
+                                                        createMatchEventStruct(
+                                                          actionableFencer:
+                                                              FFAppState()
+                                                                  .refereeReference,
+                                                          scoreLeft:
+                                                              FFAppState()
+                                                                  .refLeftScore,
+                                                          scoreRight:
+                                                              FFAppState()
+                                                                  .refRightScore,
+                                                          timeOfAction: _model
+                                                              .timerMilliseconds,
+                                                          periodOfAction:
+                                                              FFAppState()
+                                                                  .currentPeriod,
+                                                          actionID: -2,
+                                                          clearUnsetFields:
+                                                              false,
+                                                        ),
+                                                        true,
+                                                      )
+                                                    ]),
+                                                  },
+                                                ),
                                               });
                                               if (widget.rankCode != 'U') {
                                                 _model.eloDiff = await actions
@@ -1522,38 +1541,58 @@ class _RefViewWidgetState extends State<RefViewWidget> {
                                                   await refViewUsersRecord
                                                       .reference
                                                       .update({
-                                                    'elo_FA':
-                                                        FieldValue.increment(
-                                                            _model.eloDiff!),
-                                                    'numRankedFA':
-                                                        FieldValue.increment(1),
+                                                    ...mapToFirestore(
+                                                      {
+                                                        'elo_FA': FieldValue
+                                                            .increment(_model
+                                                                .eloDiff!),
+                                                        'numRankedFA':
+                                                            FieldValue
+                                                                .increment(1),
+                                                      },
+                                                    ),
                                                   });
 
                                                   await stackUsersRecord
                                                       .reference
                                                       .update({
-                                                    'elo_FA':
-                                                        FieldValue.increment(
-                                                            -(_model.eloDiff!)),
-                                                    'numRankedFA':
-                                                        FieldValue.increment(1),
+                                                    ...mapToFirestore(
+                                                      {
+                                                        'elo_FA': FieldValue
+                                                            .increment(-(_model
+                                                                .eloDiff!)),
+                                                        'numRankedFA':
+                                                            FieldValue
+                                                                .increment(1),
+                                                      },
+                                                    ),
                                                   });
                                                 } else {
                                                   await refViewUsersRecord
                                                       .reference
                                                       .update({
-                                                    'elo_FA':
-                                                        FieldValue.increment(
-                                                            -(_model.eloDiff!)),
-                                                    'numRankedFA':
-                                                        FieldValue.increment(1),
+                                                    ...mapToFirestore(
+                                                      {
+                                                        'elo_FA': FieldValue
+                                                            .increment(-(_model
+                                                                .eloDiff!)),
+                                                        'numRankedFA':
+                                                            FieldValue
+                                                                .increment(1),
+                                                      },
+                                                    ),
                                                   });
 
                                                   await stackUsersRecord
                                                       .reference
                                                       .update({
-                                                    'numRankedFA':
-                                                        FieldValue.increment(1),
+                                                    ...mapToFirestore(
+                                                      {
+                                                        'numRankedFA':
+                                                            FieldValue
+                                                                .increment(1),
+                                                      },
+                                                    ),
                                                   });
                                                 }
                                               }

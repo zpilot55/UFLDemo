@@ -4,14 +4,17 @@ import '/components/col_main_drawer_widget.dart';
 import '/flutter_flow/flutter_flow_drop_down.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
+import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/form_field_controller.dart';
 import '/match_recap/match_recap_widget.dart';
+import 'match_history_widget.dart' show MatchHistoryWidget;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 
-class MatchHistoryModel extends FlutterFlowModel {
+class MatchHistoryModel extends FlutterFlowModel<MatchHistoryWidget> {
   ///  State fields for stateful widgets in this page.
 
   final unfocusNode = FocusNode();

@@ -6,11 +6,13 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/main.dart';
 import '/profile/profile_widget.dart';
 import '/ref_setup/ref_setup_widget.dart';
+import 'col_main_drawer_widget.dart' show ColMainDrawerWidget;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-class ColMainDrawerModel extends FlutterFlowModel {
+class ColMainDrawerModel extends FlutterFlowModel<ColMainDrawerWidget> {
   /// Initialization and disposal methods.
 
   void initState(BuildContext context) {}

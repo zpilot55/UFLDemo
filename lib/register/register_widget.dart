@@ -5,6 +5,7 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/secondary_details/secondary_details_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'register_model.dart';
@@ -28,10 +29,19 @@ class _RegisterWidgetState extends State<RegisterWidget> {
     _model = createModel(context, () => RegisterModel());
 
     _model.firstNameController ??= TextEditingController();
+    _model.firstNameFocusNode ??= FocusNode();
+
     _model.lastNameController ??= TextEditingController();
+    _model.lastNameFocusNode ??= FocusNode();
+
     _model.emailController ??= TextEditingController();
+    _model.emailFocusNode ??= FocusNode();
+
     _model.passwordController ??= TextEditingController();
+    _model.passwordFocusNode ??= FocusNode();
+
     _model.retypedController ??= TextEditingController();
+    _model.retypedFocusNode ??= FocusNode();
   }
 
   @override
@@ -43,10 +53,21 @@ class _RegisterWidgetState extends State<RegisterWidget> {
 
   @override
   Widget build(BuildContext context) {
+    if (isiOS) {
+      SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(
+          statusBarBrightness: Theme.of(context).brightness,
+          systemStatusBarContrastEnforced: true,
+        ),
+      );
+    }
+
     context.watch<FFAppState>();
 
     return GestureDetector(
-      onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
+      onTap: () => _model.unfocusNode.canRequestFocus
+          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
+          : FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: Color(0xFF4B39EF),
@@ -96,6 +117,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                         Expanded(
                           child: TextFormField(
                             controller: _model.firstNameController,
+                            focusNode: _model.firstNameFocusNode,
                             obscureText: false,
                             decoration: InputDecoration(
                               labelText: 'First Name',
@@ -174,6 +196,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                         Expanded(
                           child: TextFormField(
                             controller: _model.lastNameController,
+                            focusNode: _model.lastNameFocusNode,
                             obscureText: false,
                             decoration: InputDecoration(
                               labelText: 'Last Name',
@@ -252,6 +275,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                         Expanded(
                           child: TextFormField(
                             controller: _model.emailController,
+                            focusNode: _model.emailFocusNode,
                             obscureText: false,
                             decoration: InputDecoration(
                               labelText: 'Email Address',
@@ -330,6 +354,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                         Expanded(
                           child: TextFormField(
                             controller: _model.passwordController,
+                            focusNode: _model.passwordFocusNode,
                             obscureText: !_model.passwordVisibility,
                             decoration: InputDecoration(
                               labelText: 'Password',
@@ -422,6 +447,7 @@ class _RegisterWidgetState extends State<RegisterWidget> {
                         Expanded(
                           child: TextFormField(
                             controller: _model.retypedController,
+                            focusNode: _model.retypedFocusNode,
                             obscureText: !_model.retypedVisibility,
                             decoration: InputDecoration(
                               labelText: 'Retype Password',

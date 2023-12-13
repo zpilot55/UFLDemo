@@ -9,6 +9,7 @@ import '/main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'secondary_details_model.dart';
@@ -41,10 +42,21 @@ class _SecondaryDetailsWidgetState extends State<SecondaryDetailsWidget> {
 
   @override
   Widget build(BuildContext context) {
+    if (isiOS) {
+      SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(
+          statusBarBrightness: Theme.of(context).brightness,
+          systemStatusBarContrastEnforced: true,
+        ),
+      );
+    }
+
     context.watch<FFAppState>();
 
     return GestureDetector(
-      onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
+      onTap: () => _model.unfocusNode.canRequestFocus
+          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
+          : FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: Color(0xFF4B39EF),
@@ -137,7 +149,7 @@ class _SecondaryDetailsWidgetState extends State<SecondaryDetailsWidget> {
                               );
 
                               if (_datePickedDate != null) {
-                                setState(() {
+                                safeSetState(() {
                                   _model.datePicked = DateTime(
                                     _datePickedDate.year,
                                     _datePickedDate.month,

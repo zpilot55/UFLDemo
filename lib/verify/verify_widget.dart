@@ -4,6 +4,7 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/main.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'verify_model.dart';
@@ -27,6 +28,7 @@ class _VerifyWidgetState extends State<VerifyWidget> {
     _model = createModel(context, () => VerifyModel());
 
     _model.phoneNumberController ??= TextEditingController();
+    _model.phoneNumberFocusNode ??= FocusNode();
   }
 
   @override
@@ -38,6 +40,15 @@ class _VerifyWidgetState extends State<VerifyWidget> {
 
   @override
   Widget build(BuildContext context) {
+    if (isiOS) {
+      SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(
+          statusBarBrightness: Theme.of(context).brightness,
+          systemStatusBarContrastEnforced: true,
+        ),
+      );
+    }
+
     context.watch<FFAppState>();
 
     return Scaffold(
@@ -83,6 +94,7 @@ class _VerifyWidgetState extends State<VerifyWidget> {
               padding: EdgeInsetsDirectional.fromSTEB(20.0, 20.0, 20.0, 0.0),
               child: TextFormField(
                 controller: _model.phoneNumberController,
+                focusNode: _model.phoneNumberFocusNode,
                 obscureText: false,
                 decoration: InputDecoration(
                   labelText: 'Enter the 6 digit code',
