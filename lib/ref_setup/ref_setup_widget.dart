@@ -1500,7 +1500,7 @@ class _RefSetupWidgetState extends State<RefSetupWidget>
                                     color: Colors.transparent,
                                     elevation: 3.0,
                                     shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(1.0),
+                                      borderRadius: BorderRadius.circular(5.0),
                                     ),
                                     child: Container(
                                       width: 140.0,
@@ -1509,10 +1509,11 @@ class _RefSetupWidgetState extends State<RefSetupWidget>
                                         color: FlutterFlowTheme.of(context)
                                             .primary,
                                         borderRadius:
-                                            BorderRadius.circular(1.0),
+                                            BorderRadius.circular(5.0),
                                         shape: BoxShape.rectangle,
                                         border: Border.all(
-                                          color: Colors.black,
+                                          color: FlutterFlowTheme.of(context)
+                                              .primaryBackground,
                                         ),
                                       ),
                                       child: Column(
@@ -1585,7 +1586,7 @@ class _RefSetupWidgetState extends State<RefSetupWidget>
                                     color: Colors.transparent,
                                     elevation: 3.0,
                                     shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(1.0),
+                                      borderRadius: BorderRadius.circular(5.0),
                                     ),
                                     child: Container(
                                       width: 140.0,
@@ -1594,10 +1595,11 @@ class _RefSetupWidgetState extends State<RefSetupWidget>
                                         color: FlutterFlowTheme.of(context)
                                             .primary,
                                         borderRadius:
-                                            BorderRadius.circular(1.0),
+                                            BorderRadius.circular(5.0),
                                         shape: BoxShape.rectangle,
                                         border: Border.all(
-                                          color: Colors.black,
+                                          color: FlutterFlowTheme.of(context)
+                                              .primaryBackground,
                                         ),
                                       ),
                                       child: Column(

@@ -134,7 +134,7 @@ class _MatchHistoryWidgetState extends State<MatchHistoryWidget> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Container(
-                      width: MediaQuery.sizeOf(context).width * 1.0,
+                      width: MediaQuery.sizeOf(context).width * 0.9,
                       height: MediaQuery.sizeOf(context).height * 0.6,
                       decoration: BoxDecoration(
                         color: FlutterFlowTheme.of(context).secondaryBackground,
