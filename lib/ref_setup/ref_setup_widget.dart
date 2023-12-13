@@ -9,6 +9,7 @@ import '/select_fencer/select_fencer_widget.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -38,7 +39,7 @@ class _RefSetupWidgetState extends State<RefSetupWidget>
       vsync: this,
       length: 2,
       initialIndex: 0,
-    );
+    )..addListener(() => setState(() {}));
   }
 
   @override
@@ -50,10 +51,21 @@ class _RefSetupWidgetState extends State<RefSetupWidget>
 
   @override
   Widget build(BuildContext context) {
+    if (isiOS) {
+      SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(
+          statusBarBrightness: Theme.of(context).brightness,
+          systemStatusBarContrastEnforced: true,
+        ),
+      );
+    }
+
     context.watch<FFAppState>();
 
     return GestureDetector(
-      onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
+      onTap: () => _model.unfocusNode.canRequestFocus
+          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
+          : FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -84,7 +96,6 @@ class _RefSetupWidgetState extends State<RefSetupWidget>
                     ),
                   ],
                   controller: _model.tabBarController,
-                  onTap: (value) => setState(() {}),
                 ),
               ),
               Expanded(
@@ -754,24 +765,28 @@ class _RefSetupWidgetState extends State<RefSetupWidget>
                                             create: true,
                                           ),
                                         ),
-                                        'MatchEvents': [
-                                          getMatchEventFirestoreData(
-                                            createMatchEventStruct(
-                                              actionableFencer:
-                                                  FFAppState().refereeReference,
-                                              scoreLeft: 0,
-                                              scoreRight: 0,
-                                              timeOfAction:
-                                                  functions.minutesToMS(
-                                                      _model.timeCountValue!),
-                                              periodOfAction: 1,
-                                              actionID: -1,
-                                              clearUnsetFields: false,
-                                              create: true,
-                                            ),
-                                            true,
-                                          )
-                                        ],
+                                        ...mapToFirestore(
+                                          {
+                                            'MatchEvents': [
+                                              getMatchEventFirestoreData(
+                                                createMatchEventStruct(
+                                                  actionableFencer: FFAppState()
+                                                      .refereeReference,
+                                                  scoreLeft: 0,
+                                                  scoreRight: 0,
+                                                  timeOfAction: functions
+                                                      .minutesToMS(_model
+                                                          .timeCountValue!),
+                                                  periodOfAction: 1,
+                                                  actionID: -1,
+                                                  clearUnsetFields: false,
+                                                  create: true,
+                                                ),
+                                                true,
+                                              )
+                                            ],
+                                          },
+                                        ),
                                       });
                                       _model.currentMatchDetails =
                                           MatchdetailsDevRecord
@@ -819,24 +834,28 @@ class _RefSetupWidgetState extends State<RefSetupWidget>
                                             create: true,
                                           ),
                                         ),
-                                        'MatchEvents': [
-                                          getMatchEventFirestoreData(
-                                            createMatchEventStruct(
-                                              actionableFencer:
-                                                  FFAppState().refereeReference,
-                                              scoreLeft: 0,
-                                              scoreRight: 0,
-                                              timeOfAction:
-                                                  functions.minutesToMS(
-                                                      _model.timeCountValue!),
-                                              periodOfAction: 1,
-                                              actionID: -1,
-                                              clearUnsetFields: false,
-                                              create: true,
-                                            ),
-                                            true,
-                                          )
-                                        ],
+                                        ...mapToFirestore(
+                                          {
+                                            'MatchEvents': [
+                                              getMatchEventFirestoreData(
+                                                createMatchEventStruct(
+                                                  actionableFencer: FFAppState()
+                                                      .refereeReference,
+                                                  scoreLeft: 0,
+                                                  scoreRight: 0,
+                                                  timeOfAction: functions
+                                                      .minutesToMS(_model
+                                                          .timeCountValue!),
+                                                  periodOfAction: 1,
+                                                  actionID: -1,
+                                                  clearUnsetFields: false,
+                                                  create: true,
+                                                ),
+                                                true,
+                                              )
+                                            ],
+                                          },
+                                        ),
                                       }, matchdetailsDevRecordReference);
 
                                       var matchstatslogDevRecordReference =
@@ -844,100 +863,108 @@ class _RefSetupWidgetState extends State<RefSetupWidget>
                                               .doc();
                                       await matchstatslogDevRecordReference
                                           .set({
-                                        'MatchStats': [
-                                          getMatchStatSnapshotFirestoreData(
-                                            createMatchStatSnapshotStruct(
-                                              pointsL: 0,
-                                              pointsR: 0,
-                                              yellowCardsL: 0,
-                                              yellowCardsR: 0,
-                                              redCardsL: 0,
-                                              redCardsR: 0,
-                                              simultaneous: 0,
-                                              haltsRef: 0,
-                                              haltsL: 0,
-                                              haltsR: 0,
-                                              simpleAttackHitsL: 0,
-                                              simpleAttackHitsR: 0,
-                                              simpleAttackOffTarL: 0,
-                                              simpleAttackOffTarR: 0,
-                                              compoundAttackHitsL: 0,
-                                              compoundAttackHitsR: 0,
-                                              compoundAttackOffTarL: 0,
-                                              compoundAttackOffTarR: 0,
-                                              parryRiposteHitsL: 0,
-                                              parryRiposteHitsR: 0,
-                                              parryRiposteOffTargetL: 0,
-                                              parryRiposteOffTargetR: 0,
-                                              remiseHitsL: 0,
-                                              remiseHitsR: 0,
-                                              remiseOffTarL: 0,
-                                              remiseOffTarR: 0,
-                                              counterattackHitsL: 0,
-                                              counterattackHitsR: 0,
-                                              counterattackOffTarL: 0,
-                                              counterattackOffTarR: 0,
-                                              pointInLineHitsL: 0,
-                                              pointInLineHitsR: 0,
-                                              pointInLineOffTarL: 0,
-                                              pointInLineOffTarR: 0,
-                                              timestamp: -1,
-                                              periodstamp: 0,
-                                              clearUnsetFields: false,
-                                              create: true,
-                                            ),
-                                            true,
-                                          )
-                                        ],
+                                        ...mapToFirestore(
+                                          {
+                                            'MatchStats': [
+                                              getMatchStatSnapshotFirestoreData(
+                                                createMatchStatSnapshotStruct(
+                                                  pointsL: 0,
+                                                  pointsR: 0,
+                                                  yellowCardsL: 0,
+                                                  yellowCardsR: 0,
+                                                  redCardsL: 0,
+                                                  redCardsR: 0,
+                                                  simultaneous: 0,
+                                                  haltsRef: 0,
+                                                  haltsL: 0,
+                                                  haltsR: 0,
+                                                  simpleAttackHitsL: 0,
+                                                  simpleAttackHitsR: 0,
+                                                  simpleAttackOffTarL: 0,
+                                                  simpleAttackOffTarR: 0,
+                                                  compoundAttackHitsL: 0,
+                                                  compoundAttackHitsR: 0,
+                                                  compoundAttackOffTarL: 0,
+                                                  compoundAttackOffTarR: 0,
+                                                  parryRiposteHitsL: 0,
+                                                  parryRiposteHitsR: 0,
+                                                  parryRiposteOffTargetL: 0,
+                                                  parryRiposteOffTargetR: 0,
+                                                  remiseHitsL: 0,
+                                                  remiseHitsR: 0,
+                                                  remiseOffTarL: 0,
+                                                  remiseOffTarR: 0,
+                                                  counterattackHitsL: 0,
+                                                  counterattackHitsR: 0,
+                                                  counterattackOffTarL: 0,
+                                                  counterattackOffTarR: 0,
+                                                  pointInLineHitsL: 0,
+                                                  pointInLineHitsR: 0,
+                                                  pointInLineOffTarL: 0,
+                                                  pointInLineOffTarR: 0,
+                                                  timestamp: -1,
+                                                  periodstamp: 0,
+                                                  clearUnsetFields: false,
+                                                  create: true,
+                                                ),
+                                                true,
+                                              )
+                                            ],
+                                          },
+                                        ),
                                       });
                                       _model.currentMatchStatsLog =
                                           MatchstatslogDevRecord
                                               .getDocumentFromData({
-                                        'MatchStats': [
-                                          getMatchStatSnapshotFirestoreData(
-                                            createMatchStatSnapshotStruct(
-                                              pointsL: 0,
-                                              pointsR: 0,
-                                              yellowCardsL: 0,
-                                              yellowCardsR: 0,
-                                              redCardsL: 0,
-                                              redCardsR: 0,
-                                              simultaneous: 0,
-                                              haltsRef: 0,
-                                              haltsL: 0,
-                                              haltsR: 0,
-                                              simpleAttackHitsL: 0,
-                                              simpleAttackHitsR: 0,
-                                              simpleAttackOffTarL: 0,
-                                              simpleAttackOffTarR: 0,
-                                              compoundAttackHitsL: 0,
-                                              compoundAttackHitsR: 0,
-                                              compoundAttackOffTarL: 0,
-                                              compoundAttackOffTarR: 0,
-                                              parryRiposteHitsL: 0,
-                                              parryRiposteHitsR: 0,
-                                              parryRiposteOffTargetL: 0,
-                                              parryRiposteOffTargetR: 0,
-                                              remiseHitsL: 0,
-                                              remiseHitsR: 0,
-                                              remiseOffTarL: 0,
-                                              remiseOffTarR: 0,
-                                              counterattackHitsL: 0,
-                                              counterattackHitsR: 0,
-                                              counterattackOffTarL: 0,
-                                              counterattackOffTarR: 0,
-                                              pointInLineHitsL: 0,
-                                              pointInLineHitsR: 0,
-                                              pointInLineOffTarL: 0,
-                                              pointInLineOffTarR: 0,
-                                              timestamp: -1,
-                                              periodstamp: 0,
-                                              clearUnsetFields: false,
-                                              create: true,
-                                            ),
-                                            true,
-                                          )
-                                        ],
+                                        ...mapToFirestore(
+                                          {
+                                            'MatchStats': [
+                                              getMatchStatSnapshotFirestoreData(
+                                                createMatchStatSnapshotStruct(
+                                                  pointsL: 0,
+                                                  pointsR: 0,
+                                                  yellowCardsL: 0,
+                                                  yellowCardsR: 0,
+                                                  redCardsL: 0,
+                                                  redCardsR: 0,
+                                                  simultaneous: 0,
+                                                  haltsRef: 0,
+                                                  haltsL: 0,
+                                                  haltsR: 0,
+                                                  simpleAttackHitsL: 0,
+                                                  simpleAttackHitsR: 0,
+                                                  simpleAttackOffTarL: 0,
+                                                  simpleAttackOffTarR: 0,
+                                                  compoundAttackHitsL: 0,
+                                                  compoundAttackHitsR: 0,
+                                                  compoundAttackOffTarL: 0,
+                                                  compoundAttackOffTarR: 0,
+                                                  parryRiposteHitsL: 0,
+                                                  parryRiposteHitsR: 0,
+                                                  parryRiposteOffTargetL: 0,
+                                                  parryRiposteOffTargetR: 0,
+                                                  remiseHitsL: 0,
+                                                  remiseHitsR: 0,
+                                                  remiseOffTarL: 0,
+                                                  remiseOffTarR: 0,
+                                                  counterattackHitsL: 0,
+                                                  counterattackHitsR: 0,
+                                                  counterattackOffTarL: 0,
+                                                  counterattackOffTarR: 0,
+                                                  pointInLineHitsL: 0,
+                                                  pointInLineHitsR: 0,
+                                                  pointInLineOffTarL: 0,
+                                                  pointInLineOffTarR: 0,
+                                                  timestamp: -1,
+                                                  periodstamp: 0,
+                                                  clearUnsetFields: false,
+                                                  create: true,
+                                                ),
+                                                true,
+                                              )
+                                            ],
+                                          },
+                                        ),
                                       }, matchstatslogDevRecordReference);
                                       // Create matches doc
 
@@ -960,7 +987,11 @@ class _RefSetupWidgetState extends State<RefSetupWidget>
                                           matchStatsLog: _model
                                               .currentMatchStatsLog?.reference,
                                         ),
-                                        'fencers': FFAppState().refFencers,
+                                        ...mapToFirestore(
+                                          {
+                                            'fencers': FFAppState().refFencers,
+                                          },
+                                        ),
                                       });
                                       _model.currentMatchInProgress =
                                           MatchesDevRecord.getDocumentFromData({
@@ -980,7 +1011,11 @@ class _RefSetupWidgetState extends State<RefSetupWidget>
                                           matchStatsLog: _model
                                               .currentMatchStatsLog?.reference,
                                         ),
-                                        'fencers': FFAppState().refFencers,
+                                        ...mapToFirestore(
+                                          {
+                                            'fencers': FFAppState().refFencers,
+                                          },
+                                        ),
                                       }, matchesDevRecordReference);
                                       Navigator.push(
                                         context,

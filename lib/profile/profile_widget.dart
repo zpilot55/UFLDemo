@@ -7,6 +7,7 @@ import '/flutter_flow/flutter_flow_widgets.dart';
 import '/login/login_widget.dart';
 import '/notification_settings/notification_settings_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -40,6 +41,15 @@ class _ProfileWidgetState extends State<ProfileWidget> {
 
   @override
   Widget build(BuildContext context) {
+    if (isiOS) {
+      SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(
+          statusBarBrightness: Theme.of(context).brightness,
+          systemStatusBarContrastEnforced: true,
+        ),
+      );
+    }
+
     context.watch<FFAppState>();
 
     return Scaffold(
@@ -83,7 +93,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                             child: Stack(
                               children: [
                                 Align(
-                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                  alignment: AlignmentDirectional(0.00, 0.00),
                                   child: Image.asset(
                                     'assets/images/card_header@2x.png',
                                     width:
@@ -93,7 +103,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                                   ),
                                 ),
                                 Align(
-                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                  alignment: AlignmentDirectional(0.00, 0.00),
                                   child: Padding(
                                     padding: EdgeInsetsDirectional.fromSTEB(
                                         0.0, 105.0, 0.0, 0.0),
@@ -245,7 +255,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                             ),
                             Expanded(
                               child: Align(
-                                alignment: AlignmentDirectional(0.9, 0.0),
+                                alignment: AlignmentDirectional(0.90, 0.00),
                                 child: Icon(
                                   Icons.arrow_forward_ios,
                                   color: Color(0xFF95A1AC),
@@ -316,7 +326,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                             ),
                             Expanded(
                               child: Align(
-                                alignment: AlignmentDirectional(0.9, 0.0),
+                                alignment: AlignmentDirectional(0.90, 0.00),
                                 child: Icon(
                                   Icons.arrow_forward_ios,
                                   color: Color(0xFF95A1AC),
@@ -373,7 +383,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                           ),
                           Expanded(
                             child: Align(
-                              alignment: AlignmentDirectional(0.9, 0.0),
+                              alignment: AlignmentDirectional(0.90, 0.00),
                               child: Icon(
                                 Icons.arrow_forward_ios,
                                 color: Color(0xFF95A1AC),

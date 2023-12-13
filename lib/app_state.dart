@@ -6,13 +6,17 @@ import 'flutter_flow/flutter_flow_util.dart';
 import 'dart:convert';
 
 class FFAppState extends ChangeNotifier {
-  static final FFAppState _instance = FFAppState._internal();
+  static FFAppState _instance = FFAppState._internal();
 
   factory FFAppState() {
     return _instance;
   }
 
   FFAppState._internal();
+
+  static void reset() {
+    _instance = FFAppState._internal();
+  }
 
   Future initializePersistedState() async {}
 
@@ -193,6 +197,10 @@ class FFAppState extends ChangeNotifier {
     _refFencers[_index] = updateFn(_refFencers[_index]);
   }
 
+  void insertAtIndexInRefFencers(int _index, DocumentReference _value) {
+    _refFencers.insert(_index, _value);
+  }
+
   bool _endOfBoutPopup = false;
   bool get endOfBoutPopup => _endOfBoutPopup;
   set endOfBoutPopup(bool _value) {
@@ -229,6 +237,10 @@ class FFAppState extends ChangeNotifier {
     dynamic Function(dynamic) updateFn,
   ) {
     _currentMatchEvents[_index] = updateFn(_currentMatchEvents[_index]);
+  }
+
+  void insertAtIndexInCurrentMatchEvents(int _index, dynamic _value) {
+    _currentMatchEvents.insert(_index, _value);
   }
 
   String _nonAttackLabel = '';

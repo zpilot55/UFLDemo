@@ -7,13 +7,15 @@ import '/flutter_flow/flutter_flow_widgets.dart';
 import '/ref_view/ref_view_widget.dart';
 import '/select_fencer/select_fencer_widget.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
+import 'ref_setup_widget.dart' show RefSetupWidget;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-class RefSetupModel extends FlutterFlowModel {
+class RefSetupModel extends FlutterFlowModel<RefSetupWidget> {
   ///  State fields for stateful widgets in this page.
 
   final unfocusNode = FocusNode();

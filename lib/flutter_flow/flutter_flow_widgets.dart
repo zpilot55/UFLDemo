@@ -76,13 +76,18 @@ class _FFButtonWidgetState extends State<FFButtonWidget> {
   @override
   Widget build(BuildContext context) {
     Widget textWidget = loading
-        ? Center(
-            child: Container(
-              width: 23,
-              height: 23,
-              child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(
-                  widget.options.textStyle!.color ?? Colors.white,
+        ? SizedBox(
+            width: widget.options.width == null
+                ? _getTextWidth(widget.text, widget.options.textStyle, maxLines)
+                : null,
+            child: Center(
+              child: SizedBox(
+                width: 23,
+                height: 23,
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    widget.options.textStyle!.color ?? Colors.white,
+                  ),
                 ),
               ),
             ),
@@ -160,7 +165,7 @@ class _FFButtonWidgetState extends State<FFButtonWidget> {
         if (states.contains(MaterialState.pressed)) {
           return widget.options.splashColor;
         }
-        return null;
+        return widget.options.hoverColor == null ? null : Colors.transparent;
       }),
       padding: MaterialStateProperty.all(widget.options.padding ??
           const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0)),
@@ -240,3 +245,13 @@ extension _WithoutColorExtension on TextStyle {
         overflow: overflow,
       );
 }
+
+// Slightly hacky method of getting the layout width of the provided text.
+double _getTextWidth(String text, TextStyle? style, int maxLines) =>
+    (TextPainter(
+      text: TextSpan(text: text, style: style),
+      textDirection: TextDirection.ltr,
+      maxLines: maxLines,
+    )..layout())
+        .size
+        .width;

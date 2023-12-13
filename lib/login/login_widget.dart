@@ -7,6 +7,7 @@ import '/register/register_widget.dart';
 import '/secondary_details/secondary_details_widget.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -31,7 +32,10 @@ class _LoginWidgetState extends State<LoginWidget> {
     _model = createModel(context, () => LoginModel());
 
     _model.emailAddressController ??= TextEditingController();
+    _model.emailAddressFocusNode ??= FocusNode();
+
     _model.passwordController ??= TextEditingController();
+    _model.passwordFocusNode ??= FocusNode();
   }
 
   @override
@@ -43,10 +47,21 @@ class _LoginWidgetState extends State<LoginWidget> {
 
   @override
   Widget build(BuildContext context) {
+    if (isiOS) {
+      SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(
+          statusBarBrightness: Theme.of(context).brightness,
+          systemStatusBarContrastEnforced: true,
+        ),
+      );
+    }
+
     context.watch<FFAppState>();
 
     return GestureDetector(
-      onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
+      onTap: () => _model.unfocusNode.canRequestFocus
+          ? FocusScope.of(context).requestFocus(_model.unfocusNode)
+          : FocusScope.of(context).unfocus(),
       child: Scaffold(
         key: scaffoldKey,
         backgroundColor: Color(0xFF4B39EF),
@@ -96,6 +111,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                         Expanded(
                           child: TextFormField(
                             controller: _model.emailAddressController,
+                            focusNode: _model.emailAddressFocusNode,
                             obscureText: false,
                             decoration: InputDecoration(
                               labelText: 'Email Address',
@@ -174,6 +190,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                         Expanded(
                           child: TextFormField(
                             controller: _model.passwordController,
+                            focusNode: _model.passwordFocusNode,
                             obscureText: !_model.passwordVisibility,
                             decoration: InputDecoration(
                               labelText: 'Password',

@@ -51,6 +51,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+
     userStream = uFLDemoFirebaseUserStream()
       ..listen((user) => initialUser ?? setState(() => initialUser = user));
     jwtTokenStream.listen((_) {});

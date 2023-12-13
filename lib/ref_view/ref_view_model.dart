@@ -11,12 +11,14 @@ import '/ref_match_recap_events/ref_match_recap_events_widget.dart';
 import '/custom_code/actions/index.dart' as actions;
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:stop_watch_timer/stop_watch_timer.dart';
+import 'ref_view_widget.dart' show RefViewWidget;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-class RefViewModel extends FlutterFlowModel {
+class RefViewModel extends FlutterFlowModel<RefViewWidget> {
   ///  Local state fields for this page.
 
   bool? didLeftWin;
@@ -30,8 +32,8 @@ class RefViewModel extends FlutterFlowModel {
     0,
     hours: false,
   );
-  StopWatchTimer timerController =
-      StopWatchTimer(mode: StopWatchMode.countDown);
+  FlutterFlowTimerController timerController =
+      FlutterFlowTimerController(StopWatchTimer(mode: StopWatchMode.countDown));
 
   // State field(s) for DropDown widget.
   String? dropDownValue1;

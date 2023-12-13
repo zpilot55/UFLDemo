@@ -7,6 +7,7 @@ import '/main.dart';
 import '/profile/profile_widget.dart';
 import '/ref_setup/ref_setup_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'col_main_drawer_model.dart';
@@ -69,7 +70,7 @@ class _ColMainDrawerWidgetState extends State<ColMainDrawerWidget> {
                         mainAxisSize: MainAxisSize.max,
                         children: [
                           Align(
-                            alignment: AlignmentDirectional(-0.7, 0.0),
+                            alignment: AlignmentDirectional(-0.70, 0.00),
                             child: AuthUserStreamWidget(
                               builder: (context) => Container(
                                 width: 80.0,
@@ -86,7 +87,7 @@ class _ColMainDrawerWidgetState extends State<ColMainDrawerWidget> {
                           ),
                           Expanded(
                             child: Align(
-                              alignment: AlignmentDirectional(0.7, 0.0),
+                              alignment: AlignmentDirectional(0.70, 0.00),
                               child: Icon(
                                 Icons.edit_rounded,
                                 color: Colors.white,

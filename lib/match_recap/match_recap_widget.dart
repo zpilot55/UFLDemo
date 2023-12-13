@@ -1,4 +1,5 @@
 import '/backend/backend.dart';
+import '/backend/schema/structs/index.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
@@ -6,6 +7,7 @@ import '/flutter_flow/flutter_flow_widgets.dart';
 import '/match_recap_events/match_recap_events_widget.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'match_recap_model.dart';
@@ -43,6 +45,15 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
 
   @override
   Widget build(BuildContext context) {
+    if (isiOS) {
+      SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(
+          statusBarBrightness: Theme.of(context).brightness,
+          systemStatusBarContrastEnforced: true,
+        ),
+      );
+    }
+
     context.watch<FFAppState>();
 
     return FutureBuilder<MatchdetailsDevRecord>(
@@ -492,16 +503,16 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                 ),
                 Builder(
                   builder: (context) {
-                    final currentStatome =
+                    final currentStatomeold =
                         matchRecapMatchdetailsDevRecord.statlines.toList();
                     return SingleChildScrollView(
                       child: Column(
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.start,
-                        children: List.generate(currentStatome.length,
-                            (currentStatomeIndex) {
-                          final currentStatomeItem =
-                              currentStatome[currentStatomeIndex];
+                        children: List.generate(currentStatomeold.length,
+                            (currentStatomeoldIndex) {
+                          final currentStatomeoldItem =
+                              currentStatomeold[currentStatomeoldIndex];
                           return Row(
                             mainAxisSize: MainAxisSize.max,
                             children: [
@@ -533,7 +544,7 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                                           children: [
                                             Text(
                                               valueOrDefault<String>(
-                                                currentStatomeItem.label,
+                                                currentStatomeoldItem.label,
                                                 'StatType',
                                               ),
                                               style:
@@ -563,7 +574,7 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                                         children: [
                                           Text(
                                             valueOrDefault<String>(
-                                              currentStatomeItem.leftStat
+                                              currentStatomeoldItem.leftStat
                                                   .toString(),
                                               '-1',
                                             ),
@@ -590,7 +601,7 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                                         children: [
                                           Text(
                                             valueOrDefault<String>(
-                                              currentStatomeItem.rightStat
+                                              currentStatomeoldItem.rightStat
                                                   .toString(),
                                               '-1',
                                             ),
@@ -613,6 +624,36 @@ class _MatchRecapWidgetState extends State<MatchRecapWidget> {
                       ),
                     );
                   },
+                ),
+                Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Container(
+                      width: MediaQuery.sizeOf(context).width * 1.0,
+                      height: 100.0,
+                      decoration: BoxDecoration(
+                        color: FlutterFlowTheme.of(context).secondaryBackground,
+                      ),
+                      child: Builder(
+                        builder: (context) {
+                          final currentStatome = matchRecapMatchdetailsDevRecord
+                              .statlines
+                              .toList();
+                          return ListView.builder(
+                            padding: EdgeInsets.zero,
+                            scrollDirection: Axis.horizontal,
+                            itemCount: currentStatome.length,
+                            itemBuilder: (context, currentStatomeIndex) {
+                              final currentStatomeItem =
+                                  currentStatome[currentStatomeIndex];
+                              return Container(
+                                  width: 100, height: 100, color: Colors.green);
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

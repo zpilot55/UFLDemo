@@ -4,6 +4,7 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/custom_code/actions/index.dart' as actions;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -38,6 +39,15 @@ class _SelectFencerWidgetState extends State<SelectFencerWidget> {
 
   @override
   Widget build(BuildContext context) {
+    if (isiOS) {
+      SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle(
+          statusBarBrightness: Theme.of(context).brightness,
+          systemStatusBarContrastEnforced: true,
+        ),
+      );
+    }
+
     context.watch<FFAppState>();
 
     return FutureBuilder<List<UsersRecord>>(
@@ -62,7 +72,9 @@ class _SelectFencerWidgetState extends State<SelectFencerWidget> {
         }
         List<UsersRecord> selectFencerUsersRecordList = snapshot.data!;
         return GestureDetector(
-          onTap: () => FocusScope.of(context).requestFocus(_model.unfocusNode),
+          onTap: () => _model.unfocusNode.canRequestFocus
+              ? FocusScope.of(context).requestFocus(_model.unfocusNode)
+              : FocusScope.of(context).unfocus(),
           child: Scaffold(
             key: scaffoldKey,
             backgroundColor: FlutterFlowTheme.of(context).primaryBackground,
@@ -101,12 +113,12 @@ class _SelectFencerWidgetState extends State<SelectFencerWidget> {
                             ScanMode.QR,
                           );
 
-                          setState(() {
+                          safeSetState(() {
                             _model.simpleSearchResults = TextSearch(
                               selectFencerUsersRecordList
                                   .map(
-                                    (record) =>
-                                        TextSearchItem(record, [record.uid!]),
+                                    (record) => TextSearchItem.fromTerms(
+                                        record, [record.uid!]),
                                   )
                                   .toList(),
                             )
