@@ -1,3 +1,5 @@
+import 'package:u_f_l_demo/ref_setup2/ref_setup_widget.dart';
+
 import '/app_settings/app_settings_widget.dart';
 import '/auth/firebase_auth/auth_util.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
@@ -314,6 +316,42 @@ class _ColMainDrawerWidgetState extends State<ColMainDrawerWidget> {
             ],
           ),
         ),
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => RefSetupPage(),
+              ),
+            );
+          },
+          child: InkWell(
+            splashColor: Colors.transparent,
+            focusColor: Colors.transparent,
+            hoverColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                FlutterFlowIconButton(
+                  borderColor: Colors.transparent,
+                  borderRadius: 30.0,
+                  borderWidth: 1.0,
+                  buttonSize: 60.0,
+                  icon: Icon(
+                    Icons.threesixty,
+                    color: Colors.black,
+                    size: 30.0,
+                  ),
+                ),
+                Text(
+                  'Referee Mode2',
+                  style: FlutterFlowTheme.of(context).bodyMedium,
+                ),
+              ],
+            ),
+          ),
+        )
       ],
     );
   }
