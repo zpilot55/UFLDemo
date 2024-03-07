@@ -162,7 +162,40 @@ class RefViewFFmpeg {
     //     "file '/storage/emulated/0/c1.mp4'\rfile '/storage/emulated/0/c2.mp4'",
     //     flush: true);
   }
+
+  void watermark(String inputPath, String imagePath, String outPath, RefViewFFmpegWatermark watermark) {
+    // String xx1 = "ffmpeg -i dy.mp4 -vf drawtext=fontcolor=white:fontsize=20:fontfile=test.ttf:line_spacing=7:text='Edwin':x=20:y=20 dytextedwin01.mp4";
+    // String xx1 = "ffmpeg -i input.mp4 -vf "drawtext=text='Watermark Text':fontsize=24:fontcolor=white:x=10:y=10" -codec:a copy output.mp4";
+    // String xx1 = "ffmpeg -i output_video.mp4 -vf "drawtext=text='Your Text Here':fontfile=arial.ttf:fontcolor=white:fontsize=24:x=W-w-100:y=H-h-100" -codec:a copy final_video.mp4";
+    // String xx1 = "-i " +inputPath+ " -vf drawtext=text='Your Text Here':fontfile=arial.ttf:fontcolor=white:fontsize=24:x=W-w-100:y=H-h-100 -codec:a copy " + outPath + " -y";
+
+    String xx1 = "-i " +
+        inputPath +
+        " -i " +
+        imagePath +
+        " -filter_complex overlay=main_w-overlay_w-0:main_h-overlay_h-0 " +
+        outPath +
+        " -y";
+
+    var ffmpeg = new FlutterFFmpeg();
+
+    ffmpeg
+        .execute(xx1) //这里是ffmpeg指令 裁剪60s视频
+        .then((rc) async {
+      if (rc == 0) {
+        //rc=0表示成功
+        //裁剪60s 转换 libx264
+        print("success");
+        watermark(outPath);
+      } else {
+        // showToast('视频裁剪出现异常，请重试', context);
+        // Navigator.pop(context);
+        print("fail");
+      }
+    });
+  }
 }
 
 typedef RefViewFFmpegMontage = void Function();
 typedef RefViewFFmpegReduce = void Function();
+typedef RefViewFFmpegWatermark = void Function(String outPath);

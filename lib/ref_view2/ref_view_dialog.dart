@@ -14,32 +14,36 @@ class RefViewDialog {
       barrierDismissible: false,
       context: context,
       builder: (BuildContext context) {
-        return Stack(
-          alignment: Alignment.center,
-          children: [
-            Container(
-                width: 100,
-                height: 100,
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius:
-                        const BorderRadius.all(Radius.circular(10.0))),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.schedule,
-                      color: Colors.black,
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      "loading",
-                      style: TextStyle(color: Colors.black, fontSize: 13),
-                    )
-                  ],
-                ))
-          ],
-        );
+        return WillPopScope(
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                Container(
+                    width: 100,
+                    height: 100,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(10.0))),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.schedule,
+                          color: Colors.black,
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          "loading",
+                          style: TextStyle(color: Colors.black, fontSize: 13),
+                        )
+                      ],
+                    ))
+              ],
+            ),
+            onWillPop: () async {
+              return false;
+            });
       },
     );
   }
@@ -54,7 +58,8 @@ class RefViewDialog {
 
   bool isShowExit = false;
 
-  void showExit(BuildContext context, RefViewMatch refViewMatch, RefViewDialogExit refViewDialogExit) {
+  void showExit(BuildContext context, RefViewMatch refViewMatch,
+      RefViewDialogExit refViewDialogExit) {
     isShowExit = true;
     showDialog(
       barrierDismissible: true,
@@ -91,10 +96,10 @@ class RefViewDialog {
                   //
                   child: Row(
                     children: [
+                      speedItemView(context, "x0.25", 0.25, select),
                       speedItemView(context, "x0.5", 0.5, select),
                       speedItemView(context, "x1", 1, select),
                       speedItemView(context, "x1.5", 1.5, select),
-                      speedItemView(context, "x2", 2, select),
                     ],
                   ),
                 ))
@@ -125,7 +130,8 @@ class RefViewDialog {
     ));
   }
 
-  void showCoin(BuildContext context, RefViewMatch match, {required RefViewDialogCoin result}) {
+  void showCoin(BuildContext context, RefViewMatch match,
+      {required RefViewDialogCoin result}) {
     showDialog(
       barrierDismissible: false,
       context: context,
@@ -146,7 +152,8 @@ class ExitWidget extends StatefulWidget {
   }
 
   @override
-  State<StatefulWidget> createState() => ExitWidgetState(refViewMatch!, refViewDialogExit!);
+  State<StatefulWidget> createState() =>
+      ExitWidgetState(refViewMatch!, refViewDialogExit!);
 }
 
 class ExitWidgetState extends State<ExitWidget> {
@@ -215,7 +222,8 @@ class ExitWidgetState extends State<ExitWidget> {
                       GestureDetector(
                           onTap: () {
                             // downloadHighlights();
-                            refViewDialogExit!(0);
+                            // refViewDialogExit!(0);
+                            showDownload();
                           },
                           child: btnView("Download\nHighlights", cyanColor, 0)),
                       SizedBox(height: 20),
@@ -229,7 +237,6 @@ class ExitWidgetState extends State<ExitWidget> {
                             decoration: TextDecoration.none),
                       ),
                     ]),
-
                     Expanded(
                         child: GestureDetector(
                       onTap: () {
@@ -356,6 +363,60 @@ class ExitWidgetState extends State<ExitWidget> {
       ),
     );
   }
+
+  void showDownload() {
+    showDialog(
+      barrierDismissible: true,
+      context: context,
+      builder: (BuildContext context) {
+        return Stack(
+          alignment: Alignment.center,
+          children: [
+            Positioned(
+                // top:0,
+                //   bottom:0,
+                // bottom: 35,
+                // left: 12,
+                child: Container(
+              alignment: Alignment.center,
+              padding: EdgeInsets.only(left: 30, right: 30),
+              width: 280,
+              // color: Colors.white,
+              height: 140,
+              // decoration: BoxDecoration(
+              //     image: DecorationImage(
+              //         fit: BoxFit.fill,
+              //         image: AssetImage(
+              //             "assets/images/speed_select_background.png"))),
+              //
+              child: Column(
+                children: [
+                  GestureDetector(
+                      onTap: () {
+                        refViewDialogExit!(0);
+                      },
+                      child: btnView("Match and\nHighlights", blueColor, 0)),
+                  SizedBox(height: 10),
+                  GestureDetector(
+                      onTap: () {
+                        refViewDialogExit!(1);
+                      },
+                      child: btnView("Highlights Only", cyanColor, 0)),
+                  SizedBox(height: 10),
+                  GestureDetector(
+                    onTap: () {
+                      refViewDialogExit!(2);
+                    },
+                    child: btnView("Match Only", redColor, 0),
+                  )
+                ],
+              ),
+            ))
+          ],
+        );
+      },
+    );
+  }
 }
 
 class CoinWidget extends StatefulWidget {
@@ -368,11 +429,11 @@ class CoinWidget extends StatefulWidget {
   }
 
   @override
-  State<StatefulWidget> createState() => CoinWidgetState(refViewMatch!, refViewDialogCoin!);
+  State<StatefulWidget> createState() =>
+      CoinWidgetState(refViewMatch!, refViewDialogCoin!);
 }
 
 class CoinWidgetState extends State<CoinWidget> {
-
   RefViewMatch? refViewMatch;
   RefViewDialogCoin? refViewDialogCoin;
 
@@ -426,7 +487,6 @@ class CoinWidgetState extends State<CoinWidget> {
 
       refViewDialogCoin!(result);
 
-
       setState(() {});
 
       // result(r);
@@ -437,55 +497,59 @@ class CoinWidgetState extends State<CoinWidget> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        Positioned(
-            // bottom: 35,
-            // left: 0,
-            // right: 0,
-            child: Container(
+    return WillPopScope(
+        child: Stack(
           alignment: Alignment.center,
-          padding: EdgeInsets.only(left: 30, right: 30),
-          width: 280,
-          height: 200,
-          decoration: BoxDecoration(
-              color: Colors.black,
-              borderRadius: BorderRadius.all(Radius.circular(10))),
-          //
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                // color: Colors.amber,
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage(coinUrl), fit: BoxFit.fill)),
-                alignment: Alignment.center,
-                width: 80,
-                height: 80,
-                // child: const Text(
-                //   'Whoops!',
-                //   style: TextStyle(fontSize: 30),
-                // ),
+          children: [
+            Positioned(
+                // bottom: 35,
+                // left: 0,
+                // right: 0,
+                child: Container(
+              alignment: Alignment.center,
+              padding: EdgeInsets.only(left: 30, right: 30),
+              width: 280,
+              height: 200,
+              decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
+              //
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    // color: Colors.amber,
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage(coinUrl), fit: BoxFit.fill)),
+                    alignment: Alignment.center,
+                    width: 80,
+                    height: 80,
+                    // child: const Text(
+                    //   'Whoops!',
+                    //   style: TextStyle(fontSize: 30),
+                    // ),
+                  ),
+                  SizedBox(height: 15),
+                  Text(hint,
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 15,
+                          decoration: TextDecoration.none)),
+                  SizedBox(height: 15),
+                  GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: btnView("Confirm", blueColor, 0)),
+                ],
               ),
-              SizedBox(height: 15),
-              Text(hint,
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 15,
-                      decoration: TextDecoration.none)),
-              SizedBox(height: 15),
-              GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: btnView("Confirm", blueColor, 0)),
-            ],
-          ),
-        ))
-      ],
-    );
+            ))
+          ],
+        ),
+        onWillPop: () async {
+          return false;
+        });
   }
 
   Widget iconView(String url, double size) {

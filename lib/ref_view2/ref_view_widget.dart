@@ -151,45 +151,50 @@ class RefViewPageState extends State<RefViewPage> {
     //   home: CameraPreview(controller),
     // );
 
-    return MaterialApp(
-        home: Scaffold(
-      // appBar: AppBar(title: Text("test"),backgroundColor: Colors.red),
-      extendBodyBehindAppBar: true, //主要代码为extendBodyBehindAppBar 这个属性
-      appBar: AppBar(
-        centerTitle: true,
-        // 标题居中
-        backgroundColor: getAppBarBackground(),
-        // 背景颜色设置为透明
-        shadowColor: getAppBarBackground(),
-        // 阴影也要设置为透明
-        //把AppBar 设置为透明色
-        elevation: 0,
-        title: getAppBarMain(),
-        leading: getAppBarIcon(),
-        titleTextStyle: TextStyle(color: Colors.white, fontSize: 20),
-      ),
-      body: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        child: Stack(alignment: Alignment.center, children: [
-          cameraView(), //底层相机
-          Visibility(
-            child: videoView(),
-            visible: isShowVideo,
-          ), //回放
-          Visibility(child: infoView(), visible: state == 0), //信息
-          Visibility(child: progressView(), visible: state == 1), //进行中
-          Visibility(child: resultView(), visible: state == 2), //结果
-          Visibility(
-            child: eventView(),
-            visible: state == 3,
-          ), //事件,
-          Visibility(child: seekView(), visible: isShowVideo),
-          Visibility(child: speedView(), visible: isShowVideo),
-        ]),
-      ),
-      // bottomNavigationBar: Text("123"),
-    ));
+    return WillPopScope(
+        child: MaterialApp(
+            home: Scaffold(
+          // appBar: AppBar(title: Text("test"),backgroundColor: Colors.red),
+          extendBodyBehindAppBar: true, //主要代码为extendBodyBehindAppBar 这个属性
+          appBar: AppBar(
+            centerTitle: true,
+            // 标题居中
+            backgroundColor: getAppBarBackground(),
+            // 背景颜色设置为透明
+            shadowColor: getAppBarBackground(),
+            // 阴影也要设置为透明
+            //把AppBar 设置为透明色
+            elevation: 0,
+            title: getAppBarMain(),
+            leading: getAppBarIcon(),
+            titleTextStyle: TextStyle(color: Colors.white, fontSize: 20),
+          ),
+          body: Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            child: Stack(alignment: Alignment.center, children: [
+              cameraView(), //底层相机
+              Visibility(
+                child: videoView(),
+                visible: isShowVideo,
+              ), //回放
+              Visibility(child: infoView(), visible: state == 0), //信息
+              Visibility(child: progressView(), visible: state == 1), //进行中
+              Visibility(child: resultView(), visible: state == 2), //结果
+              Visibility(
+                child: eventView(),
+                visible: state == 3,
+              ), //事件,
+              Visibility(child: seekView(), visible: isShowVideo),
+              Visibility(child: speedView(), visible: isShowVideo),
+            ]),
+          ),
+          // bottomNavigationBar: Text("123"),
+        )),
+        onWillPop: () async {
+          clickExit();
+          return false;
+        });
   }
 
   /// 获取新列表中的权限 如果有一项不合格就返回false
@@ -478,7 +483,12 @@ class RefViewPageState extends State<RefViewPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Expanded(child: bloodView(true)),
-                          SizedBox(width: 20),
+                          SizedBox(width: 5),
+                          Text(
+                            refViewMatch.leftScore.toString(),
+                            style: TextStyle(color: Colors.white, fontSize: 18),
+                          ),
+                          SizedBox(width: 15),
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -493,7 +503,12 @@ class RefViewPageState extends State<RefViewPage> {
                                       color: Colors.white, fontSize: 15)),
                             ],
                           ),
-                          SizedBox(width: 20),
+                          SizedBox(width: 15),
+                          Text(
+                            refViewMatch.rightScore.toString(),
+                            style: TextStyle(color: Colors.white, fontSize: 18),
+                          ),
+                          SizedBox(width: 5),
                           Expanded(child: bloodView(false))
                         ],
                       ),
@@ -1110,7 +1125,8 @@ class RefViewPageState extends State<RefViewPage> {
             onTap: () {
               RefViewEvent event = RefViewEvent();
               event.hint = "Simultaneous";
-              event.time = refViewMatch.maxSeconds - refViewMatch.currentSeconds;
+              event.time =
+                  refViewMatch.maxSeconds - refViewMatch.currentSeconds;
               event.isLeftMain = RefViewOperateState.POS_MIDDLE;
               event.isLeftLost = RefViewOperateState.POS_MIDDLE;
               event.lost = 0;
@@ -1279,10 +1295,20 @@ class RefViewPageState extends State<RefViewPage> {
 
   bool isShowVideo = false;
 
-  downloadHighlights() async {
+  downloadHighlights(int type) async {
     bool isH = await requestPermission([Permission.storage]);
     if (isH) {
-      refViewRecord!.download();
+      if (type == 0) {
+        refViewRecord!.downloadAll(context);
+      }
+
+      if (type == 1) {
+        refViewRecord!.downloadHighlights(context);
+      }
+
+      if (type == 2) {
+        refViewRecord!.downloadMatch(context);
+      }
     }
   }
 
@@ -1545,7 +1571,7 @@ class RefViewPageState extends State<RefViewPage> {
 
   void clickExit() {
     refViewDialog.showExit(context, refViewMatch, (type) {
-      downloadHighlights();
+      downloadHighlights(type);
     });
   }
 
