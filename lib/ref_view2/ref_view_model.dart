@@ -16,16 +16,16 @@ class RefViewEvent {
 class RefViewMatch {
   List<List<RefViewEvent>>? periodList;
 
-  String leftName = "Kobe Bryant";
-  String rightName = "LeBron James";
+  String leftName = "Left Fencer";
+  String rightName = "Right Fencer";
   String leftIcon =
-      "http://pic.imeitou.com/uploads/allimg/2016070214/cvlvaeqy5jk.jpg";
+      "";
   String rightIcon =
-      "http://img.crcz.com/allimg/201809/25/1537873515255049.jpg";
+      "";
 
-  int maxTouch = 3;
+  int maxTouch = 15;
 
-  int maxSeconds = 180; //180
+  int maxSeconds = 300; //180
   int currentSeconds = 0;
 
   int currentPeriod = 1;

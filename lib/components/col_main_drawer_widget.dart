@@ -1,4 +1,6 @@
 import 'package:u_f_l_demo/ref_setup2/ref_setup_widget.dart';
+import 'package:u_f_l_demo/ref_view2/ref_view_model.dart';
+import 'package:u_f_l_demo/ref_view2/ref_view_widget.dart';
 
 import '/app_settings/app_settings_widget.dart';
 import '/auth/firebase_auth/auth_util.dart';
@@ -274,46 +276,82 @@ class _ColMainDrawerWidgetState extends State<ColMainDrawerWidget> {
             ],
           ),
         ),
-        InkWell(
-          splashColor: Colors.transparent,
-          focusColor: Colors.transparent,
-          hoverColor: Colors.transparent,
-          highlightColor: Colors.transparent,
-          onTap: () async {
+        // InkWell(
+        //   splashColor: Colors.transparent,
+        //   focusColor: Colors.transparent,
+        //   hoverColor: Colors.transparent,
+        //   highlightColor: Colors.transparent,
+        //   onTap: () async {
+        //     Navigator.push(
+        //       context,
+        //       MaterialPageRoute(
+        //         builder: (context) => RefSetupWidget(),
+        //       ),
+        //     );
+        //   },
+        //   child: Row(
+        //     mainAxisSize: MainAxisSize.max,
+        //     children: [
+        //       FlutterFlowIconButton(
+        //         borderColor: Colors.transparent,
+        //         borderRadius: 30.0,
+        //         borderWidth: 1.0,
+        //         buttonSize: 60.0,
+        //         icon: Icon(
+        //           Icons.threesixty,
+        //           color: Colors.black,
+        //           size: 30.0,
+        //         ),
+        //         onPressed: () async {
+        //           Navigator.push(
+        //             context,
+        //             MaterialPageRoute(
+        //               builder: (context) => RefSetupWidget(),
+        //             ),
+        //           );
+        //         },
+        //       ),
+        //       Text(
+        //         'Referee Mode',
+        //         style: FlutterFlowTheme.of(context).bodyMedium,
+        //       ),
+        //     ],
+        //   ),
+        // ),
+        GestureDetector(
+          onTap: () {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => RefSetupWidget(),
+                builder: (context) => RefViewPage(match: RefViewMatch()),
               ),
             );
           },
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              FlutterFlowIconButton(
-                borderColor: Colors.transparent,
-                borderRadius: 30.0,
-                borderWidth: 1.0,
-                buttonSize: 60.0,
-                icon: Icon(
-                  Icons.threesixty,
-                  color: Colors.black,
-                  size: 30.0,
+          child: InkWell(
+            splashColor: Colors.transparent,
+            focusColor: Colors.transparent,
+            hoverColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                FlutterFlowIconButton(
+                  borderColor: Colors.transparent,
+                  borderRadius: 30.0,
+                  borderWidth: 1.0,
+                  buttonSize: 60.0,
+                  icon: Icon(
+                    Icons.threesixty,
+                    color: Colors.black,
+                    size: 30.0,
+                  ),
                 ),
-                onPressed: () async {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => RefSetupWidget(),
-                    ),
-                  );
-                },
-              ),
-              Text(
-                'Referee Mode',
-                style: FlutterFlowTheme.of(context).bodyMedium,
-              ),
-            ],
+                Text(
+                  'Quick Match',
+                  style: FlutterFlowTheme.of(context).bodyMedium,
+                ),
+              ],
+            ),
           ),
         ),
         GestureDetector(
@@ -345,7 +383,7 @@ class _ColMainDrawerWidgetState extends State<ColMainDrawerWidget> {
                   ),
                 ),
                 Text(
-                  'Referee Mode2',
+                  'Referee Mode',
                   style: FlutterFlowTheme.of(context).bodyMedium,
                 ),
               ],
