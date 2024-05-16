@@ -31,7 +31,7 @@ class RefViewRecord {
 
   List<String> highlight = [];
 
-  String currentPath = "";
+  static String currentPath = "";
   String lastPath = "";
 
   bool isStarting = false;

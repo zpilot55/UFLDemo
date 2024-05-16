@@ -865,6 +865,9 @@ class RefViewOperateState extends State {
       }
     }
 
+    if (isChallenge) {
+      event.isLeftChange = position;
+    }
     refViewMatch.addEvent(event);
   }
 
