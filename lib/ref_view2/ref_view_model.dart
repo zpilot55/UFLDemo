@@ -272,7 +272,7 @@ class RefViewMatch {
         location: null,
         scoreLeft: leftScore,
         scoreRight: rightScore,
-        matchRanking: "",
+        matchRanking: FFAppState().refereemodeselect,
         matchDetails: matchdetailsDevRecordRes.reference,
         matchStatsLog: matchstatslogDevRecordRes.reference);
 
