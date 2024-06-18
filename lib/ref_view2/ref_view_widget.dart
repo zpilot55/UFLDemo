@@ -1571,7 +1571,9 @@ class RefViewPageState extends State<RefViewPage> {
 
   void clickExit() {
 
-    refViewMatch.getFireStore();
+    refViewMatch.getFireStore().then((value) => {
+      debugPrint('result='+ value.toString())
+    });
 
     refViewDialog.showExit(context, refViewMatch, (type) {
       downloadHighlights(type);

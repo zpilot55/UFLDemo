@@ -193,16 +193,22 @@ class RefViewMatch {
         var rScore = 0;
         RefViewEvent event = eventList[j];
         if (event.isLeftLost == RefViewOperateState.POS_LEFT) {
-          rScore = event.lost as int;
+          rScore = event.lost.toInt();
         }
         if (event.isLeftLost == RefViewOperateState.POS_RIGHT) {
-          lScore = event.lost as int;
+          lScore = event.lost.toInt();
         }
+
+        final results = totalSnap(_overallStats, pM, event, i);
+
+        MatchStatSnapshotStruct snapshotStruct =  results.$1;
+        int actionId =  results.$2;
+
         MatchEventStruct eventStruct = MatchEventStruct(
             actionableFencer: lScore >= rScore
                 ? FFAppState().leftFencerRef
                 : FFAppState().rightFencerRef,
-            actionID: Random().nextInt(99999),
+            actionID: actionId,
             scoreRight: rScore,
             scoreLeft: lScore,
             timeOfAction: event.time,
@@ -211,11 +217,11 @@ class RefViewMatch {
         _matchEvents.add(eventStruct);
 
         StatlineStruct statlineStruct = StatlineStruct(
-            leftStat: lScore as double, rightStat: rScore as double, label: "");
+            leftStat: lScore.toDouble(), rightStat: rScore.toDouble(), label: "");
 
         _statlines.add(statlineStruct);
 
-        MatchStatSnapshotStruct snapshotStruct = totalSnap(_overallStats, pM, event, i);
+
 
         _matchStats.add(snapshotStruct);
       }
@@ -223,7 +229,7 @@ class RefViewMatch {
     }
 
     //statsLog
-    final matchstatslogDevRecord = MatchstatslogDevRecord.collection.doc("");
+    final matchstatslogDevRecord = MatchstatslogDevRecord.collection.doc();
 
     final matchstatslogDevData = Map<String, dynamic>();
 
@@ -232,14 +238,14 @@ class RefViewMatch {
 
     matchstatslogDevData["MatchStats"] = _matchStats;
 
-    await matchstatslogDevRecord.set(matchstatslogDevData);
+    // await matchstatslogDevRecord.set(matchstatslogDevData);
 
     MatchstatslogDevRecord matchstatslogDevRecordRes =
         MatchstatslogDevRecord.getDocumentFromData(
             mapFromFirestore(matchstatslogDevData), matchstatslogDevRecord);
 
     //detail
-    final matchdetailsDevRecord = MatchdetailsDevRecord.collection.doc("");
+    final matchdetailsDevRecord = MatchdetailsDevRecord.collection.doc();
 
     final matchdetailsDevData = Map<String, dynamic>();
 
@@ -254,14 +260,14 @@ class RefViewMatch {
     matchdetailsDevData["PeriodStats"] = _periodStats;
     matchdetailsDevData["OverallStats"] = _overallStats;
 
-    await matchdetailsDevRecord.set(matchdetailsDevData);
+    // await matchdetailsDevRecord.set(matchdetailsDevData);
 
     MatchdetailsDevRecord matchdetailsDevRecordRes =
         MatchdetailsDevRecord.getDocumentFromData(
             mapFromFirestore(matchdetailsDevData), matchdetailsDevRecord);
 
     //main
-    final matchesDevRecord = MatchesDevRecord.collection.doc("");
+    final matchesDevRecord = MatchesDevRecord.collection.doc();
 
     final matchesDevData = createMatchesDevRecordData(
         user1: FFAppState().leftFencerRef,
@@ -283,8 +289,8 @@ class RefViewMatch {
     return res;
   }
 
-  MatchStatSnapshotStruct totalSnap(
-      MatchStatSnapshotStruct total, MatchStatSnapshotStruct ptotal, RefViewEvent event, int index) {
+  (MatchStatSnapshotStruct m, int actionId) totalSnap(MatchStatSnapshotStruct total,
+      MatchStatSnapshotStruct ptotal, RefViewEvent event, int index) {
     int pointsL = 0;
     int pointsR = 0;
     int yellowCardsL = 0;
@@ -320,28 +326,37 @@ class RefViewMatch {
     int pointInLineOffTarL = 0;
     int pointInLineOffTarR = 0;
 
+    int actionId = 0;
+
     if (event.cardType == 0) {
       if (event.isLeftLost == RefViewOperateState.POS_LEFT) {
         yellowCardsL++;
+        actionId = LeftYELLOWCARD;
       }
       if (event.isLeftLost == RefViewOperateState.POS_RIGHT) {
         yellowCardsR++;
+        actionId = RightYELLOWCARD;
       }
     } else if (event.cardType == 1) {
       if (event.isLeftLost == RefViewOperateState.POS_LEFT) {
         redCardsL++;
+        actionId = LeftREDCARD;
       }
       if (event.isLeftLost == RefViewOperateState.POS_RIGHT) {
         redCardsR++;
+        actionId = RightREDCARD;
       }
     } else {
       if (event.hint.contains("Simple attack") && event.hint.contains("Hits")) {
         if (event.isLeftLost == RefViewOperateState.POS_LEFT) {
           simpleAttackHitsR++;
+          actionId = RightSimpleAttackHITS;
         } else if (event.isLeftLost == RefViewOperateState.POS_RIGHT) {
           simpleAttackHitsL++;
+          actionId = LeftSimpleAttackHITS;
         } else {
           simultaneous++;
+          actionId = RefSimultaneousHITS;
         }
       }
 
@@ -349,10 +364,13 @@ class RefViewMatch {
           event.hint.contains("Off Target")) {
         if (event.isLeftLost == RefViewOperateState.POS_LEFT) {
           simpleAttackOffTarR++;
+          actionId = RightSimpleAttackOffTarget;
         } else if (event.isLeftLost == RefViewOperateState.POS_RIGHT) {
           simpleAttackOffTarL++;
+          actionId = LeftSimpleAttackOffTarget;
         } else {
           simultaneous++;
+          actionId = RefSimultaneousHITS;
         }
       }
 
@@ -360,10 +378,13 @@ class RefViewMatch {
           event.hint.contains("Hits")) {
         if (event.isLeftLost == RefViewOperateState.POS_LEFT) {
           compoundAttackHitsR++;
+          actionId = RightCompoundAttackHITS;
         } else if (event.isLeftLost == RefViewOperateState.POS_RIGHT) {
           compoundAttackHitsL++;
+          actionId = LeftCompoundAttackHITS;
         } else {
           simultaneous++;
+          actionId = RefSimultaneousHITS;
         }
       }
 
@@ -371,20 +392,26 @@ class RefViewMatch {
           event.hint.contains("Off Target")) {
         if (event.isLeftLost == RefViewOperateState.POS_LEFT) {
           compoundAttackOffTarR++;
+          actionId = RightCompoundAttackOffTarget;
         } else if (event.isLeftLost == RefViewOperateState.POS_RIGHT) {
           compoundAttackOffTarL++;
+          actionId = LeftCompoundAttackOffTarget;
         } else {
           simultaneous++;
+          actionId = RefSimultaneousHITS;
         }
       }
 
       if (event.hint.contains("Point in line") && event.hint.contains("Hits")) {
         if (event.isLeftLost == RefViewOperateState.POS_LEFT) {
           pointInLineHitsR++;
+          actionId = RightPointInLineHITS;
         } else if (event.isLeftLost == RefViewOperateState.POS_RIGHT) {
           pointInLineHitsL++;
+          actionId = LeftPointInLineHITS;
         } else {
           simultaneous++;
+          actionId = RefSimultaneousHITS;
         }
       }
 
@@ -392,20 +419,26 @@ class RefViewMatch {
           event.hint.contains("Off Target")) {
         if (event.isLeftLost == RefViewOperateState.POS_LEFT) {
           pointInLineOffTarR++;
+          actionId = RightPointInLineOffTarget;
         } else if (event.isLeftLost == RefViewOperateState.POS_RIGHT) {
           pointInLineOffTarL++;
+          actionId = LeftPointInLineOffTarget;
         } else {
           simultaneous++;
+          actionId = RefSimultaneousHITS;
         }
       }
 
       if (event.hint.contains("Parry-riposte") && event.hint.contains("Hits")) {
         if (event.isLeftLost == RefViewOperateState.POS_LEFT) {
           parryRiposteHitsR++;
+          actionId = RightParryRiposteHITS;
         } else if (event.isLeftLost == RefViewOperateState.POS_RIGHT) {
           parryRiposteHitsL++;
+          actionId = LeftParryRiposteHITS;
         } else {
           simultaneous++;
+          actionId = RefSimultaneousHITS;
         }
       }
 
@@ -413,20 +446,26 @@ class RefViewMatch {
           event.hint.contains("Off Target")) {
         if (event.isLeftLost == RefViewOperateState.POS_LEFT) {
           parryRiposteOffTargetR++;
+          actionId = RightParryRiposteOffTarget;
         } else if (event.isLeftLost == RefViewOperateState.POS_RIGHT) {
           parryRiposteOffTargetL++;
+          actionId = LeftParryRiposteOffTarget;
         } else {
           simultaneous++;
+          actionId = RefSimultaneousHITS;
         }
       }
 
       if (event.hint.contains("Counterattack") && event.hint.contains("Hits")) {
         if (event.isLeftLost == RefViewOperateState.POS_LEFT) {
           counterattackHitsR++;
+          actionId = RightCounterattackHITS;
         } else if (event.isLeftLost == RefViewOperateState.POS_RIGHT) {
           counterattackHitsL++;
+          actionId = LeftCounterattackHITS;
         } else {
           simultaneous++;
+          actionId = RefSimultaneousHITS;
         }
       }
 
@@ -434,30 +473,39 @@ class RefViewMatch {
           event.hint.contains("Off Target")) {
         if (event.isLeftLost == RefViewOperateState.POS_LEFT) {
           counterattackOffTarR++;
+          actionId = RightCounterattackOffTarget;
         } else if (event.isLeftLost == RefViewOperateState.POS_RIGHT) {
           counterattackOffTarL++;
+          actionId = LeftCounterattackOffTarget;
         } else {
           simultaneous++;
+          actionId = RefSimultaneousHITS;
         }
       }
 
       if (event.hint.contains("Remise") && event.hint.contains("Hits")) {
         if (event.isLeftLost == RefViewOperateState.POS_LEFT) {
           remiseHitsR++;
+          actionId = RightRemiseHITS;
         } else if (event.isLeftLost == RefViewOperateState.POS_RIGHT) {
           remiseHitsL++;
+          actionId = LeftRemiseHITS;
         } else {
           simultaneous++;
+          actionId = RefSimultaneousHITS;
         }
       }
 
       if (event.hint.contains("Remise") && event.hint.contains("Off Target")) {
         if (event.isLeftLost == RefViewOperateState.POS_LEFT) {
           remiseOffTarR++;
+          actionId = RightRemiseOffTarget;
         } else if (event.isLeftLost == RefViewOperateState.POS_RIGHT) {
           remiseOffTarL++;
+          actionId = LeftRemiseOffTarget;
         } else {
           simultaneous++;
+          actionId = RefSimultaneousHITS;
         }
       }
 
@@ -577,7 +625,7 @@ class RefViewMatch {
     ptotal.pointInLineHitsR += snapshotStruct.pointInLineHitsR;
     ptotal.pointInLineOffTarL += snapshotStruct.pointInLineOffTarL;
     ptotal.pointInLineOffTarR += snapshotStruct.pointInLineOffTarR;
-    return snapshotStruct;
+    return (snapshotStruct, actionId);
   }
 
   MatchStatSnapshotStruct initSnap(int index) {
@@ -621,4 +669,52 @@ class RefViewMatch {
     );
     return snapshotStruct;
   }
+
+  final int RefSimultaneousHITS = 2;
+
+  final int LeftSimpleAttackHITS = 100;
+  final int LeftCompoundAttackHITS = 101;
+  final int LeftParryRiposteHITS = 102;
+  final int LeftRemiseHITS = 103;
+  final int LeftCounterattackHITS = 104;
+  final int LeftPointInLineHITS = 105;
+  final int LeftBeatAttackHITS = 106;
+  final int LeftOppositionHITS = 107;
+  final int LeftAttackNoAttackHITS = 108;
+  final int LeftSimpleAttackOffTarget = 140;
+  final int LeftCompoundAttackOffTarget = 141;
+  final int LeftParryRiposteOffTarget = 142;
+  final int LeftRemiseOffTarget = 143;
+  final int LeftCounterattackOffTarget = 144;
+  final int LeftPointInLineOffTarget = 145;
+  final int LeftBeatAttackOffTarget = 146;
+  final int LeftOppositionOffTarget = 147;
+  final int LeftAttackNoAttackOffTarget = 148;
+  final int LeftYELLOWCARD = 190;
+  final int LeftREDCARD = 191;
+  final int LeftBLACKCARD = 192;
+
+
+  final int RightSimpleAttackHITS = 200;
+  final int RightCompoundAttackHITS = 201;
+  final int RightParryRiposteHITS = 202;
+  final int RightRemiseHITS = 203;
+  final int RightCounterattackHITS = 204;
+  final int RightPointInLineHITS = 205;
+  final int RightBeatAttackHITS = 206;
+  final int RightOppositionHITS = 207;
+  final int RightAttackNoAttackHITS = 208;
+  final int RightSimpleAttackOffTarget = 240;
+  final int RightCompoundAttackOffTarget = 241;
+  final int RightParryRiposteOffTarget = 242;
+  final int RightRemiseOffTarget = 243;
+  final int RightCounterattackOffTarget = 244;
+  final int RightPointInLineOffTarget = 245;
+  final int RightBeatAttackOffTarget = 246;
+  final int RightOppositionOffTarget = 247;
+  final int RightAttackNoAttackOffTarget = 248;
+  final int RightYELLOWCARD = 290;
+  final int RightREDCARD = 291;
+  final int RightBLACKCARD = 292;
+
 }
