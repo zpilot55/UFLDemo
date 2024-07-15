@@ -279,30 +279,61 @@ class ExitWidgetState extends State<ExitWidget> {
                 )),
                 Row(
                   children: [
-                    SizedBox(width: 30),
+                    SizedBox(width: 10),
+                    GestureDetector(
+                        onTap: () {
+                          result = 0;
+
+                          RefViewDialog.showLoading(context);
+                          refViewMatch!.saveFireStore().then((value) {
+                            RefViewDialog.closeLoading(context);
+
+                            int index = 0;
+                            Navigator.popUntil(context, (route) {
+                              if (index < 2) {
+                                index++;
+                                return false;
+                              }
+                              return true;
+                            });
+                          }).catchError((error) {
+                            RefViewDialog.closeLoading(context);
+                            Fluttertoast.showToast(msg: "Save Error");
+                          });
+                        },
+                        child: btnViewW("No one wins", greyColor, 120, 0)),
+                    Expanded(child: SizedBox()),
                     GestureDetector(
                         onTap: () {
                           if (result <= 0) {
                             Fluttertoast.showToast(msg: "Please Select Winner");
                             return;
                           }
-                          int index = 0;
-                          Navigator.popUntil(context, (route) {
-                            if (index < 2) {
-                              index++;
-                              return false;
-                            }
-                            return true;
+
+                          RefViewDialog.showLoading(context);
+                          refViewMatch!.saveFireStore().then((value) {
+                            RefViewDialog.closeLoading(context);
+                            int index = 0;
+                            Navigator.popUntil(context, (route) {
+                              if (index < 2) {
+                                index++;
+                                return false;
+                              }
+                              return true;
+                            });
+                          }).catchError((error) {
+                            RefViewDialog.closeLoading(context);
+                            Fluttertoast.showToast(msg: "Save Error");
                           });
                         },
-                        child: btnView("Confirm", blueColor, 0)),
+                        child: btnViewW("Confirm", blueColor, 120, 0)),
                     Expanded(child: SizedBox()),
                     GestureDetector(
                         onTap: () {
                           Navigator.pop(context);
                         },
-                        child: btnView("Cancel", greyColor, 0)),
-                    SizedBox(width: 30)
+                        child: btnViewW("Cancel", greyColor, 120, 0)),
+                    SizedBox(width: 10)
                   ],
                 ),
                 SizedBox(height: 20),
@@ -344,6 +375,25 @@ class ExitWidgetState extends State<ExitWidget> {
   Color redColor = Color.fromRGBO(168, 46, 21, 1);
   Color cyanColor = Color.fromRGBO(0, 223, 223, 1);
   Color greyColor = Color.fromRGBO(103, 103, 103, 1);
+
+  Widget btnViewW(String name, Color color, double width, int height) {
+    return Container(
+      height: height == 0 ? 40 : 50,
+      width: width,
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+          color: color,
+          borderRadius: const BorderRadius.all(Radius.circular(25.0))),
+      child: Text(
+        name,
+        style: TextStyle(
+          color: Colors.white,
+          fontSize: 15,
+          decoration: TextDecoration.none,
+        ),
+      ),
+    );
+  }
 
   Widget btnView(String name, Color color, int height) {
     return Container(

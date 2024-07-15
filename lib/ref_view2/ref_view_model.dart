@@ -1,5 +1,5 @@
-import 'dart:collection';
-import 'dart:math';
+import '/flutter_flow/flutter_flow_util.dart';
+import 'package:uuid/uuid.dart';
 
 import 'package:u_f_l_demo/app_state.dart';
 import 'package:u_f_l_demo/backend/backend.dart';
@@ -23,14 +23,18 @@ class RefViewEvent {
 class RefViewMatch {
   List<List<RefViewEvent>>? periodList;
 
+  int type = 0; //0 quick 1 referee
+
+  String id = "Match-" + DateTime.now().toString() + "-" + Uuid().v4();
+
   String leftName = "Left Fencer";
   String rightName = "Right Fencer";
   String leftIcon = "";
   String rightIcon = "";
 
-  int maxTouch = 15;
+  int maxTouch = 5;
 
-  int maxSeconds = 300; //180
+  int maxSeconds = 60 * 3; //180
   int currentSeconds = 0;
 
   int currentPeriod = 1;
@@ -176,14 +180,14 @@ class RefViewMatch {
     return false;
   }
 
-  Future<MatchesDevRecord> getFireStore() async {
+  Future<void> saveFireStore() async {
     List<MatchEventStruct>? _matchEvents = [];
     List<StatlineStruct>? _statlines = [];
     MatchStatSnapshotStruct? _overallStats = initSnap(0);
 
-    List<MatchStatSnapshotStruct> _periodStats = [];
+    List<Map> _periodStats = [];
 
-    List<MatchStatSnapshotStruct>? _matchStats = [];
+    List<Map>? _matchStats = [];
 
     for (int i = 0; i < periodList!.length; i++) {
       List<RefViewEvent> eventList = periodList![i];
@@ -201,8 +205,8 @@ class RefViewMatch {
 
         final results = totalSnap(_overallStats, pM, event, i);
 
-        MatchStatSnapshotStruct snapshotStruct =  results.$1;
-        int actionId =  results.$2;
+        MatchStatSnapshotStruct snapshotStruct = results.$1;
+        int actionId = results.$2;
 
         MatchEventStruct eventStruct = MatchEventStruct(
             actionableFencer: lScore >= rScore
@@ -217,19 +221,19 @@ class RefViewMatch {
         _matchEvents.add(eventStruct);
 
         StatlineStruct statlineStruct = StatlineStruct(
-            leftStat: lScore.toDouble(), rightStat: rScore.toDouble(), label: "");
+            leftStat: lScore.toDouble(),
+            rightStat: rScore.toDouble(),
+            label: "");
 
         _statlines.add(statlineStruct);
 
-
-
-        _matchStats.add(snapshotStruct);
+        _matchStats.add(snapshotStruct.toMap());
       }
-      _periodStats.add(pM);
+      _periodStats.add(pM.toMap());
     }
 
     //statsLog
-    final matchstatslogDevRecord = MatchstatslogDevRecord.collection.doc();
+    final matchstatslogDevRecord = MatchstatslogDevRecord.collection.doc(id);
 
     final matchstatslogDevData = Map<String, dynamic>();
 
@@ -238,14 +242,10 @@ class RefViewMatch {
 
     matchstatslogDevData["MatchStats"] = _matchStats;
 
-    // await matchstatslogDevRecord.set(matchstatslogDevData);
-
-    MatchstatslogDevRecord matchstatslogDevRecordRes =
-        MatchstatslogDevRecord.getDocumentFromData(
-            mapFromFirestore(matchstatslogDevData), matchstatslogDevRecord);
+    await matchstatslogDevRecord.set(matchstatslogDevData);
 
     //detail
-    final matchdetailsDevRecord = MatchdetailsDevRecord.collection.doc();
+    final matchdetailsDevRecord = MatchdetailsDevRecord.collection.doc(id);
 
     final matchdetailsDevData = Map<String, dynamic>();
 
@@ -258,39 +258,47 @@ class RefViewMatch {
     matchdetailsDevData["MatchEvents"] = _matchEvents;
     matchdetailsDevData["Statlines"] = _statlines;
     matchdetailsDevData["PeriodStats"] = _periodStats;
-    matchdetailsDevData["OverallStats"] = _overallStats;
+    matchdetailsDevData["OverallStats"] = _overallStats.toMap();
 
-    // await matchdetailsDevRecord.set(matchdetailsDevData);
+    //
+    await matchdetailsDevRecord.set(matchdetailsDevData);
+
+    MatchstatslogDevRecord matchstatslogDevRecordRes =
+        MatchstatslogDevRecord.getDocumentFromData(
+            mapFromFirestore(matchstatslogDevData), matchstatslogDevRecord);
 
     MatchdetailsDevRecord matchdetailsDevRecordRes =
         MatchdetailsDevRecord.getDocumentFromData(
             mapFromFirestore(matchdetailsDevData), matchdetailsDevRecord);
 
     //main
-    final matchesDevRecord = MatchesDevRecord.collection.doc();
-
+    final matchesDevRecord = MatchesDevRecord.collection.doc(id);
+    //
+    LatLng currentUserLocationValue =
+        await getCurrentUserLocation(defaultLocation: LatLng(0.0, 0.0));
     final matchesDevData = createMatchesDevRecordData(
         user1: FFAppState().leftFencerRef,
         user2: FFAppState().rightFencerRef,
         scheduledTime: scheduledTime,
         noOfPeriods: currentPeriod,
         weapon: FFAppState().refereeweaponselect,
-        location: null,
+        location: currentUserLocationValue,
         scoreLeft: leftScore,
         scoreRight: rightScore,
         matchRanking: FFAppState().refereemodeselect,
         matchDetails: matchdetailsDevRecordRes.reference,
         matchStatsLog: matchstatslogDevRecordRes.reference);
-
-    await matchesDevRecord.set(matchesDevData);
-    MatchesDevRecord res =
-        MatchesDevRecord.getDocumentFromData(matchesDevData, matchesDevRecord);
-
-    return res;
+    //
+    return await matchesDevRecord.set(matchesDevData);
+    // MatchesDevRecord res =
+    //     MatchesDevRecord.getDocumentFromData(matchesDevData, matchesDevRecord);
   }
 
-  (MatchStatSnapshotStruct m, int actionId) totalSnap(MatchStatSnapshotStruct total,
-      MatchStatSnapshotStruct ptotal, RefViewEvent event, int index) {
+  (MatchStatSnapshotStruct m, int actionId) totalSnap(
+      MatchStatSnapshotStruct total,
+      MatchStatSnapshotStruct ptotal,
+      RefViewEvent event,
+      int index) {
     int pointsL = 0;
     int pointsR = 0;
     int yellowCardsL = 0;
@@ -694,7 +702,6 @@ class RefViewMatch {
   final int LeftREDCARD = 191;
   final int LeftBLACKCARD = 192;
 
-
   final int RightSimpleAttackHITS = 200;
   final int RightCompoundAttackHITS = 201;
   final int RightParryRiposteHITS = 202;
@@ -716,5 +723,4 @@ class RefViewMatch {
   final int RightYELLOWCARD = 290;
   final int RightREDCARD = 291;
   final int RightBLACKCARD = 292;
-
 }

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -68,31 +69,39 @@ class RefViewPageState extends State<RefViewPage> {
 
     setStatusShow(false);
 
-    availableCameras().then((value) {
-      // print(value);
+    availableCameras().then((value) async {
+      print(112233);
+
       _cameras = value;
 
       controller = CameraController(_cameras[0], ResolutionPreset.high);
 
       refViewRecord = RefViewRecord(camera: controller!);
 
-      controller!.initialize().then((_) {
-        if (!mounted) {
-          return;
-        }
-        setState(() {});
-      }).catchError((Object e) {
-        if (e is CameraException) {
-          switch (e.code) {
-            case 'CameraAccessDenied':
-              // Handle access errors here.
-              break;
-            default:
-              // Handle other errors here.
-              break;
+      bool isH =
+          await requestPermission([Permission.camera, Permission.microphone]);
+      if (isH) {
+        controller!.initialize().then((_) {
+          if (!mounted) {
+            return;
           }
-        }
-      });
+          setState(() {});
+        }).catchError((Object e) {
+          if (e is CameraException) {
+            switch (e.code) {
+              case 'CameraAccessDenied':
+                // Handle access errors here.
+                break;
+              default:
+                // Handle other errors here.
+                break;
+            }
+          }
+        });
+      } else {
+        Fluttertoast.showToast(msg: "Error Permission");
+        Navigator.pop(context);
+      }
     });
 
     // refViewMatch = RefViewMatch();
@@ -198,7 +207,7 @@ class RefViewPageState extends State<RefViewPage> {
   }
 
   /// 获取新列表中的权限 如果有一项不合格就返回false
-  requestPermission(List<Permission> permissionList) async {
+  Future<bool> requestPermission(List<Permission> permissionList) async {
     Map<Permission, PermissionStatus> statuses = await permissionList.request();
     PermissionStatus currentPermissionStatus = PermissionStatus.granted;
     bool isP = true;
@@ -671,8 +680,10 @@ class RefViewPageState extends State<RefViewPage> {
             "Period: " + refViewMatch.currentPeriod.toString(),
             style: TextStyle(color: Colors.white, fontSize: 18),
           ),
+          SizedBox(height: 20),
+          isShowInfoSelect() ? infoSelectView() : SizedBox(height: 10),
           SizedBox(
-            height: 40,
+            height: 20,
           ),
           Text(
             refViewMatch.leftScore.toString() +
@@ -704,6 +715,13 @@ class RefViewPageState extends State<RefViewPage> {
       infoMenuView(refViewMatch.rightIcon, refViewMatch.rightName, 1, true,
           refViewMatch.priority == 2),
     ]));
+  }
+
+  bool isShowInfoSelect() {
+    if (refViewMatch.type == 0 && refViewMatch.currentPeriod == 1) {
+      return true;
+    }
+    return false;
   }
 
   Widget infoMenuView(
@@ -789,6 +807,43 @@ class RefViewPageState extends State<RefViewPage> {
                 : [],
           )
         ]));
+  }
+
+  Widget infoSelectView() {
+    return Row(children: [
+      Container(
+        child: Text(
+          "Touches:",
+          style: TextStyle(color: Colors.white, fontSize: 16),
+        ),
+      ),
+      SizedBox(width: 10),
+      infoSelectItemView(5),
+      SizedBox(width: 10),
+      infoSelectItemView(10),
+      SizedBox(width: 10),
+      infoSelectItemView(15)
+    ], mainAxisAlignment: MainAxisAlignment.center);
+  }
+
+  Widget infoSelectItemView(int count) {
+    return GestureDetector(
+        onTap: () {
+          setState(() {
+            refViewMatch.maxTouch = count;
+          });
+        },
+        child: Container(
+          width: 35,
+          height: 35,
+          color: Color.fromRGBO(
+              255, 255, 255, refViewMatch.maxTouch == count ? 0.5 : 0),
+          alignment: Alignment.center,
+          child: Text(
+            "$count",
+            style: TextStyle(color: Colors.white, fontSize: 16),
+          ),
+        ));
   }
 
   Widget iconView(String url, double size, bool isPriority) {
@@ -1044,6 +1099,12 @@ class RefViewPageState extends State<RefViewPage> {
         hideVideo();
       });
     } else {
+      if (isPause) {
+        setState(() {
+          state = 1;
+        });
+        return;
+      }
       refViewRecord!.start(start: () {
         refViewTime!.startTime();
         state = 1;
@@ -1063,10 +1124,13 @@ class RefViewPageState extends State<RefViewPage> {
     }
 
     state = 2;
-    refViewTime!.stopTime();
-    refViewRecord!.stop(stop: () {
-      showVideo();
-    });
+
+    if (isP != null && !isP) {
+      refViewTime!.stopTime();
+      refViewRecord!.stop(stop: () {
+        showVideo();
+      });
+    }
 
     //平局
     periodWinName = "";
@@ -1309,6 +1373,8 @@ class RefViewPageState extends State<RefViewPage> {
       if (type == 2) {
         refViewRecord!.downloadMatch(context);
       }
+    } else {
+      Fluttertoast.showToast(msg: "Error Permission");
     }
   }
 
@@ -1570,11 +1636,6 @@ class RefViewPageState extends State<RefViewPage> {
   }
 
   void clickExit() {
-
-    refViewMatch.getFireStore().then((value) => {
-      debugPrint('result='+ value.toString())
-    });
-
     refViewDialog.showExit(context, refViewMatch, (type) {
       downloadHighlights(type);
     });

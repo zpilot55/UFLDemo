@@ -1117,11 +1117,11 @@ class RefSetupPageState extends State<RefSetupPage>
       if (FFAppState().refereemodeselect == "RankedAdult") {
         m.maxPeriod = 3;
         m.maxTouch = 15;
-        m.maxSeconds = 5 * 60;
+        m.maxSeconds = 3 * 60;
       } else {
         m.maxPeriod = 2;
         m.maxTouch = 10;
-        m.maxSeconds = 5 * 60;
+        m.maxSeconds = 3 * 60;
       }
     }
 
@@ -1130,6 +1130,8 @@ class RefSetupPageState extends State<RefSetupPage>
 
     m.leftIcon = getFencerIcon(FFAppState().refLeftPhoto);
     m.rightIcon = getFencerIcon(FFAppState().refRightPhoto);
+
+    m.type = 1;
 
     Navigator.push(
       context,
