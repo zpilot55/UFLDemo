@@ -181,8 +181,8 @@ class RefViewMatch {
   }
 
   Future<void> saveFireStore() async {
-    List<MatchEventStruct>? _matchEvents = [];
-    List<StatlineStruct>? _statlines = [];
+    List<Map>? _matchEvents = [];
+    List<Map>? _statlines = [];
     MatchStatSnapshotStruct? _overallStats = initSnap(0);
 
     List<Map> _periodStats = [];
@@ -218,14 +218,14 @@ class RefViewMatch {
             timeOfAction: event.time,
             periodOfAction: (i + 1),
             videoURL: RefViewRecord.currentPath);
-        _matchEvents.add(eventStruct);
+        _matchEvents.add(eventStruct.toMap());
 
         StatlineStruct statlineStruct = StatlineStruct(
             leftStat: lScore.toDouble(),
             rightStat: rScore.toDouble(),
             label: "");
 
-        _statlines.add(statlineStruct);
+        _statlines.add(statlineStruct.toMap());
 
         _matchStats.add(snapshotStruct.toMap());
       }

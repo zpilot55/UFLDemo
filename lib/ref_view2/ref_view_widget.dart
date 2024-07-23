@@ -99,7 +99,7 @@ class RefViewPageState extends State<RefViewPage> {
           }
         });
       } else {
-        Fluttertoast.showToast(msg: "Error Permission");
+        Fluttertoast.showToast(msg: "Error Permission Please Check The Settings");
         Navigator.pop(context);
       }
     });
@@ -1374,7 +1374,7 @@ class RefViewPageState extends State<RefViewPage> {
         refViewRecord!.downloadMatch(context);
       }
     } else {
-      Fluttertoast.showToast(msg: "Error Permission");
+      Fluttertoast.showToast(msg: "Error Permission Please Check The Settings");
     }
   }
 

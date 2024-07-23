@@ -523,7 +523,6 @@ class CoinWidgetState extends State<CoinWidget> {
     //
 
     Future.delayed(Duration(milliseconds: result == 1 ? 1900 : 1100), () {
-      print("延迟两秒钟后输出");
 
       if (result == 1) {
         coinUrl = coinOn;
