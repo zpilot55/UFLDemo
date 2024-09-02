@@ -23,20 +23,25 @@ class StatlineStruct extends FFFirebaseStruct {
   String? _label;
   String get label => _label ?? '';
   set label(String? val) => _label = val;
+
   bool hasLabel() => _label != null;
 
   // "LeftStat" field.
   double? _leftStat;
   double get leftStat => _leftStat ?? 0.0;
   set leftStat(double? val) => _leftStat = val;
-  void incrementLeftStat(double amount) => _leftStat = leftStat + amount;
+
+  void incrementLeftStat(double amount) => leftStat = leftStat + amount;
+
   bool hasLeftStat() => _leftStat != null;
 
   // "RightStat" field.
   double? _rightStat;
   double get rightStat => _rightStat ?? 0.0;
   set rightStat(double? val) => _rightStat = val;
-  void incrementRightStat(double amount) => _rightStat = rightStat + amount;
+
+  void incrementRightStat(double amount) => rightStat = rightStat + amount;
+
   bool hasRightStat() => _rightStat != null;
 
   static StatlineStruct fromMap(Map<String, dynamic> data) => StatlineStruct(
@@ -46,7 +51,7 @@ class StatlineStruct extends FFFirebaseStruct {
       );
 
   static StatlineStruct? maybeFromMap(dynamic data) =>
-      data is Map<String, dynamic> ? StatlineStruct.fromMap(data) : null;
+      data is Map ? StatlineStruct.fromMap(data.cast<String, dynamic>()) : null;
 
   Map<String, dynamic> toMap() => {
         'Label': _label,

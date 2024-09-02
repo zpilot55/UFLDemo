@@ -35,62 +35,79 @@ class RankingStructStruct extends FFFirebaseStruct {
   DocumentReference? _fencer;
   DocumentReference? get fencer => _fencer;
   set fencer(DocumentReference? val) => _fencer = val;
+
   bool hasFencer() => _fencer != null;
 
   // "elo_FA" field.
   int? _eloFA;
   int get eloFA => _eloFA ?? 0;
   set eloFA(int? val) => _eloFA = val;
-  void incrementEloFA(int amount) => _eloFA = eloFA + amount;
+
+  void incrementEloFA(int amount) => eloFA = eloFA + amount;
+
   bool hasEloFA() => _eloFA != null;
 
   // "elo_FY" field.
   int? _eloFY;
   int get eloFY => _eloFY ?? 0;
   set eloFY(int? val) => _eloFY = val;
-  void incrementEloFY(int amount) => _eloFY = eloFY + amount;
+
+  void incrementEloFY(int amount) => eloFY = eloFY + amount;
+
   bool hasEloFY() => _eloFY != null;
 
   // "elo_EA" field.
   int? _eloEA;
   int get eloEA => _eloEA ?? 0;
   set eloEA(int? val) => _eloEA = val;
-  void incrementEloEA(int amount) => _eloEA = eloEA + amount;
+
+  void incrementEloEA(int amount) => eloEA = eloEA + amount;
+
   bool hasEloEA() => _eloEA != null;
 
   // "elo_EY" field.
   int? _eloEY;
   int get eloEY => _eloEY ?? 0;
   set eloEY(int? val) => _eloEY = val;
-  void incrementEloEY(int amount) => _eloEY = eloEY + amount;
+
+  void incrementEloEY(int amount) => eloEY = eloEY + amount;
+
   bool hasEloEY() => _eloEY != null;
 
   // "elo_SA" field.
   int? _eloSA;
   int get eloSA => _eloSA ?? 0;
   set eloSA(int? val) => _eloSA = val;
-  void incrementEloSA(int amount) => _eloSA = eloSA + amount;
+
+  void incrementEloSA(int amount) => eloSA = eloSA + amount;
+
   bool hasEloSA() => _eloSA != null;
 
   // "elo_SY" field.
   int? _eloSY;
   int get eloSY => _eloSY ?? 0;
   set eloSY(int? val) => _eloSY = val;
-  void incrementEloSY(int amount) => _eloSY = eloSY + amount;
+
+  void incrementEloSY(int amount) => eloSY = eloSY + amount;
+
   bool hasEloSY() => _eloSY != null;
 
   // "elo_NA" field.
   int? _eloNA;
   int get eloNA => _eloNA ?? 0;
   set eloNA(int? val) => _eloNA = val;
-  void incrementEloNA(int amount) => _eloNA = eloNA + amount;
+
+  void incrementEloNA(int amount) => eloNA = eloNA + amount;
+
   bool hasEloNA() => _eloNA != null;
 
   // "elo_NY" field.
   int? _eloNY;
   int get eloNY => _eloNY ?? 0;
   set eloNY(int? val) => _eloNY = val;
-  void incrementEloNY(int amount) => _eloNY = eloNY + amount;
+
+  void incrementEloNY(int amount) => eloNY = eloNY + amount;
+
   bool hasEloNY() => _eloNY != null;
 
   static RankingStructStruct fromMap(Map<String, dynamic> data) =>
@@ -106,8 +123,9 @@ class RankingStructStruct extends FFFirebaseStruct {
         eloNY: castToType<int>(data['elo_NY']),
       );
 
-  static RankingStructStruct? maybeFromMap(dynamic data) =>
-      data is Map<String, dynamic> ? RankingStructStruct.fromMap(data) : null;
+  static RankingStructStruct? maybeFromMap(dynamic data) => data is Map
+      ? RankingStructStruct.fromMap(data.cast<String, dynamic>())
+      : null;
 
   Map<String, dynamic> toMap() => {
         'fencer': _fencer,

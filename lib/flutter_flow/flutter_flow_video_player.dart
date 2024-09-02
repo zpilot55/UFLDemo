@@ -1,9 +1,11 @@
 import 'package:chewie/chewie.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:video_player/video_player.dart';
 
+import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart' show routeObserver;
 
 const kDefaultAspectRatio = 16 / 9;
@@ -17,6 +19,7 @@ Set<VideoPlayerController> _videoPlayers = Set();
 
 class FlutterFlowVideoPlayer extends StatefulWidget {
   const FlutterFlowVideoPlayer({
+    super.key,
     required this.path,
     this.videoType = VideoType.network,
     this.width,
@@ -54,11 +57,12 @@ class _FlutterFlowVideoPlayerState extends State<FlutterFlowVideoPlayer>
   ChewieController? _chewieController;
   bool _loggedError = false;
   bool _subscribedRoute = false;
+  bool _isFullScreen = false;
 
   @override
   void initState() {
     super.initState();
-    initializePlayer();
+    _initializePlayer();
   }
 
   @override
@@ -66,9 +70,7 @@ class _FlutterFlowVideoPlayerState extends State<FlutterFlowVideoPlayer>
     if (_subscribedRoute) {
       routeObserver.unsubscribe(this);
     }
-    _videoPlayers.remove(_videoPlayerController);
-    _videoPlayerController?.dispose();
-    _chewieController?.dispose();
+    _disposeCurrentPlayer();
     super.dispose();
   }
 
@@ -76,10 +78,8 @@ class _FlutterFlowVideoPlayerState extends State<FlutterFlowVideoPlayer>
   void didUpdateWidget(FlutterFlowVideoPlayer oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.path != widget.path) {
-      _videoPlayers.remove(_videoPlayerController);
-      _videoPlayerController?.dispose();
-      _chewieController?.dispose();
-      initializePlayer();
+      _disposeCurrentPlayer();
+      _initializePlayer();
     }
   }
 
@@ -112,9 +112,15 @@ class _FlutterFlowVideoPlayerState extends State<FlutterFlowVideoPlayer>
       _chewieController?.videoPlayerController.value.aspectRatio ??
       kDefaultAspectRatio;
 
-  Future initializePlayer() async {
+  void _disposeCurrentPlayer() {
+    _videoPlayers.remove(_videoPlayerController);
+    _videoPlayerController?.dispose();
+    _chewieController?.dispose();
+  }
+
+  Future _initializePlayer() async {
     _videoPlayerController = widget.videoType == VideoType.network
-        ? VideoPlayerController.network(widget.path)
+        ? VideoPlayerController.networkUrl(Uri.parse(widget.path!))
         : VideoPlayerController.asset(widget.path);
     if (kIsWeb && widget.autoPlay) {
       // Browsers generally don't allow autoplay unless it's muted.
@@ -161,6 +167,21 @@ class _FlutterFlowVideoPlayerState extends State<FlutterFlowVideoPlayer>
       }
     });
 
+    _chewieController!.addListener(() {
+      // On web, Chewie has issues when exiting fullscreen. As a workaround,
+      // reset the video player when exiting fullscreen, as suggested here:
+      // https://github.com/fluttercommunity/chewie/issues/688#issuecomment-1790033300.
+      if (kIsWeb && !_chewieController!.isFullScreen && _isFullScreen) {
+        SchedulerBinding.instance.addPostFrameCallback((_) async {
+          final position = _videoPlayerController!.value.position;
+          _disposeCurrentPlayer();
+          await _initializePlayer();
+          _videoPlayerController!.seekTo(position);
+        });
+      }
+      _isFullScreen = _chewieController!.isFullScreen;
+    });
+
     setState(() {});
   }
 
@@ -180,10 +201,18 @@ class _FlutterFlowVideoPlayerState extends State<FlutterFlowVideoPlayer>
                   ? Text('Error playing video')
                   : Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        CircularProgressIndicator(),
-                        SizedBox(height: 20),
-                        Text('Loading'),
+                      children: [
+                        SizedBox(
+                          width: 50.0,
+                          height: 50.0,
+                          child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              FlutterFlowTheme.of(context).primary,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        const Text('Loading'),
                       ],
                     ),
         ),

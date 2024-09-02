@@ -89,277 +89,349 @@ class MatchStatSnapshotStruct extends FFFirebaseStruct {
   int? _pointsL;
   int get pointsL => _pointsL ?? 0;
   set pointsL(int? val) => _pointsL = val;
-  void incrementPointsL(int amount) => _pointsL = pointsL + amount;
+
+  void incrementPointsL(int amount) => pointsL = pointsL + amount;
+
   bool hasPointsL() => _pointsL != null;
 
   // "PointsR" field.
   int? _pointsR;
   int get pointsR => _pointsR ?? 0;
   set pointsR(int? val) => _pointsR = val;
-  void incrementPointsR(int amount) => _pointsR = pointsR + amount;
+
+  void incrementPointsR(int amount) => pointsR = pointsR + amount;
+
   bool hasPointsR() => _pointsR != null;
 
   // "YellowCardsL" field.
   int? _yellowCardsL;
   int get yellowCardsL => _yellowCardsL ?? 0;
   set yellowCardsL(int? val) => _yellowCardsL = val;
+
   void incrementYellowCardsL(int amount) =>
-      _yellowCardsL = yellowCardsL + amount;
+      yellowCardsL = yellowCardsL + amount;
+
   bool hasYellowCardsL() => _yellowCardsL != null;
 
   // "YellowCardsR" field.
   int? _yellowCardsR;
   int get yellowCardsR => _yellowCardsR ?? 0;
   set yellowCardsR(int? val) => _yellowCardsR = val;
+
   void incrementYellowCardsR(int amount) =>
-      _yellowCardsR = yellowCardsR + amount;
+      yellowCardsR = yellowCardsR + amount;
+
   bool hasYellowCardsR() => _yellowCardsR != null;
 
   // "RedCardsL" field.
   int? _redCardsL;
   int get redCardsL => _redCardsL ?? 0;
   set redCardsL(int? val) => _redCardsL = val;
-  void incrementRedCardsL(int amount) => _redCardsL = redCardsL + amount;
+
+  void incrementRedCardsL(int amount) => redCardsL = redCardsL + amount;
+
   bool hasRedCardsL() => _redCardsL != null;
 
   // "RedCardsR" field.
   int? _redCardsR;
   int get redCardsR => _redCardsR ?? 0;
   set redCardsR(int? val) => _redCardsR = val;
-  void incrementRedCardsR(int amount) => _redCardsR = redCardsR + amount;
+
+  void incrementRedCardsR(int amount) => redCardsR = redCardsR + amount;
+
   bool hasRedCardsR() => _redCardsR != null;
 
   // "Simultaneous" field.
   int? _simultaneous;
   int get simultaneous => _simultaneous ?? 0;
   set simultaneous(int? val) => _simultaneous = val;
+
   void incrementSimultaneous(int amount) =>
-      _simultaneous = simultaneous + amount;
+      simultaneous = simultaneous + amount;
+
   bool hasSimultaneous() => _simultaneous != null;
 
   // "HaltsRef" field.
   int? _haltsRef;
   int get haltsRef => _haltsRef ?? 0;
   set haltsRef(int? val) => _haltsRef = val;
-  void incrementHaltsRef(int amount) => _haltsRef = haltsRef + amount;
+
+  void incrementHaltsRef(int amount) => haltsRef = haltsRef + amount;
+
   bool hasHaltsRef() => _haltsRef != null;
 
   // "HaltsL" field.
   int? _haltsL;
   int get haltsL => _haltsL ?? 0;
   set haltsL(int? val) => _haltsL = val;
-  void incrementHaltsL(int amount) => _haltsL = haltsL + amount;
+
+  void incrementHaltsL(int amount) => haltsL = haltsL + amount;
+
   bool hasHaltsL() => _haltsL != null;
 
   // "HaltsR" field.
   int? _haltsR;
   int get haltsR => _haltsR ?? 0;
   set haltsR(int? val) => _haltsR = val;
-  void incrementHaltsR(int amount) => _haltsR = haltsR + amount;
+
+  void incrementHaltsR(int amount) => haltsR = haltsR + amount;
+
   bool hasHaltsR() => _haltsR != null;
 
   // "SimpleAttackHitsL" field.
   int? _simpleAttackHitsL;
   int get simpleAttackHitsL => _simpleAttackHitsL ?? 0;
   set simpleAttackHitsL(int? val) => _simpleAttackHitsL = val;
+
   void incrementSimpleAttackHitsL(int amount) =>
-      _simpleAttackHitsL = simpleAttackHitsL + amount;
+      simpleAttackHitsL = simpleAttackHitsL + amount;
+
   bool hasSimpleAttackHitsL() => _simpleAttackHitsL != null;
 
   // "SimpleAttackHitsR" field.
   int? _simpleAttackHitsR;
   int get simpleAttackHitsR => _simpleAttackHitsR ?? 0;
   set simpleAttackHitsR(int? val) => _simpleAttackHitsR = val;
+
   void incrementSimpleAttackHitsR(int amount) =>
-      _simpleAttackHitsR = simpleAttackHitsR + amount;
+      simpleAttackHitsR = simpleAttackHitsR + amount;
+
   bool hasSimpleAttackHitsR() => _simpleAttackHitsR != null;
 
   // "SimpleAttackOffTarL" field.
   int? _simpleAttackOffTarL;
   int get simpleAttackOffTarL => _simpleAttackOffTarL ?? 0;
   set simpleAttackOffTarL(int? val) => _simpleAttackOffTarL = val;
+
   void incrementSimpleAttackOffTarL(int amount) =>
-      _simpleAttackOffTarL = simpleAttackOffTarL + amount;
+      simpleAttackOffTarL = simpleAttackOffTarL + amount;
+
   bool hasSimpleAttackOffTarL() => _simpleAttackOffTarL != null;
 
   // "SimpleAttackOffTarR" field.
   int? _simpleAttackOffTarR;
   int get simpleAttackOffTarR => _simpleAttackOffTarR ?? 0;
   set simpleAttackOffTarR(int? val) => _simpleAttackOffTarR = val;
+
   void incrementSimpleAttackOffTarR(int amount) =>
-      _simpleAttackOffTarR = simpleAttackOffTarR + amount;
+      simpleAttackOffTarR = simpleAttackOffTarR + amount;
+
   bool hasSimpleAttackOffTarR() => _simpleAttackOffTarR != null;
 
   // "CompoundAttackHitsL" field.
   int? _compoundAttackHitsL;
   int get compoundAttackHitsL => _compoundAttackHitsL ?? 0;
   set compoundAttackHitsL(int? val) => _compoundAttackHitsL = val;
+
   void incrementCompoundAttackHitsL(int amount) =>
-      _compoundAttackHitsL = compoundAttackHitsL + amount;
+      compoundAttackHitsL = compoundAttackHitsL + amount;
+
   bool hasCompoundAttackHitsL() => _compoundAttackHitsL != null;
 
   // "CompoundAttackHitsR" field.
   int? _compoundAttackHitsR;
   int get compoundAttackHitsR => _compoundAttackHitsR ?? 0;
   set compoundAttackHitsR(int? val) => _compoundAttackHitsR = val;
+
   void incrementCompoundAttackHitsR(int amount) =>
-      _compoundAttackHitsR = compoundAttackHitsR + amount;
+      compoundAttackHitsR = compoundAttackHitsR + amount;
+
   bool hasCompoundAttackHitsR() => _compoundAttackHitsR != null;
 
   // "CompoundAttackOffTarL" field.
   int? _compoundAttackOffTarL;
   int get compoundAttackOffTarL => _compoundAttackOffTarL ?? 0;
   set compoundAttackOffTarL(int? val) => _compoundAttackOffTarL = val;
+
   void incrementCompoundAttackOffTarL(int amount) =>
-      _compoundAttackOffTarL = compoundAttackOffTarL + amount;
+      compoundAttackOffTarL = compoundAttackOffTarL + amount;
+
   bool hasCompoundAttackOffTarL() => _compoundAttackOffTarL != null;
 
   // "CompoundAttackOffTarR" field.
   int? _compoundAttackOffTarR;
   int get compoundAttackOffTarR => _compoundAttackOffTarR ?? 0;
   set compoundAttackOffTarR(int? val) => _compoundAttackOffTarR = val;
+
   void incrementCompoundAttackOffTarR(int amount) =>
-      _compoundAttackOffTarR = compoundAttackOffTarR + amount;
+      compoundAttackOffTarR = compoundAttackOffTarR + amount;
+
   bool hasCompoundAttackOffTarR() => _compoundAttackOffTarR != null;
 
   // "ParryRiposteHitsL" field.
   int? _parryRiposteHitsL;
   int get parryRiposteHitsL => _parryRiposteHitsL ?? 0;
   set parryRiposteHitsL(int? val) => _parryRiposteHitsL = val;
+
   void incrementParryRiposteHitsL(int amount) =>
-      _parryRiposteHitsL = parryRiposteHitsL + amount;
+      parryRiposteHitsL = parryRiposteHitsL + amount;
+
   bool hasParryRiposteHitsL() => _parryRiposteHitsL != null;
 
   // "ParryRiposteHitsR" field.
   int? _parryRiposteHitsR;
   int get parryRiposteHitsR => _parryRiposteHitsR ?? 0;
   set parryRiposteHitsR(int? val) => _parryRiposteHitsR = val;
+
   void incrementParryRiposteHitsR(int amount) =>
-      _parryRiposteHitsR = parryRiposteHitsR + amount;
+      parryRiposteHitsR = parryRiposteHitsR + amount;
+
   bool hasParryRiposteHitsR() => _parryRiposteHitsR != null;
 
   // "ParryRiposteOffTargetL" field.
   int? _parryRiposteOffTargetL;
   int get parryRiposteOffTargetL => _parryRiposteOffTargetL ?? 0;
   set parryRiposteOffTargetL(int? val) => _parryRiposteOffTargetL = val;
+
   void incrementParryRiposteOffTargetL(int amount) =>
-      _parryRiposteOffTargetL = parryRiposteOffTargetL + amount;
+      parryRiposteOffTargetL = parryRiposteOffTargetL + amount;
+
   bool hasParryRiposteOffTargetL() => _parryRiposteOffTargetL != null;
 
   // "ParryRiposteOffTargetR" field.
   int? _parryRiposteOffTargetR;
   int get parryRiposteOffTargetR => _parryRiposteOffTargetR ?? 0;
   set parryRiposteOffTargetR(int? val) => _parryRiposteOffTargetR = val;
+
   void incrementParryRiposteOffTargetR(int amount) =>
-      _parryRiposteOffTargetR = parryRiposteOffTargetR + amount;
+      parryRiposteOffTargetR = parryRiposteOffTargetR + amount;
+
   bool hasParryRiposteOffTargetR() => _parryRiposteOffTargetR != null;
 
   // "RemiseHitsL" field.
   int? _remiseHitsL;
   int get remiseHitsL => _remiseHitsL ?? 0;
   set remiseHitsL(int? val) => _remiseHitsL = val;
-  void incrementRemiseHitsL(int amount) => _remiseHitsL = remiseHitsL + amount;
+
+  void incrementRemiseHitsL(int amount) => remiseHitsL = remiseHitsL + amount;
+
   bool hasRemiseHitsL() => _remiseHitsL != null;
 
   // "RemiseHitsR" field.
   int? _remiseHitsR;
   int get remiseHitsR => _remiseHitsR ?? 0;
   set remiseHitsR(int? val) => _remiseHitsR = val;
-  void incrementRemiseHitsR(int amount) => _remiseHitsR = remiseHitsR + amount;
+
+  void incrementRemiseHitsR(int amount) => remiseHitsR = remiseHitsR + amount;
+
   bool hasRemiseHitsR() => _remiseHitsR != null;
 
   // "RemiseOffTarL" field.
   int? _remiseOffTarL;
   int get remiseOffTarL => _remiseOffTarL ?? 0;
   set remiseOffTarL(int? val) => _remiseOffTarL = val;
+
   void incrementRemiseOffTarL(int amount) =>
-      _remiseOffTarL = remiseOffTarL + amount;
+      remiseOffTarL = remiseOffTarL + amount;
+
   bool hasRemiseOffTarL() => _remiseOffTarL != null;
 
   // "RemiseOffTarR" field.
   int? _remiseOffTarR;
   int get remiseOffTarR => _remiseOffTarR ?? 0;
   set remiseOffTarR(int? val) => _remiseOffTarR = val;
+
   void incrementRemiseOffTarR(int amount) =>
-      _remiseOffTarR = remiseOffTarR + amount;
+      remiseOffTarR = remiseOffTarR + amount;
+
   bool hasRemiseOffTarR() => _remiseOffTarR != null;
 
   // "CounterattackHitsL" field.
   int? _counterattackHitsL;
   int get counterattackHitsL => _counterattackHitsL ?? 0;
   set counterattackHitsL(int? val) => _counterattackHitsL = val;
+
   void incrementCounterattackHitsL(int amount) =>
-      _counterattackHitsL = counterattackHitsL + amount;
+      counterattackHitsL = counterattackHitsL + amount;
+
   bool hasCounterattackHitsL() => _counterattackHitsL != null;
 
   // "CounterattackHitsR" field.
   int? _counterattackHitsR;
   int get counterattackHitsR => _counterattackHitsR ?? 0;
   set counterattackHitsR(int? val) => _counterattackHitsR = val;
+
   void incrementCounterattackHitsR(int amount) =>
-      _counterattackHitsR = counterattackHitsR + amount;
+      counterattackHitsR = counterattackHitsR + amount;
+
   bool hasCounterattackHitsR() => _counterattackHitsR != null;
 
   // "CounterattackOffTarL" field.
   int? _counterattackOffTarL;
   int get counterattackOffTarL => _counterattackOffTarL ?? 0;
   set counterattackOffTarL(int? val) => _counterattackOffTarL = val;
+
   void incrementCounterattackOffTarL(int amount) =>
-      _counterattackOffTarL = counterattackOffTarL + amount;
+      counterattackOffTarL = counterattackOffTarL + amount;
+
   bool hasCounterattackOffTarL() => _counterattackOffTarL != null;
 
   // "CounterattackOffTarR" field.
   int? _counterattackOffTarR;
   int get counterattackOffTarR => _counterattackOffTarR ?? 0;
   set counterattackOffTarR(int? val) => _counterattackOffTarR = val;
+
   void incrementCounterattackOffTarR(int amount) =>
-      _counterattackOffTarR = counterattackOffTarR + amount;
+      counterattackOffTarR = counterattackOffTarR + amount;
+
   bool hasCounterattackOffTarR() => _counterattackOffTarR != null;
 
   // "PointInLineHitsL" field.
   int? _pointInLineHitsL;
   int get pointInLineHitsL => _pointInLineHitsL ?? 0;
   set pointInLineHitsL(int? val) => _pointInLineHitsL = val;
+
   void incrementPointInLineHitsL(int amount) =>
-      _pointInLineHitsL = pointInLineHitsL + amount;
+      pointInLineHitsL = pointInLineHitsL + amount;
+
   bool hasPointInLineHitsL() => _pointInLineHitsL != null;
 
   // "PointInLineHitsR" field.
   int? _pointInLineHitsR;
   int get pointInLineHitsR => _pointInLineHitsR ?? 0;
   set pointInLineHitsR(int? val) => _pointInLineHitsR = val;
+
   void incrementPointInLineHitsR(int amount) =>
-      _pointInLineHitsR = pointInLineHitsR + amount;
+      pointInLineHitsR = pointInLineHitsR + amount;
+
   bool hasPointInLineHitsR() => _pointInLineHitsR != null;
 
   // "PointInLineOffTarL" field.
   int? _pointInLineOffTarL;
   int get pointInLineOffTarL => _pointInLineOffTarL ?? 0;
   set pointInLineOffTarL(int? val) => _pointInLineOffTarL = val;
+
   void incrementPointInLineOffTarL(int amount) =>
-      _pointInLineOffTarL = pointInLineOffTarL + amount;
+      pointInLineOffTarL = pointInLineOffTarL + amount;
+
   bool hasPointInLineOffTarL() => _pointInLineOffTarL != null;
 
   // "PointInLineOffTarR" field.
   int? _pointInLineOffTarR;
   int get pointInLineOffTarR => _pointInLineOffTarR ?? 0;
   set pointInLineOffTarR(int? val) => _pointInLineOffTarR = val;
+
   void incrementPointInLineOffTarR(int amount) =>
-      _pointInLineOffTarR = pointInLineOffTarR + amount;
+      pointInLineOffTarR = pointInLineOffTarR + amount;
+
   bool hasPointInLineOffTarR() => _pointInLineOffTarR != null;
 
   // "timestamp" field.
   int? _timestamp;
   int get timestamp => _timestamp ?? 0;
   set timestamp(int? val) => _timestamp = val;
-  void incrementTimestamp(int amount) => _timestamp = timestamp + amount;
+
+  void incrementTimestamp(int amount) => timestamp = timestamp + amount;
+
   bool hasTimestamp() => _timestamp != null;
 
   // "periodstamp" field.
   int? _periodstamp;
   int get periodstamp => _periodstamp ?? 0;
   set periodstamp(int? val) => _periodstamp = val;
-  void incrementPeriodstamp(int amount) => _periodstamp = periodstamp + amount;
+
+  void incrementPeriodstamp(int amount) => periodstamp = periodstamp + amount;
+
   bool hasPeriodstamp() => _periodstamp != null;
 
   static MatchStatSnapshotStruct fromMap(Map<String, dynamic> data) =>
@@ -402,10 +474,9 @@ class MatchStatSnapshotStruct extends FFFirebaseStruct {
         periodstamp: castToType<int>(data['periodstamp']),
       );
 
-  static MatchStatSnapshotStruct? maybeFromMap(dynamic data) =>
-      data is Map<String, dynamic>
-          ? MatchStatSnapshotStruct.fromMap(data)
-          : null;
+  static MatchStatSnapshotStruct? maybeFromMap(dynamic data) => data is Map
+      ? MatchStatSnapshotStruct.fromMap(data.cast<String, dynamic>())
+      : null;
 
   Map<String, dynamic> toMap() => {
         'PointsL': _pointsL,

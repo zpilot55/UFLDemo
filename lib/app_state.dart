@@ -27,296 +27,274 @@ class FFAppState extends ChangeNotifier {
 
   String _refereeweaponselect = '';
   String get refereeweaponselect => _refereeweaponselect;
-  set refereeweaponselect(String _value) {
-    _refereeweaponselect = _value;
+  set refereeweaponselect(String value) {
+    _refereeweaponselect = value;
   }
 
   bool _isRightFencer = false;
   bool get isRightFencer => _isRightFencer;
-  set isRightFencer(bool _value) {
-    _isRightFencer = _value;
+  set isRightFencer(bool value) {
+    _isRightFencer = value;
   }
 
   DocumentReference? _scannedFencerRef =
       FirebaseFirestore.instance.doc('/users/2');
   DocumentReference? get scannedFencerRef => _scannedFencerRef;
-  set scannedFencerRef(DocumentReference? _value) {
-    _scannedFencerRef = _value;
+  set scannedFencerRef(DocumentReference? value) {
+    _scannedFencerRef = value;
   }
 
   String _currentFencerName = '';
   String get currentFencerName => _currentFencerName;
-  set currentFencerName(String _value) {
-    _currentFencerName = _value;
+  set currentFencerName(String value) {
+    _currentFencerName = value;
   }
 
   String _currentFencerPicURL = '';
   String get currentFencerPicURL => _currentFencerPicURL;
-  set currentFencerPicURL(String _value) {
-    _currentFencerPicURL = _value;
+  set currentFencerPicURL(String value) {
+    _currentFencerPicURL = value;
   }
 
   DocumentReference? _leftFencerRef =
       FirebaseFirestore.instance.doc('/users/2');
   DocumentReference? get leftFencerRef => _leftFencerRef;
-  set leftFencerRef(DocumentReference? _value) {
-    _leftFencerRef = _value;
+  set leftFencerRef(DocumentReference? value) {
+    _leftFencerRef = value;
   }
 
   DocumentReference? _rightFencerRef =
       FirebaseFirestore.instance.doc('/users/2');
   DocumentReference? get rightFencerRef => _rightFencerRef;
-  set rightFencerRef(DocumentReference? _value) {
-    _rightFencerRef = _value;
+  set rightFencerRef(DocumentReference? value) {
+    _rightFencerRef = value;
   }
 
   String _refLeftName = 'Left Fencer';
   String get refLeftName => _refLeftName;
-  set refLeftName(String _value) {
-    _refLeftName = _value;
+  set refLeftName(String value) {
+    _refLeftName = value;
   }
 
   String _refRightName = 'Right Fencer';
   String get refRightName => _refRightName;
-  set refRightName(String _value) {
-    _refRightName = _value;
+  set refRightName(String value) {
+    _refRightName = value;
   }
 
   String _refLeftPhoto = '';
   String get refLeftPhoto => _refLeftPhoto;
-  set refLeftPhoto(String _value) {
-    _refLeftPhoto = _value;
+  set refLeftPhoto(String value) {
+    _refLeftPhoto = value;
   }
 
   String _refRightPhoto = '';
   String get refRightPhoto => _refRightPhoto;
-  set refRightPhoto(String _value) {
-    _refRightPhoto = _value;
+  set refRightPhoto(String value) {
+    _refRightPhoto = value;
   }
 
   bool _isTimerRunning = false;
   bool get isTimerRunning => _isTimerRunning;
-  set isTimerRunning(bool _value) {
-    _isTimerRunning = _value;
+  set isTimerRunning(bool value) {
+    _isTimerRunning = value;
   }
 
   int _refLeftScore = 0;
   int get refLeftScore => _refLeftScore;
-  set refLeftScore(int _value) {
-    _refLeftScore = _value;
+  set refLeftScore(int value) {
+    _refLeftScore = value;
   }
 
   int _refRightScore = 0;
   int get refRightScore => _refRightScore;
-  set refRightScore(int _value) {
-    _refRightScore = _value;
+  set refRightScore(int value) {
+    _refRightScore = value;
   }
 
   bool _isLeftFencerAction = true;
   bool get isLeftFencerAction => _isLeftFencerAction;
-  set isLeftFencerAction(bool _value) {
-    _isLeftFencerAction = _value;
+  set isLeftFencerAction(bool value) {
+    _isLeftFencerAction = value;
   }
 
   bool _showActions = false;
   bool get showActions => _showActions;
-  set showActions(bool _value) {
-    _showActions = _value;
+  set showActions(bool value) {
+    _showActions = value;
   }
 
   String _startStopText = 'START';
   String get startStopText => _startStopText;
-  set startStopText(String _value) {
-    _startStopText = _value;
+  set startStopText(String value) {
+    _startStopText = value;
   }
 
   int _currentPeriod = 1;
   int get currentPeriod => _currentPeriod;
-  set currentPeriod(int _value) {
-    _currentPeriod = _value;
+  set currentPeriod(int value) {
+    _currentPeriod = value;
   }
 
   bool _endOfBout = false;
   bool get endOfBout => _endOfBout;
-  set endOfBout(bool _value) {
-    _endOfBout = _value;
+  set endOfBout(bool value) {
+    _endOfBout = value;
   }
 
   bool _onBreak = false;
   bool get onBreak => _onBreak;
-  set onBreak(bool _value) {
-    _onBreak = _value;
+  set onBreak(bool value) {
+    _onBreak = value;
   }
 
   int _timerStartTime = 60000;
   int get timerStartTime => _timerStartTime;
-  set timerStartTime(int _value) {
-    _timerStartTime = _value;
+  set timerStartTime(int value) {
+    _timerStartTime = value;
   }
 
   int _breakDuration = 1;
   int get breakDuration => _breakDuration;
-  set breakDuration(int _value) {
-    _breakDuration = _value;
+  set breakDuration(int value) {
+    _breakDuration = value;
   }
 
   bool _beginNextPer = false;
   bool get beginNextPer => _beginNextPer;
-  set beginNextPer(bool _value) {
-    _beginNextPer = _value;
+  set beginNextPer(bool value) {
+    _beginNextPer = value;
   }
 
   bool _beginBreak = false;
   bool get beginBreak => _beginBreak;
-  set beginBreak(bool _value) {
-    _beginBreak = _value;
+  set beginBreak(bool value) {
+    _beginBreak = value;
   }
 
   List<DocumentReference> _refFencers = [];
   List<DocumentReference> get refFencers => _refFencers;
-  set refFencers(List<DocumentReference> _value) {
-    _refFencers = _value;
+  set refFencers(List<DocumentReference> value) {
+    _refFencers = value;
   }
 
-  void addToRefFencers(DocumentReference _value) {
-    _refFencers.add(_value);
+  void addToRefFencers(DocumentReference value) {
+    refFencers.add(value);
   }
 
-  void removeFromRefFencers(DocumentReference _value) {
-    _refFencers.remove(_value);
+  void removeFromRefFencers(DocumentReference value) {
+    refFencers.remove(value);
   }
 
-  void removeAtIndexFromRefFencers(int _index) {
-    _refFencers.removeAt(_index);
+  void removeAtIndexFromRefFencers(int index) {
+    refFencers.removeAt(index);
   }
 
   void updateRefFencersAtIndex(
-    int _index,
+    int index,
     DocumentReference Function(DocumentReference) updateFn,
   ) {
-    _refFencers[_index] = updateFn(_refFencers[_index]);
+    refFencers[index] = updateFn(_refFencers[index]);
   }
 
-  void insertAtIndexInRefFencers(int _index, DocumentReference _value) {
-    _refFencers.insert(_index, _value);
+  void insertAtIndexInRefFencers(int index, DocumentReference value) {
+    refFencers.insert(index, value);
   }
 
   bool _endOfBoutPopup = false;
   bool get endOfBoutPopup => _endOfBoutPopup;
-  set endOfBoutPopup(bool _value) {
-    _endOfBoutPopup = _value;
+  set endOfBoutPopup(bool value) {
+    _endOfBoutPopup = value;
   }
 
   DocumentReference? _refereeReference =
       FirebaseFirestore.instance.doc('/users/0');
   DocumentReference? get refereeReference => _refereeReference;
-  set refereeReference(DocumentReference? _value) {
-    _refereeReference = _value;
+  set refereeReference(DocumentReference? value) {
+    _refereeReference = value;
   }
 
   List<dynamic> _currentMatchEvents = [];
   List<dynamic> get currentMatchEvents => _currentMatchEvents;
-  set currentMatchEvents(List<dynamic> _value) {
-    _currentMatchEvents = _value;
+  set currentMatchEvents(List<dynamic> value) {
+    _currentMatchEvents = value;
   }
 
-  void addToCurrentMatchEvents(dynamic _value) {
-    _currentMatchEvents.add(_value);
+  void addToCurrentMatchEvents(dynamic value) {
+    currentMatchEvents.add(value);
   }
 
-  void removeFromCurrentMatchEvents(dynamic _value) {
-    _currentMatchEvents.remove(_value);
+  void removeFromCurrentMatchEvents(dynamic value) {
+    currentMatchEvents.remove(value);
   }
 
-  void removeAtIndexFromCurrentMatchEvents(int _index) {
-    _currentMatchEvents.removeAt(_index);
+  void removeAtIndexFromCurrentMatchEvents(int index) {
+    currentMatchEvents.removeAt(index);
   }
 
   void updateCurrentMatchEventsAtIndex(
-    int _index,
+    int index,
     dynamic Function(dynamic) updateFn,
   ) {
-    _currentMatchEvents[_index] = updateFn(_currentMatchEvents[_index]);
+    currentMatchEvents[index] = updateFn(_currentMatchEvents[index]);
   }
 
-  void insertAtIndexInCurrentMatchEvents(int _index, dynamic _value) {
-    _currentMatchEvents.insert(_index, _value);
+  void insertAtIndexInCurrentMatchEvents(int index, dynamic value) {
+    currentMatchEvents.insert(index, value);
   }
 
   String _nonAttackLabel = '';
   String get nonAttackLabel => _nonAttackLabel;
-  set nonAttackLabel(String _value) {
-    _nonAttackLabel = _value;
+  set nonAttackLabel(String value) {
+    _nonAttackLabel = value;
   }
 
   String _refSecondTextAction = '';
   String get refSecondTextAction => _refSecondTextAction;
-  set refSecondTextAction(String _value) {
-    _refSecondTextAction = _value;
+  set refSecondTextAction(String value) {
+    _refSecondTextAction = value;
   }
 
   bool _isSimultaneous = false;
   bool get isSimultaneous => _isSimultaneous;
-  set isSimultaneous(bool _value) {
-    _isSimultaneous = _value;
+  set isSimultaneous(bool value) {
+    _isSimultaneous = value;
   }
 
   bool _refIsHit = false;
   bool get refIsHit => _refIsHit;
-  set refIsHit(bool _value) {
-    _refIsHit = _value;
+  set refIsHit(bool value) {
+    _refIsHit = value;
   }
 
   String _curentActionVideoURL = '';
   String get curentActionVideoURL => _curentActionVideoURL;
-  set curentActionVideoURL(String _value) {
-    _curentActionVideoURL = _value;
+  set curentActionVideoURL(String value) {
+    _curentActionVideoURL = value;
   }
 
   String _refereemodeselect = '';
   String get refereemodeselect => _refereemodeselect;
-  set refereemodeselect(String _value) {
-    _refereemodeselect = _value;
+  set refereemodeselect(String value) {
+    _refereemodeselect = value;
   }
 
   DocumentReference? _SelectFencerReference =
       FirebaseFirestore.instance.doc('/users/2');
   DocumentReference? get SelectFencerReference => _SelectFencerReference;
-  set SelectFencerReference(DocumentReference? _value) {
-    _SelectFencerReference = _value;
+  set SelectFencerReference(DocumentReference? value) {
+    _SelectFencerReference = value;
   }
 
   bool _isWeaponSelected = false;
   bool get isWeaponSelected => _isWeaponSelected;
-  set isWeaponSelected(bool _value) {
-    _isWeaponSelected = _value;
+  set isWeaponSelected(bool value) {
+    _isWeaponSelected = value;
   }
 
   int _snapshotCounter = 0;
   int get snapshotCounter => _snapshotCounter;
-  set snapshotCounter(int _value) {
-    _snapshotCounter = _value;
+  set snapshotCounter(int value) {
+    _snapshotCounter = value;
   }
-}
-
-LatLng? _latLngFromString(String? val) {
-  if (val == null) {
-    return null;
-  }
-  final split = val.split(',');
-  final lat = double.parse(split.first);
-  final lng = double.parse(split.last);
-  return LatLng(lat, lng);
-}
-
-void _safeInit(Function() initializeField) {
-  try {
-    initializeField();
-  } catch (_) {}
-}
-
-Future _safeInitAsync(Function() initializeField) async {
-  try {
-    await initializeField();
-  } catch (_) {}
 }
