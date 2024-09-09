@@ -276,7 +276,7 @@ class RefViewMatch {
     //
     LatLng currentUserLocationValue =
         await getCurrentUserLocation(defaultLocation: LatLng(0.0, 0.0));
-    final matchesDevData = createMatchesDevRecordData(
+    final matchesDevData = {...createMatchesDevRecordData(
         user1: FFAppState().leftFencerRef,
         user2: FFAppState().rightFencerRef,
         scheduledTime: scheduledTime,
@@ -287,7 +287,13 @@ class RefViewMatch {
         scoreRight: rightScore,
         matchRanking: FFAppState().refereemodeselect,
         matchDetails: matchdetailsDevRecordRes.reference,
-        matchStatsLog: matchstatslogDevRecordRes.reference);
+        matchStatsLog: matchstatslogDevRecordRes.reference),
+        ...mapToFirestore(
+          {
+            'fencers': [FFAppState().leftFencerRef, FFAppState().rightFencerRef],
+          },
+        ),
+    };
     //
     return await matchesDevRecord.set(matchesDevData);
     // MatchesDevRecord res =
