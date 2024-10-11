@@ -5,8 +5,10 @@ import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:u_f_l_demo/app_state.dart';
 import 'package:u_f_l_demo/backend/firebase/firebase_config.dart';
 import 'package:u_f_l_demo/ref_view2/ref_view_countdown.dart';
 import 'package:u_f_l_demo/ref_view2/ref_view_dialog.dart';
@@ -70,7 +72,7 @@ class RefViewPageState extends State<RefViewPage> {
     setStatusShow(false);
 
     availableCameras().then((value) async {
-      print(112233);
+      // print(112233);
 
       _cameras = value;
 
@@ -99,7 +101,8 @@ class RefViewPageState extends State<RefViewPage> {
           }
         });
       } else {
-        Fluttertoast.showToast(msg: "Error Permission Please Check The Settings");
+        Fluttertoast.showToast(
+            msg: "Error Permission Please Check The Settings");
         Navigator.pop(context);
       }
     });
@@ -126,6 +129,11 @@ class RefViewPageState extends State<RefViewPage> {
 
     refViewRecord = RefViewRecord(camera: null);
     refViewDialog = RefViewDialog();
+
+    //默认选择
+    if (FFAppState().refereeweaponselect == "") {
+      FFAppState().refereeweaponselect = "Foil";
+    }
   }
 
   String countdownTime = "";
@@ -363,30 +371,6 @@ class RefViewPageState extends State<RefViewPage> {
   double leftBlood = 0;
   double rightBlood = 0;
 
-  //左主要按钮
-  Positioned mainLeftView() {
-    return Positioned(
-        left: 40,
-        bottom: 40,
-        child: TextButton(
-          child: Text(
-            "左按钮",
-            style: TextStyle(color: Colors.white, fontSize: 20),
-          ),
-          onPressed: () {
-            setState(() {
-              // if (rightNum > 0) {
-              //   rightNum -= 0.1;
-              // }
-              _getWH();
-            });
-            // jumpVideo();
-          },
-          style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(Colors.red)),
-        ));
-  }
-
   //右主要按钮
   Positioned mainRightView() {
     return Positioned(
@@ -553,6 +537,7 @@ class RefViewPageState extends State<RefViewPage> {
                 },
                 pause: (bool isPauseBtn) {
                   if (isPauseBtn) {
+                    _getWH();
                     setResumeState(true, -1);
                   } else {
                     refViewTime!.stopTime();
@@ -588,11 +573,20 @@ class RefViewPageState extends State<RefViewPage> {
 
   final GlobalKey globalKey = GlobalKey();
 
-  double _getWH() {
-    double containerWidth = globalKey.currentContext!.size!.width;
-    double containerHeight = globalKey.currentContext!.size!.height;
-    print('Container widht is $containerWidth, height is $containerHeight');
+  double containerWidth = -1;
+  double containerHeight = -1;
 
+  double _getWH() {
+    if (globalKey.currentContext != null && containerWidth < 0) {
+      containerWidth = globalKey.currentContext!.size!.width;
+    }
+    if (globalKey.currentContext != null && containerHeight < 0) {
+      containerHeight = globalKey.currentContext!.size!.height;
+    }
+    print('Container widht is $containerWidth, height is $containerHeight');
+    if (containerWidth < 0 || containerHeight < 0) {
+      return 0;
+    }
     return (containerWidth - 55 - 28) / refViewMatch.maxTouch;
   }
 
@@ -674,17 +668,27 @@ class RefViewPageState extends State<RefViewPage> {
           refViewMatch.priority == 1),
       Expanded(
           child: Container(
-        padding: EdgeInsets.only(top: 20, bottom: 20),
+        // padding: EdgeInsets.only(top: 10, bottom: 10),
         child: Column(children: [
+          SizedBox(height: 10),
           Text(
             "Period: " + refViewMatch.currentPeriod.toString(),
-            style: TextStyle(color: Colors.white, fontSize: 18),
+            style: TextStyle(color: Colors.white, fontSize: 16),
           ),
-          SizedBox(height: 20),
-          isShowInfoSelect() ? infoSelectView() : SizedBox(height: 10),
-          SizedBox(
-            height: 20,
-          ),
+          SizedBox(height: 5),
+          isShowInfoSelect()
+              ? infoSelectView("Weapon:", infoWeaponView())
+              : SizedBox(height: 5),
+          SizedBox(height: 5),
+          isShowInfoSelect()
+              ? infoSelectView("Periods:", infoPeriodsView())
+              : SizedBox(height: 5),
+          SizedBox(height: 5),
+          isShowInfoSelect()
+              ? infoSelectView("Touches:", infoTouchesView())
+              : SizedBox(height: 5),
+          //快速比赛信息选择
+          SizedBox(height: 5),
           Text(
             refViewMatch.leftScore.toString() +
                 " - " +
@@ -699,7 +703,7 @@ class RefViewPageState extends State<RefViewPage> {
               },
               child: btnView("END BOUT", blackColor, 0)),
           SizedBox(
-            height: 20,
+            height: 10,
           ),
           GestureDetector(
               onTap: () {
@@ -709,7 +713,8 @@ class RefViewPageState extends State<RefViewPage> {
                 //   setState(() {});
                 // });
               },
-              child: btnView("START", blueColor, 0))
+              child: btnView("START", blueColor, 0)),
+          SizedBox(height: 10),
         ]),
       )),
       infoMenuView(refViewMatch.rightIcon, refViewMatch.rightName, 1, true,
@@ -809,39 +814,110 @@ class RefViewPageState extends State<RefViewPage> {
         ]));
   }
 
-  Widget infoSelectView() {
+  Widget infoSelectView(String title, Widget select) {
     return Row(children: [
       Container(
         child: Text(
-          "Touches:",
-          style: TextStyle(color: Colors.white, fontSize: 16),
+          title,
+          style: TextStyle(color: Colors.white, fontSize: 12),
         ),
       ),
-      SizedBox(width: 10),
-      infoSelectItemView(5),
-      SizedBox(width: 10),
-      infoSelectItemView(10),
-      SizedBox(width: 10),
-      infoSelectItemView(15)
+      select
     ], mainAxisAlignment: MainAxisAlignment.center);
   }
 
-  Widget infoSelectItemView(int count) {
+  Widget infoTouchesView() {
+    return Row(children: [
+      SizedBox(width: 10),
+      infoSelectItemView("5", 5, -1, ""),
+      SizedBox(width: 10),
+      infoSelectItemView("10", 10, -1, ""),
+      SizedBox(width: 10),
+      infoSelectItemView("15", 15, -1, "")
+    ]);
+  }
+
+  Widget infoPeriodsView() {
+    return Row(children: [
+      SizedBox(width: 10),
+      infoSelectItemView("1", -1, 1, ""),
+      SizedBox(width: 10),
+      infoSelectItemView("2", -1, 2, ""),
+      SizedBox(width: 10),
+      infoSelectItemView("3", -1, 3, "")
+    ]);
+  }
+
+  Widget infoWeaponView() {
+    return Row(children: [
+      SizedBox(width: 10),
+      infoSelectItemView("Foil", -1, -1, "Foil"),
+      SizedBox(width: 10),
+      infoSelectItemView("Epee", -1, -1, "Epee"),
+      SizedBox(width: 10),
+      infoSelectItemView("Sabre", -1, -1, "Sabre"),
+      SizedBox(width: 10),
+      infoSelectItemView("Noodle", -1, -1, "Noodle")
+    ]);
+  }
+
+  // Widget infoSelectItemView(int count) {
+  //   return GestureDetector(
+  //       onTap: () {
+  //         setState(() {
+  //           refViewMatch.maxTouch = count;
+  //         });
+  //       },
+  //       child: Container(
+  //         width: 25,
+  //         height: 25,
+  //         color: Color.fromRGBO(
+  //             255, 255, 255, refViewMatch.maxTouch == count ? 0.5 : 0),
+  //         alignment: Alignment.center,
+  //         child: Text(
+  //           "$count",
+  //           style: TextStyle(color: Colors.white, fontSize: 12),
+  //         ),
+  //       ));
+  // }
+
+  Widget infoSelectItemView(
+      String title, int touches, int periods, String weapon) {
+    bool isSelect = false;
+    if (touches > 0 && refViewMatch.maxTouch == touches) {
+      isSelect = true;
+    }
+    if (periods > 0 && refViewMatch.maxPeriod == periods) {
+      isSelect = true;
+    }
+    if (weapon != "" && FFAppState().refereeweaponselect == weapon) {
+      isSelect = true;
+    }
     return GestureDetector(
         onTap: () {
           setState(() {
-            refViewMatch.maxTouch = count;
+            if (touches > 0) {
+              refViewMatch.maxTouch = touches;
+            }
+            if (periods > 0) {
+              refViewMatch.maxPeriod = periods;
+            }
+            if (weapon != "") {
+              FFAppState().refereeweaponselect = weapon;
+            }
           });
         },
         child: Container(
-          width: 35,
-          height: 35,
-          color: Color.fromRGBO(
-              255, 255, 255, refViewMatch.maxTouch == count ? 0.5 : 0),
+          // width: 25,
+          height: 23,
+          padding: EdgeInsets.only(left: 8, right: 8),
+          color: Color.fromRGBO(255, 255, 255, isSelect ? 0.5 : 0
+              // refViewMatch.maxTouch == count ? 0.5 : 0
+              ),
           alignment: Alignment.center,
           child: Text(
-            "$count",
-            style: TextStyle(color: Colors.white, fontSize: 16),
+            title,
+            style: TextStyle(color: Colors.white, fontSize: 12),
           ),
         ));
   }
@@ -1193,9 +1269,12 @@ class RefViewPageState extends State<RefViewPage> {
                   refViewMatch.maxSeconds - refViewMatch.currentSeconds;
               event.isLeftMain = RefViewOperateState.POS_MIDDLE;
               event.isLeftLost = RefViewOperateState.POS_MIDDLE;
-              event.lost = 0;
+              event.lost = 1;
               refViewMatch.addEvent(event);
               Fluttertoast.showToast(msg: "Success");
+              setState(() {
+                updateBlood();
+              });
             },
             child: btnView("Simultaneous", greyColor, 1)),
         SizedBox(

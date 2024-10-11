@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
+
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:uuid/uuid.dart';
 
@@ -78,6 +82,10 @@ class RefViewMatch {
       if (element.isLeftLost == RefViewOperateState.POS_RIGHT) {
         rightLost += element.lost;
       }
+      if(element.isLeftLost == RefViewOperateState.POS_MIDDLE){
+        leftLost += element.lost;
+        rightLost += element.lost;
+      }
     });
 
     int result = -1;
@@ -108,6 +116,10 @@ class RefViewMatch {
         leftLost += element.lost.toInt();
       }
       if (element.isLeftLost == RefViewOperateState.POS_RIGHT) {
+        rightLost += element.lost.toInt();
+      }
+      if(element.isLeftLost == RefViewOperateState.POS_MIDDLE){
+        leftLost += element.lost.toInt();
         rightLost += element.lost.toInt();
       }
     });
@@ -208,6 +220,7 @@ class RefViewMatch {
         MatchStatSnapshotStruct snapshotStruct = results.$1;
         int actionId = results.$2;
 
+        String vUrl = await saveFireStoreStorage(RefViewRecord.currentPath);
         MatchEventStruct eventStruct = MatchEventStruct(
             actionableFencer: lScore >= rScore
                 ? FFAppState().leftFencerRef
@@ -217,7 +230,7 @@ class RefViewMatch {
             scoreLeft: lScore,
             timeOfAction: event.time,
             periodOfAction: (i + 1),
-            videoURL: RefViewRecord.currentPath);
+            videoURL: vUrl);
         _matchEvents.add(eventStruct.toMap());
 
         StatlineStruct statlineStruct = StatlineStruct(
@@ -729,4 +742,22 @@ class RefViewMatch {
   final int RightYELLOWCARD = 290;
   final int RightREDCARD = 291;
   final int RightBLACKCARD = 292;
+
+  Future<String> saveFireStoreStorage(String path) async{
+    // path = "/storage/emulated/0/Misc/123123.png";
+    
+    // Create a storage reference from our app
+    final storageRef = FirebaseStorage.instance.ref();
+
+    File file = File(path);
+    // Create a reference to 'matches'
+    String fName = path.substring(path.lastIndexOf("/"));
+    final mountainImagesRef = storageRef.child("matches/" + id + fName);
+
+    //save file
+    await mountainImagesRef.putFile(file);
+    String url = await mountainImagesRef.getDownloadURL();
+    // return mountainImagesRef.fullPath;
+    return url;
+  }
 }
