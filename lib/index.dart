@@ -10,7 +10,7 @@ export '/match_recap_events/match_recap_events_widget.dart'
 export '/match_recap_event_video/match_recap_event_video_widget.dart'
     show MatchRecapEventVideoWidget;
 export '/my_club/my_club_widget.dart' show MyClubWidget;
-export '/rankings/rankings_widget.dart' show RankingsWidget;
+export '/rankings2/rankings_widget.dart' show RankingsWidget;
 export '/profile/profile_widget.dart' show ProfileWidget;
 export '/edit_profile/edit_profile_widget.dart' show EditProfileWidget;
 export '/app_settings/app_settings_widget.dart' show AppSettingsWidget;

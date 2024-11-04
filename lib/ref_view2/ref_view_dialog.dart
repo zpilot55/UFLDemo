@@ -165,19 +165,17 @@ class ExitWidgetState extends State<ExitWidget> {
     refViewDialogExit = exit;
   }
 
-  int result = -1;
-
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
 
     String hint = "who is the winner";
 
-    if (result == 1) {
+    if (refViewMatch!.selectResult == 1) {
       hint = refViewMatch!.leftName + " Win";
     }
 
-    if (result == 2) {
+    if (refViewMatch!.selectResult == 2) {
       hint = refViewMatch!.rightName + " Win";
     }
 
@@ -199,7 +197,7 @@ class ExitWidgetState extends State<ExitWidget> {
                     Expanded(
                         child: GestureDetector(
                             onTap: () {
-                              result = 1;
+                              refViewMatch!.selectResult = 1;
                               setState(() {});
                             },
                             child: Column(
@@ -212,7 +210,7 @@ class ExitWidgetState extends State<ExitWidget> {
                                         fontSize: 12,
                                         decoration: TextDecoration.none)),
                                 SizedBox(height: 10),
-                                result == 1
+                                refViewMatch!.selectResult == 1
                                     ? Icon(Icons.wine_bar,
                                         color: Colors.yellow, size: 25)
                                     : SizedBox(height: 25)
@@ -240,7 +238,7 @@ class ExitWidgetState extends State<ExitWidget> {
                     Expanded(
                         child: GestureDetector(
                       onTap: () {
-                        result = 2;
+                        refViewMatch!.selectResult = 2;
                         setState(() {});
                       },
                       child: Column(
@@ -253,7 +251,7 @@ class ExitWidgetState extends State<ExitWidget> {
                                   fontSize: 12,
                                   decoration: TextDecoration.none)),
                           SizedBox(height: 10),
-                          result == 2
+                          refViewMatch!.selectResult == 2
                               ? Icon(
                                   Icons.wine_bar,
                                   color: Colors.yellow,
@@ -282,7 +280,7 @@ class ExitWidgetState extends State<ExitWidget> {
                     SizedBox(width: 10),
                     GestureDetector(
                         onTap: () {
-                          result = 0;
+                          refViewMatch!.selectResult = 0;
 
                           RefViewDialog.showLoading(context);
                           refViewMatch!.saveFireStore().then((value) {
@@ -299,13 +297,16 @@ class ExitWidgetState extends State<ExitWidget> {
                           }).catchError((error) {
                             RefViewDialog.closeLoading(context);
                             Fluttertoast.showToast(msg: "Save Error");
+                          }).onError((error, stackTrace){
+                            RefViewDialog.closeLoading(context);
+                            Fluttertoast.showToast(msg: "Save Error");
                           });
                         },
                         child: btnViewW("No one wins", greyColor, 120, 0)),
                     Expanded(child: SizedBox()),
                     GestureDetector(
                         onTap: () {
-                          if (result <= 0) {
+                          if (refViewMatch!.selectResult <= 0) {
                             Fluttertoast.showToast(msg: "Please Select Winner");
                             return;
                           }
@@ -322,6 +323,9 @@ class ExitWidgetState extends State<ExitWidget> {
                               return true;
                             });
                           }).catchError((error) {
+                            RefViewDialog.closeLoading(context);
+                            Fluttertoast.showToast(msg: "Save Error");
+                          }).onError((error, stackTrace){
                             RefViewDialog.closeLoading(context);
                             Fluttertoast.showToast(msg: "Save Error");
                           });

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:u_f_l_demo/auth/firebase_auth/auth_util.dart';
 
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:uuid/uuid.dart';
@@ -52,6 +53,8 @@ class RefViewMatch {
 
   int priority = 0;
 
+  int selectResult = -1;
+
   DateTime? scheduledTime;
 
   RefViewMatch() {
@@ -82,7 +85,7 @@ class RefViewMatch {
       if (element.isLeftLost == RefViewOperateState.POS_RIGHT) {
         rightLost += element.lost;
       }
-      if(element.isLeftLost == RefViewOperateState.POS_MIDDLE){
+      if (element.isLeftLost == RefViewOperateState.POS_MIDDLE) {
         leftLost += element.lost;
         rightLost += element.lost;
       }
@@ -118,7 +121,7 @@ class RefViewMatch {
       if (element.isLeftLost == RefViewOperateState.POS_RIGHT) {
         rightLost += element.lost.toInt();
       }
-      if(element.isLeftLost == RefViewOperateState.POS_MIDDLE){
+      if (element.isLeftLost == RefViewOperateState.POS_MIDDLE) {
         leftLost += element.lost.toInt();
         rightLost += element.lost.toInt();
       }
@@ -289,28 +292,108 @@ class RefViewMatch {
     //
     LatLng currentUserLocationValue =
         await getCurrentUserLocation(defaultLocation: LatLng(0.0, 0.0));
-    final matchesDevData = {...createMatchesDevRecordData(
-        user1: FFAppState().leftFencerRef,
-        user2: FFAppState().rightFencerRef,
-        scheduledTime: scheduledTime,
-        noOfPeriods: currentPeriod,
-        weapon: FFAppState().refereeweaponselect,
-        location: currentUserLocationValue,
-        scoreLeft: leftScore,
-        scoreRight: rightScore,
-        matchRanking: FFAppState().refereemodeselect,
-        matchDetails: matchdetailsDevRecordRes.reference,
-        matchStatsLog: matchstatslogDevRecordRes.reference),
-        ...mapToFirestore(
-          {
-            'fencers': [FFAppState().leftFencerRef, FFAppState().rightFencerRef],
-          },
-        ),
+    final matchesDevData = {
+      ...createMatchesDevRecordData(
+          user1: FFAppState().leftFencerRef,
+          user2: FFAppState().rightFencerRef,
+          scheduledTime: scheduledTime,
+          noOfPeriods: currentPeriod,
+          weapon: FFAppState().refereeweaponselect,
+          location: currentUserLocationValue,
+          scoreLeft: leftScore,
+          scoreRight: rightScore,
+          matchRanking: FFAppState().refereemodeselect,
+          matchDetails: matchdetailsDevRecordRes.reference,
+          matchStatsLog: matchstatslogDevRecordRes.reference),
+      ...mapToFirestore(
+        {
+          'fencers': [
+            FFAppState().leftFencerRef,
+            FFAppState().rightFencerRef,
+            currentUserReference
+          ],
+        },
+      ),
     };
-    //
+    //update Ranking
+    List<String> nameList = getFiledName(
+        FFAppState().refereeweaponselect, FFAppState().refereemodeselect);
+    String leftId = FFAppState().leftFencerRef!.id;
+    String rightId = FFAppState().rightFencerRef!.id;
+    int leftElo = 0;
+    int rightElo = 0;
+    if (selectResult == 1) {
+      leftElo = 1;
+      rightElo = -1;
+    }
+    if (selectResult == 2) {
+      leftElo = -1;
+      rightElo = 1;
+    }
+    updateRanking(leftId, nameList[0], nameList[1], leftElo);
+    updateRanking(rightId, nameList[0], nameList[1], rightElo);
+
     return await matchesDevRecord.set(matchesDevData);
     // MatchesDevRecord res =
     //     MatchesDevRecord.getDocumentFromData(matchesDevData, matchesDevRecord);
+  }
+
+  List<String> getFiledName(String weapon, String matchRanking) {
+    if (weapon == 'Foil' && matchRanking == 'RankedAdult') {
+      return ['elo_FA', 'numRankedFA'];
+    }
+    if (weapon == 'Foil' && matchRanking == 'RankedYouth') {
+      return ['elo_FY', 'numRankedFY'];
+    }
+    if (weapon == 'Epee' && matchRanking == 'RankedAdult') {
+      return ['elo_EA', 'numRankedEA'];
+    }
+    if (weapon == 'Epee' && matchRanking == 'RankedYouth') {
+      return ['elo_EY', 'numRankedEY'];
+    }
+    if (weapon == 'Saber' && matchRanking == 'RankedAdult') {
+      return ['elo_SA', 'numRankedSA'];
+    }
+    if (weapon == 'Saber' && matchRanking == 'RankedYouth') {
+      return ['elo_SY', 'numRankedSY'];
+    }
+    if (weapon == 'Noodle' && matchRanking == 'RankedAdult') {
+      return ['elo_NA', 'numRankedNA'];
+    }
+    if (weapon == 'Noodle' && matchRanking == 'RankedYouth') {
+      return ['elo_NY', 'numRankedNY'];
+    }
+    return ['', ''];
+  }
+
+  void updateRanking(
+      String uid, String eloName, String numName, int score) async {
+    if (eloName == '') {
+      return;
+    }
+    final userRecord = UsersRecord.collection.doc(uid);
+    final userDS = await userRecord.get().then((u) => u);
+    // print(user);
+    if (userDS.exists) {
+      //处理数据
+      Map m = userDS.data() as Map;
+
+      var eloValue = m[eloName];
+      // print(res);
+      if (eloValue == null || eloValue == '') {
+        //init value
+        eloValue = 1000;
+      }
+      eloValue += score;
+
+      var numValue = m[numName];
+      if (numValue == null || numValue == '') {
+        //init value
+        numValue = 0;
+      }
+      numValue += 1;
+      userRecord.update({eloName: eloValue, numName: numValue});
+    }
   }
 
   (MatchStatSnapshotStruct m, int actionId) totalSnap(
@@ -743,9 +826,9 @@ class RefViewMatch {
   final int RightREDCARD = 291;
   final int RightBLACKCARD = 292;
 
-  Future<String> saveFireStoreStorage(String path) async{
+  Future<String> saveFireStoreStorage(String path) async {
     // path = "/storage/emulated/0/Misc/123123.png";
-    
+
     // Create a storage reference from our app
     final storageRef = FirebaseStorage.instance.ref();
 
