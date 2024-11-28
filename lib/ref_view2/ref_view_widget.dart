@@ -371,27 +371,27 @@ class RefViewPageState extends State<RefViewPage> {
   double leftBlood = 0;
   double rightBlood = 0;
 
-  //右主要按钮
-  Positioned mainRightView() {
-    return Positioned(
-        right: 40,
-        bottom: 40,
-        child: TextButton(
-          child: Text(
-            "右按钮",
-            style: TextStyle(color: Colors.white, fontSize: 20),
-          ),
-          onPressed: () {
-            setState(() {
-              if (leftNum > 0) {
-                leftNum -= 0.1;
-              }
-            });
-          },
-          style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(Colors.blue)),
-        ));
-  }
+  // //右主要按钮
+  // Positioned mainRightView() {
+  //   return Positioned(
+  //       right: 40,
+  //       bottom: 40,
+  //       child: TextButton(
+  //         child: Text(
+  //           "右按钮",
+  //           style: TextStyle(color: Colors.white, fontSize: 20),
+  //         ),
+  //         onPressed: () {
+  //           setState(() {
+  //             if (leftNum > 0) {
+  //               leftNum -= 0.1;
+  //             }
+  //           });
+  //         },
+  //         style: ButtonStyle(
+  //             backgroundColor: MaterialStateProperty.all(Colors.blue)),
+  //       ));
+  // }
 
   // Positioned mainView() {
   //   return Positioned(
@@ -1201,7 +1201,9 @@ class RefViewPageState extends State<RefViewPage> {
 
     state = 2;
 
-    if (isP != null && !isP) {
+    //
+    if (isP != null) {
+      //&& !isP
       refViewTime!.stopTime();
       refViewRecord!.stop(stop: () {
         showVideo();
@@ -1269,9 +1271,16 @@ class RefViewPageState extends State<RefViewPage> {
                   refViewMatch.maxSeconds - refViewMatch.currentSeconds;
               event.isLeftMain = RefViewOperateState.POS_MIDDLE;
               event.isLeftLost = RefViewOperateState.POS_MIDDLE;
-              event.lost = 1;
+              if (FFAppState().refereeweaponselect == "Epee") {
+                //Epee add scoure
+                event.lost = 1;
+              } else {
+                event.lost = 0;
+              }
               refViewMatch.addEvent(event);
-              Fluttertoast.showToast(msg: "Success");
+              // Fluttertoast.showToast(msg: "Success");
+              //open event show
+              setEventState();
               setState(() {
                 updateBlood();
               });
@@ -1663,7 +1672,7 @@ class RefViewPageState extends State<RefViewPage> {
     // Text(refViewTime!.formatDuration(Duration(seconds: element.time)) +
     //     "-" +
     //     element.hint)
-
+    eList = eList.reversed.toList();
     eList.forEach((element) {
       list.add(eventItemView(element));
       //

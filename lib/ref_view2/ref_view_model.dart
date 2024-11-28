@@ -1,7 +1,10 @@
 import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/widgets.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:u_f_l_demo/auth/firebase_auth/auth_util.dart';
+import 'package:u_f_l_demo/ref_view2/ref_view_dialog.dart';
 
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:uuid/uuid.dart';
@@ -70,12 +73,21 @@ class RefViewMatch {
     return periodList![(period - 1)];
   }
 
+  List<RefViewEvent> getEventAll() {
+    List<RefViewEvent> list = [];
+    for (int i = 0; i < periodList!.length; i++) {
+      list.addAll(periodList![i]);
+    }
+    return list;
+  }
+
   void addEvent(RefViewEvent value) {
     getEvent(currentPeriod).add(value);
   }
 
   List getLostScore() {
-    List<RefViewEvent> eventList = getEvent(currentPeriod);
+    // List<RefViewEvent> eventList = getEvent(currentPeriod);
+    List<RefViewEvent> eventList = getEventAll();
     double leftLost = 0;
     double rightLost = 0;
     eventList.forEach((element) {
@@ -111,7 +123,8 @@ class RefViewMatch {
   }
 
   int result() {
-    List<RefViewEvent> eventList = getEvent(currentPeriod);
+    // List<RefViewEvent> eventList = getEvent(currentPeriod);
+    List<RefViewEvent> eventList = getEventAll();
     int leftLost = 0;
     int rightLost = 0;
     eventList.forEach((element) {
@@ -137,7 +150,8 @@ class RefViewMatch {
   }
 
   List getCard() {
-    List<RefViewEvent> eventList = getEvent(currentPeriod);
+    // List<RefViewEvent> eventList = getEvent(currentPeriod);
+    List<RefViewEvent> eventList = getEventAll();
     int leftYellow = 0;
     int leftRed = 0;
     int leftBlack = 0;
@@ -195,7 +209,7 @@ class RefViewMatch {
     return false;
   }
 
-  Future<void> saveFireStore() async {
+  Future<void> saveFireStore(BuildContext context, String vUrl) async {
     List<Map>? _matchEvents = [];
     List<Map>? _statlines = [];
     MatchStatSnapshotStruct? _overallStats = initSnap(0);
@@ -203,6 +217,9 @@ class RefViewMatch {
     List<Map> _periodStats = [];
 
     List<Map>? _matchStats = [];
+
+    // String vUrl =
+    //     await saveFireStoreStorage(context, RefViewRecord.currentPath);
 
     for (int i = 0; i < periodList!.length; i++) {
       List<RefViewEvent> eventList = periodList![i];
@@ -223,7 +240,6 @@ class RefViewMatch {
         MatchStatSnapshotStruct snapshotStruct = results.$1;
         int actionId = results.$2;
 
-        String vUrl = await saveFireStoreStorage(RefViewRecord.currentPath);
         MatchEventStruct eventStruct = MatchEventStruct(
             actionableFencer: lScore >= rScore
                 ? FFAppState().leftFencerRef
@@ -457,7 +473,8 @@ class RefViewMatch {
         actionId = RightREDCARD;
       }
     } else {
-      if (event.hint.contains("Simple attack") && event.hint.contains("Hits")) {
+      if (event.hint.contains(RefViewOperateState.ACTION_SIMPLE) &&
+          event.hint.contains(RefViewOperateState.ACTION_HITS)) {
         if (event.isLeftLost == RefViewOperateState.POS_LEFT) {
           simpleAttackHitsR++;
           actionId = RightSimpleAttackHITS;
@@ -470,8 +487,8 @@ class RefViewMatch {
         }
       }
 
-      if (event.hint.contains("Simple attack") &&
-          event.hint.contains("Off Target")) {
+      if (event.hint.contains(RefViewOperateState.ACTION_SIMPLE) &&
+          event.hint.contains(RefViewOperateState.ACTION_OFF_TARGET)) {
         if (event.isLeftLost == RefViewOperateState.POS_LEFT) {
           simpleAttackOffTarR++;
           actionId = RightSimpleAttackOffTarget;
@@ -484,8 +501,8 @@ class RefViewMatch {
         }
       }
 
-      if (event.hint.contains("Compound attack") &&
-          event.hint.contains("Hits")) {
+      if (event.hint.contains(RefViewOperateState.ACTION_COMPOUND_ATTACK) &&
+          event.hint.contains(RefViewOperateState.ACTION_HITS)) {
         if (event.isLeftLost == RefViewOperateState.POS_LEFT) {
           compoundAttackHitsR++;
           actionId = RightCompoundAttackHITS;
@@ -498,8 +515,8 @@ class RefViewMatch {
         }
       }
 
-      if (event.hint.contains("Compound attack") &&
-          event.hint.contains("Off Target")) {
+      if (event.hint.contains(RefViewOperateState.ACTION_COMPOUND_ATTACK) &&
+          event.hint.contains(RefViewOperateState.ACTION_OFF_TARGET)) {
         if (event.isLeftLost == RefViewOperateState.POS_LEFT) {
           compoundAttackOffTarR++;
           actionId = RightCompoundAttackOffTarget;
@@ -512,7 +529,8 @@ class RefViewMatch {
         }
       }
 
-      if (event.hint.contains("Point in line") && event.hint.contains("Hits")) {
+      if (event.hint.contains(RefViewOperateState.ACTION_POINT_IN_LINE) &&
+          event.hint.contains(RefViewOperateState.ACTION_HITS)) {
         if (event.isLeftLost == RefViewOperateState.POS_LEFT) {
           pointInLineHitsR++;
           actionId = RightPointInLineHITS;
@@ -525,8 +543,8 @@ class RefViewMatch {
         }
       }
 
-      if (event.hint.contains("Point in line") &&
-          event.hint.contains("Off Target")) {
+      if (event.hint.contains(RefViewOperateState.ACTION_POINT_IN_LINE) &&
+          event.hint.contains(RefViewOperateState.ACTION_OFF_TARGET)) {
         if (event.isLeftLost == RefViewOperateState.POS_LEFT) {
           pointInLineOffTarR++;
           actionId = RightPointInLineOffTarget;
@@ -539,7 +557,8 @@ class RefViewMatch {
         }
       }
 
-      if (event.hint.contains("Parry-riposte") && event.hint.contains("Hits")) {
+      if (event.hint.contains(RefViewOperateState.ACTION_PARRY_RIPOSTE) &&
+          event.hint.contains(RefViewOperateState.ACTION_HITS)) {
         if (event.isLeftLost == RefViewOperateState.POS_LEFT) {
           parryRiposteHitsR++;
           actionId = RightParryRiposteHITS;
@@ -552,8 +571,8 @@ class RefViewMatch {
         }
       }
 
-      if (event.hint.contains("Parry-riposte") &&
-          event.hint.contains("Off Target")) {
+      if (event.hint.contains(RefViewOperateState.ACTION_PARRY_RIPOSTE) &&
+          event.hint.contains(RefViewOperateState.ACTION_OFF_TARGET)) {
         if (event.isLeftLost == RefViewOperateState.POS_LEFT) {
           parryRiposteOffTargetR++;
           actionId = RightParryRiposteOffTarget;
@@ -566,7 +585,8 @@ class RefViewMatch {
         }
       }
 
-      if (event.hint.contains("Counterattack") && event.hint.contains("Hits")) {
+      if (event.hint.contains(RefViewOperateState.ACTION_COUNTERATTACK) &&
+          event.hint.contains(RefViewOperateState.ACTION_HITS)) {
         if (event.isLeftLost == RefViewOperateState.POS_LEFT) {
           counterattackHitsR++;
           actionId = RightCounterattackHITS;
@@ -579,8 +599,8 @@ class RefViewMatch {
         }
       }
 
-      if (event.hint.contains("Counterattack") &&
-          event.hint.contains("Off Target")) {
+      if (event.hint.contains(RefViewOperateState.ACTION_COUNTERATTACK) &&
+          event.hint.contains(RefViewOperateState.ACTION_OFF_TARGET)) {
         if (event.isLeftLost == RefViewOperateState.POS_LEFT) {
           counterattackOffTarR++;
           actionId = RightCounterattackOffTarget;
@@ -593,7 +613,8 @@ class RefViewMatch {
         }
       }
 
-      if (event.hint.contains("Remise") && event.hint.contains("Hits")) {
+      if (event.hint.contains(RefViewOperateState.ACTION_REMISE) &&
+          event.hint.contains(RefViewOperateState.ACTION_HITS)) {
         if (event.isLeftLost == RefViewOperateState.POS_LEFT) {
           remiseHitsR++;
           actionId = RightRemiseHITS;
@@ -606,7 +627,8 @@ class RefViewMatch {
         }
       }
 
-      if (event.hint.contains("Remise") && event.hint.contains("Off Target")) {
+      if (event.hint.contains(RefViewOperateState.ACTION_REMISE) &&
+          event.hint.contains(RefViewOperateState.ACTION_OFF_TARGET)) {
         if (event.isLeftLost == RefViewOperateState.POS_LEFT) {
           remiseOffTarR++;
           actionId = RightRemiseOffTarget;
@@ -826,8 +848,9 @@ class RefViewMatch {
   final int RightREDCARD = 291;
   final int RightBLACKCARD = 292;
 
-  Future<String> saveFireStoreStorage(String path) async {
+  void saveFireStoreStorage(BuildContext context) {
     // path = "/storage/emulated/0/Misc/123123.png";
+    String path = RefViewRecord.currentPath;
 
     // Create a storage reference from our app
     final storageRef = FirebaseStorage.instance.ref();
@@ -838,9 +861,50 @@ class RefViewMatch {
     final mountainImagesRef = storageRef.child("matches/" + id + fName);
 
     //save file
-    await mountainImagesRef.putFile(file);
-    String url = await mountainImagesRef.getDownloadURL();
-    // return mountainImagesRef.fullPath;
-    return url;
+    mountainImagesRef.putFile(file).snapshotEvents.listen((event) {
+      switch (event.state) {
+        case TaskState.running:
+          final progress = 90.0 * (event.bytesTransferred / event.totalBytes);
+          print("Upload is $progress% complete.");
+          RefViewDialog.showLoadingProgress(context, progress.toInt());
+          break;
+        case TaskState.paused:
+          print("Upload is paused.");
+          break;
+        case TaskState.canceled:
+          print("Upload was canceled");
+          break;
+        case TaskState.error:
+          // Handle unsuccessful uploads
+          break;
+        case TaskState.success:
+          // Handle successful uploads on complete
+          // ...
+          mountainImagesRef.getDownloadURL().then((url) {
+            saveFireStore(context, url).then((value) {
+              RefViewDialog.closeLoading(context);
+
+              int index = 0;
+              Navigator.popUntil(context, (route) {
+                if (index < 2) {
+                  index++;
+                  return false;
+                }
+                return true;
+              });
+            }).catchError((error) {
+              RefViewDialog.closeLoading(context);
+              print(error);
+              Fluttertoast.showToast(msg: "Save Error");
+            }).onError((error, stackTrace) {
+              RefViewDialog.closeLoading(context);
+              print(error);
+              Fluttertoast.showToast(msg: "Save Error");
+            });
+            ;
+          });
+          break;
+      }
+    });
   }
 }

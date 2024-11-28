@@ -89,6 +89,24 @@ class RefViewOperateState extends State {
   static const int MENU_CARD_RED = 1;
   static const int MENU_CARD_BLACK = 2;
 
+  static const String ACTION_SIMPLE = "Simple attack";
+  static const String ACTION_SIMPLE_ATTACK_DIRECT = "Simple attack Direct";
+  static const String ACTION_SIMPLE_ATTACK_DISENGAGE = "Simple attack Disengage";
+  static const String ACTION_COMPOUND_ATTACK = "Compound attack";
+  static const String ACTION_BEAT_ATTACK = "Beat Attack";
+
+  static const String ACTION_ATTACK_IN_PREPARATION = "Attack in Preparation";
+  static const String ACTION_PARRY_RIPOSTE = "Parry-Riposte";
+  static const String ACTION_ATTACT_NO_ATTACK = "Attack No, Attack";
+  static const String ACTION_POINT_IN_LINE = "Point in line";
+
+  static const String ACTION_COUNTERATTACK = "Counterattack";
+  static const String ACTION_REMISE = "Remise";
+  static const String ACTION_SIMULTANEOUS = "Simultaneous";
+
+  static const String ACTION_HITS = "Hits";
+  static const String ACTION_OFF_TARGET = "Off Target";
+
   RefViewOperateState(
       RefViewOperateConfirm confirm,
       RefViewMatch match,
@@ -625,8 +643,8 @@ class RefViewOperateState extends State {
   List<PieChartSectionData> currentMenu() {
     if (currentMenuType == MENU_MAIN) {
       return [
-        getMenu(0, "Swords", red, swordsIcon),
-        getMenu(1, "Shield", green, shieldIcon),
+        getMenu(0, "Swords", green, swordsIcon),
+        getMenu(1, "Shield", red, shieldIcon),
         getMenu(2, "Circle", blue, circleIcon)
       ];
     }
@@ -641,27 +659,30 @@ class RefViewOperateState extends State {
 
     if (currentMenuType == MENU_SWORDS) {
       return [
-        getMenu(0, "Simple attack", red, ""),
-        getMenu(1, "Compound attack", red, ""),
-        getMenu(2, "Point in line", red, ""),
+        getMenu(0, ACTION_SIMPLE_ATTACK_DIRECT, green, ""),
+        getMenu(1, ACTION_SIMPLE_ATTACK_DISENGAGE, green, ""),
+        getMenu(2, ACTION_COMPOUND_ATTACK, green, ""),
+        // getMenu(2, "Point in line", green, ""),
         // getMenu(3, "Indirect Attack"),
-        getMenu(3, "Beat Attack", red, "")
+        getMenu(3, ACTION_BEAT_ATTACK, green, "")
       ];
     }
 
     if (currentMenuType == MENU_SHIELD) {
       return [
-        getMenu(0, "Parry-riposte", green, ""),
-        getMenu(1, "Attack no, attack", green, ""),
-        getMenu(2, "Opposition", green, ""),
+        getMenu(0, ACTION_PARRY_RIPOSTE, red, ""),
+        getMenu(1, ACTION_ATTACT_NO_ATTACK, red, ""),
+        getMenu(2, ACTION_POINT_IN_LINE, red, ""),
+        getMenu(3, ACTION_ATTACK_IN_PREPARATION, red, ""),
+        // getMenu(2, "Opposition", red, ""),
       ];
     }
 
     if (currentMenuType == MENU_CIRCLE) {
       return [
-        getMenu(0, "Counterattack", blue, ""),
-        getMenu(1, "Remise", blue, ""),
-        getMenu(2, "Simultaneous", blue, ""),
+        getMenu(0, ACTION_COUNTERATTACK, blue, ""),
+        getMenu(1, ACTION_REMISE, blue, ""),
+        getMenu(2, ACTION_SIMULTANEOUS, blue, ""),
       ];
     }
     return [];
@@ -819,8 +840,8 @@ class RefViewOperateState extends State {
       confirmHint = "Ok";
       cancelHint = "Cancel";
     } else {
-      confirmHint = "Hits";
-      cancelHint = "Off Target";
+      confirmHint = ACTION_HITS;
+      cancelHint = ACTION_OFF_TARGET;
     }
   }
 
@@ -859,9 +880,9 @@ class RefViewOperateState extends State {
       }
       if (isValid) {
         event.lost = 1;
-        event.hint = centerHint + " Hits";
+        event.hint = centerHint + " " + ACTION_HITS;
       } else {
-        event.hint = centerHint + " Off Target";
+        event.hint = centerHint + " " + ACTION_OFF_TARGET;
       }
     }
 

@@ -48,6 +48,50 @@ class RefViewDialog {
     );
   }
 
+  static void showLoadingProgress(BuildContext context, int progress) {
+    if (isShow) {
+      closeLoading(context);
+    }
+    isShow = true;
+    showDialog(
+      barrierDismissible: false,
+      barrierColor: Colors.transparent,
+      context: context,
+      builder: (BuildContext context) {
+        return WillPopScope(
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                Container(
+                    width: 100,
+                    height: 100,
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(10.0))),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.schedule,
+                          color: Colors.black,
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          "loading " + progress.toString() + "%",
+                          style: TextStyle(color: Colors.black, fontSize: 13),
+                        )
+                      ],
+                    ))
+              ],
+            ),
+            onWillPop: () async {
+              return false;
+            });
+      },
+    );
+  }
+
   static void closeLoading(BuildContext context) {
     if (!isShow) {
       return;
@@ -282,25 +326,7 @@ class ExitWidgetState extends State<ExitWidget> {
                         onTap: () {
                           refViewMatch!.selectResult = 0;
 
-                          RefViewDialog.showLoading(context);
-                          refViewMatch!.saveFireStore().then((value) {
-                            RefViewDialog.closeLoading(context);
-
-                            int index = 0;
-                            Navigator.popUntil(context, (route) {
-                              if (index < 2) {
-                                index++;
-                                return false;
-                              }
-                              return true;
-                            });
-                          }).catchError((error) {
-                            RefViewDialog.closeLoading(context);
-                            Fluttertoast.showToast(msg: "Save Error");
-                          }).onError((error, stackTrace){
-                            RefViewDialog.closeLoading(context);
-                            Fluttertoast.showToast(msg: "Save Error");
-                          });
+                          saveData();
                         },
                         child: btnViewW("No one wins", greyColor, 120, 0)),
                     Expanded(child: SizedBox()),
@@ -311,24 +337,7 @@ class ExitWidgetState extends State<ExitWidget> {
                             return;
                           }
 
-                          RefViewDialog.showLoading(context);
-                          refViewMatch!.saveFireStore().then((value) {
-                            RefViewDialog.closeLoading(context);
-                            int index = 0;
-                            Navigator.popUntil(context, (route) {
-                              if (index < 2) {
-                                index++;
-                                return false;
-                              }
-                              return true;
-                            });
-                          }).catchError((error) {
-                            RefViewDialog.closeLoading(context);
-                            Fluttertoast.showToast(msg: "Save Error");
-                          }).onError((error, stackTrace){
-                            RefViewDialog.closeLoading(context);
-                            Fluttertoast.showToast(msg: "Save Error");
-                          });
+                          saveData();
                         },
                         child: btnViewW("Confirm", blueColor, 120, 0)),
                     Expanded(child: SizedBox()),
@@ -471,6 +480,11 @@ class ExitWidgetState extends State<ExitWidget> {
       },
     );
   }
+
+  void saveData() {
+    RefViewDialog.showLoadingProgress(context, 0);
+    refViewMatch!.saveFireStoreStorage(context);
+  }
 }
 
 class CoinWidget extends StatefulWidget {
@@ -527,7 +541,6 @@ class CoinWidgetState extends State<CoinWidget> {
     //
 
     Future.delayed(Duration(milliseconds: result == 1 ? 1900 : 1100), () {
-
       if (result == 1) {
         coinUrl = coinOn;
         hint = refViewMatch!.leftName + " priority";
