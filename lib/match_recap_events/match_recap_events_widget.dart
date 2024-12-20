@@ -124,6 +124,7 @@ class _MatchRecapEventsWidgetState extends State<MatchRecapEventsWidget> {
                                 builder: (context) =>
                                     MatchRecapEventVideoWidget(
                                   videoURL: currentMatchEventItem.videoURL,
+                                      duration: (currentMatchEventItem.timeOfAction - 3000)<=0? 0 : (currentMatchEventItem.timeOfAction - 3000),
                                 ),
                               ),
                             );

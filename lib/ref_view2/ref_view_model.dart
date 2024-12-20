@@ -220,7 +220,8 @@ class RefViewMatch {
 
     // String vUrl =
     //     await saveFireStoreStorage(context, RefViewRecord.currentPath);
-
+    var lScoreS = 0;
+    var rScoreS = 0;
     for (int i = 0; i < periodList!.length; i++) {
       List<RefViewEvent> eventList = periodList![i];
       MatchStatSnapshotStruct pM = initSnap(i);
@@ -240,28 +241,50 @@ class RefViewMatch {
         MatchStatSnapshotStruct snapshotStruct = results.$1;
         int actionId = results.$2;
 
+        lScoreS+=lScore;
+        rScoreS+=rScore;
         MatchEventStruct eventStruct = MatchEventStruct(
             actionableFencer: lScore >= rScore
                 ? FFAppState().leftFencerRef
                 : FFAppState().rightFencerRef,
             actionID: actionId,
-            scoreRight: rScore,
-            scoreLeft: lScore,
-            timeOfAction: event.time,
+            scoreRight: rScoreS,
+            scoreLeft: lScoreS,
+            timeOfAction: event.time * 1000,
             periodOfAction: (i + 1),
             videoURL: vUrl);
         _matchEvents.add(eventStruct.toMap());
 
-        StatlineStruct statlineStruct = StatlineStruct(
-            leftStat: lScore.toDouble(),
-            rightStat: rScore.toDouble(),
-            label: "");
-
-        _statlines.add(statlineStruct.toMap());
+        // StatlineStruct statlineStruct = StatlineStruct(
+        //     leftStat: lScore.toDouble(),
+        //     rightStat: rScore.toDouble(),
+        //     label: "");
+        //
+        // _statlines.add(statlineStruct.toMap());
 
         _matchStats.add(snapshotStruct.toMap());
       }
       _periodStats.add(pM.toMap());
+    }
+
+    var label = ["Points", "YellowCards", "RedCards", "Simultaneous", "Halts", "SimpleAttackHits", "SimpleAttackOffTar", "CompoundAttackHits", "CompoundAttackOffTar",
+    "ParryRiposteHits", "ParryRiposteOffTarget", "RemiseHits", "RemiseOffTar", "CounterattackHits", "CounterattackOffTar", "PointInLineHits", "PointInLineOffTar"];
+
+    var leftStat = [_overallStats.pointsL, _overallStats.yellowCardsL, _overallStats.redCardsL, _overallStats.simultaneous, _overallStats.haltsL, _overallStats.simpleAttackHitsL,
+      _overallStats.simpleAttackOffTarL, _overallStats.compoundAttackHitsL, _overallStats.compoundAttackOffTarL, _overallStats.parryRiposteHitsL, _overallStats.parryRiposteOffTargetL,
+    _overallStats.remiseHitsL, _overallStats.remiseOffTarL, _overallStats.counterattackHitsL, _overallStats.counterattackOffTarL, _overallStats.pointInLineHitsL, _overallStats.pointInLineOffTarL];
+
+    var rightStat = [_overallStats.pointsR, _overallStats.yellowCardsR, _overallStats.redCardsR, _overallStats.simultaneous, _overallStats.haltsR, _overallStats.simpleAttackHitsR,
+      _overallStats.simpleAttackOffTarR, _overallStats.compoundAttackHitsR, _overallStats.compoundAttackOffTarR, _overallStats.parryRiposteHitsR, _overallStats.parryRiposteOffTargetR,
+      _overallStats.remiseHitsR, _overallStats.remiseOffTarR, _overallStats.counterattackHitsR, _overallStats.counterattackOffTarR, _overallStats.pointInLineHitsR, _overallStats.pointInLineOffTarR];
+
+    for(int sl = 0; sl<label.length ; sl++){
+      StatlineStruct statlineStruct = StatlineStruct(
+          leftStat: leftStat[sl].toDouble(),
+          rightStat: rightStat[sl].toDouble(),
+          label: label[sl]);
+
+      _statlines.add(statlineStruct.toMap());
     }
 
     //statsLog
@@ -296,18 +319,18 @@ class RefViewMatch {
     await matchdetailsDevRecord.set(matchdetailsDevData);
 
     MatchstatslogDevRecord matchstatslogDevRecordRes =
-        MatchstatslogDevRecord.getDocumentFromData(
-            mapFromFirestore(matchstatslogDevData), matchstatslogDevRecord);
+    MatchstatslogDevRecord.getDocumentFromData(
+        mapFromFirestore(matchstatslogDevData), matchstatslogDevRecord);
 
     MatchdetailsDevRecord matchdetailsDevRecordRes =
-        MatchdetailsDevRecord.getDocumentFromData(
-            mapFromFirestore(matchdetailsDevData), matchdetailsDevRecord);
+    MatchdetailsDevRecord.getDocumentFromData(
+        mapFromFirestore(matchdetailsDevData), matchdetailsDevRecord);
 
     //main
     final matchesDevRecord = MatchesDevRecord.collection.doc(id);
     //
     LatLng currentUserLocationValue =
-        await getCurrentUserLocation(defaultLocation: LatLng(0.0, 0.0));
+    await getCurrentUserLocation(defaultLocation: LatLng(0.0, 0.0));
     final matchesDevData = {
       ...createMatchesDevRecordData(
           user1: FFAppState().leftFencerRef,
@@ -641,6 +664,11 @@ class RefViewMatch {
         }
       }
 
+      if (event.hint.contains(RefViewOperateState.ACTION_SIMULTANEOUS)) {
+        simultaneous++;
+        actionId = RefSimultaneousHITS;
+      }
+
       if (event.isLeftChange == RefViewOperateState.POS_LEFT) {
         haltsRef = event.isLeftChange;
         haltsL++;
@@ -649,6 +677,13 @@ class RefViewMatch {
         haltsRef = event.isLeftChange;
         haltsR++;
       }
+    }
+
+    if (event.isLeftLost == RefViewOperateState.POS_LEFT) {
+      pointsR = event.lost.toInt();
+    }
+    if (event.isLeftLost == RefViewOperateState.POS_RIGHT) {
+      pointsL = event.lost.toInt();
     }
 
     MatchStatSnapshotStruct snapshotStruct = MatchStatSnapshotStruct(
@@ -691,6 +726,7 @@ class RefViewMatch {
     );
 
     total.pointsL += snapshotStruct.pointsL;
+    total.pointsR += snapshotStruct.pointsR;
     total.yellowCardsL += snapshotStruct.yellowCardsL;
     total.yellowCardsR += snapshotStruct.yellowCardsR;
     total.redCardsL += snapshotStruct.redCardsL;
@@ -725,6 +761,7 @@ class RefViewMatch {
     total.pointInLineOffTarR += snapshotStruct.pointInLineOffTarR;
 
     ptotal.pointsL += snapshotStruct.pointsL;
+    ptotal.pointsR += snapshotStruct.pointsR;
     ptotal.yellowCardsL += snapshotStruct.yellowCardsL;
     ptotal.yellowCardsR += snapshotStruct.yellowCardsR;
     ptotal.redCardsL += snapshotStruct.redCardsL;
@@ -875,11 +912,11 @@ class RefViewMatch {
           print("Upload was canceled");
           break;
         case TaskState.error:
-          // Handle unsuccessful uploads
+        // Handle unsuccessful uploads
           break;
         case TaskState.success:
-          // Handle successful uploads on complete
-          // ...
+        // Handle successful uploads on complete
+        // ...
           mountainImagesRef.getDownloadURL().then((url) {
             saveFireStore(context, url).then((value) {
               RefViewDialog.closeLoading(context);

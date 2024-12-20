@@ -29,6 +29,7 @@ class FlutterFlowVideoPlayer extends StatefulWidget {
     this.allowPlaybackSpeedMenu = false,
     this.lazyLoad = false,
     this.pauseOnNavigate = true,
+    this.duration = 0,
   });
 
   final String path;
@@ -43,6 +44,7 @@ class FlutterFlowVideoPlayer extends StatefulWidget {
   final bool allowPlaybackSpeedMenu;
   final bool lazyLoad;
   final bool pauseOnNavigate;
+  final int duration;
 
   @override
   State<StatefulWidget> createState() => _FlutterFlowVideoPlayerState();
@@ -126,6 +128,8 @@ class _FlutterFlowVideoPlayerState extends State<FlutterFlowVideoPlayer>
     if (!widget.lazyLoad) {
       await _videoPlayerController?.initialize();
     }
+    _videoPlayerController!.seekTo(Duration(milliseconds: widget.duration));
+
     _chewieController = ChewieController(
       videoPlayerController: _videoPlayerController!,
       deviceOrientationsOnEnterFullScreen: [

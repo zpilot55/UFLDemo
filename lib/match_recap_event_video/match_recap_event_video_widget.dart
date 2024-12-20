@@ -14,9 +14,11 @@ class MatchRecapEventVideoWidget extends StatefulWidget {
   const MatchRecapEventVideoWidget({
     Key? key,
     this.videoURL,
+    this.duration = 0,
   }) : super(key: key);
 
   final String? videoURL;
+  final int? duration;
 
   @override
   _MatchRecapEventVideoWidgetState createState() =>
@@ -95,6 +97,7 @@ class _MatchRecapEventVideoWidgetState
         showControls: true,
         allowFullScreen: true,
         allowPlaybackSpeedMenu: true,
+        duration: widget.duration!,
       ),
     );
   }
