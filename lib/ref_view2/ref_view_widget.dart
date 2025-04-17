@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import 'package:device_info/device_info.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -80,8 +81,37 @@ class RefViewPageState extends State<RefViewPage> {
 
       refViewRecord = RefViewRecord(camera: controller!);
 
-      bool isH =
-          await requestPermission([Permission.camera, Permission.microphone]);
+      bool isHS = false;
+      if (Platform.isAndroid) {
+        DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+        AndroidDeviceInfo androidDeviceInfo = await deviceInfo.androidInfo;
+        if (androidDeviceInfo.version.sdkInt >= 33) { //android 13
+          isHS = await requestPermission([
+            Permission.manageExternalStorage
+          ]);
+        } else {
+          isHS = await requestPermission([
+            Permission.storage
+          ]);
+        }
+      }else{
+        isHS = await requestPermission([
+          Permission.storage
+        ]);
+      }
+
+      if(!isHS){
+        Fluttertoast.showToast(
+            msg: "Error Permission Please Check The Settings");
+        Navigator.pop(context);
+        return;
+      }
+
+      bool isH = await requestPermission([
+        Permission.camera,
+        Permission.microphone,
+      ]);
+
       if (isH) {
         controller!.initialize().then((_) {
           if (!mounted) {
@@ -92,10 +122,10 @@ class RefViewPageState extends State<RefViewPage> {
           if (e is CameraException) {
             switch (e.code) {
               case 'CameraAccessDenied':
-                // Handle access errors here.
+              // Handle access errors here.
                 break;
               default:
-                // Handle other errors here.
+              // Handle other errors here.
                 break;
             }
           }
@@ -171,43 +201,49 @@ class RefViewPageState extends State<RefViewPage> {
     return WillPopScope(
         child: MaterialApp(
             home: Scaffold(
-          // appBar: AppBar(title: Text("test"),backgroundColor: Colors.red),
-          extendBodyBehindAppBar: true, //主要代码为extendBodyBehindAppBar 这个属性
-          appBar: AppBar(
-            centerTitle: true,
-            // 标题居中
-            backgroundColor: getAppBarBackground(),
-            // 背景颜色设置为透明
-            shadowColor: getAppBarBackground(),
-            // 阴影也要设置为透明
-            //把AppBar 设置为透明色
-            elevation: 0,
-            title: getAppBarMain(),
-            leading: getAppBarIcon(),
-            titleTextStyle: TextStyle(color: Colors.white, fontSize: 20),
-          ),
-          body: Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            child: Stack(alignment: Alignment.center, children: [
-              cameraView(), //底层相机
-              Visibility(
-                child: videoView(),
-                visible: isShowVideo,
-              ), //回放
-              Visibility(child: infoView(), visible: state == 0), //信息
-              Visibility(child: progressView(), visible: state == 1), //进行中
-              Visibility(child: resultView(), visible: state == 2), //结果
-              Visibility(
-                child: eventView(),
-                visible: state == 3,
-              ), //事件,
-              Visibility(child: seekView(), visible: isShowVideo),
-              Visibility(child: speedView(), visible: isShowVideo),
-            ]),
-          ),
-          // bottomNavigationBar: Text("123"),
-        )),
+              // appBar: AppBar(title: Text("test"),backgroundColor: Colors.red),
+              extendBodyBehindAppBar: true, //主要代码为extendBodyBehindAppBar 这个属性
+              appBar: AppBar(
+                centerTitle: true,
+                // 标题居中
+                backgroundColor: getAppBarBackground(),
+                // 背景颜色设置为透明
+                shadowColor: getAppBarBackground(),
+                // 阴影也要设置为透明
+                //把AppBar 设置为透明色
+                elevation: 0,
+                title: getAppBarMain(),
+                leading: getAppBarIcon(),
+                titleTextStyle: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+              body: Container(
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width,
+                height: MediaQuery
+                    .of(context)
+                    .size
+                    .height,
+                child: Stack(alignment: Alignment.center, children: [
+                  cameraView(), //底层相机
+                  Visibility(
+                    child: videoView(),
+                    visible: isShowVideo,
+                  ), //回放
+                  Visibility(child: infoView(), visible: state == 0), //信息
+                  Visibility(child: progressView(), visible: state == 1), //进行中
+                  Visibility(child: resultView(), visible: state == 2), //结果
+                  Visibility(
+                    child: eventView(),
+                    visible: state == 3,
+                  ), //事件,
+                  Visibility(child: seekView(), visible: isShowVideo),
+                  Visibility(child: speedView(), visible: isShowVideo),
+                ]),
+              ),
+              // bottomNavigationBar: Text("123"),
+            )),
         onWillPop: () async {
           clickExit();
           return false;
@@ -233,8 +269,14 @@ class RefViewPageState extends State<RefViewPage> {
   Widget cameraView() {
     if (controller == null || !controller!.value.isInitialized) {
       return Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
+        width: MediaQuery
+            .of(context)
+            .size
+            .width,
+        height: MediaQuery
+            .of(context)
+            .size
+            .height,
         decoration: BoxDecoration(
             image: DecorationImage(
                 fit: BoxFit.cover,
@@ -257,18 +299,18 @@ class RefViewPageState extends State<RefViewPage> {
       children: [
         Expanded(
             child: Container(
-          color: Colors.black,
-        )),
+              color: Colors.black,
+            )),
         videoController != null && videoController!.value.isInitialized
             ? AspectRatio(
-                aspectRatio: videoController!.value.aspectRatio,
-                child: VideoPlayer(videoController!),
-              )
+          aspectRatio: videoController!.value.aspectRatio,
+          child: VideoPlayer(videoController!),
+        )
             : Container(color: Colors.black),
         Expanded(
             child: Container(
-          color: Colors.black,
-        )),
+              color: Colors.black,
+            )),
       ],
     );
   }
@@ -334,34 +376,34 @@ class RefViewPageState extends State<RefViewPage> {
           children: [
             Expanded(
                 child: Stack(
-              children: [
-                Container(
-                  key: isLeft ? globalKey : null,
-                  alignment: Alignment.center,
-                  height: 10,
-                  margin: EdgeInsets.only(
-                      left: isLeft ? 28 : 55, right: isLeft ? 55 : 28),
-                  // padding: EdgeInsets.only(top: 3, bottom: 3),
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image:
+                  children: [
+                    Container(
+                      key: isLeft ? globalKey : null,
+                      alignment: Alignment.center,
+                      height: 10,
+                      margin: EdgeInsets.only(
+                          left: isLeft ? 28 : 55, right: isLeft ? 55 : 28),
+                      // padding: EdgeInsets.only(top: 3, bottom: 3),
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image:
                               AssetImage("assets/images/life_background.png"),
-                          fit: BoxFit.fill)),
-                ),
-                Container(
-                  alignment: Alignment.center,
-                  height: 10,
-                  margin: EdgeInsets.only(
-                      left: isLeft ? 28 : 55 + rightBlood,
-                      right: isLeft ? 55 + leftBlood : 28),
-                  // padding: EdgeInsets.only(top: 3, bottom: 3),
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage("assets/images/life_value.png"),
-                          fit: BoxFit.fill)),
-                )
-              ],
-            ))
+                              fit: BoxFit.fill)),
+                    ),
+                    Container(
+                      alignment: Alignment.center,
+                      height: 10,
+                      margin: EdgeInsets.only(
+                          left: isLeft ? 28 : 55 + rightBlood,
+                          right: isLeft ? 55 + leftBlood : 28),
+                      // padding: EdgeInsets.only(top: 3, bottom: 3),
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage("assets/images/life_value.png"),
+                              fit: BoxFit.fill)),
+                    )
+                  ],
+                ))
           ],
         )
       ],
@@ -455,59 +497,61 @@ class RefViewPageState extends State<RefViewPage> {
                 ),
                 Expanded(
                     child: Container(
-                  alignment: Alignment.center,
-                  margin: EdgeInsets.only(bottom: 10),
-                  child: ClipPath(
-                    // shape: BeveledRectangleBorder(
-                    //     // side: BorderSide(width: 1, color: Colors.red),
-                    //     borderRadius: BorderRadius.only(
-                    //         topLeft: Radius.elliptical(-10, 20),
-                    //         bottomLeft: Radius.elliptical(40, 80),
-                    //         bottomRight: Radius.circular(80))),
-                    clipper: TrianglePath(),
-                    child: Container(
-                      height: 60,
-                      // width: 250,
-                      // alignment: Alignment.center,
-                      color: Color.fromRGBO(0, 0, 0, 0.5),
-                      padding: EdgeInsets.only(left: 0, right: 0, top: 0),
-                      // decoration: ,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Expanded(child: bloodView(true)),
-                          SizedBox(width: 5),
-                          Text(
-                            refViewMatch.leftScore.toString(),
-                            style: TextStyle(color: Colors.white, fontSize: 18),
-                          ),
-                          SizedBox(width: 15),
-                          Column(
+                      alignment: Alignment.center,
+                      margin: EdgeInsets.only(bottom: 10),
+                      child: ClipPath(
+                        // shape: BeveledRectangleBorder(
+                        //     // side: BorderSide(width: 1, color: Colors.red),
+                        //     borderRadius: BorderRadius.only(
+                        //         topLeft: Radius.elliptical(-10, 20),
+                        //         bottomLeft: Radius.elliptical(40, 80),
+                        //         bottomRight: Radius.circular(80))),
+                        clipper: TrianglePath(),
+                        child: Container(
+                          height: 60,
+                          // width: 250,
+                          // alignment: Alignment.center,
+                          color: Color.fromRGBO(0, 0, 0, 0.5),
+                          padding: EdgeInsets.only(left: 0, right: 0, top: 0),
+                          // decoration: ,
+                          child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
+                              Expanded(child: bloodView(true)),
+                              SizedBox(width: 5),
                               Text(
-                                  "Period " +
-                                      refViewMatch.currentPeriod.toString(),
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 13)),
-                              SizedBox(height: 5),
-                              Text(currentTime,
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 15)),
+                                refViewMatch.leftScore.toString(),
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 18),
+                              ),
+                              SizedBox(width: 15),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                      "Period " +
+                                          refViewMatch.currentPeriod.toString(),
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 13)),
+                                  SizedBox(height: 5),
+                                  Text(currentTime,
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 15)),
+                                ],
+                              ),
+                              SizedBox(width: 15),
+                              Text(
+                                refViewMatch.rightScore.toString(),
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 18),
+                              ),
+                              SizedBox(width: 5),
+                              Expanded(child: bloodView(false))
                             ],
                           ),
-                          SizedBox(width: 15),
-                          Text(
-                            refViewMatch.rightScore.toString(),
-                            style: TextStyle(color: Colors.white, fontSize: 18),
-                          ),
-                          SizedBox(width: 5),
-                          Expanded(child: bloodView(false))
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
-                )),
+                    )),
                 Column(
                   children: [
                     // SizedBox(height: 25),
@@ -524,41 +568,41 @@ class RefViewPageState extends State<RefViewPage> {
             )),
         Expanded(
             child: Row(children: [
-          Expanded(
-              child: Container(
-            child: refViewOperate = RefViewOperate(
-                match: refViewMatch,
-                record: refViewRecord!,
-                confirm: (int tb) {
-                  // setResumeState();
-                  setState(() {
-                    updateBlood();
-                  });
-                },
-                pause: (bool isPauseBtn) {
-                  if (isPauseBtn) {
-                    _getWH();
-                    setResumeState(true, -1);
-                  } else {
-                    refViewTime!.stopTime();
-                    refViewRecord!.stop(stop: () {
-                      showVideo();
-                    });
-                  }
-                },
-                resume: () {
-                  refViewRecord!.start(start: () {
-                    refViewTime!.startTime();
-                    hideVideo();
-                  });
-                },
-                mark: () {
-                  refViewRecord!.mark(context);
-                }),
-            // color: Colors.deepPurple,
-          )),
-          // Expanded(child: PieChartPage())
-        ]))
+              Expanded(
+                  child: Container(
+                    child: refViewOperate = RefViewOperate(
+                        match: refViewMatch,
+                        record: refViewRecord!,
+                        confirm: (int tb) {
+                          // setResumeState();
+                          setState(() {
+                            updateBlood();
+                          });
+                        },
+                        pause: (bool isPauseBtn) {
+                          if (isPauseBtn) {
+                            _getWH();
+                            setResumeState(true, -1);
+                          } else {
+                            refViewTime!.stopTime();
+                            refViewRecord!.stop(stop: () {
+                              showVideo();
+                            });
+                          }
+                        },
+                        resume: () {
+                          refViewRecord!.start(start: () {
+                            refViewTime!.startTime();
+                            hideVideo();
+                          });
+                        },
+                        mark: () {
+                          refViewRecord!.mark(context);
+                        }),
+                    // color: Colors.deepPurple,
+                  )),
+              // Expanded(child: PieChartPage())
+            ]))
       ],
     );
 
@@ -606,14 +650,14 @@ class RefViewPageState extends State<RefViewPage> {
   Widget getAppBarIcon() {
     return state != 1
         ? GestureDetector(
-            onTap: () {
-              goBack();
-            },
-            child: Icon(
-              Icons.arrow_back_ios_new,
-              color: Colors.white,
-            ),
-          )
+      onTap: () {
+        goBack();
+      },
+      child: Icon(
+        Icons.arrow_back_ios_new,
+        color: Colors.white,
+      ),
+    )
         : Text("");
   }
 
@@ -664,62 +708,76 @@ class RefViewPageState extends State<RefViewPage> {
   Widget infoView() {
     return SafeArea(
         child: Row(children: [
-      infoMenuView(refViewMatch.leftIcon, refViewMatch.leftName, 0, true,
-          refViewMatch.priority == 1),
-      Expanded(
-          child: Container(
-        // padding: EdgeInsets.only(top: 10, bottom: 10),
-        child: Column(children: [
-          SizedBox(height: 10),
-          Text(
-            "Period: " + refViewMatch.currentPeriod.toString(),
-            style: TextStyle(color: Colors.white, fontSize: 16),
-          ),
-          SizedBox(height: 5),
-          isShowInfoSelect()
-              ? infoSelectView("Weapon:", infoWeaponView())
-              : SizedBox(height: 5),
-          SizedBox(height: 5),
-          isShowInfoSelect()
-              ? infoSelectView("Periods:", infoPeriodsView())
-              : SizedBox(height: 5),
-          SizedBox(height: 5),
-          isShowInfoSelect()
-              ? infoSelectView("Touches:", infoTouchesView())
-              : SizedBox(height: 5),
-          //快速比赛信息选择
-          SizedBox(height: 5),
-          Text(
-            refViewMatch.leftScore.toString() +
-                " - " +
-                refViewMatch.rightScore.toString(),
-            style: TextStyle(
-                color: Colors.white, fontSize: 30, fontWeight: FontWeight.w500),
-          ),
-          Expanded(child: SizedBox()),
-          GestureDetector(
-              onTap: () {
-                clickExit();
-              },
-              child: btnView("END BOUT", blackColor, 0)),
-          SizedBox(
-            height: 10,
-          ),
-          GestureDetector(
-              onTap: () {
-                setRecordState(true);
+          infoMenuView(refViewMatch.leftIcon, refViewMatch.leftName, 0, true,
+              refViewMatch.priority == 1),
+          Expanded(
+              child: Container(
+                // padding: EdgeInsets.only(top: 10, bottom: 10),
+                child: Column(children: [
+                  SizedBox(height: 10),
+                  Text(
+                    "Period: " + refViewMatch.currentPeriod.toString(),
+                    style: TextStyle(color: Colors.white, fontSize: 15),
+                  ),
+                  Expanded(child: SizedBox()),
+                  isShowInfoSelect()
+                      ? infoSelectView("Weapon:", infoWeaponView())
+                      : SizedBox(height: 5),
+                  Expanded(child: SizedBox()),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      isShowInfoSelect()
+                          ? infoSelectView("Periods:", infoPeriodsView())
+                          : SizedBox(height: 5),
+                      SizedBox(width: 15),
+                      isShowInfoSelect()
+                          ? infoSelectView("Touches:", infoTouchesView())
+                          : SizedBox(height: 5),
+                    ],
+                  ),
+                  // isShowInfoSelect()
+                  //     ? infoSelectView("Periods:", infoPeriodsView())
+                  //     : SizedBox(height: 5),
+                  // SizedBox(height: 5),
+                  // isShowInfoSelect()
+                  //     ? infoSelectView("Touches:", infoTouchesView())
+                  //     : SizedBox(height: 5),
+                  //快速比赛信息选择
+                  Expanded(child: SizedBox()),
+                  Text(
+                    refViewMatch.leftScore.toString() +
+                        " - " +
+                        refViewMatch.rightScore.toString(),
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 30,
+                        fontWeight: FontWeight.w500),
+                  ),
+                  Expanded(child: SizedBox()),
+                  GestureDetector(
+                      onTap: () {
+                        clickExit();
+                      },
+                      child: btnView("END BOUT", blackColor, 0)),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  GestureDetector(
+                      onTap: () {
+                        setRecordState(true);
 
-                // refViewDialog.showCoin(context, refViewMatch, result: (result) {
-                //   setState(() {});
-                // });
-              },
-              child: btnView("START", blueColor, 0)),
-          SizedBox(height: 10),
-        ]),
-      )),
-      infoMenuView(refViewMatch.rightIcon, refViewMatch.rightName, 1, true,
-          refViewMatch.priority == 2),
-    ]));
+                        // refViewDialog.showCoin(context, refViewMatch, result: (result) {
+                        //   setState(() {});
+                        // });
+                      },
+                      child: btnView("START", blueColor, 0)),
+                  SizedBox(height: 10),
+                ]),
+              )),
+          infoMenuView(refViewMatch.rightIcon, refViewMatch.rightName, 1, true,
+              refViewMatch.priority == 2),
+        ]));
   }
 
   bool isShowInfoSelect() {
@@ -729,8 +787,8 @@ class RefViewPageState extends State<RefViewPage> {
     return false;
   }
 
-  Widget infoMenuView(
-      String url, String name, int index, bool isBackground, bool isPriority) {
+  Widget infoMenuView(String url, String name, int index, bool isBackground,
+      bool isPriority) {
     return Container(
         width: 130,
         padding: EdgeInsets.only(top: isBackground ? 40 : 15, bottom: 40),
@@ -738,25 +796,25 @@ class RefViewPageState extends State<RefViewPage> {
         // color: Colors.green,
         decoration: isBackground
             ? index == 0
-                ? BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Color.fromRGBO(0, 199, 255, 0.8),
-                        Color.fromRGBO(0, 138, 165, 0.1),
-                      ],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                    ),
-                  )
-                : BoxDecoration(
-                    gradient: LinearGradient(
-                    colors: [
-                      Color.fromRGBO(255, 38, 0, 0.8),
-                      Color.fromRGBO(159, 25, 3, 0.1),
-                    ],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                  ))
+            ? BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Color.fromRGBO(0, 199, 255, 0.8),
+              Color.fromRGBO(0, 138, 165, 0.1),
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        )
+            : BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color.fromRGBO(255, 38, 0, 0.8),
+                Color.fromRGBO(159, 25, 3, 0.1),
+              ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ))
             : BoxDecoration(),
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           iconView(url, 60, isPriority),
@@ -766,49 +824,49 @@ class RefViewPageState extends State<RefViewPage> {
           Row(
             children: isBackground
                 ? [
-                    Expanded(
-                        child: Container(
-                            height: 50,
-                            alignment: Alignment.center,
-                            decoration: index == 0
-                                ? BoxDecoration(
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        Color.fromRGBO(10, 67, 255, 0.1),
-                                        Color.fromRGBO(0, 199, 255, 1),
-                                      ],
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.centerRight,
-                                    ),
-                                    boxShadow: [
-                                      BoxShadow(
-                                          color: Colors.black38,
-                                          blurRadius: 15,
-                                          offset: Offset(0, 0))
-                                    ],
-                                  )
-                                : BoxDecoration(
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        Color.fromRGBO(255, 38, 0, 0.8),
-                                        Color.fromRGBO(159, 25, 3, 0.1),
-                                      ],
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.centerRight,
-                                    ),
-                                    boxShadow: [
-                                      BoxShadow(
-                                          color: Colors.black38,
-                                          blurRadius: 15,
-                                          offset: Offset(0, 0))
-                                    ],
-                                  ),
-                            child: Text(index == 0 ? "Left" : "Right",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w500))))
-                  ]
+              Expanded(
+                  child: Container(
+                      height: 50,
+                      alignment: Alignment.center,
+                      decoration: index == 0
+                          ? BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Color.fromRGBO(10, 67, 255, 0.1),
+                            Color.fromRGBO(0, 199, 255, 1),
+                          ],
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.black38,
+                              blurRadius: 15,
+                              offset: Offset(0, 0))
+                        ],
+                      )
+                          : BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Color.fromRGBO(255, 38, 0, 0.8),
+                            Color.fromRGBO(159, 25, 3, 0.1),
+                          ],
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.black38,
+                              blurRadius: 15,
+                              offset: Offset(0, 0))
+                        ],
+                      ),
+                      child: Text(index == 0 ? "Left" : "Right",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500))))
+            ]
                 : [],
           )
         ]));
@@ -881,8 +939,8 @@ class RefViewPageState extends State<RefViewPage> {
   //       ));
   // }
 
-  Widget infoSelectItemView(
-      String title, int touches, int periods, String weapon) {
+  Widget infoSelectItemView(String title, int touches, int periods,
+      String weapon) {
     bool isSelect = false;
     if (touches > 0 && refViewMatch.maxTouch == touches) {
       isSelect = true;
@@ -912,8 +970,8 @@ class RefViewPageState extends State<RefViewPage> {
           height: 23,
           padding: EdgeInsets.only(left: 8, right: 8),
           color: Color.fromRGBO(255, 255, 255, isSelect ? 0.5 : 0
-              // refViewMatch.maxTouch == count ? 0.5 : 0
-              ),
+            // refViewMatch.maxTouch == count ? 0.5 : 0
+          ),
           alignment: Alignment.center,
           child: Text(
             title,
@@ -936,7 +994,7 @@ class RefViewPageState extends State<RefViewPage> {
               decoration: BoxDecoration(
                   image: DecorationImage(
                       image:
-                          AssetImage("assets/images/fencer_default_icon.png"),
+                      AssetImage("assets/images/fencer_default_icon.png"),
                       fit: BoxFit.fill)),
               alignment: Alignment.center,
               width: size,
@@ -953,7 +1011,7 @@ class RefViewPageState extends State<RefViewPage> {
           visible: isPriority,
           child: Container(
             decoration: BoxDecoration(
-                // color: Colors.green,
+              // color: Colors.green,
                 image: DecorationImage(
                     image: AssetImage("assets/images/priority_tag.png"),
                     fit: BoxFit.fitWidth)),
@@ -1015,121 +1073,123 @@ class RefViewPageState extends State<RefViewPage> {
   Widget resultView() {
     return SafeArea(
         child: Stack(children: [
-      Column(
-        children: [
-          SizedBox(height: 20),
-          Row(
+          Column(
             children: [
-              SizedBox(width: 30),
-              // periodWinIcon == "" ? SizedBox() : iconView(periodWinIcon, 50),
-              // SizedBox(width: 20),
+              SizedBox(height: 20),
+              Row(
+                children: [
+                  SizedBox(width: 30),
+                  // periodWinIcon == "" ? SizedBox() : iconView(periodWinIcon, 50),
+                  // SizedBox(width: 20),
+                  // Text(
+                  //   periodWinName,
+                  //   style: TextStyle(color: Colors.white, fontSize: 16),
+                  // ),
+                  GestureDetector(
+                      onTap: () {
+                        clickExit();
+                      },
+                      child: btnView("End Bout", blackColor, 0)),
+                  Expanded(child: SizedBox()),
+                  GestureDetector(
+                      onTap: () {
+                        setEventState();
+                      },
+                      child: btnView("MATCH EVENTS", redColor, 0)),
+                  SizedBox(width: 30),
+                ],
+              ),
               // Text(
-              //   periodWinName,
+              //   isEndPeriod() ? "Winner: " + getWinner() : "",
               //   style: TextStyle(color: Colors.white, fontSize: 16),
               // ),
-              GestureDetector(
-                  onTap: () {
-                    clickExit();
-                  },
-                  child: btnView("End Bout", blackColor, 0)),
-              Expanded(child: SizedBox()),
-              GestureDetector(
-                  onTap: () {
-                    setEventState();
-                  },
-                  child: btnView("MATCH EVENTS", redColor, 0)),
-              SizedBox(width: 30),
-            ],
-          ),
-          // Text(
-          //   isEndPeriod() ? "Winner: " + getWinner() : "",
-          //   style: TextStyle(color: Colors.white, fontSize: 16),
-          // ),
-          SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(child: SizedBox()),
-              Column(
+              SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  iconView(
-                      refViewMatch.leftIcon, 50, refViewMatch.priority == 1),
-                  SizedBox(height: 10),
-                  Text(
-                    refViewMatch.leftName,
-                    style: TextStyle(fontSize: 15, color: Colors.white),
-                  )
-                ],
-              ),
-              SizedBox(width: 50),
-              Column(
-                children: [
-                  Text(
-                    "Score",
-                    style: TextStyle(color: Colors.white, fontSize: 20),
+                  Expanded(child: SizedBox()),
+                  Column(
+                    children: [
+                      iconView(
+                          refViewMatch.leftIcon, 50,
+                          refViewMatch.priority == 1),
+                      SizedBox(height: 10),
+                      Text(
+                        refViewMatch.leftName,
+                        style: TextStyle(fontSize: 15, color: Colors.white),
+                      )
+                    ],
                   ),
-                  SizedBox(height: 20),
-                  // Text(isEndPeriod() ? "$leftScore-$rightScore" : "",
-                  //     style: TextStyle(
-                  //         color: Colors.white,
-                  //         fontSize: 25,
-                  //         fontWeight: FontWeight.w500)),
-                  Text(
-                      refViewMatch.leftScore.toString() +
-                          " - " +
-                          refViewMatch.rightScore.toString(),
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 25,
-                          fontWeight: FontWeight.w500)),
-                ],
-              ),
-              SizedBox(width: 50),
-              Column(
-                children: [
-                  iconView(
-                      refViewMatch.rightIcon, 50, refViewMatch.priority == 2),
-                  SizedBox(height: 10),
-                  Text(
-                    refViewMatch.rightName,
-                    style: TextStyle(fontSize: 15, color: Colors.white),
-                  )
+                  SizedBox(width: 50),
+                  Column(
+                    children: [
+                      Text(
+                        "Score",
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      ),
+                      SizedBox(height: 20),
+                      // Text(isEndPeriod() ? "$leftScore-$rightScore" : "",
+                      //     style: TextStyle(
+                      //         color: Colors.white,
+                      //         fontSize: 25,
+                      //         fontWeight: FontWeight.w500)),
+                      Text(
+                          refViewMatch.leftScore.toString() +
+                              " - " +
+                              refViewMatch.rightScore.toString(),
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 25,
+                              fontWeight: FontWeight.w500)),
+                    ],
+                  ),
+                  SizedBox(width: 50),
+                  Column(
+                    children: [
+                      iconView(
+                          refViewMatch.rightIcon, 50,
+                          refViewMatch.priority == 2),
+                      SizedBox(height: 10),
+                      Text(
+                        refViewMatch.rightName,
+                        style: TextStyle(fontSize: 15, color: Colors.white),
+                      )
+                    ],
+                  ),
+                  Expanded(child: SizedBox()),
                 ],
               ),
               Expanded(child: SizedBox()),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: resultBtnView(),
+              ),
+              SizedBox(height: 40)
             ],
           ),
-          Expanded(child: SizedBox()),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: resultBtnView(),
-          ),
-          SizedBox(height: 40)
-        ],
-      ),
-      // Container(
-      //   // color: Colors.yellow,
-      //   alignment: Alignment.center,
-      //   child: Column(
-      //     mainAxisAlignment: MainAxisAlignment.center,
-      //     children: [
-      //       Text("Winner:Left Player", style: TextStyle(color: Colors.white, fontSize: 16),),
-      //       SizedBox(height: 15),
-      //       Text("$leftScore-$rightScore", style: TextStyle(color: Colors.white, fontSize: 25, fontWeight: FontWeight.w500)),
-      //       SizedBox(height: 20),
-      //       Row(
-      //         mainAxisAlignment: MainAxisAlignment.center,
-      //         children: [
-      //         btnView("Discard", 0, 1),
-      //         SizedBox(width: 15),
-      //         btnView("Confirm", 1, 1),
-      //         SizedBox(width: 15),
-      //         btnView("Download\nHighlights", 1, 1),
-      //       ],)
-      //     ],
-      //   ),
-      // )
-    ]));
+          // Container(
+          //   // color: Colors.yellow,
+          //   alignment: Alignment.center,
+          //   child: Column(
+          //     mainAxisAlignment: MainAxisAlignment.center,
+          //     children: [
+          //       Text("Winner:Left Player", style: TextStyle(color: Colors.white, fontSize: 16),),
+          //       SizedBox(height: 15),
+          //       Text("$leftScore-$rightScore", style: TextStyle(color: Colors.white, fontSize: 25, fontWeight: FontWeight.w500)),
+          //       SizedBox(height: 20),
+          //       Row(
+          //         mainAxisAlignment: MainAxisAlignment.center,
+          //         children: [
+          //         btnView("Discard", 0, 1),
+          //         SizedBox(width: 15),
+          //         btnView("Confirm", 1, 1),
+          //         SizedBox(width: 15),
+          //         btnView("Download\nHighlights", 1, 1),
+          //       ],)
+          //     ],
+          //   ),
+          // )
+        ]));
   }
 
   int state = 0;
@@ -1405,7 +1465,9 @@ class RefViewPageState extends State<RefViewPage> {
 
     videoController!.addListener(() {
       // print("xx" + videoController!.value.position.toString());
-
+      if (videoController == null) {
+        return;
+      }
       setState(() {
         value = videoController!.value.position.inSeconds.toDouble();
         print(max.toString() + "-" + value.toString());
@@ -1448,8 +1510,8 @@ class RefViewPageState extends State<RefViewPage> {
   bool isShowVideo = false;
 
   downloadHighlights(int type) async {
-    bool isH = await requestPermission([Permission.storage]);
-    if (isH) {
+    // bool isH = await requestPermission([Permission.storage]);
+    if (true) {
       if (type == 0) {
         refViewRecord!.downloadAll(context);
       }
@@ -1521,20 +1583,21 @@ class RefViewPageState extends State<RefViewPage> {
                     SizedBox(width: 5),
                     Expanded(
                         child: Container(
-                      alignment: Alignment.centerLeft,
-                      // height: 35,
-                      padding: EdgeInsets.only(
-                          left: 10, right: 10, bottom: 3, top: 3),
-                      child: Text(event.hint,
-                          style: TextStyle(color: Colors.white, fontSize: 12),
-                          // maxLines: 1,
-                          softWrap: true,
-                          overflow: TextOverflow.clip),
-                      decoration: BoxDecoration(
-                          color: Color.fromRGBO(47, 47, 47, 1),
-                          borderRadius:
+                          alignment: Alignment.centerLeft,
+                          // height: 35,
+                          padding: EdgeInsets.only(
+                              left: 10, right: 10, bottom: 3, top: 3),
+                          child: Text(event.hint,
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 12),
+                              // maxLines: 1,
+                              softWrap: true,
+                              overflow: TextOverflow.clip),
+                          decoration: BoxDecoration(
+                              color: Color.fromRGBO(47, 47, 47, 1),
+                              borderRadius:
                               const BorderRadius.all(Radius.circular(10))),
-                    )),
+                        )),
                     SizedBox(width: 5),
                   ],
                 ),
@@ -1579,20 +1642,21 @@ class RefViewPageState extends State<RefViewPage> {
                     SizedBox(width: 5),
                     Expanded(
                         child: Container(
-                      alignment: Alignment.centerLeft,
-                      // height: 35,
-                      padding: EdgeInsets.only(
-                          left: 10, right: 10, bottom: 3, top: 3),
-                      child: Text(event.hint,
-                          style: TextStyle(color: Colors.white, fontSize: 12),
-                          // maxLines: 1,
-                          softWrap: true,
-                          overflow: TextOverflow.clip),
-                      decoration: BoxDecoration(
-                          color: Color.fromRGBO(47, 47, 47, 1),
-                          borderRadius:
+                          alignment: Alignment.centerLeft,
+                          // height: 35,
+                          padding: EdgeInsets.only(
+                              left: 10, right: 10, bottom: 3, top: 3),
+                          child: Text(event.hint,
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 12),
+                              // maxLines: 1,
+                              softWrap: true,
+                              overflow: TextOverflow.clip),
+                          decoration: BoxDecoration(
+                              color: Color.fromRGBO(47, 47, 47, 1),
+                              borderRadius:
                               const BorderRadius.all(Radius.circular(10))),
-                    )),
+                        )),
                     SizedBox(width: 5),
                   ],
                 ),
@@ -1625,20 +1689,21 @@ class RefViewPageState extends State<RefViewPage> {
                     SizedBox(width: 5),
                     Expanded(
                         child: Container(
-                      alignment: Alignment.centerLeft,
-                      // height: 35,
-                      padding: EdgeInsets.only(
-                          left: 10, right: 10, bottom: 3, top: 3),
-                      child: Text(event.hint,
-                          style: TextStyle(color: Colors.white, fontSize: 12),
-                          // maxLines: 1,
-                          softWrap: true,
-                          overflow: TextOverflow.clip),
-                      decoration: BoxDecoration(
-                          color: Color.fromRGBO(47, 47, 47, 1),
-                          borderRadius:
+                          alignment: Alignment.centerLeft,
+                          // height: 35,
+                          padding: EdgeInsets.only(
+                              left: 10, right: 10, bottom: 3, top: 3),
+                          child: Text(event.hint,
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 12),
+                              // maxLines: 1,
+                              softWrap: true,
+                              overflow: TextOverflow.clip),
+                          decoration: BoxDecoration(
+                              color: Color.fromRGBO(47, 47, 47, 1),
+                              borderRadius:
                               const BorderRadius.all(Radius.circular(10))),
-                    )),
+                        )),
                     SizedBox(width: 5),
                     Text(
                       t,
@@ -1667,7 +1732,7 @@ class RefViewPageState extends State<RefViewPage> {
   Widget eventView() {
     List<Widget> list = [];
     List<RefViewEvent> eList =
-        refViewMatch.getEvent(refViewMatch.currentPeriod);
+    refViewMatch.getEvent(refViewMatch.currentPeriod);
 
     // Text(refViewTime!.formatDuration(Duration(seconds: element.time)) +
     //     "-" +
@@ -1687,36 +1752,36 @@ class RefViewPageState extends State<RefViewPage> {
                     false, refViewMatch.priority == 1),
                 Expanded(
                     child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Positioned(
-                        top: 0,
-                        bottom: 0,
-                        child: Container(
-                          width: 1,
-                          color: Colors.white54,
-                        )),
-                    Positioned(
-                        child: Column(
+                      alignment: Alignment.center,
                       children: [
-                        Expanded(
-                          child: Container(
-                              // color: Colors.black,
-                              child: ListView(
-                            children: list,
-                          )),
-                        ),
-                        SizedBox(height: 10),
-                        GestureDetector(
-                            onTap: () {
-                              setResumeState(null, -1);
-                            },
-                            child: btnView("END MATCH", blueColor, 0)),
-                        SizedBox(height: 40)
+                        Positioned(
+                            top: 0,
+                            bottom: 0,
+                            child: Container(
+                              width: 1,
+                              color: Colors.white54,
+                            )),
+                        Positioned(
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    // color: Colors.black,
+                                      child: ListView(
+                                        children: list,
+                                      )),
+                                ),
+                                SizedBox(height: 10),
+                                GestureDetector(
+                                    onTap: () {
+                                      setResumeState(null, -1);
+                                    },
+                                    child: btnView("END MATCH", blueColor, 0)),
+                                SizedBox(height: 40)
+                              ],
+                            ))
                       ],
-                    ))
-                  ],
-                )),
+                    )),
                 infoMenuView(refViewMatch.rightIcon, refViewMatch.rightName, 1,
                     false, refViewMatch.priority == 2)
               ],
@@ -1745,23 +1810,26 @@ class RefViewPageState extends State<RefViewPage> {
   Widget seekView() {
     return Positioned(
         bottom: 10,
-        width: MediaQuery.of(context).size.width,
+        width: MediaQuery
+            .of(context)
+            .size
+            .width,
         child: Container(
-            // color: Colors.red,
-            // width: 200,
+          // color: Colors.red,
+          // width: 200,
             child: SeekBar(
-          isRound: false,
-          min: min,
-          max: max,
-          value: value,
-          onValueChanged: (ProgressValue value) {
-            print(value!.value.toString() + "-po+$min++$max");
-            int s = (min + (max - min) * value.progress).toInt();
-            videoController!.seekTo(Duration(seconds: s));
-          },
-          backgroundColor: Colors.black87,
-          progressColor: blueColor,
-        )));
+              isRound: false,
+              min: min,
+              max: max,
+              value: value,
+              onValueChanged: (ProgressValue value) {
+                print(value!.value.toString() + "-po+$min++$max");
+                int s = (min + (max - min) * value.progress).toInt();
+                videoController!.seekTo(Duration(seconds: s));
+              },
+              backgroundColor: Colors.black87,
+              progressColor: blueColor,
+            )));
   }
 
   String speed = "x1";
@@ -1797,7 +1865,9 @@ class RefViewPageState extends State<RefViewPage> {
         ));
   }
 
-  double value = 0, max = 0, min = 0;
+  double value = 0,
+      max = 0,
+      min = 0;
 }
 
 class TrianglePath extends CustomClipper<Path> {

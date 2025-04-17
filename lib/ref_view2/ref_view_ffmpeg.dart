@@ -1,10 +1,13 @@
 import 'dart:io';
 
 import 'package:camera/camera.dart';
-import 'package:flutter_ffmpeg/flutter_ffmpeg.dart';
+import 'package:ffmpeg_kit_flutter/ffmpeg_kit.dart';
+import 'package:ffmpeg_kit_flutter/ffprobe_kit.dart';
+import 'package:ffmpeg_kit_flutter/return_code.dart';
+// import 'package:flutter_ffmpeg/flutter_ffmpeg.dart';
 
 class RefViewFFmpeg {
-  final FlutterFFprobe _flutterFFprobe = new FlutterFFprobe();
+  // final FlutterFFprobe _flutterFFprobe = new FlutterFFprobe();
 
   //剪辑 s秒到e秒
   void reduce(String inputPath, String outPath, double s, double e,
@@ -16,13 +19,13 @@ class RefViewFFmpeg {
     String inputFilePath = inputPath;
     String outputFilePath = outPath;
 
-    var ffmpeg = new FlutterFFmpeg();
-    ffmpeg
-        .execute(
+    // var ffmpeg = new FlutterFFmpeg();
+    FFmpegKit.execute(
             // "-i $inputFilePath -ss $s -to $e -c:v libx264 $outputFilePath")//这里是ffmpeg指令 裁剪60s视频
             "-i $inputFilePath -ss $s -to $e -y $outputFilePath") //这里是ffmpeg指令 裁剪60s视频
-        .then((rc) async {
-      if (rc == 0) {
+        .then((session) async {
+      final rc = await session.getReturnCode();
+      if (ReturnCode.isSuccess(rc)) {  //rc == 0
         //rc=0表示成功
         //裁剪60s 转换 libx264
         print("success");
@@ -38,15 +41,20 @@ class RefViewFFmpeg {
   //剪辑 t秒前
   void reducePrevious(String inputPath, String outPath, double t,
       RefViewFFmpegReduce refViewFFmpegReduce) {
-    _flutterFFprobe.getMediaInformation(inputPath).then((info) {
-      print(
-          "Media Information" + info.getAllProperties()['format']['duration']);
-      double? time =
-          double.tryParse(info.getAllProperties()['format']['duration']);
-      if (t > time!) {
-        t = time;
+    FFprobeKit.getMediaInformation(inputPath).then((session) async {
+      // print(
+      //     "Media Information" + info.getAllProperties()['format']['duration']);
+      // double? time = double.tryParse(info.getAllProperties()['format']['duration']);
+      final info = await session.getMediaInformation();
+
+      if (info != null) {
+        double? time = double.tryParse(info.getAllProperties()!['format']['duration']);
+        if (t > time!) {
+          t = time;
+        }
+        reduce(inputPath, outPath, time - t, time, refViewFFmpegReduce);
       }
-      reduce(inputPath, outPath, time - t, time, refViewFFmpegReduce);
+
       //   print("Path: ${info.getMediaProperties()['filename']}");
       //   print("Format: ${info.getMediaProperties()['format_name']}");
       //   print("Duration: ${info.getMediaProperties()['duration']}");
@@ -117,12 +125,12 @@ class RefViewFFmpeg {
 
     String xx1 = "-f concat -safe 0 -i " + p + " -c copy -y " + outputPath;
 
-    var ffmpeg = new FlutterFFmpeg();
+    // var ffmpeg = new FlutterFFmpeg();
 
-    ffmpeg
-        .execute(xx1) //这里是ffmpeg指令 裁剪60s视频
-        .then((rc) async {
-      if (rc == 0) {
+    FFmpegKit.execute(xx1) //这里是ffmpeg指令 裁剪60s视频
+        .then((session) async {
+      final rc = await session.getReturnCode();
+      if (ReturnCode.isSuccess(rc)) { //rc == 0
         //rc=0表示成功
         //裁剪60s 转换 libx264
         print("success");
@@ -163,7 +171,8 @@ class RefViewFFmpeg {
     //     flush: true);
   }
 
-  void watermark(String inputPath, String imagePath, String outPath, RefViewFFmpegWatermark watermark) {
+  void watermark(String inputPath, String imagePath, String outPath,
+      RefViewFFmpegWatermark watermark) {
     // String xx1 = "ffmpeg -i dy.mp4 -vf drawtext=fontcolor=white:fontsize=20:fontfile=test.ttf:line_spacing=7:text='Edwin':x=20:y=20 dytextedwin01.mp4";
     // String xx1 = "ffmpeg -i input.mp4 -vf "drawtext=text='Watermark Text':fontsize=24:fontcolor=white:x=10:y=10" -codec:a copy output.mp4";
     // String xx1 = "ffmpeg -i output_video.mp4 -vf "drawtext=text='Your Text Here':fontfile=arial.ttf:fontcolor=white:fontsize=24:x=W-w-100:y=H-h-100" -codec:a copy final_video.mp4";
@@ -177,12 +186,13 @@ class RefViewFFmpeg {
         outPath +
         " -y";
 
-    var ffmpeg = new FlutterFFmpeg();
+    // var ffmpeg = new FlutterFFmpeg();
 
-    ffmpeg
+    FFmpegKit
         .execute(xx1) //这里是ffmpeg指令 裁剪60s视频
-        .then((rc) async {
-      if (rc == 0) {
+        .then((session) async {
+      final rc = await session.getReturnCode();
+      if (ReturnCode.isSuccess(rc)) {  //rc == 0
         //rc=0表示成功
         //裁剪60s 转换 libx264
         print("success");

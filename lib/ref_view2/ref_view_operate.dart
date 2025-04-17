@@ -748,14 +748,15 @@ class RefViewOperateState extends State {
         right: isLeft ? null : 15,
         child: GestureDetector(
           onTap: () {
+            //count limitation
             if (isLeft) {
-              if (refViewMatch.leftChallenge <= 0) {
-                return;
-              }
+              // if (refViewMatch.leftChallenge <= 0) {
+              //   return;
+              // }
             } else {
-              if (refViewMatch.rightChallenge <= 0) {
-                return;
-              }
+              // if (refViewMatch.rightChallenge <= 0) {
+              //   return;
+              // }
             }
             clickOperate(isLeft ? POS_LEFT : POS_RIGHT, MENU_MAIN, true);
           },
@@ -774,9 +775,11 @@ class RefViewOperateState extends State {
                 bottom: isLeft ? 2 : 0,
                 left: !isLeft ? 9 : 0),
             child: Text(
-              isLeft
-                  ? refViewMatch.leftChallenge.toString()
-                  : refViewMatch.rightChallenge.toString(),
+              //count show
+              // isLeft
+              //     ? refViewMatch.leftChallenge.toString()
+              //     : refViewMatch.rightChallenge.toString(),
+              '',
               style: TextStyle(
                   color: Color.fromRGBO(3, 255, 238, 1), fontSize: 10),
             ),

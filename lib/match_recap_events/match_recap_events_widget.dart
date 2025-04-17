@@ -1,3 +1,5 @@
+import 'package:u_f_l_demo/match_recap_events/match_recap_events_video_player.dart';
+
 import '/backend/backend.dart';
 import '/backend/schema/structs/index.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
@@ -29,6 +31,8 @@ class _MatchRecapEventsWidgetState extends State<MatchRecapEventsWidget> {
   late MatchRecapEventsModel _model;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
+
+  late FlutterFlowVideoPlayer flv;
 
   @override
   void initState() {
@@ -92,224 +96,240 @@ class _MatchRecapEventsWidgetState extends State<MatchRecapEventsWidget> {
         builder: (context) {
           final currentMatchEvent =
               widget.currentMatchDetails?.matchEvents?.toList() ?? [];
-          return SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: List.generate(currentMatchEvent.length,
-                  (currentMatchEventIndex) {
-                final currentMatchEventItem =
-                    currentMatchEvent[currentMatchEventIndex];
-                return Row(
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    Container(
-                      width: MediaQuery.sizeOf(context).width * 1.0,
-                      height: 100.0,
-                      decoration: BoxDecoration(
-                        color: FlutterFlowTheme.of(context).secondaryBackground,
-                      ),
-                      child: InkWell(
-                        splashColor: Colors.transparent,
-                        focusColor: Colors.transparent,
-                        hoverColor: Colors.transparent,
-                        highlightColor: Colors.transparent,
-                        onTap: () async {
-                          if ((currentMatchEventItem.videoURL != null &&
-                                  currentMatchEventItem.videoURL != '') &&
-                              (currentMatchEventItem.videoURL != '')) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    MatchRecapEventVideoWidget(
-                                  videoURL: currentMatchEventItem.videoURL,
-                                      duration: (currentMatchEventItem.timeOfAction - 3000)<=0? 0 : (currentMatchEventItem.timeOfAction - 3000),
-                                ),
-                              ),
-                            );
-                          }
-                        },
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  10.0, 0.0, 0.0, 0.0),
-                              child: Container(
-                                width: 100.0,
-                                height: 50.0,
-                                decoration: BoxDecoration(
-                                  color: FlutterFlowTheme.of(context)
-                                      .secondaryBackground,
-                                ),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.max,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Fencer:',
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .override(
-                                            fontFamily: 'Poppins',
-                                            fontSize: 11.0,
-                                          ),
-                                    ),
-                                    StreamBuilder<UsersRecord>(
-                                      stream: UsersRecord.getDocument(
-                                          currentMatchEventItem
-                                              .actionableFencer!),
-                                      builder: (context, snapshot) {
-                                        // Customize what your widget looks like when it's loading.
-                                        if (!snapshot.hasData) {
-                                          return Center(
-                                            child: SizedBox(
-                                              width: 50.0,
-                                              height: 50.0,
-                                              child: CircularProgressIndicator(
-                                                valueColor:
-                                                    AlwaysStoppedAnimation<
-                                                        Color>(
-                                                  FlutterFlowTheme.of(context)
-                                                      .primary,
-                                                ),
-                                              ),
+          return Column(children: [
+            flv = FlutterFlowVideoPlayer(
+              path: currentMatchEvent.length>0? currentMatchEvent[0].videoURL : '',
+              videoType: VideoType.network,
+              autoPlay: false,
+              looping: true,
+              showControls: true,
+              allowFullScreen: true,
+              allowPlaybackSpeedMenu: true,
+              duration: 0,
+            ),
+            // SizedBox(height: 400),
+            Expanded(child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: List.generate(currentMatchEvent.length,
+                        (currentMatchEventIndex) {
+                      final currentMatchEventItem =
+                      currentMatchEvent[currentMatchEventIndex];
+                      return Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Container(
+                            width: MediaQuery.sizeOf(context).width * 1.0,
+                            height: 100.0,
+                            decoration: BoxDecoration(
+                              color: FlutterFlowTheme.of(context).secondaryBackground,
+                            ),
+                            child: InkWell(
+                              splashColor: Colors.transparent,
+                              focusColor: Colors.transparent,
+                              hoverColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
+                              onTap: () async {
+                                if ((currentMatchEventItem.videoURL != null &&
+                                    currentMatchEventItem.videoURL != '') &&
+                                    (currentMatchEventItem.videoURL != '')) {
+
+                                  int duration = (currentMatchEventItem.timeOfAction - 3000)<=0? 0 : (currentMatchEventItem.timeOfAction - 3000);
+                                  flv!.seekTo(duration);
+                                  // Navigator.push(
+                                  //   context,
+                                  //   MaterialPageRoute(
+                                  //     builder: (context) =>
+                                  //         MatchRecapEventVideoWidget(
+                                  //           videoURL: currentMatchEventItem.videoURL,
+                                  //           duration: (currentMatchEventItem.timeOfAction - 3000)<=0? 0 : (currentMatchEventItem.timeOfAction - 3000),
+                                  //         ),
+                                  //   ),
+                                  // );
+                                }
+                              },
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        10.0, 0.0, 0.0, 0.0),
+                                    child: Container(
+                                      width: 100.0,
+                                      height: 50.0,
+                                      decoration: BoxDecoration(
+                                        color: FlutterFlowTheme.of(context)
+                                            .secondaryBackground,
+                                      ),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.max,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Fencer:',
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyMedium
+                                                .override(
+                                              fontFamily: 'Poppins',
+                                              fontSize: 11.0,
                                             ),
-                                          );
-                                        }
-                                        final textUsersRecord = snapshot.data!;
-                                        return Text(
-                                          valueOrDefault<String>(
-                                            textUsersRecord.displayName,
-                                            'Referee',
                                           ),
+                                          StreamBuilder<UsersRecord>(
+                                            stream: UsersRecord.getDocument(
+                                                currentMatchEventItem
+                                                    .actionableFencer!),
+                                            builder: (context, snapshot) {
+                                              // Customize what your widget looks like when it's loading.
+                                              if (!snapshot.hasData) {
+                                                return Center(
+                                                  child: SizedBox(
+                                                    width: 50.0,
+                                                    height: 50.0,
+                                                    child: CircularProgressIndicator(
+                                                      valueColor:
+                                                      AlwaysStoppedAnimation<
+                                                          Color>(
+                                                        FlutterFlowTheme.of(context)
+                                                            .primary,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                );
+                                              }
+                                              final textUsersRecord = snapshot.data!;
+                                              return Text(
+                                                valueOrDefault<String>(
+                                                  textUsersRecord.displayName,
+                                                  'Referee',
+                                                ),
+                                                style: FlutterFlowTheme.of(context)
+                                                    .bodyMedium
+                                                    .override(
+                                                  fontFamily: 'Poppins',
+                                                  fontSize: 11.0,
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Spacer(),
+                                  Container(
+                                    width: 100.0,
+                                    height: 50.0,
+                                    decoration: BoxDecoration(
+                                      color: FlutterFlowTheme.of(context)
+                                          .secondaryBackground,
+                                    ),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.max,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Action:',
                                           style: FlutterFlowTheme.of(context)
                                               .bodyMedium
                                               .override(
-                                                fontFamily: 'Poppins',
-                                                fontSize: 11.0,
-                                              ),
-                                        );
-                                      },
+                                            fontFamily: 'Poppins',
+                                            fontSize: 11.0,
+                                          ),
+                                        ),
+                                        Text(
+                                          functions.getActionStringFromID(
+                                              currentMatchEventItem.actionID),
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyMedium
+                                              .override(
+                                            fontFamily: 'Poppins',
+                                            fontSize: 11.0,
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Spacer(),
-                            Container(
-                              width: 100.0,
-                              height: 50.0,
-                              decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
-                              ),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.max,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Action:',
-                                    style: FlutterFlowTheme.of(context)
-                                        .bodyMedium
-                                        .override(
-                                          fontFamily: 'Poppins',
-                                          fontSize: 11.0,
-                                        ),
                                   ),
-                                  Text(
-                                    functions.getActionStringFromID(
-                                        currentMatchEventItem.actionID),
-                                    style: FlutterFlowTheme.of(context)
-                                        .bodyMedium
-                                        .override(
-                                          fontFamily: 'Poppins',
-                                          fontSize: 11.0,
+                                  Spacer(),
+                                  Container(
+                                    width: 70.0,
+                                    height: 50.0,
+                                    decoration: BoxDecoration(
+                                      color: FlutterFlowTheme.of(context)
+                                          .secondaryBackground,
+                                    ),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.max,
+                                      children: [
+                                        Text(
+                                          'Time:',
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyMedium
+                                              .override(
+                                            fontFamily: 'Poppins',
+                                            fontSize: 11.0,
+                                          ),
                                         ),
+                                        Text(
+                                          functions.msToMinSecFormat(
+                                              currentMatchEventItem.timeOfAction),
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyMedium
+                                              .override(
+                                            fontFamily: 'Poppins',
+                                            fontSize: 11.0,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Spacer(),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 10.0, 0.0),
+                                    child: Container(
+                                      width: 70.0,
+                                      height: 50.0,
+                                      decoration: BoxDecoration(
+                                        color: FlutterFlowTheme.of(context)
+                                            .secondaryBackground,
+                                      ),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.max,
+                                        children: [
+                                          Text(
+                                            'Score:',
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyMedium
+                                                .override(
+                                              fontFamily: 'Poppins',
+                                              fontSize: 11.0,
+                                            ),
+                                          ),
+                                          Text(
+                                            '${currentMatchEventItem.scoreLeft.toString()} - ${currentMatchEventItem.scoreRight.toString()}',
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyMedium
+                                                .override(
+                                              fontFamily: 'Poppins',
+                                              fontSize: 11.0,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
                                   ),
                                 ],
                               ),
                             ),
-                            Spacer(),
-                            Container(
-                              width: 70.0,
-                              height: 50.0,
-                              decoration: BoxDecoration(
-                                color: FlutterFlowTheme.of(context)
-                                    .secondaryBackground,
-                              ),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.max,
-                                children: [
-                                  Text(
-                                    'Time:',
-                                    style: FlutterFlowTheme.of(context)
-                                        .bodyMedium
-                                        .override(
-                                          fontFamily: 'Poppins',
-                                          fontSize: 11.0,
-                                        ),
-                                  ),
-                                  Text(
-                                    functions.msToMinSecFormat(
-                                        currentMatchEventItem.timeOfAction),
-                                    style: FlutterFlowTheme.of(context)
-                                        .bodyMedium
-                                        .override(
-                                          fontFamily: 'Poppins',
-                                          fontSize: 11.0,
-                                        ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Spacer(),
-                            Padding(
-                              padding: EdgeInsetsDirectional.fromSTEB(
-                                  0.0, 0.0, 10.0, 0.0),
-                              child: Container(
-                                width: 70.0,
-                                height: 50.0,
-                                decoration: BoxDecoration(
-                                  color: FlutterFlowTheme.of(context)
-                                      .secondaryBackground,
-                                ),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.max,
-                                  children: [
-                                    Text(
-                                      'Score:',
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .override(
-                                            fontFamily: 'Poppins',
-                                            fontSize: 11.0,
-                                          ),
-                                    ),
-                                    Text(
-                                      '${currentMatchEventItem.scoreLeft.toString()} - ${currentMatchEventItem.scoreRight.toString()}',
-                                      style: FlutterFlowTheme.of(context)
-                                          .bodyMedium
-                                          .override(
-                                            fontFamily: 'Poppins',
-                                            fontSize: 11.0,
-                                          ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                );
-              }),
-            ),
-          );
+                          ),
+                        ],
+                      );
+                    }),
+              ),
+            )),
+          ],);
         },
       ),
     );

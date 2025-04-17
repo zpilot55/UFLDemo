@@ -97,6 +97,7 @@ class RefViewRecord {
       Fluttertoast.showToast(msg: "Success Download");
       return;
     }
+
     RefViewDialog.showLoading(context);
 
     String np = currentPath.replaceAll(
